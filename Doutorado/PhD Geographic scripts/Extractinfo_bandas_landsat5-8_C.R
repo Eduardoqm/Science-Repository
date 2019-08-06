@@ -184,12 +184,12 @@ for(i in 1:length(files)) {
 
 #Carregar bandas Landsat cortadas============================================================================
 #Listar as bandas (banda 2 ate a banda 7 são equivalentes as bandas do landsat5)
-list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
-list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
-list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
-list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
-list6 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8", pattern = "band6.tif$", full.names=TRUE,recursive=TRUE)
-list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
+list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8b", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
+list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8b", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
+list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8b", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
+list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8b", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
+list6 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8b", pattern = "band6.tif$", full.names=TRUE,recursive=TRUE)
+list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/landsatcrop8b", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
 
 #Fazer os stacks das bandas
 b2 <- stack(list2)
