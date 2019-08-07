@@ -1,14 +1,17 @@
+#Extrair dados do MODIS para comparacao com dados Landsat do meu doutorado
+#Eduardo Q Marques /06/08/2019/
+
 library(ggplot2)
 library(reshape2)
 library(dplyr)
 library(tidyr)
 
 #NDVI ====================================================================================
-a = read.csv("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/MODIS/plot_A.csv")
+a = read.csv("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/MODIS/plot_A_dry.csv")
 
-b = read.csv("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/MODIS/plot_B.csv")
+b = read.csv("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/MODIS/plot_B_dry.csv")
 
-c = read.csv("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/MODIS/plot_C.csv")
+c = read.csv("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/MODIS/plot_C_dry.csv")
 
 
 as.numeric(gsub(",", "", a$NDVI)); as.integer(gsub(",", "", a$EVI))

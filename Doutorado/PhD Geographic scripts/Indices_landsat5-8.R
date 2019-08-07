@@ -1,3 +1,6 @@
+#Geracao de indices com imagens Landsat para a Area1 - Tang
+#Eduardo Q Marques /30/07/2019/
+
 library(raster)
 library(rasterVis)
 

@@ -1,3 +1,6 @@
+#Extrair dados do Landast para os plots A, B e C do meu doutorado
+#Eduardo Q Marques /06/08/2019/
+
 library(raster)
 library(rgdal)
 library(ggplot2)
