@@ -52,40 +52,58 @@ for (band in 1:6) {
   
 }
 
+blue = as.data.frame(p_value_list[[1]])
+green = as.data.frame(p_value_list[[2]])
+red = as.data.frame(p_value_list[[3]])
+irprox = as.data.frame(p_value_list[[4]])
+irmedio = as.data.frame(p_value_list[[5]])
+irmedio2 = as.data.frame(p_value_list[[6]])
+
+
+
+colnames(blue) = c("plot")
+
+
+
+ggplot(blue)
+
+
 
 
 band=1
 plot(year_v, p_value_list[[band]][1,], type="l", ylim=c(0,1), col="green")
 lines(year_v, p_value_list[[band]][2,], col = "blue")
 lines(year_v, p_value_list[[band]][3,], col = "red")
-legend("topright", legend = c("controle/b3yr","controle/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+legend("topright", legend = c("crt/b3yr","crt/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+
 
 band=2
 plot(year_v, p_value_list[[band]][1,], type="l", ylim=c(0,1), col="green")
 lines(year_v, p_value_list[[band]][2,], col = "blue")
 lines(year_v, p_value_list[[band]][3,], col = "red")
-legend("topright", legend = c("controle/b3yr","controle/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+legend("topright", legend = c("crt/b3yr","crt/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
 
 band=3
 plot(year_v, p_value_list[[band]][1,], type="l", ylim=c(0,1), col="green")
 lines(year_v, p_value_list[[band]][2,], col = "blue")
 lines(year_v, p_value_list[[band]][3,], col = "red")
-legend("topright", legend = c("controle/b3yr","controle/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+legend("topright", legend = c("crt/b3yr","crt/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
 
 band=4
 plot(year_v, p_value_list[[band]][1,], type="l", ylim=c(0,1), col="green")
 lines(year_v, p_value_list[[band]][2,], col = "blue")
 lines(year_v, p_value_list[[band]][3,], col = "red")
-legend("topright", legend = c("controle/b3yr","controle/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+legend("topright", legend = c("crt/b3yr","crt/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
 
 band=5
 plot(year_v, p_value_list[[band]][1,], type="l", ylim=c(0,1), col="green")
 lines(year_v, p_value_list[[band]][2,], col = "blue")
 lines(year_v, p_value_list[[band]][3,], col = "red")
-legend("topright", legend = c("controle/b3yr","controle/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+legend("topright", legend = c("crt/b3yr","crt/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
 
 band=6
 plot(year_v, p_value_list[[band]][1,], type="l", ylim=c(0,1), col="green")
 lines(year_v, p_value_list[[band]][2,], col = "blue")
 lines(year_v, p_value_list[[band]][3,], col = "red")
-legend("topright", legend = c("controle/b3yr","controle/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+legend("topright", legend = c("crt/b3yr","crt/b1yr","b3yr/b1yr"), lty = "solid", col=c("green","blue","red"))
+
