@@ -12,7 +12,7 @@ fire <- read.csv("FIRE DATA SUMMARY.csv", header = TRUE, sep = ",")
 #Manipulate data
 fire <- fire[,c(2, 3, 9)]
 
-fire <- filter(fire, YR==2007)
+fire <- filter(fire, YR==2009)
 fire = fire %>% 
   separate(col = "id", c("id", "ano"), sep = ' ')
 fire <- fire[,c(1, 2, 4)]
@@ -21,23 +21,27 @@ fire2 = fire %>%
   group_by(id) %>%
   na.omit() %>%
   summarise(alt..cm. = max(alt..cm.))
-
-colnames(fire2) = c("id2", "alt_fire")
+colnames(fire2) = c("ID", "alt_fire")
 
 #Shape do input data --------------------------------------------------------------------------
-grid <- readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1B")
+grid <- readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1D")
+grid@data$n = c(1:651)
+
+master = merge(grid@data, fire2, by = "ID", all.x = T)
+master[is.na(master)] <- 0
+master = master %>% 
+  arrange(n) 
+  #arrange(row)
+  
 
 
-grid@data = merge(grid@data, fire2, by = "id2", all.x = T)
-
-grid@data[is.na(grid@data)] <- 0
-
+grid@data$alt_fire <- master$alt_fire
 #See shape and data frame
 View(grid@data)
 
 #plot(grid)
 
-spplot(grid["alt_fire"])
+spplot(grid, "alt_fire")
 
 #Rastize data
 #r <- raster(ncol=180, nrow=180)

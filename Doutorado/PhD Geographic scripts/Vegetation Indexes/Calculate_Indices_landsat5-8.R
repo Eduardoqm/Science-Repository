@@ -47,7 +47,7 @@ nbri <- (b4-b7)/(b4+b7)
 npcri <- (b3-b1)/(b3+b1)
 
 #Normalized Difference Water Index (NDWI)
-ndwi <- (b5-b2)/(b5+b2)
+ndwi <- (b4-b5)/(b4+b5)
 
 #Salve NDVI rasters----------------------------------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/EVI")
@@ -130,7 +130,7 @@ nbri_b <- (b5-b7)/(b5+b7)
 npcri_b <- (b4-b2)/(b4+b2)
 
 #Normalized Difference Water Index (NDWI)
-ndwi_b <- (b6-b3)/(b6+b3)
+ndwi_b <- (b5-b6)/(b5+b6)
 
 #Salve NDVI rasters-----------------------------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/EVI")
