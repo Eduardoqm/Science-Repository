@@ -375,23 +375,23 @@ ggplot(gg, aes(Data,Refl, col=Parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% diferença no NDWI)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(8.5, 11.5, 15.5), y = 3.5, label = "Seca")+
-  annotate("segment", x = c(8.5, 11.5, 15.5), y = 3.3, 
-           xend = c(8.5, 11.5, 15.5), yend = 3,
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 2.8, label = "Seca")+
+  annotate("segment", x = c(8.5, 11.5, 15.5), y = 2, 
+           xend = c(8.5, 11.5, 15.5), yend = 0,
            arrow = arrow(angle = 20, length = unit(2, "mm"), type = "closed"))+
   
-  annotate("text", x = 2.5, y = -1, label = "Pré-fogo", colour = "darkgreen")+
-  annotate("rect", xmin = 1, xmax = 5, ymin = -1.3, ymax = -1.5, alpha = 0.9, fill = "darkgreen")+
+  annotate("text", x = 2.5, y = -12, label = "Pré-fogo", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -13, ymax = -14, alpha = 0.9, fill = "darkgreen")+
   
-  annotate("text", x = 8.5, y = -1, label = "Experimento de fogo", colour = "red")+
-  annotate("rect", xmin = 5, xmax = 12, ymin = -1.3, ymax = -1.5, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(5.5, 8.5, 11.5), y = -1.35, label = "xx", colour = "yellow")+
-  annotate("text", x = c(6.5, 7.5, 10.5), y = -1.35, label = "x", colour = "yellow")+
+  annotate("text", x = 8.5, y = -12, label = "Experimento de fogo", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -13, ymax = -14, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -13.2, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -13.2, label = "x", colour = "yellow")+
   
-  annotate("text", x = 15.5, y = -1, label = "Periodo de recuperação", colour = "darkblue")+
-  annotate("rect", xmin = 12, xmax = 19, ymin = -1.3, ymax = -1.5, alpha = 0.9, fill = "darkblue")+
+  annotate("text", x = 15.5, y = -12, label = "Periodo de recuperação", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -13, ymax = -14, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 90),legend.position = c(0.9, 0.8))
+  theme(axis.text.x = element_text(angle = 90),legend.position = c(0.9, 0.4))
 
 #GRND ===================================================================================
 list <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/GRND", pattern = ".tif$", full.names=TRUE,recursive=TRUE)

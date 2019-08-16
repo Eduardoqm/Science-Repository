@@ -289,20 +289,20 @@ ggplot(gg, aes(Data,Refl, col=Parcela))+
   #stat_smooth(aes(group=Parcela), method = "loess", formula = y ~ x, size = 0.5, alpha = 0.15)+
   labs(fill= "Plot",x="Ano",y="NDWI")+
   
-  annotate("text", x = c(8.5, 11.5, 15.5), y = 0.6, label = "Seca")+
-  annotate("segment", x = c(8.5, 11.5, 15.5), y = 0.59, 
-           xend = c(8.5, 11.5, 15.5), yend = c(0.57, 0.57, 0.57),
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 0.42, label = "Seca")+
+  annotate("segment", x = c(8.5, 11.5, 15.5), y = 0.41, 
+           xend = c(8.5, 11.5, 15.5), yend = c(0.39, 0.39, 0.39),
            arrow = arrow(angle = 20, length = unit(2, "mm"), type = "closed"))+
   
-  annotate("text", x = 2.5, y = 0.43, label = "Pré-fogo", colour = "darkgreen")+
-  annotate("rect", xmin = 1, xmax = 5, ymin = 0.42, ymax = 0.41, alpha = 0.9, fill = "darkgreen")+
+  annotate("text", x = 2.5, y = 0.21, label = "Pré-fogo", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = 0.20, ymax = 0.19, alpha = 0.9, fill = "darkgreen")+
   
-  annotate("text", x = 8.5, y = 0.43, label = "Experimento de fogo", colour = "red")+
-  annotate("rect", xmin = 5, xmax = 12, ymin = 0.42, ymax = 0.41, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(5.5, 8.5, 11.5), y = 0.415, label = "xx", colour = "yellow")+
-  annotate("text", x = c(6.5, 7.5, 10.5), y = 0.415, label = "x", colour = "yellow")+
+  annotate("text", x = 8.5, y = 0.21, label = "Experimento de fogo", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = 0.20, ymax = 0.19, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = 0.198, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = 0.198, label = "x", colour = "yellow")+
   
-  annotate("text", x = 15.5, y = 0.43, label = "Periodo de recuperação", colour = "darkblue")+
-  annotate("rect", xmin = 12, xmax = 19, ymin = 0.42, ymax = 0.41, alpha = 0.9, fill = "darkblue")+
+  annotate("text", x = 15.5, y = 0.21, label = "Periodo de recuperação", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = 0.20, ymax = 0.19, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
