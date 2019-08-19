@@ -1,8 +1,9 @@
 library(raster)
 library(rasterVis)
 
-setwd("C:/Users/Eduardo Q Marques/Documents/Eduardo_Hyper")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion")
 a <- stack("Reflectance_22_July_2008")
+a = a/1000
 
 levelplot(a[[4]], margin = FALSE, par.settings = RdBuTheme)
 
@@ -15,8 +16,7 @@ p864 = a[[44]]
 p660 = a[[24]]
 
 ndvi = (p864-p660)/(p864+p660)
-ndvi2 = ndvi/10000
 
-levelplot(ndvi2, margin = FALSE, par.settings = RdBuTheme)
+levelplot(ndvi, margin = FALSE, par.settings = RdBuTheme)
 
 #writeRaster(ndvi, filename="ndvi2008.tiff", overwrite=TRUE)
