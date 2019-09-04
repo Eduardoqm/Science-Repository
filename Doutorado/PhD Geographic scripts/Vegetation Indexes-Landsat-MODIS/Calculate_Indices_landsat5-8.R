@@ -21,6 +21,14 @@ b4 <- brick(stack(list4))
 b5 <- brick(stack(list5))
 b7 <- brick(stack(list7))
 
+#Normalize
+b1 <- b1/10000
+b2 <- b2/10000
+b3 <- b3/10000
+b4 <- b4/10000
+b5 <- b5/10000
+b7 <- b7/10000
+
 #Index-------------------------------------------------------------------------------------------------------------
 #Enhanced Vegetation Index (EVI)
 evi <- 2.5*((b4-b3)/(b4+6*b3-7.5*b1+1))
@@ -103,6 +111,14 @@ b4 <- brick(stack(list4))
 b5 <- brick(stack(list5))
 b6 <- brick(stack(list6))
 b7 <- brick(stack(list7))
+
+#Normalize
+b2 <- b2/10000
+b3 <- b3/10000
+b4 <- b4/10000
+b5 <- b5/10000
+b6 <- b6/10000
+b7 <- b7/10000
 
 #Index---------------------------------------------------------------------------------------------------------------
 #Enhanced Vegetation Index (EVI)
