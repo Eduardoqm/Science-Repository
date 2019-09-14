@@ -1,5 +1,5 @@
-#Extrair dados do Hyperion para toda a area
-#Eduardo Q Marques /04/09/2019/
+#Extrair dados do Hyperion para toda a area por indice
+#Eduardo Q Marques /13/09/2019/
 
 #OBS: Same years are cutted control. So I change control area to other place that the forest is preserved
 
@@ -32,7 +32,7 @@ area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/De
 area1 = spTransform(area1, crs(h04))
 
 #Extract pixels values ===================================================================
-crt <- raster::extract(h04[[1]], area1[1,]); b3yr <- raster::extract(h04[[1]], area1[2,]); b1yr <- raster::extract(h04[[1]], area1[3,])
+crt <- raster::extract(h04[[10]], area1[3,]); b3yr <- raster::extract(h04[[10]], area1[1,]); b1yr <- raster::extract(h04[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -40,17 +40,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari1 = as.data.frame(rbind(a, b, c))
-ari1 <- ari1[,c(1,3)]
-colnames(ari1) = c("ari", "parcela")
-ari1 = ari1 %>% 
+pri1 = as.data.frame(rbind(a, b, c))
+pri1 <- pri1[,c(1,3)]
+colnames(pri1) = c("pri", "parcela")
+pri1 = pri1 %>% 
   mutate(data = "2004")
-ari1_md = ari1 %>%
+pri1_md = pri1 %>%
   group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[1]], area1[1,]); b3yr <- raster::extract(h05[[1]], area1[2,]); b1yr <- raster::extract(h05[[1]], area1[3,])
+crt <- raster::extract(h05[[10]], area1[3,]); b3yr <- raster::extract(h05[[10]], area1[1,]); b1yr <- raster::extract(h05[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -58,17 +58,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari2 = as.data.frame(rbind(a, b, c))
-ari2 <- ari2[,c(1,3)]
-colnames(ari2) = c("ari", "parcela")
-ari2 = ari2 %>% 
+pri2 = as.data.frame(rbind(a, b, c))
+pri2 <- pri2[,c(1,3)]
+colnames(pri2) = c("pri", "parcela")
+pri2 = pri2 %>% 
   mutate(data = "2005")
-ari2_md = ari2 %>%
+pri2_md = pri2 %>%
   group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[1]], area1[1,]); b3yr <- raster::extract(h06[[1]], area1[2,]); b1yr <- raster::extract(h06[[1]], area1[3,])
+crt <- raster::extract(h06[[10]], area1[3,]); b3yr <- raster::extract(h06[[10]], area1[1,]); b1yr <- raster::extract(h06[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -76,17 +76,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari3 = as.data.frame(rbind(a, b, c))
-ari3 <- ari3[,c(1,3)]
-colnames(ari3) = c("ari", "parcela")
-ari3 = ari3 %>% 
+pri3 = as.data.frame(rbind(a, b, c))
+pri3 <- pri3[,c(1,3)]
+colnames(pri3) = c("pri", "parcela")
+pri3 = pri3 %>% 
   mutate(data = "2006")
-ari3_md = ari3 %>%
+pri3_md = pri3 %>%
   group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[1]], area1[1,]); b3yr <- raster::extract(h08[[1]], area1[2,]); b1yr <- raster::extract(h08[[1]], area1[3,])
+crt <- raster::extract(h08[[10]], area1[3,]); b3yr <- raster::extract(h08[[10]], area1[1,]); b1yr <- raster::extract(h08[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -94,17 +94,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari4 = as.data.frame(rbind(a, b, c))
-ari4 <- ari4[,c(1,3)]
-colnames(ari4) = c("ari", "parcela")
-ari4 = ari4 %>% 
+pri4 = as.data.frame(rbind(a, b, c))
+pri4 <- pri4[,c(1,3)]
+colnames(pri4) = c("pri", "parcela")
+pri4 = pri4 %>% 
   mutate(data = "2008")
-ari4_md = ari4 %>%
+pri4_md = pri4 %>%
   group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[1]], area1[1,]); b3yr <- raster::extract(h10[[1]], area1[2,]); b1yr <- raster::extract(h10[[1]], area1[3,])
+crt <- raster::extract(h10[[10]], area1[3,]); b3yr <- raster::extract(h10[[10]], area1[1,]); b1yr <- raster::extract(h10[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -112,18 +112,18 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari5 = as.data.frame(rbind(a, b, c))
-ari5 <- ari5[,c(1,3)]
-colnames(ari5) = c("ari", "parcela")
-ari5 = ari5 %>% 
+pri5 = as.data.frame(rbind(a, b, c))
+pri5 <- pri5[,c(1,3)]
+colnames(pri5) = c("pri", "parcela")
+pri5 = pri5 %>% 
   mutate(data = "2010")
-ari5_md = ari5 %>%
+pri5_md = pri5 %>%
   na.omit() %>% 
   group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[1]], area1[1,]); b3yr <- raster::extract(h11[[1]], area1[2,]); b1yr <- raster::extract(h11[[1]], area1[3,])
+crt <- raster::extract(h11[[10]], area1[3,]); b3yr <- raster::extract(h11[[10]], area1[1,]); b1yr <- raster::extract(h11[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -131,17 +131,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari6 = as.data.frame(rbind(a, b, c))
-ari6 <- ari6[,c(1,3)]
-colnames(ari6) = c("ari", "parcela")
-ari6 = ari6 %>% 
+pri6 = as.data.frame(rbind(a, b, c))
+pri6 <- pri6[,c(1,3)]
+colnames(pri6) = c("pri", "parcela")
+pri6 = pri6 %>% 
   mutate(data = "2011")
-ari6_md = ari6 %>%
+pri6_md = pri6 %>%
   group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[1]], area1[1,]); b3yr <- raster::extract(h12[[1]], area1[2,]); b1yr <- raster::extract(h12[[1]], area1[3,])
+crt <- raster::extract(h12[[10]], area1[3,]); b3yr <- raster::extract(h12[[10]], area1[1,]); b1yr <- raster::extract(h12[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -149,33 +149,59 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari7 = as.data.frame(rbind(a, b, c))
-ari7 <- ari7[,c(1,3)]
-colnames(ari7) = c("ari", "parcela")
-ari7 = ari7 %>% 
+pri7 = as.data.frame(rbind(a, b, c))
+pri7 <- pri7[,c(1,3)]
+colnames(pri7) = c("pri", "parcela")
+pri7 = pri7 %>% 
   mutate(data = "2012")
-ari7_md = ari7 %>%
+pri7_md = pri7 %>%
   group_by(parcela) %>% 
   na.omit() %>% 
-  summarise(ari = median(ari)) %>% 
+  summarise(pri = median(pri)) %>% 
   mutate(data = "2012")
 
 
-ari = as.data.frame(rbind(ari1, ari2, ari3, ari4, ari5, ari6, ari7))
-ari_md = as.data.frame(rbind(ari1_md, ari2_md, ari3_md, ari4_md, ari5_md, ari6_md, ari7_md))
+pri = as.data.frame(rbind(pri1, pri2, pri3, pri4, pri5, pri6, pri7))
+pri_md = as.data.frame(rbind(pri1_md, pri2_md, pri3_md, pri4_md, pri5_md, pri6_md, pri7_md))
 
 
 
 #Boxplot
-ggplot(ari, aes(data,ari, col=parcela))+ 
+ggplot(pri, aes(data,pri, col=parcela))+ 
   geom_boxplot(outlier.alpha = 0)+
-  labs(fill= "Plot",x="Ano",y="ARI")+
+  labs(fill= "Plot",x="Ano",y="PRI")+
   theme_minimal()
 
 #Medians
-ggplot(ari_md, aes(data,ari, col=parcela))+ 
+ggplot(pri_md, aes(data,pri, col=parcela))+ 
   geom_line(aes(group=parcela), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Ano",y="ARI")+
+  labs(fill= "Plot",x="Ano",y="PRI")+
   theme_minimal()
 
+diff = as.data.frame(cbind(pri1_md, pri2_md, pri3_md, pri4_md, pri5_md, pri6_md, pri7_md))
+diff = diff[,c(1,2,5,8,11,14,17,20)]
+colnames(diff) = c("parcela","2004","2005","2006","2008","2010","2011","2012")
+diff <- as.data.frame(t(diff))
+colnames(diff) = c("b1yr","b3yr","controle")
+diff <- diff[-c(1), ]
+
+diff$b3yr = as.numeric(as.character(diff$b3yr))
+diff$b1yr = as.numeric(as.character(diff$b1yr))
+diff$controle = as.numeric(as.character(diff$controle))
+
+diff$b3yr = ((diff$b3yr - diff$controle)/diff$controle)*100
+diff$b1yr = ((diff$b1yr - diff$controle)/diff$controle)*100
+diff = diff[,c(1,2)]
+
+gg = melt(diff)
+colnames(gg) = c("parcela","index")
+gg$data = c(2004, 2005, 2006, 2008, 2010, 2011, 2012, 2004, 2005, 2006, 2008, 2010, 2011, 2012)
+
+
+ggplot(gg, aes(data,index, col=parcela))+ 
+  geom_line(aes(group=parcela), size = 1)+
+  geom_point()+
+  labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no PRI)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
