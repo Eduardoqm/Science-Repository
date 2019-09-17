@@ -168,7 +168,7 @@ ndwi_md = as.data.frame(rbind(ndwi1_md, ndwi2_md, ndwi3_md, ndwi4_md, ndwi5_md, 
 
 #Boxplot
 ggplot(ndwi, aes(data,ndwi, col=parcela))+ 
-  geom_boxplot(outlier.alpha = 0)+
+  geom_boxplot(outlier.alpha = 0.1)+
   labs(fill= "Plot",x="Ano",y="NDWI")+
   theme_minimal()
 
