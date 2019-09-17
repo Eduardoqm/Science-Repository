@@ -32,7 +32,7 @@ area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/De
 area1 = spTransform(area1, crs(h04))
 
 #Extract pixels values ===================================================================
-crt <- raster::extract(h04[[17]], area1[3,]); b3yr <- raster::extract(h04[[17]], area1[1,]); b1yr <- raster::extract(h04[[17]], area1[2,])
+crt <- raster::extract(h04[[18]], area1[3,]); b3yr <- raster::extract(h04[[18]], area1[1,]); b1yr <- raster::extract(h04[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -40,17 +40,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi1 = as.data.frame(rbind(a, b, c))
-wbi1 <- wbi1[,c(1,3)]
-colnames(wbi1) = c("wbi", "parcela")
-wbi1 = wbi1 %>% 
+nbri21 = as.data.frame(rbind(a, b, c))
+nbri21 <- nbri21[,c(1,3)]
+colnames(nbri21) = c("nbri2", "parcela")
+nbri21 = nbri21 %>% 
   mutate(data = "2004")
-wbi1_md = wbi1 %>%
+nbri21_md = nbri21 %>%
   group_by(parcela) %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[17]], area1[3,]); b3yr <- raster::extract(h05[[17]], area1[1,]); b1yr <- raster::extract(h05[[17]], area1[2,])
+crt <- raster::extract(h05[[18]], area1[3,]); b3yr <- raster::extract(h05[[18]], area1[1,]); b1yr <- raster::extract(h05[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -58,17 +58,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi2 = as.data.frame(rbind(a, b, c))
-wbi2 <- wbi2[,c(1,3)]
-colnames(wbi2) = c("wbi", "parcela")
-wbi2 = wbi2 %>% 
+nbri22 = as.data.frame(rbind(a, b, c))
+nbri22 <- nbri22[,c(1,3)]
+colnames(nbri22) = c("nbri2", "parcela")
+nbri22 = nbri22 %>% 
   mutate(data = "2005")
-wbi2_md = wbi2 %>%
+nbri22_md = nbri22 %>%
   group_by(parcela) %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[17]], area1[3,]); b3yr <- raster::extract(h06[[17]], area1[1,]); b1yr <- raster::extract(h06[[17]], area1[2,])
+crt <- raster::extract(h06[[18]], area1[3,]); b3yr <- raster::extract(h06[[18]], area1[1,]); b1yr <- raster::extract(h06[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -76,17 +76,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi3 = as.data.frame(rbind(a, b, c))
-wbi3 <- wbi3[,c(1,3)]
-colnames(wbi3) = c("wbi", "parcela")
-wbi3 = wbi3 %>% 
+nbri23 = as.data.frame(rbind(a, b, c))
+nbri23 <- nbri23[,c(1,3)]
+colnames(nbri23) = c("nbri2", "parcela")
+nbri23 = nbri23 %>% 
   mutate(data = "2006")
-wbi3_md = wbi3 %>%
+nbri23_md = nbri23 %>%
   group_by(parcela) %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[17]], area1[3,]); b3yr <- raster::extract(h08[[17]], area1[1,]); b1yr <- raster::extract(h08[[17]], area1[2,])
+crt <- raster::extract(h08[[18]], area1[3,]); b3yr <- raster::extract(h08[[18]], area1[1,]); b1yr <- raster::extract(h08[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -94,17 +94,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi4 = as.data.frame(rbind(a, b, c))
-wbi4 <- wbi4[,c(1,3)]
-colnames(wbi4) = c("wbi", "parcela")
-wbi4 = wbi4 %>% 
+nbri24 = as.data.frame(rbind(a, b, c))
+nbri24 <- nbri24[,c(1,3)]
+colnames(nbri24) = c("nbri2", "parcela")
+nbri24 = nbri24 %>% 
   mutate(data = "2008")
-wbi4_md = wbi4 %>%
+nbri24_md = nbri24 %>%
   group_by(parcela) %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[17]], area1[3,]); b3yr <- raster::extract(h10[[17]], area1[1,]); b1yr <- raster::extract(h10[[17]], area1[2,])
+crt <- raster::extract(h10[[18]], area1[3,]); b3yr <- raster::extract(h10[[18]], area1[1,]); b1yr <- raster::extract(h10[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -112,18 +112,18 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi5 = as.data.frame(rbind(a, b, c))
-wbi5 <- wbi5[,c(1,3)]
-colnames(wbi5) = c("wbi", "parcela")
-wbi5 = wbi5 %>% 
+nbri25 = as.data.frame(rbind(a, b, c))
+nbri25 <- nbri25[,c(1,3)]
+colnames(nbri25) = c("nbri2", "parcela")
+nbri25 = nbri25 %>% 
   mutate(data = "2010")
-wbi5_md = wbi5 %>%
+nbri25_md = nbri25 %>%
   na.omit() %>% 
   group_by(parcela) %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[17]], area1[3,]); b3yr <- raster::extract(h11[[17]], area1[1,]); b1yr <- raster::extract(h11[[17]], area1[2,])
+crt <- raster::extract(h11[[18]], area1[3,]); b3yr <- raster::extract(h11[[18]], area1[1,]); b1yr <- raster::extract(h11[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -131,17 +131,17 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi6 = as.data.frame(rbind(a, b, c))
-wbi6 <- wbi6[,c(1,3)]
-colnames(wbi6) = c("wbi", "parcela")
-wbi6 = wbi6 %>% 
+nbri26 = as.data.frame(rbind(a, b, c))
+nbri26 <- nbri26[,c(1,3)]
+colnames(nbri26) = c("nbri2", "parcela")
+nbri26 = nbri26 %>% 
   mutate(data = "2011")
-wbi6_md = wbi6 %>%
+nbri26_md = nbri26 %>%
   group_by(parcela) %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[17]], area1[3,]); b3yr <- raster::extract(h12[[17]], area1[1,]); b1yr <- raster::extract(h12[[17]], area1[2,])
+crt <- raster::extract(h12[[18]], area1[3,]); b3yr <- raster::extract(h12[[18]], area1[1,]); b1yr <- raster::extract(h12[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -149,37 +149,37 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-wbi7 = as.data.frame(rbind(a, b, c))
-wbi7 <- wbi7[,c(1,3)]
-colnames(wbi7) = c("wbi", "parcela")
-wbi7 = wbi7 %>% 
+nbri27 = as.data.frame(rbind(a, b, c))
+nbri27 <- nbri27[,c(1,3)]
+colnames(nbri27) = c("nbri2", "parcela")
+nbri27 = nbri27 %>% 
   mutate(data = "2012")
-wbi7_md = wbi7 %>%
+nbri27_md = nbri27 %>%
   group_by(parcela) %>% 
   na.omit() %>% 
-  summarise(wbi = median(wbi)) %>% 
+  summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2012")
 
 
-wbi = as.data.frame(rbind(wbi1, wbi2, wbi3, wbi4, wbi5, wbi6, wbi7))
-wbi_md = as.data.frame(rbind(wbi1_md, wbi2_md, wbi3_md, wbi4_md, wbi5_md, wbi6_md, wbi7_md))
+nbri2 = as.data.frame(rbind(nbri21, nbri22, nbri23, nbri24, nbri25, nbri26, nbri27))
+nbri2_md = as.data.frame(rbind(nbri21_md, nbri22_md, nbri23_md, nbri24_md, nbri25_md, nbri26_md, nbri27_md))
 
 
 
 #Boxplot
-ggplot(wbi, aes(data,wbi, col=parcela))+ 
+ggplot(nbri2, aes(data,nbri2, col=parcela))+ 
   geom_boxplot(outlier.alpha = 0.1)+
-  labs(fill= "Plot",x="Ano",y="WBI")+
+  labs(fill= "Plot",x="Ano",y="NBRI2")+
   theme_minimal()
 
 #Medians
-ggplot(wbi_md, aes(data,wbi, col=parcela))+ 
+ggplot(nbri2_md, aes(data,nbri2, col=parcela))+ 
   geom_line(aes(group=parcela), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Ano",y="WBI")+
+  labs(fill= "Plot",x="Ano",y="NBRI2")+
   theme_minimal()
 
-diff = as.data.frame(cbind(wbi1_md, wbi2_md, wbi3_md, wbi4_md, wbi5_md, wbi6_md, wbi7_md))
+diff = as.data.frame(cbind(nbri21_md, nbri22_md, nbri23_md, nbri24_md, nbri25_md, nbri26_md, nbri27_md))
 diff = diff[,c(1,2,5,8,11,14,17,20)]
 colnames(diff) = c("parcela","2004","2005","2006","2008","2010","2011","2012")
 diff <- as.data.frame(t(diff))
@@ -202,6 +202,6 @@ gg$data = c(2004, 2005, 2006, 2008, 2010, 2011, 2012, 2004, 2005, 2006, 2008, 20
 ggplot(gg, aes(data,index, col=parcela))+ 
   geom_line(aes(group=parcela), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no WBI)")+
+  labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NBRI2)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()

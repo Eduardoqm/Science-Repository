@@ -4,10 +4,10 @@
 library(raster)
 library(rasterVis)
 
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Registro hyperion/Cortadas")
-a <- stack("Reg_22_July_2010.tif")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion")
+a <- stack("Reflectance_09_Aug_2004")
 
-a = a/10000 #Normilze to calculate EVIs
+#a = a/10000 #Normilze to calculate EVIs
 
 levelplot(a[[4]], margin = FALSE, par.settings = RdBuTheme)
 

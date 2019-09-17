@@ -168,7 +168,7 @@ ndii_md = as.data.frame(rbind(ndii1_md, ndii2_md, ndii3_md, ndii4_md, ndii5_md, 
 
 #Boxplot
 ggplot(ndii, aes(data,ndii, col=parcela))+ 
-  geom_boxplot(outlier.alpha = 0)+
+  geom_boxplot(outlier.alpha = 0.1)+
   labs(fill= "Plot",x="Ano",y="NDII")+
   theme_minimal()
 

@@ -5,7 +5,7 @@ library(raster)
 
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Registro hyperion/Cortadas")
 dir()
-a <- stack("Reg_24_july_2011.tif")
+a <- stack("Reg_02_Aug_2006.tif")
 
 a = a/10000 #Normilze to calculate EVIs
 
@@ -31,7 +31,7 @@ lwvi2 = (a[[63]]-a[[74]])/(a[[63]]+a[[74]])
 
 msi = a[[100]]/a[[40]]
 
-ndii = (a[[40]]-a[[105]])/(a[[40]]+a[[105]])
+ndii = (a[[40]]-a[[105]])/(a[[40]]+a[[105]]) #NDII and NBRI are the same data
 
 ndwi = (a[[43]]-a[[78]])/(a[[43]]+a[[78]])
 
@@ -49,24 +49,27 @@ pri = (a[[11]]-a[[15]])/(a[[11]]+a[[15]])
 
 rendvi = (a[[33]]-a[[28]])/(a[[33]]+a[[28]])
 
+nbri2 = (a[[40]]-a[[138]])/(a[[40]]+a[[138]])
+
 
 #Salve index
-setwd('C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\Doutorado\\Deposito\\Banco de Dados Tanguro\\Tanguro Indices\\Hyperion\\2011')
-writeRaster(evi, filename="evi-2011.tiff", overwrite=TRUE)
-writeRaster(evi2, filename="evi2-2011.tiff", overwrite=TRUE)
-writeRaster(ndvi, filename="ndvi-2011.tiff", overwrite=TRUE)
-writeRaster(vari, filename="vari-2011.tiff", overwrite=TRUE)
-writeRaster(vig, filename="vig-2011.tiff", overwrite=TRUE)
-writeRaster(nirv, filename="nirv-2011.tiff", overwrite=TRUE)
-writeRaster(ari, filename="ari-2011.tiff", overwrite=TRUE)
-writeRaster(lwvi2, filename="lwvi2-2011.tiff", overwrite=TRUE)
-writeRaster(msi, filename="msi-2011.tiff", overwrite=TRUE)
-writeRaster(ndii, filename="ndii-2011.tiff", overwrite=TRUE)
-writeRaster(ndwi, filename="ndwi-2011.tiff", overwrite=TRUE)
-writeRaster(pssr, filename="pssr-2011.tiff", overwrite=TRUE)
-writeRaster(psri, filename="psri-2011.tiff", overwrite=TRUE)
-writeRaster(sipi, filename="sipi-2011.tiff", overwrite=TRUE)
-writeRaster(wbi, filename="wbi-2011.tiff", overwrite=TRUE)
-writeRaster(pri, filename="pri-2011.tiff", overwrite=TRUE)
-writeRaster(rendvi, filename="rendvi-2011.tiff", overwrite=TRUE)
+setwd('C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\Doutorado\\Deposito\\Banco de Dados Tanguro\\Tanguro Indices\\Hyperion\\2006')
+writeRaster(evi, filename="evi-2006.tiff", overwrite=TRUE)
+writeRaster(evi2, filename="evi2-2006.tiff", overwrite=TRUE)
+writeRaster(ndvi, filename="ndvi-2006.tiff", overwrite=TRUE)
+writeRaster(vari, filename="vari-2006.tiff", overwrite=TRUE)
+writeRaster(vig, filename="vig-2006.tiff", overwrite=TRUE)
+writeRaster(nirv, filename="nirv-2006.tiff", overwrite=TRUE)
+writeRaster(ari, filename="ari-2006.tiff", overwrite=TRUE)
+writeRaster(lwvi2, filename="lwvi2-2006.tiff", overwrite=TRUE)
+writeRaster(msi, filename="msi-2006.tiff", overwrite=TRUE)
+writeRaster(ndii, filename="ndii-2006.tiff", overwrite=TRUE)
+writeRaster(ndwi, filename="ndwi-2006.tiff", overwrite=TRUE)
+writeRaster(pssr, filename="pssr-2006.tiff", overwrite=TRUE)
+writeRaster(psri, filename="psri-2006.tiff", overwrite=TRUE)
+writeRaster(sipi, filename="sipi-2006.tiff", overwrite=TRUE)
+writeRaster(wbi, filename="wbi-2006.tiff", overwrite=TRUE)
+writeRaster(pri, filename="pri-2006.tiff", overwrite=TRUE)
+writeRaster(rendvi, filename="rendvi-2006.tiff", overwrite=TRUE)
+writeRaster(nbri2, filename="w-nbri2-2006.tiff", overwrite=TRUE)
 
