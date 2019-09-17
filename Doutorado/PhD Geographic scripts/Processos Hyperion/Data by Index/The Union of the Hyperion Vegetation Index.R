@@ -11,6 +11,7 @@ library(ggplot2)
 library(reshape2)
 library(dplyr)
 library(tidyr)
+
 #Data bank ===========================================================================
 h04 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2004", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
@@ -206,6 +207,13 @@ ggplot(gg, aes(data,index, col=parcela))+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
 
+#Creat data to plot all index (diferrence %)
+b1yr_1=gg[-c(8:14), ]
+b1yr_1$indice = c("ARI")
+
+b3yr_1=gg[-c(1:7), ]
+b3yr_1$indice = c("ARI")
+
 #EVI ===================================================================
 crt <- raster::extract(h04[[2]], area1[3,]); b3yr <- raster::extract(h04[[2]], area1[1,]); b1yr <- raster::extract(h04[[2]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -380,6 +388,13 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no EVI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_2=gg[-c(8:14), ]
+b1yr_2$indice = c("EVI")
+
+b3yr_2=gg[-c(1:7), ]
+b3yr_2$indice = c("EVI")
+
 #LWVI2 ===================================================================
 crt <- raster::extract(h04[[4]], area1[3,]); b3yr <- raster::extract(h04[[4]], area1[1,]); b1yr <- raster::extract(h04[[4]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -554,6 +569,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no LWVI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_3=gg[-c(8:14), ]
+b1yr_3$indice = c("LWVI")
+
+b3yr_3=gg[-c(1:7), ]
+b3yr_3$indice = c("LWVI")
 #MSI ===================================================================
 crt <- raster::extract(h04[[5]], area1[3,]); b3yr <- raster::extract(h04[[5]], area1[1,]); b1yr <- raster::extract(h04[[5]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -728,6 +749,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no MSI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_4=gg[-c(8:14), ]
+b1yr_4$indice = c("MSI")
+
+b3yr_4=gg[-c(1:7), ]
+b3yr_4$indice = c("MSI")
 #NBRI ===================================================================
 crt <- raster::extract(h04[[6]], area1[3,]); b3yr <- raster::extract(h04[[6]], area1[1,]); b1yr <- raster::extract(h04[[6]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -902,6 +929,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NBRI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_5=gg[-c(8:14), ]
+b1yr_5$indice = c("NBRI")
+
+b3yr_5=gg[-c(1:7), ]
+b3yr_5$indice = c("NBRI")
 #NBRI2 ===================================================================
 crt <- raster::extract(h04[[18]], area1[3,]); b3yr <- raster::extract(h04[[18]], area1[1,]); b1yr <- raster::extract(h04[[18]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -1076,6 +1109,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NBRI2)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_6=gg[-c(8:14), ]
+b1yr_6$indice = c("NBRI2")
+
+b3yr_6=gg[-c(1:7), ]
+b3yr_6$indice = c("NBRI2")
 #NDII ===================================================================
 crt <- raster::extract(h04[[6]], area1[3,]); b3yr <- raster::extract(h04[[6]], area1[1,]); b1yr <- raster::extract(h04[[6]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -1250,6 +1289,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NDII)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_7=gg[-c(8:14), ]
+b1yr_7$indice = c("NDII")
+
+b3yr_7=gg[-c(1:7), ]
+b3yr_7$indice = c("NDII")
 #NDVI ===================================================================
 crt <- raster::extract(h04[[7]], area1[3,]); b3yr <- raster::extract(h04[[7]], area1[1,]); b1yr <- raster::extract(h04[[7]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -1424,6 +1469,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NDVI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_8=gg[-c(8:14), ]
+b1yr_8$indice = c("NDVI")
+
+b3yr_8=gg[-c(1:7), ]
+b3yr_8$indice = c("NDVI")
 #NDWI ===================================================================
 crt <- raster::extract(h04[[8]], area1[3,]); b3yr <- raster::extract(h04[[8]], area1[1,]); b1yr <- raster::extract(h04[[8]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -1598,6 +1649,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NDWI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_9=gg[-c(8:14), ]
+b1yr_9$indice = c("NDWI")
+
+b3yr_9=gg[-c(1:7), ]
+b3yr_9$indice = c("NDWI")
 #NIRV ===================================================================
 crt <- raster::extract(h04[[9]], area1[3,]); b3yr <- raster::extract(h04[[9]], area1[1,]); b1yr <- raster::extract(h04[[9]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -1772,6 +1829,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no NIRV)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_10=gg[-c(8:14), ]
+b1yr_10$indice = c("NIRV")
+
+b3yr_10=gg[-c(1:7), ]
+b3yr_10$indice = c("NIRV")
 #PRI ===================================================================
 crt <- raster::extract(h04[[10]], area1[3,]); b3yr <- raster::extract(h04[[10]], area1[1,]); b1yr <- raster::extract(h04[[10]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -1946,6 +2009,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no PRI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_11=gg[-c(8:14), ]
+b1yr_11$indice = c("PRI")
+
+b3yr_11=gg[-c(1:7), ]
+b3yr_11$indice = c("PRI")
 #PSRI ===================================================================
 crt <- raster::extract(h04[[11]], area1[3,]); b3yr <- raster::extract(h04[[11]], area1[1,]); b1yr <- raster::extract(h04[[11]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -2120,6 +2189,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no PSRI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_12=gg[-c(8:14), ]
+b1yr_12$indice = c("PSRI")
+
+b3yr_12=gg[-c(1:7), ]
+b3yr_12$indice = c("PSRI")
 #PSSR ===================================================================
 crt <- raster::extract(h04[[12]], area1[3,]); b3yr <- raster::extract(h04[[12]], area1[1,]); b1yr <- raster::extract(h04[[12]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -2294,6 +2369,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no PSSR)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_13=gg[-c(8:14), ]
+b1yr_13$indice = c("PSSR")
+
+b3yr_13=gg[-c(1:7), ]
+b3yr_13$indice = c("PSSR")
 #RENDVI ===================================================================
 crt <- raster::extract(h04[[13]], area1[3,]); b3yr <- raster::extract(h04[[13]], area1[1,]); b1yr <- raster::extract(h04[[13]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -2468,6 +2549,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no RENDVI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_14=gg[-c(8:14), ]
+b1yr_14$indice = c("RENDVI")
+
+b3yr_14=gg[-c(1:7), ]
+b3yr_14$indice = c("RENDVI")
 #SIPI ===================================================================
 crt <- raster::extract(h04[[14]], area1[3,]); b3yr <- raster::extract(h04[[14]], area1[1,]); b1yr <- raster::extract(h04[[14]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -2642,6 +2729,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no SIPI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_15=gg[-c(8:14), ]
+b1yr_15$indice = c("SIPI")
+
+b3yr_15=gg[-c(1:7), ]
+b3yr_15$indice = c("SIPI")
 #VARI ===================================================================
 crt <- raster::extract(h04[[15]], area1[3,]); b3yr <- raster::extract(h04[[15]], area1[1,]); b1yr <- raster::extract(h04[[15]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -2816,6 +2909,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no VARI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_16=gg[-c(8:14), ]
+b1yr_16$indice = c("VARI")
+
+b3yr_16=gg[-c(1:7), ]
+b3yr_16$indice = c("VARI")
 #VIG ===================================================================
 crt <- raster::extract(h04[[16]], area1[3,]); b3yr <- raster::extract(h04[[16]], area1[1,]); b1yr <- raster::extract(h04[[16]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -2990,6 +3089,12 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no VIG)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_17=gg[-c(8:14), ]
+b1yr_17$indice = c("VIG")
+
+b3yr_17=gg[-c(1:7), ]
+b3yr_17$indice = c("VIG")
 #WBI ===================================================================
 crt <- raster::extract(h04[[17]], area1[3,]); b3yr <- raster::extract(h04[[17]], area1[1,]); b1yr <- raster::extract(h04[[17]], area1[2,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
@@ -3164,3 +3269,33 @@ ggplot(gg, aes(data,index, col=parcela))+
   labs(fill= "Plot",x="Ano",y="Fogo - Controle (% taxa de mudança no WBI)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+b1yr_18=gg[-c(8:14), ]
+b1yr_18$indice = c("WBI")
+
+b3yr_18=gg[-c(1:7), ]
+b3yr_18$indice = c("WBI")
+
+#Union all differences by index ===================================================
+b3yr = rbind(b3yr_1, b3yr_2, b3yr_3, b3yr_4, b3yr_5, b3yr_6, b3yr_7, b3yr_8, b3yr_9, b3yr_10, b3yr_11, b3yr_12, b3yr_13, b3yr_14, b3yr_15, b3yr_16, b3yr_17, b3yr_18)
+
+b1yr = rbind(b1yr_1, b1yr_2, b1yr_3, b1yr_4, b1yr_5, b1yr_6, b1yr_7, b1yr_8, b1yr_9, b1yr_10, b1yr_11, b1yr_12, b1yr_13, b1yr_14, b1yr_15, b1yr_16, b1yr_17, b1yr_18)
+
+
+ggplot(b3yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  geom_point()+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% taxa de mudança)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+ggplot(b1yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  geom_point()+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% taxa de mudança)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+
+
+
