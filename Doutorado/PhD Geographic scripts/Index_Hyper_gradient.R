@@ -447,7 +447,7 @@ ari = rbind(a,b,c)
 ggplot(ndii, aes(gradient,ndii, col=plots))+ 
   geom_line(aes(group=plots), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Distancia da borda",y="NDII")+
+  labs(fill= "Plot",x="Distancia da borda (m)",y="NDII")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
