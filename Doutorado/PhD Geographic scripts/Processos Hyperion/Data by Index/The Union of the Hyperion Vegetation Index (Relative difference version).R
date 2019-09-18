@@ -27,7 +27,7 @@ h11 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Douto
 
 h12 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2012", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
-h13 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2013", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
+#h13 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2013", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
 #Polygon to get values
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C_Hyperion")
@@ -1609,7 +1609,6 @@ ndwi = as.data.frame(rbind(ndwi1, ndwi2, ndwi3, ndwi4, ndwi5, ndwi6, ndwi7))
 ndwi_md = as.data.frame(rbind(ndwi1_md, ndwi2_md, ndwi3_md, ndwi4_md, ndwi5_md, ndwi6_md, ndwi7_md))
 
 
-
 #Boxplot
 ggplot(ndwi, aes(data,ndwi, col=parcela))+ 
   geom_boxplot(outlier.alpha = 0.1)+
@@ -1634,8 +1633,10 @@ diff$b3yr = as.numeric(as.character(diff$b3yr))
 diff$b1yr = as.numeric(as.character(diff$b1yr))
 diff$controle = as.numeric(as.character(diff$controle))
 
-diff$b3yr = ((diff$b3yr-diff$controle)*100)/diff$controle
-diff$b1yr = ((diff$b1yr-diff$controle)*100)/diff$controle
+
+#NDWI needs normalize to calculate
+diff$b3yr = (((diff$b3yr-diff$controle)*100)/diff$controle)/100
+diff$b1yr = (((diff$b1yr-diff$controle)*100)/diff$controle)/100
 diff = diff[,c(1,2)]
 
 gg = melt(diff)
