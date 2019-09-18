@@ -11,6 +11,7 @@ library(ggplot2)
 library(reshape2)
 library(dplyr)
 library(tidyr)
+library(viridis)
 
 #Data bank ===========================================================================
 h04 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2004", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
@@ -3285,17 +3286,93 @@ b1yr = rbind(b1yr_1, b1yr_2, b1yr_3, b1yr_4, b1yr_5, b1yr_6, b1yr_7, b1yr_8, b1y
 
 ggplot(b3yr, aes(data,index, col=indice))+ 
   geom_line(aes(group=indice), size = 1)+
-  geom_point()+
   labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
 
 ggplot(b1yr, aes(data,index, col=indice))+ 
   geom_line(aes(group=indice), size = 1)+
-  geom_point()+
+  #scale_color_viridis(discrete = TRUE, option = "plasma") +
+  #geom_point()+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
+
+#Union by the groups ===============================================================
+#Struture
+struc_b3yr = rbind(b3yr_2, b3yr_8, b3yr_10, b3yr_16, b3yr_17)
+struc_b1yr = rbind(b1yr_2, b1yr_8, b1yr_10, b1yr_16, b1yr_17)
+
+ggplot(struc_b3yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Structural Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+ggplot(struc_b1yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Structural Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+
+#Biochemistry
+bio_b3yr = rbind(b3yr_1, b3yr_3, b3yr_4, b3yr_7, b3yr_9, b3yr_12, b3yr_13, b3yr_15, b3yr_18)
+bio_b1yr = rbind(b1yr_1, b1yr_3, b1yr_4, b1yr_7, b1yr_9, b1yr_12, b1yr_13, b1yr_15, b1yr_18)
+
+ggplot(bio_b3yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Biochemistry Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+ggplot(bio_b1yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Biochemistry Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+#Physiology
+phy_b3yr = rbind(b3yr_11, b3yr_14)
+phy_b1yr = rbind(b1yr_11, b1yr_14)
+
+ggplot(phy_b3yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Physiology Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+ggplot(phy_b1yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Physiology Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+#Fire indices
+fire_b3yr = rbind(b3yr_5, b3yr_6)
+fire_b1yr = rbind(b1yr_5, b1yr_6)
+
+ggplot(fire_b3yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Fire Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+ggplot(fire_b1yr, aes(data,index, col=indice))+ 
+  geom_line(aes(group=indice), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+       title = "Fire Indexes")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
+
+
 
 
 
