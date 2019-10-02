@@ -19,7 +19,6 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 df = read.csv("Master_Area1_ by plot.csv", sep = ",", header = TRUE)
 
 #Specify the model
-
 str_model <- 'liteira ~ evi + ndvi + vari + vig + nirv'
 bioc_model <- 'liteira ~ ari + lwvi2 + msi + ndii + ndwi + pssr + psri + sipi + wbi'
 phy_model <- 'liteira ~ pri + rendvi'
@@ -40,13 +39,12 @@ summary(fit4, fit.measures = TRUE, standardized=T,rsquare=T)
 
 #Building a Structural Equation Model (SEM)
 #semPaths(fit, 'std', layout = 'circle')
-
 semPaths(fit1,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
 semPaths(fit2,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
 semPaths(fit3,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
 semPaths(fit4,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
 
-
+#Correlation bettewen all data
 ggcorr(df, nbreaks = 10, label = T, low = "red3", high = "green3", 
        label_round = 2, name = "Correlation Scale", label_alpha = T, hjust = 0.75) +
   ggtitle(label = "Correlation Plot") +
