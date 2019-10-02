@@ -2,6 +2,8 @@
 #For all plot extention
 # Eduardo Q Marques  02/10/2019
 
+#Obs: It's to the same years that Hyperion data!
+
 library(raster)
 library(rgdal)
 library(ggplot2)
@@ -157,16 +159,16 @@ litt = as.data.frame(rbind(litt1, litt2, litt3, litt4, litt5, litt6, litt7))
 litt_m = as.data.frame(rbind(litt1_m, litt2_m, litt3_m, litt4_m, litt5_m, litt6_m, litt7_m))
 
 #Boxplot
-ggplot(litt, aes(data,litt, col=parcela))+ 
+ggplot(litt, aes(data,liteira, col=parcela))+ 
   geom_boxplot(outlier.alpha = 0.1)+
   labs(fill= "Plot",x="Ano",y="litt")+
   theme_minimal()
 
 #Medians
-ggplot(litt_m, aes(data,litt, col=parcela))+ 
+ggplot(litt_m, aes(data,liteira, col=parcela))+ 
   geom_line(aes(group=parcela), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Ano",y="litt")+
+  labs(fill= "Plot",x="Ano",y="liteira")+
   theme_minimal()
 
 #Extract difference
@@ -186,13 +188,13 @@ diff$b1yr = ((diff$b1yr-diff$controle)*100)/diff$controle
 diff = diff[,c(1,2)]
 
 gg = melt(diff)
-colnames(gg) = c("parcela","index")
+colnames(gg) = c("parcela","litter")
 gg$data = c(2004, 2005, 2006, 2008, 2010, 2011, 2012, 2004, 2005, 2006, 2008, 2010, 2011, 2012)
 
 
-ggplot(gg, aes(data,index, col=parcela))+ 
+ggplot(gg, aes(data,litter, col=parcela))+ 
   geom_line(aes(group=parcela), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Ano",y="Fogo - Controle (% Relative difference no litt)")+
+  labs(fill= "Plot",x="Ano",y="Fire - Control (% Relative difference on litter)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
