@@ -158,6 +158,11 @@ litt7_m = litt7 %>%
 litt = as.data.frame(rbind(litt1, litt2, litt3, litt4, litt5, litt6, litt7))
 litt_m = as.data.frame(rbind(litt1_m, litt2_m, litt3_m, litt4_m, litt5_m, litt6_m, litt7_m))
 
+#Save litter means data frame to analysis =======
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+write.csv(litt_m, file = "Litter_mean by plot.csv", sep = ",")
+
+#Same plots to view results ======
 #Boxplot
 ggplot(litt, aes(data,liteira, col=parcela))+ 
   geom_boxplot(outlier.alpha = 0.1)+
@@ -171,7 +176,7 @@ ggplot(litt_m, aes(data,liteira, col=parcela))+
   labs(fill= "Plot",x="Ano",y="liteira")+
   theme_minimal()
 
-#Extract difference
+#Extract difference ========
 diff = as.data.frame(cbind(litt1_m, litt2_m, litt3_m, litt4_m, litt5_m, litt6_m, litt7_m))
 diff = diff[,c(1,2,5,8,11,14,17,20)]
 colnames(diff) = c("parcela","2004","2005","2006","2008","2010","2011","2012")
