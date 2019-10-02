@@ -3312,7 +3312,7 @@ ggplot(struc_b3yr, aes(data,index, col=indice))+
 
 ggplot(struc_b1yr, aes(data,index, col=indice))+ 
   geom_line(aes(group=indice), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Structural Indexes")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
@@ -3331,7 +3331,7 @@ ggplot(bio_b3yr, aes(data,index, col=indice))+
 
 ggplot(bio_b1yr, aes(data,index, col=indice))+ 
   geom_line(aes(group=indice), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Biochemistry Indexes")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
@@ -3349,7 +3349,7 @@ ggplot(phy_b3yr, aes(data,index, col=indice))+
 
 ggplot(phy_b1yr, aes(data,index, col=indice))+ 
   geom_line(aes(group=indice), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Physiology Indexes")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()
@@ -3367,7 +3367,7 @@ ggplot(fire_b3yr, aes(data,index, col=indice))+
 
 ggplot(fire_b1yr, aes(data,index, col=indice))+ 
   geom_line(aes(group=indice), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Fire Indexes")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   theme_minimal()

@@ -39,7 +39,8 @@ p <- ggplot(b3yr, aes(data,index, col=indice))+
 
 ggplotly(p)
 
-# Create a shareable link to your chart
-# Set up API credentials: https://plot.ly/r/getting-started
+#Create a shareable link to your chart
+#Sys.setenv("plotly_username"="eduardoqm")
+#Sys.setenv("plotly_api_key"="dQN69XlBOyDFZi7G8X4i")
 #chart_link = api_create(p, filename="line-mode1")
 #chart_link
