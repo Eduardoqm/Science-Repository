@@ -12,7 +12,7 @@ lit <- read.csv("1_master_liteira_area_1_jun2019.csv", header = TRUE, sep = ",")
 #Manipulate data
 lit <- lit[,c(3,4,10)]
 
-lit <- filter(lit, years==2010)
+lit <- filter(lit, years==2012)
 
 lit2 = lit %>% 
   group_by(pont) %>%
@@ -32,17 +32,17 @@ master = master %>%
 grid@data$litt_peso <- master$litt_peso
 #See shape and data frame
 #View(grid@data)
-spplot(grid, "litt_peso", main = "Liteira Peso (g) - 2010", col = "transparent")
+#spplot(grid, "litt_peso", main = "Liteira Peso (g) - 2010", col = "transparent")
 
 #Rastize data
-#r <- raster(ncol=180, nrow=180)
-#extent(r) <- extent(grid)
-#litt <- rasterize(grid, r, 'litt_peso')
-#plot(fire)
+r <- raster(ncol=180, nrow=180)
+extent(r) <- extent(grid)
+litt <- rasterize(grid, r, 'litt_peso')
+plot(litt)
 
 #Salve raster
-#setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados rasterizados/Fogo")
-#writeRaster(fire, filename="larg_fire2010.tiff", overwrite=TRUE)
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados rasterizados/Liteira")
+writeRaster(litt, filename="Liteira_2012.tiff", overwrite=TRUE)
 
 #Salve new vector
 #setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1")
