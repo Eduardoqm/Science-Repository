@@ -159,8 +159,8 @@ litt = as.data.frame(rbind(litt1, litt2, litt3, litt4, litt5, litt6, litt7))
 litt_m = as.data.frame(rbind(litt1_m, litt2_m, litt3_m, litt4_m, litt5_m, litt6_m, litt7_m))
 
 #Save litter means data frame to analysis =======
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
-write.csv(litt_m, file = "Litter_mean by plot.csv", sep = ",")
+#setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+#write.csv(litt_m, file = "Litter_mean by plot.csv", sep = ",")
 
 #Same plots to view results ======
 #Boxplot

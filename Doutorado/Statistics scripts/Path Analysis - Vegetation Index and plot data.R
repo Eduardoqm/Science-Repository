@@ -15,15 +15,21 @@ library(GGally)
 #Data
 #Fuel quantity
 #Obs: All indices versus litter data separately for each parcel
-mtcars
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+df = read.csv("Master_Area1_ by plot.csv", sep = ",", header = TRUE)
 
 #Specify the model
 model <-'
-mpg ~ hp + gear + cyl + disp + carb + am + wt
-hp ~ cyl + disp + carb
+liteira ~ ari + evi + lwvi2 + msi + nbri + nbri2 + ndii + ndvi + ndwi + nirv + pri + psri + pssr + rendvi + sipi + vari + vig + wbi
 '
+
+#model <-'
+#mpg ~ hp + gear + cyl + disp + carb + am + wt
+#hp ~ cyl + disp + carb
+#'
+
 #Fit the model
-fit <- cfa(model, data = mtcars)
+fit <- cfa(model, data = df)
 
 #View results
 summary(fit, fit.measures = TRUE, standardized=T,rsquare=T)
