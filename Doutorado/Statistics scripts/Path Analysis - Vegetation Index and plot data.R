@@ -19,32 +19,38 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 df = read.csv("Master_Area1_ by plot.csv", sep = ",", header = TRUE)
 
 #Specify the model
-model <-'
-liteira ~ ari + evi + lwvi2 + msi + nbri + nbri2 + ndii + ndvi + ndwi + nirv + pri + psri + pssr + rendvi + sipi + vari + vig + wbi
-'
 
-#model <-'
-#mpg ~ hp + gear + cyl + disp + carb + am + wt
-#hp ~ cyl + disp + carb
-#'
+str_model <- 'liteira ~ evi + ndvi + vari + vig + nirv'
+bioc_model <- 'liteira ~ ari + lwvi2 + msi + ndii + ndwi + pssr + psri + sipi + wbi'
+phy_model <- 'liteira ~ pri + rendvi'
+fire_model <- 'liteira ~ nbri + nbri2'
+#model <-'liteira ~ evi + ndvi + vari + vig + msi + wbi'
 
 #Fit the model
-fit <- cfa(model, data = df)
+fit1 <- cfa(str_model, data = df)
+fit2 <- cfa(bioc_model, data = df)
+fit3 <- cfa(phy_model, data = df)
+fit4 <- cfa(fire_model, data = df)
 
 #View results
-summary(fit, fit.measures = TRUE, standardized=T,rsquare=T)
+summary(fit1, fit.measures = TRUE, standardized=T,rsquare=T)
+summary(fit2, fit.measures = TRUE, standardized=T,rsquare=T)
+summary(fit3, fit.measures = TRUE, standardized=T,rsquare=T)
+summary(fit4, fit.measures = TRUE, standardized=T,rsquare=T)
 
 #Building a Structural Equation Model (SEM)
-semPaths(fit, 'std', layout = 'circle')
+#semPaths(fit, 'std', layout = 'circle')
 
-semPaths(fit,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
+semPaths(fit1,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
+semPaths(fit2,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
+semPaths(fit3,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
+semPaths(fit4,"std",layout = 'tree', edge.label.cex=.9, curvePivot = TRUE)
 
-ggcorr(mtcars[-c(5, 7, 8)], nbreaks = 6, label = T, low = "red3", high = "green3", 
+
+ggcorr(df, nbreaks = 10, label = T, low = "red3", high = "green3", 
        label_round = 2, name = "Correlation Scale", label_alpha = T, hjust = 0.75) +
   ggtitle(label = "Correlation Plot") +
   theme(plot.title = element_text(hjust = 0.6))
-
-
 
 
 
