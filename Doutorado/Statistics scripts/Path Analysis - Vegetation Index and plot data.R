@@ -13,6 +13,8 @@ library(kableExtra)
 library(GGally)
 
 #Data
+#Fuel quantity
+#Obs: All indices versus litter data separately for each parcel
 mtcars
 
 #Specify the model
