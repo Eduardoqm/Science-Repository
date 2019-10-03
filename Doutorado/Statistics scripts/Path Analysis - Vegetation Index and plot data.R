@@ -23,7 +23,6 @@ str_model <- 'liteira ~ evi + ndvi + vari + vig + nirv'
 bioc_model <- 'liteira ~ ari + lwvi2 + msi + ndii + ndwi + pssr + psri + sipi + wbi'
 phy_model <- 'liteira ~ pri + rendvi'
 fire_model <- 'liteira ~ nbri + nbri2'
-#model <-'liteira ~ evi + ndvi + vari + vig + msi + wbi'
 
 #Fit the model
 fit1 <- cfa(str_model, data = df)

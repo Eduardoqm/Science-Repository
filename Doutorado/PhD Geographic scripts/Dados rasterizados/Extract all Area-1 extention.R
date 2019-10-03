@@ -16,6 +16,8 @@ library(viridis)
 #Liteira
 litt <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados rasterizados/Liteira", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
+fire <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados rasterizados/Fogo", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
+
 #Polygon to get values
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
 area1 = spTransform(area1, crs(litt))
