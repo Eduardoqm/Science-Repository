@@ -17,6 +17,8 @@ library(viridis)
 litt <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados rasterizados/Liteira", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
 fire <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados rasterizados/Fogo", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
+fire = stack(fire[[1]], fire[[2]], fire[[3]], fire[[5]], fire[[7]])#Select only the data that match with hyperion data
+
 
 #Polygon to get values
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
