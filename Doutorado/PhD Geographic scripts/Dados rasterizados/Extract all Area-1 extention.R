@@ -226,7 +226,7 @@ fire1 = fire1 %>%
   mutate(data = "2004")
 fire1_m = fire1 %>%
   group_by(parcela) %>% 
-  summarise(fogo = mean(fogo)) %>% 
+  summarise(fogo = max(fogo)) %>% 
   mutate(data = "2004")
 
 b1yr <- raster::extract(fire[[2]], area1[3,]); crt <- raster::extract(fire[[2]], area1[1,]); b3yr <- raster::extract(fire[[2]], area1[2,])
@@ -245,7 +245,7 @@ fire2 = fire2 %>%
   mutate(data = "2005")
 fire2_m = fire2 %>%
   group_by(parcela) %>% 
-  summarise(fogo = mean(fogo)) %>% 
+  summarise(fogo = max(fogo)) %>% 
   mutate(data = "2005")
 
 b1yr <- raster::extract(fire[[3]], area1[3,]); crt <- raster::extract(fire[[3]], area1[1,]); b3yr <- raster::extract(fire[[3]], area1[2,])
@@ -264,7 +264,7 @@ fire3 = fire3 %>%
   mutate(data = "2006")
 fire3_m = fire3 %>%
   group_by(parcela) %>% 
-  summarise(fogo = mean(fogo)) %>% 
+  summarise(fogo = max(fogo)) %>% 
   mutate(data = "2006")
 
 b1yr <- raster::extract(fire[[4]], area1[3,]); crt <- raster::extract(fire[[4]], area1[1,]); b3yr <- raster::extract(fire[[4]], area1[2,])
@@ -283,7 +283,7 @@ fire4 = fire4 %>%
   mutate(data = "2008")
 fire4_m = fire4 %>%
   group_by(parcela) %>% 
-  summarise(fogo = mean(fogo)) %>% 
+  summarise(fogo = max(fogo)) %>% 
   mutate(data = "2008")
 
 b1yr <- raster::extract(fire[[5]], area1[3,]); crt <- raster::extract(fire[[5]], area1[1,]); b3yr <- raster::extract(fire[[5]], area1[2,])
@@ -302,7 +302,7 @@ fire5 = fire5 %>%
   mutate(data = "2010")
 fire5_m = fire5 %>%
   group_by(parcela) %>% 
-  summarise(fogo = mean(fogo)) %>% 
+  summarise(fogo = max(fogo)) %>% 
   mutate(data = "2010")
 
 
@@ -311,7 +311,7 @@ fire_m = as.data.frame(rbind(fire1_m, fire2_m, fire3_m, fire4_m, fire5_m))
 
 #Save fire means data frame to analysis ====
 #setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
-#write.csv(fire_m, file = "fireer_mean by plot.csv", sep = ",")
+#write.csv(fire_m, file = "Fire_max by plot.csv", sep = ",")
 
 #Same plots to view results
 #Boxplot
