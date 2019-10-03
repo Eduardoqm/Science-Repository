@@ -19,10 +19,14 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 df = read.csv("Master_Area1_ by plot.csv", sep = ",", header = TRUE)
 
 #Specify the model
-str_model <- 'liteira ~ evi + ndvi + vari + vig + nirv'
-bioc_model <- 'liteira ~ ari + lwvi2 + msi + ndii + ndwi + pssr + psri + sipi + wbi'
-phy_model <- 'liteira ~ pri + rendvi'
-fire_model <- 'liteira ~ nbri + nbri2 + fogo'
+str_model <- 'liteira ~ evi + ndvi + vari + vig + nirv
+fogo ~ evi + ndvi + vari + vig + nirv'
+bioc_model <- 'liteira ~ ari + lwvi2 + msi + ndii + ndwi + pssr + psri + sipi + wbi
+fogo ~ ari + lwvi2 + msi + ndii + ndwi + pssr + psri + sipi + wbi'
+phy_model <- 'liteira ~ pri + rendvi
+fogo ~ pri + rendvi'
+fire_model <- 'liteira ~ nbri + nbri2 + fogo
+fogo ~ nbri + nbri2 + liteira'
 
 #Fit the model
 fit1 <- cfa(str_model, data = df)
