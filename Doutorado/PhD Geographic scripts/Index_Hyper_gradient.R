@@ -10,7 +10,7 @@ library(tidyr)
 
 #Temporal scale====================================================================================
 #Landsat -- obs: Just change de folder name to chande the index and choose the graphic
-list <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2008", pattern = ".tif$", full.names=TRUE,recursive=TRUE)
+list <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2011", pattern = ".tif$", full.names=TRUE,recursive=TRUE)
 
 index <- stack(list)
 
@@ -139,72 +139,72 @@ bloco_c$gradient[bloco_c$gradient == 28] <- 0
 #Group by index and all plots
 #EVI =====================
 a = bloco_a %>% 
-  filter(index == 'evi.2008')
-a$index[a$index == 'evi.2008'] <- 'control'
+  filter(index == 'evi.2011')
+a$index[a$index == 'evi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'evi')
 
 b = bloco_b %>% 
-  filter(index == 'evi.2008')
-b$index[b$index == 'evi.2008'] <- 'b1yr'
+  filter(index == 'evi.2011')
+b$index[b$index == 'evi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'evi')
 
 c = bloco_c %>% 
-  filter(index == 'evi.2008')
-c$index[c$index == 'evi.2008'] <- 'b3yr'
+  filter(index == 'evi.2011')
+c$index[c$index == 'evi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'evi')
 
 evi = rbind(a,b,c)
 
 #EVI2 ======================
 a = bloco_a %>% 
-  filter(index == 'evi2.2008')
-a$index[a$index == 'evi2.2008'] <- 'control'
+  filter(index == 'evi2.2011')
+a$index[a$index == 'evi2.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'evi2')
 
 b = bloco_b %>% 
-  filter(index == 'evi2.2008')
-b$index[b$index == 'evi2.2008'] <- 'b1yr'
+  filter(index == 'evi2.2011')
+b$index[b$index == 'evi2.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'evi2')
 
 c = bloco_c %>% 
-  filter(index == 'evi2.2008')
-c$index[c$index == 'evi2.2008'] <- 'b3yr'
+  filter(index == 'evi2.2011')
+c$index[c$index == 'evi2.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'evi2')
 
 evi2 = rbind(a,b,c)
 
 #NDVI===================
 a = bloco_a %>% 
-  filter(index == 'ndvi.2008')
-a$index[a$index == 'ndvi.2008'] <- 'control'
+  filter(index == 'ndvi.2011')
+a$index[a$index == 'ndvi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'ndvi')
 
 b = bloco_b %>% 
-  filter(index == 'ndvi.2008')
-b$index[b$index == 'ndvi.2008'] <- 'b1yr'
+  filter(index == 'ndvi.2011')
+b$index[b$index == 'ndvi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'ndvi')
 
 c = bloco_c %>% 
-  filter(index == 'ndvi.2008')
-c$index[c$index == 'ndvi.2008'] <- 'b3yr'
+  filter(index == 'ndvi.2011')
+c$index[c$index == 'ndvi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'ndvi')
 
 ndvi = rbind(a,b,c)
 
 #MSI===================
 a = bloco_a %>% 
-  filter(index == 'msi.2008')
-a$index[a$index == 'msi.2008'] <- 'control'
+  filter(index == 'msi.2011')
+a$index[a$index == 'msi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'msi')
 
 b = bloco_b %>% 
-  filter(index == 'msi.2008')
-b$index[b$index == 'msi.2008'] <- 'b1yr'
+  filter(index == 'msi.2011')
+b$index[b$index == 'msi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'msi')
 
 c = bloco_c %>% 
-  filter(index == 'msi.2008')
-c$index[c$index == 'msi.2008'] <- 'b3yr'
+  filter(index == 'msi.2011')
+c$index[c$index == 'msi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'msi')
   
 msi = rbind(a,b,c)
@@ -212,234 +212,234 @@ msi = rbind(a,b,c)
 
 #WBI ===============
 a = bloco_a %>% 
-  filter(index == 'wbi.2008')
-a$index[a$index == 'wbi.2008'] <- 'control'
+  filter(index == 'wbi.2011')
+a$index[a$index == 'wbi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'wbi')
 
 b = bloco_b %>% 
-  filter(index == 'wbi.2008')
-b$index[b$index == 'wbi.2008'] <- 'b1yr'
+  filter(index == 'wbi.2011')
+b$index[b$index == 'wbi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'wbi')
 
 c = bloco_c %>% 
-  filter(index == 'wbi.2008')
-c$index[c$index == 'wbi.2008'] <- 'b3yr'
+  filter(index == 'wbi.2011')
+c$index[c$index == 'wbi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'wbi')
 
 wbi = rbind(a,b,c)
 
 #VIG ================
 a = bloco_a %>% 
-  filter(index == 'vig.2008')
-a$index[a$index == 'vig.2008'] <- 'control'
+  filter(index == 'vig.2011')
+a$index[a$index == 'vig.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'vig')
 
 b = bloco_b %>% 
-  filter(index == 'vig.2008')
-b$index[b$index == 'vig.2008'] <- 'b1yr'
+  filter(index == 'vig.2011')
+b$index[b$index == 'vig.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'vig')
 
 c = bloco_c %>% 
-  filter(index == 'vig.2008')
-c$index[c$index == 'vig.2008'] <- 'b3yr'
+  filter(index == 'vig.2011')
+c$index[c$index == 'vig.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'vig')
 
 vig = rbind(a,b,c)
 
 #VARI ===============
 a = bloco_a %>% 
-  filter(index == 'vari.2008')
-a$index[a$index == 'vari.2008'] <- 'control'
+  filter(index == 'vari.2011')
+a$index[a$index == 'vari.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'vari')
 
 b = bloco_b %>% 
-  filter(index == 'vari.2008')
-b$index[b$index == 'vari.2008'] <- 'b1yr'
+  filter(index == 'vari.2011')
+b$index[b$index == 'vari.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'vari')
 
 c = bloco_c %>% 
-  filter(index == 'vari.2008')
-c$index[c$index == 'vari.2008'] <- 'b3yr'
+  filter(index == 'vari.2011')
+c$index[c$index == 'vari.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'vari')
 
 vari = rbind(a,b,c)
 
 #SIPI ===============
 a = bloco_a %>% 
-  filter(index == 'sipi.2008')
-a$index[a$index == 'sipi.2008'] <- 'control'
+  filter(index == 'sipi.2011')
+a$index[a$index == 'sipi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'sipi')
 
 b = bloco_b %>% 
-  filter(index == 'sipi.2008')
-b$index[b$index == 'sipi.2008'] <- 'b1yr'
+  filter(index == 'sipi.2011')
+b$index[b$index == 'sipi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'sipi')
 
 c = bloco_c %>% 
-  filter(index == 'sipi.2008')
-c$index[c$index == 'sipi.2008'] <- 'b3yr'
+  filter(index == 'sipi.2011')
+c$index[c$index == 'sipi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'sipi')
 
 sipi = rbind(a,b,c)
 
 #RENDVI =============
 a = bloco_a %>% 
-  filter(index == 'rendvi.2008')
-a$index[a$index == 'rendvi.2008'] <- 'control'
+  filter(index == 'rendvi.2011')
+a$index[a$index == 'rendvi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'rendvi')
 
 b = bloco_b %>% 
-  filter(index == 'rendvi.2008')
-b$index[b$index == 'rendvi.2008'] <- 'b1yr'
+  filter(index == 'rendvi.2011')
+b$index[b$index == 'rendvi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'rendvi')
 
 c = bloco_c %>% 
-  filter(index == 'rendvi.2008')
-c$index[c$index == 'rendvi.2008'] <- 'b3yr'
+  filter(index == 'rendvi.2011')
+c$index[c$index == 'rendvi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'rendvi')
 
 rendvi = rbind(a,b,c)
 
 #PSSR ================
 a = bloco_a %>% 
-  filter(index == 'pssr.2008')
-a$index[a$index == 'pssr.2008'] <- 'control'
+  filter(index == 'pssr.2011')
+a$index[a$index == 'pssr.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'pssr')
 
 b = bloco_b %>% 
-  filter(index == 'pssr.2008')
-b$index[b$index == 'pssr.2008'] <- 'b1yr'
+  filter(index == 'pssr.2011')
+b$index[b$index == 'pssr.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'pssr')
 
 c = bloco_c %>% 
-  filter(index == 'pssr.2008')
-c$index[c$index == 'pssr.2008'] <- 'b3yr'
+  filter(index == 'pssr.2011')
+c$index[c$index == 'pssr.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'pssr')
 
 pssr = rbind(a,b,c)
 
 #PSRI ===================
 a = bloco_a %>% 
-  filter(index == 'psri.2008')
-a$index[a$index == 'psri.2008'] <- 'control'
+  filter(index == 'psri.2011')
+a$index[a$index == 'psri.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'psri')
 
 b = bloco_b %>% 
-  filter(index == 'psri.2008')
-b$index[b$index == 'psri.2008'] <- 'b1yr'
+  filter(index == 'psri.2011')
+b$index[b$index == 'psri.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'psri')
 
 c = bloco_c %>% 
-  filter(index == 'psri.2008')
-c$index[c$index == 'psri.2008'] <- 'b3yr'
+  filter(index == 'psri.2011')
+c$index[c$index == 'psri.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'psri')
 
 psri = rbind(a,b,c)
 
 #PRI ====================
 a = bloco_a %>% 
-  filter(index == 'pri.2008')
-a$index[a$index == 'pri.2008'] <- 'control'
+  filter(index == 'pri.2011')
+a$index[a$index == 'pri.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'pri')
 
 b = bloco_b %>% 
-  filter(index == 'pri.2008')
-b$index[b$index == 'pri.2008'] <- 'b1yr'
+  filter(index == 'pri.2011')
+b$index[b$index == 'pri.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'pri')
 
 c = bloco_c %>% 
-  filter(index == 'pri.2008')
-c$index[c$index == 'pri.2008'] <- 'b3yr'
+  filter(index == 'pri.2011')
+c$index[c$index == 'pri.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'pri')
 
 pri = rbind(a,b,c)
 
 #NIRV ===================
 a = bloco_a %>% 
-  filter(index == 'nirv.2008')
-a$index[a$index == 'nirv.2008'] <- 'control'
+  filter(index == 'nirv.2011')
+a$index[a$index == 'nirv.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'nirv')
 
 b = bloco_b %>% 
-  filter(index == 'nirv.2008')
-b$index[b$index == 'nirv.2008'] <- 'b1yr'
+  filter(index == 'nirv.2011')
+b$index[b$index == 'nirv.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'nirv')
 
 c = bloco_c %>% 
-  filter(index == 'nirv.2008')
-c$index[c$index == 'nirv.2008'] <- 'b3yr'
+  filter(index == 'nirv.2011')
+c$index[c$index == 'nirv.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'nirv')
 
 nirv = rbind(a,b,c)
 
 #NDWI ====================
 a = bloco_a %>% 
-  filter(index == 'ndwi.2008')
-a$index[a$index == 'ndwi.2008'] <- 'control'
+  filter(index == 'ndwi.2011')
+a$index[a$index == 'ndwi.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'ndwi')
 
 b = bloco_b %>% 
-  filter(index == 'ndwi.2008')
-b$index[b$index == 'ndwi.2008'] <- 'b1yr'
+  filter(index == 'ndwi.2011')
+b$index[b$index == 'ndwi.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'ndwi')
 
 c = bloco_c %>% 
-  filter(index == 'ndwi.2008')
-c$index[c$index == 'ndwi.2008'] <- 'b3yr'
+  filter(index == 'ndwi.2011')
+c$index[c$index == 'ndwi.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'ndwi')
 
 ndwi = rbind(a,b,c)
 
 #NDII =====================
 a = bloco_a %>% 
-  filter(index == 'ndii.2008')
-a$index[a$index == 'ndii.2008'] <- 'control'
+  filter(index == 'ndii.2011')
+a$index[a$index == 'ndii.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'ndii')
 
 b = bloco_b %>% 
-  filter(index == 'ndii.2008')
-b$index[b$index == 'ndii.2008'] <- 'b1yr'
+  filter(index == 'ndii.2011')
+b$index[b$index == 'ndii.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'ndii')
 
 c = bloco_c %>% 
-  filter(index == 'ndii.2008')
-c$index[c$index == 'ndii.2008'] <- 'b3yr'
+  filter(index == 'ndii.2011')
+c$index[c$index == 'ndii.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'ndii')
 
 ndii = rbind(a,b,c)
 
 #LWVI2 =====================
 a = bloco_a %>% 
-  filter(index == 'lwvi2.2008')
-a$index[a$index == 'lwvi2.2008'] <- 'control'
+  filter(index == 'lwvi2.2011')
+a$index[a$index == 'lwvi2.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'lwvi2')
 
 b = bloco_b %>% 
-  filter(index == 'lwvi2.2008')
-b$index[b$index == 'lwvi2.2008'] <- 'b1yr'
+  filter(index == 'lwvi2.2011')
+b$index[b$index == 'lwvi2.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'lwvi2')
 
 c = bloco_c %>% 
-  filter(index == 'lwvi2.2008')
-c$index[c$index == 'lwvi2.2008'] <- 'b3yr'
+  filter(index == 'lwvi2.2011')
+c$index[c$index == 'lwvi2.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'lwvi2')
 
 lwvi2 = rbind(a,b,c)
 
 #ARI ======================
 a = bloco_a %>% 
-  filter(index == 'ari.2008')
-a$index[a$index == 'ari.2008'] <- 'control'
+  filter(index == 'ari.2011')
+a$index[a$index == 'ari.2011'] <- 'control'
 colnames(a) = c('gradient', 'plots', 'ari')
 
 b = bloco_b %>% 
-  filter(index == 'ari.2008')
-b$index[b$index == 'ari.2008'] <- 'b1yr'
+  filter(index == 'ari.2011')
+b$index[b$index == 'ari.2011'] <- 'b1yr'
 colnames(b) = c('gradient', 'plots', 'ari')
 
 c = bloco_c %>% 
-  filter(index == 'ari.2008')
-c$index[c$index == 'ari.2008'] <- 'b3yr'
+  filter(index == 'ari.2011')
+c$index[c$index == 'ari.2011'] <- 'b3yr'
 colnames(c) = c('gradient', 'plots', 'ari')
 
 ari = rbind(a,b,c)
