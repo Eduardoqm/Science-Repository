@@ -444,10 +444,10 @@ colnames(c) = c('gradient', 'plots', 'ari')
 
 ari = rbind(a,b,c)
 #Graphics =======================
-ggplot(ndii, aes(gradient,ndii, col=plots))+ 
+ggplot(msi, aes(gradient,msi, col=plots))+ 
   geom_line(aes(group=plots), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Distancia da borda (m)",y="NDII")+
+  labs(fill= "Plot",x="Distancia da borda (m)",y="MSI")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
