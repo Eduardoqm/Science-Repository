@@ -3,6 +3,9 @@
 # Eduardo Q Marques  04/11/2019                       #
 #######################################################
 
+library(reshape2)
+library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(GGally)
 
