@@ -12,7 +12,7 @@ hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
 hy = hy[,-1]; hy = hy[,-1]; hy = hy[,-19]
 
 
-ggpairs(hy[,-1])
+ggpairs(hy)
 
 #Correlation bettewen all data
 ggcorr(hy, nbreaks = 10, label = T, low = "red3", high = "green3", 
