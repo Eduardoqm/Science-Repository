@@ -11,9 +11,8 @@ setwd('C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\Doutorado\\Deposito\\Ba
 hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
 #hy = hy[,-1]; hy = hy[,-19]
 
-#All Indexs
+#All Indexs =====================================
 ggpairs(hy[,-1])
-
 
 #Struture
 struc = hy[,c(2, 4, 10, 12, 18, 19)]
@@ -32,7 +31,8 @@ fir = hy[,c(2,7,8)]
 ggpairs(fir)
 
 
-
-
-
-
+#Plot data organization ============================
+#Biomass
+biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
+biomass = biomass[,c(1:6)]
+colnames(biomass) = c('plot', '2004', '2008', '2010', '2011', '2012')
