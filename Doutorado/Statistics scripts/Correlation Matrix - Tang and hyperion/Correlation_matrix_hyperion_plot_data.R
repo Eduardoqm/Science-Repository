@@ -12,7 +12,6 @@ library(GGally)
 setwd('C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\Doutorado\\Deposito\\Banco de Dados Tanguro\\Dados para analise cap1')
 
 hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
-#hy = hy[,-1]; hy = hy[,-19]
 
 #All Indexs =====================================
 ggpairs(hy[,-1])
@@ -43,12 +42,12 @@ biomass = melt(biomass)
 colnames(biomass) = c('plot', 'date', 'biomass')
 
 biomass = biomass %>% 
-  group_by(plot) %>% 
   na.omit() %>% 
-  summarise(bio2004 = median(bio2004),
-            bio2008 = median(bio2008),
-            bio2010 = median(bio2010),
-            bio2011 = median(bio2011),
-            bio2012 = median(bio2012))
+  group_by(plot, date) %>% 
+  summarise(biomass = sum(biomass))%>%
+  ungroup()%>%
+  mutate(parcela=factor(plot,labels=c("controle","b3yr","b1yr")))
+  
+biomass = biomass[,-1]
 
-
+#LAI
