@@ -39,3 +39,16 @@ ggpairs(fir)
 biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
 biomass = biomass[,c(1:6)]
 colnames(biomass) = c('plot', '2004', '2008', '2010', '2011', '2012')
+biomass = melt(biomass)
+colnames(biomass) = c('plot', 'date', 'biomass')
+
+biomass = biomass %>% 
+  group_by(plot) %>% 
+  na.omit() %>% 
+  summarise(bio2004 = median(bio2004),
+            bio2008 = median(bio2008),
+            bio2010 = median(bio2010),
+            bio2011 = median(bio2011),
+            bio2012 = median(bio2012))
+
+
