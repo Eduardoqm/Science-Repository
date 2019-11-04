@@ -20,7 +20,7 @@ struc = hy[,c(2, 4, 10, 12, 18, 19, 21)]
 ggpairs(struc)
 
 #Biochemistry
-bioc = hy[,c(2,)]
+bioc = hy[,c(2,3,5,6,9,11,14,15,17,20,21)]
 ggpairs(bioc)
 
 #Physiology
