@@ -16,19 +16,19 @@ ggpairs(hy[,-1])
 
 
 #Struture
-struc = hy[,c(2, 4, 10, 12, 18, 19, 21)]
+struc = hy[,c(2, 4, 10, 12, 18, 19)]
 ggpairs(struc)
 
 #Biochemistry
-bioc = hy[,c(2,3,5,6,9,11,14,15,17,20,21)]
+bioc = hy[,c(2,3,5,6,9,11,14,15,17,20)]
 ggpairs(bioc)
 
 #Physiology
-phy = hy[,c(2,13,16,21)]
+phy = hy[,c(2,13,16)]
 ggpairs(phy)
 
 #Fire
-fir = hy[,c(2,7,8,21)]
+fir = hy[,c(2,7,8)]
 ggpairs(fir)
 
 
