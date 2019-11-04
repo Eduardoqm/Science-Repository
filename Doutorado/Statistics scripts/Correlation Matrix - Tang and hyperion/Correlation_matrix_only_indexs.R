@@ -14,6 +14,9 @@ hy = hy[,-1]; hy = hy[,-1]; hy = hy[,-19]
 
 ggpairs(hy)
 
+
+
+
 #Correlation bettewen all data
 ggcorr(hy, nbreaks = 10, label = T, low = "red3", high = "green3", 
        label_round = 2, name = "Correlation Scale", label_alpha = T, hjust = 0.75) +
