@@ -24,11 +24,11 @@ bioc = hy[,c(2,3,5,6,9,11,14,15,17,20,21)]
 ggpairs(bioc)
 
 #Physiology
-phy = hy[,c(2,)]
+phy = hy[,c(2,13,16,21)]
 ggpairs(phy)
 
 #Fire
-fir = hy[,c(2,)]
+fir = hy[,c(2,7,8,21)]
 ggpairs(fir)
 
 
