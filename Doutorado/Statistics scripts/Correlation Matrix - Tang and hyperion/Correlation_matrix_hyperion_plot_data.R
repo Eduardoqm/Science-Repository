@@ -50,4 +50,4 @@ biomass = biomass %>%
   
 biomass = biomass[,-1]
 
-#LAI
+#LAI ====================================
