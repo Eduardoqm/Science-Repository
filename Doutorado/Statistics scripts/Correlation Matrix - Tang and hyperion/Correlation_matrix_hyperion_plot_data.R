@@ -129,7 +129,50 @@ struc = struc %>%
 
 ggpairs(struc[,-2])
 
+#Biochemistry
+bioc = hy[,c(2,3,5,6,9,11,14,15,17,20,21)]
 
+bioc = bioc %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
+
+bioc = full_join(bioc, biomass, by="id")
+bioc = full_join(bioc, lai, by="id")
+bioc = full_join(bioc, fuel, by="id")
+
+bioc = bioc %>% 
+  separate(col = "id", c("parcela", "data"), sep = '_')
+
+ggpairs(bioc[,-2])
+
+#Physiology
+phy = hy[,c(2,13,16,21)]
+
+phy = phy %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
+
+phy = full_join(phy, biomass, by="id")
+phy = full_join(phy, lai, by="id")
+phy = full_join(phy, fuel, by="id")
+
+phy = phy %>% 
+  separate(col = "id", c("parcela", "data"), sep = '_')
+
+ggpairs(phy[,-2])
+
+#Fire
+fir = hy[,c(2,7,8,21)]
+
+fir = fir %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
+
+fir = full_join(fir, biomass, by="id")
+fir = full_join(fir, lai, by="id")
+fir = full_join(fir, fuel, by="id")
+
+fir = fir %>% 
+  separate(col = "id", c("parcela", "data"), sep = '_')
+
+ggpairs(fir[,-2])
 
 
 
