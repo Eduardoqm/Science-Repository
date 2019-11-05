@@ -37,41 +37,25 @@ hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
 #Plot data organization
 #Biomass ====================================
 biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
-biomass = biomass[,c(1:6)]
-colnames(biomass) = c('plot', '2004', '2008', '2010', '2011', '2012')
+biomass = biomass[,c(1:7)]
+colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012')
 biomass = melt(biomass)
-colnames(biomass) = c('plot', 'data', 'biomass')
+colnames(biomass) = c('plot', 'transcto', 'data', 'biomass')
 
 biomass = biomass %>% 
   na.omit() %>% 
-  group_by(plot, data) %>% 
+  group_by(plot, transcto, data) %>% 
   summarise(biomass = sum(biomass))%>%
   ungroup()%>%
   mutate(parcela=factor(plot,labels=c("controle","b3yr","b1yr")))
   
 biomass = biomass[,-1]
 
-#LAI ====================================
-lai = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
+biomass = biomass %>% 
+  mutate(parc = parcela) %>% 
+  mutate(transc = transcto) %>% 
+  unite(col = "local", c("parc", "transc"), sep = '_')
 
-for (x in 1:10) {
-  lai$linhas[lai$linhas == x] <- "controle"
-}
-
-for (x in 11:20) {
-  lai$linhas[lai$linhas == x] <- "b3yr"
-}
-
-for (x in 21:31) {
-  lai$linhas[lai$linhas == x] <- "b1yr"
-}
-
-colnames(lai) = c("parcela", "lai", "data")
-
-lai = lai %>% 
-  group_by(parcela, data) %>% 
-  summarise(lai = median(lai)) %>% 
-  filter(data == 2005:2011)
 
 #Fuel ==================================
 fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
@@ -82,7 +66,7 @@ fuel = fuel %>%
 
 fuel = fuel[,c(1,2,7)]
 
-# extract numbers only
+#Extract numbers only
 fuel$ponto <- as.numeric(str_extract(fuel$ponto, "[0-9]+"))
 fuel = na.omit(fuel)
 colnames(fuel) = c("parcela", "data", "fuel")
