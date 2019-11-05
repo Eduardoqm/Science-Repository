@@ -53,9 +53,39 @@ biomass = biomass[,-1]
 #LAI ====================================
 lai = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
 
-for (x in 21:31) {
-  lai$linhas[lai$linhas == x] <- 3
+for (x in 1:10) {
+  lai$linhas[lai$linhas == x] <- "controle"
 }
+
+for (x in 11:20) {
+  lai$linhas[lai$linhas == x] <- "b3yr"
+}
+
+for (x in 21:31) {
+  lai$linhas[lai$linhas == x] <- "b1yr"
+}
+
+colnames(lai) = c("parcela", "lai", "date")
+
+lai = lai %>% 
+  group_by(parcela, date) %>% 
+  summarise(lai = median(lai)) %>% 
+  filter(date == 2005:2011)
+
+#Fuel ==================================
+fuel = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
