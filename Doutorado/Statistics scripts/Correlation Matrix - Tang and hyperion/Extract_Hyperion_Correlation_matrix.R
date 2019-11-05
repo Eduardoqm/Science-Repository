@@ -34,3 +34,30 @@ h11 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Douto
 #Polygon to get values
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1_AA")
 area1 = spTransform(area1, crs(h04))
+
+area1df = as.data.frame(area1@data$ID)
+
+area1df$transcto <- as.character(str_extract(area1df$`area1@data$ID`, "[A-Z, a-z]+"))
+area1df$linha <- as.numeric(str_extract(area1df$`area1@data$ID`, "[0-9]+"))
+
+for (x in 1:10) {
+  area1df$parcela[area1df$linha == x] <- "controle"
+}
+
+for (x in 11:20) {
+  area1df$parcela[area1df$linha == x] <- "b3yr"
+}
+
+for (x in 21:31) {
+  area1df$parcela[area1df$linha == x] <- "b1yr"
+}
+
+area1df = area1df %>% 
+  mutate(parc = parcela) %>% 
+  mutate(transc = transcto) %>% 
+  unite(col = "local", c("parc", "transc"), sep = '_')
+
+colnames(area1df) = c("ID", "transcto", "linha", 'parcela', 'local')
+
+
+
