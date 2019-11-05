@@ -69,7 +69,7 @@ area1 <- unionSpatialPolygons(area1, area1df$local)
 
 plot(area1)
 
-for (x in 43:63) {
+for (x in 1:63) {
   plot(h04[[6]])
   plot(area1[x,], color = 'blue', add = T)
 }
@@ -87,12 +87,18 @@ for (x in 1:21) {
   b1yr <- raster::extract(h04[[6]], area1[x,])
 }
 
+
+crt <- raster::extract(h04[[6]], area1[43:63,])
+
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 
 crt_names = c( "controle_AA", "controle_B", "controle_C",  "controle_D",  "controle_E",  "controle_F",  "controle_G",  "controle_H",  "controle_I",  "controle_J",  "controle_K",  "controle_L",  "controle_M",  "controle_N",  "controle_O",  "controle_P",  "controle_Q",  "controle_R",  "controle_S",  "controle_T",  "controle_U")
 
+
 a = a %>% 
-  mutate(parcela = crt_names))
+  group_by(L1) %>% 
+  mutate(value = median(value)))
+
 b = b %>% 
   mutate(parcela = "b3yr")
 c = c %>% 
