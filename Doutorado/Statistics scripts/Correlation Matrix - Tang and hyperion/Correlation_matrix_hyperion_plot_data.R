@@ -85,9 +85,23 @@ fuel = fuel[,c(1,2,7)]
 # extract numbers only
 fuel$ponto <- as.numeric(str_extract(fuel$ponto, "[0-9]+"))
 fuel = na.omit(fuel)
+colnames(fuel) = c("parcela", "date", "fuel")
 
+for (x in 1:10) {
+  fuel$parcela[fuel$parcela == x] <- "controle"
+}
 
+for (x in 11:20) {
+  fuel$parcela[fuel$parcela == x] <- "b3yr"
+}
 
+for (x in 21:31) {
+  fuel$parcela[fuel$parcela == x] <- "b1yr"
+}
+
+fuel = fuel %>% 
+  group_by(parcela, date) %>% 
+  summarise(fuel = median(fuel))
 
 
 
