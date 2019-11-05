@@ -51,3 +51,13 @@ biomass = biomass %>%
 biomass = biomass[,-1]
 
 #LAI ====================================
+lai = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
+
+for (x in 21:31) {
+  lai$linhas[lai$linhas == x] <- 3
+}
+
+
+
+
+
