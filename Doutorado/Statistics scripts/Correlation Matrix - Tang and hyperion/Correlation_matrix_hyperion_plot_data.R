@@ -105,42 +105,22 @@ fuel = fuel %>%
 
 #Join everything =========================
 #Struture
-struc = hy[,c(2, 4, 10, 12, 18, 19)]
+#struc = hy[,c(2, 4, 10, 12, 18, 19)]
 #struc = melt(struc)
 
-biomass = biomass[,-1]
+#biomass = biomass[,-1]
 #biomass = melt(biomass)
 
-
-lai = lai[,-2]
+#lai = lai[,-2]
 #lai = melt(lai)
 
-fuel = fuel[,-2]
+#fuel = fuel[,-2]
 #fuel = melt(fuel)
 
-struc = cbind(struc, biomass, lai, fuel)
+struc = full_join(struc, biomass, lai, fuel)
 #struc = t(struc)
 
-ggpairs(struc)
-
-
-
-
-
-
-
-
-#Biochemistry
-bioc = hy[,c(2,3,5,6,9,11,14,15,17,20)]
-ggpairs(bioc)
-
-#Physiology
-phy = hy[,c(2,13,16)]
-ggpairs(phy)
-
-#Fire
-fir = hy[,c(2,7,8)]
-ggpairs(fir)
+ggpairs(struc, biomass, lai, fuel)
 
 
 
