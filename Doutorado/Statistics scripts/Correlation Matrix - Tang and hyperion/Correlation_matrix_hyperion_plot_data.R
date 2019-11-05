@@ -103,6 +103,7 @@ fuel = fuel %>%
   group_by(parcela, date) %>% 
   summarise(fuel = median(fuel))
 
+#Join everything =========================
 
 
 
