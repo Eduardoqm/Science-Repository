@@ -8,6 +8,8 @@
 #OBS: Same years are cutted control. So I change control area to other place that the forest is preserved
 library(raster)
 library(rgdal)
+library(rgeos)
+library(maptools)
 library(ggplot2)
 library(reshape2)
 library(dplyr)
@@ -61,8 +63,15 @@ colnames(area1df) = c("ID", "transcto", "linha", 'parcela', 'local')
 
 area1@data <- area1df
 
-spplot(area1["local"])
 
+
+area1 <- unionSpatialPolygons(area1, area1df$local)
+
+plot(area1)
+
+for (x in 1:63) {
+  print(area1@polygons[[x]]@ID)
+}
 
 
 
