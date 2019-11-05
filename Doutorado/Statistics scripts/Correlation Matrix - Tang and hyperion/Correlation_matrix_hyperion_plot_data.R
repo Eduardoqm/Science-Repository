@@ -40,11 +40,11 @@ biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
 biomass = biomass[,c(1:6)]
 colnames(biomass) = c('plot', '2004', '2008', '2010', '2011', '2012')
 biomass = melt(biomass)
-colnames(biomass) = c('plot', 'date', 'biomass')
+colnames(biomass) = c('plot', 'data', 'biomass')
 
 biomass = biomass %>% 
   na.omit() %>% 
-  group_by(plot, date) %>% 
+  group_by(plot, data) %>% 
   summarise(biomass = sum(biomass))%>%
   ungroup()%>%
   mutate(parcela=factor(plot,labels=c("controle","b3yr","b1yr")))
@@ -66,12 +66,12 @@ for (x in 21:31) {
   lai$linhas[lai$linhas == x] <- "b1yr"
 }
 
-colnames(lai) = c("parcela", "lai", "date")
+colnames(lai) = c("parcela", "lai", "data")
 
 lai = lai %>% 
-  group_by(parcela, date) %>% 
+  group_by(parcela, data) %>% 
   summarise(lai = median(lai)) %>% 
-  filter(date == 2005:2011)
+  filter(data == 2005:2011)
 
 #Fuel ==================================
 fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
@@ -85,7 +85,7 @@ fuel = fuel[,c(1,2,7)]
 # extract numbers only
 fuel$ponto <- as.numeric(str_extract(fuel$ponto, "[0-9]+"))
 fuel = na.omit(fuel)
-colnames(fuel) = c("parcela", "date", "fuel")
+colnames(fuel) = c("parcela", "data", "fuel")
 
 for (x in 1:10) {
   fuel$parcela[fuel$parcela == x] <- "controle"
@@ -100,27 +100,34 @@ for (x in 21:31) {
 }
 
 fuel = fuel %>% 
-  group_by(parcela, date) %>% 
+  group_by(parcela, data) %>% 
   summarise(fuel = median(fuel))
 
 #Join everything =========================
 #Struture
-#struc = hy[,c(2, 4, 10, 12, 18, 19)]
-#struc = melt(struc)
+struc = hy[,c(2, 4, 10, 12, 18, 19, 21)]
 
-#biomass = biomass[,-1]
-#biomass = melt(biomass)
+struc = struc %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
 
-#lai = lai[,-2]
-#lai = melt(lai)
+biomass = biomass %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
 
-#fuel = fuel[,-2]
-#fuel = melt(fuel)
+lai = lai %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
 
-struc = full_join(struc, biomass, lai, fuel)
-#struc = t(struc)
+fuel = fuel %>% 
+  unite(col = "id", c("parcela", "data"), sep = '_')
 
-ggpairs(struc, biomass, lai, fuel)
+
+struc = full_join(struc, biomass, by="id")
+struc = full_join(struc, lai, by="id")
+struc = full_join(struc, fuel, by="id")
+
+struc = struc %>% 
+  separate(col = "id", c("parcela", "data"), sep = '_')
+
+ggpairs(struc[,-2])
 
 
 
