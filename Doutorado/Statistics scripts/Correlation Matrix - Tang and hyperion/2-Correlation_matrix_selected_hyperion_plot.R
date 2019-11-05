@@ -67,7 +67,8 @@ fuel = fuel %>%
 fuel = fuel[,c(1,2,7)]
 
 #Extract numbers only
-fuel$ponto <- as.numeric(str_extract(fuel$ponto, "[0-9]+"))
+fuel$transcto <- as.character(str_extract(fuel$ponto, "[A-Z, a-z]+"))
+fuel$parcela <- as.numeric(str_extract(fuel$ponto, "[0-9]+"))
 fuel = na.omit(fuel)
 colnames(fuel) = c("parcela", "data", "fuel")
 
