@@ -59,5 +59,17 @@ area1df = area1df %>%
 
 colnames(area1df) = c("ID", "transcto", "linha", 'parcela', 'local')
 
+area1@data <- area1df
+
+spplot(area1["local"])
+
+
+
+
+
+
+
+
+
 
 
