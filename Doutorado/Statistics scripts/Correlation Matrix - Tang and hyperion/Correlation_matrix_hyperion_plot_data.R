@@ -73,8 +73,13 @@ lai = lai %>%
   filter(date == 2005:2011)
 
 #Fuel ==================================
-fuel = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
+fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
 
+fuel = fuel %>% 
+  na.omit() %>% 
+  mutate(fuel = NI06 + NI25 + NI76) 
+
+fuel = fuel[,c(1,2,7)]
 
 
 
