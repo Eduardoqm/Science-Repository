@@ -8,6 +8,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(GGally)
+library(stringr)
 
 setwd('C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\Doutorado\\Deposito\\Banco de Dados Tanguro\\Dados para analise cap1')
 
@@ -77,11 +78,13 @@ fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
 
 fuel = fuel %>% 
   na.omit() %>% 
-  mutate(fuel = NI06 + NI25 + NI76) 
+  mutate(fuel = NI06 + NI25 + NI76) %>%  
 
 fuel = fuel[,c(1,2,7)]
 
-
+# extract numbers only
+fuel$ponto <- as.numeric(str_extract(fuel$ponto, "[0-9]+"))
+fuel = na.omit(fuel)
 
 
 
