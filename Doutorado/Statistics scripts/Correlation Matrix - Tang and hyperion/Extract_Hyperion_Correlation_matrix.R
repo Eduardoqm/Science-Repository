@@ -505,7 +505,7 @@ lwvi26 = lwvi26 %>%
 
 lwvi2 = as.data.frame(rbind(lwvi21, lwvi22, lwvi23, lwvi24, lwvi25, lwvi26))
 
-#Union of indexs
+#Union of indexs ============================================
 index = cbind(ndii, lwvi2)
 index = index[,c(1,4,5,6)]
 

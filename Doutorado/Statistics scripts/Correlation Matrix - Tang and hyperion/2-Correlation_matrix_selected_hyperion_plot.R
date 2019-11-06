@@ -72,6 +72,32 @@ fuel = fuel %>%
   unite(col = "local", c("parc", "transc"), sep = '_')
 
 #Join everything =========================
+index = index %>% 
+  unite(col = "id", c("local", "data"), sep = '_')
+
+biomass = biomass %>% 
+  unite(col = "id", c("local", "data"), sep = '_')
+
+fuel = fuel %>% 
+  unite(col = "id", c("local", "data"), sep = '_')
+
+
+index = full_join(index, biomass, by="id")
+index = full_join(index, fuel, by="id")
+
+index = index %>% 
+  separate(col = "id", c("parcela", "data"), sep = '_')
+
+index = index[,c(3,1,2,6,10)]
+
+ggpairs(index)
+
+
+
+
+
+
+
 #Struture
 struc = hy[,c(2, 4, 10, 12, 18, 19, 21)]
 
