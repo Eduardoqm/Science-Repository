@@ -82,24 +82,11 @@ b3yr_names = c( "b3yr_AA", "b3yr_B", "b3yr_C",  "b3yr_D",  "b3yr_E",  "b3yr_F", 
 b1yr_names = c( "b1yr_AA", "b1yr_B", "b1yr_C",  "b1yr_D",  "b1yr_E",  "b1yr_F",  "b1yr_G",  "b1yr_H",  "b1yr_I",  "b1yr_J",  "b1yr_K",  "b1yr_L",  "b1yr_M",  "b1yr_N",  "b1yr_O",  "b1yr_P",  "b1yr_Q",  "b1yr_R",  "b1yr_S",  "b1yr_T",  "b1yr_U")
 
 #NDII ===================================================================
-for (x in 43:63) {
-  crt <- raster::extract(h04[[6]], area1[x,])
-}
-
-for (x in 22:42) {
-  b3yr <- raster::extract(h04[[6]], area1[x,])
-}
-
-for (x in 1:21) {
-  b1yr <- raster::extract(h04[[6]], area1[x,])
-}
-
-
 crt <- raster::extract(h04[[6]], area1[43:63,])
+b3yr <- raster::extract(h04[[6]], area1[22:42,])
+b1yr <- raster::extract(h04[[6]], area1[1:21,])
 
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
-
-
 
 colnames(a) = c('index', 'transcto')
 a = a %>% 
@@ -107,138 +94,205 @@ a = a %>%
   summarise(index = median(index)) %>% 
   mutate(local = crt_names)
 
+
+colnames(b) = c('index', 'transcto')
 b = b %>% 
-  mutate(parcela = "b3yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
 c = c %>% 
-  mutate(parcela = "b1yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
 ndii1 = as.data.frame(rbind(a, b, c))
-ndii1 <- ndii1[,c(1,3)]
-colnames(ndii1) = c("ndii", "parcela")
+ndii1 <- ndii1[,c(2,3)]
+colnames(ndii1) = c("ndii", "local")
 ndii1 = ndii1 %>% 
   mutate(data = "2004")
-ndii1_md = ndii1 %>%
-  group_by(parcela) %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2004")
 
 
 
 
-
+crt <- raster::extract(h05[[6]], area1[43:63,])
+b3yr <- raster::extract(h05[[6]], area1[22:42,])
+b1yr <- raster::extract(h05[[6]], area1[1:21,])
 
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 
+colnames(a) = c('index', 'transcto')
 a = a %>% 
-  mutate(parcela = crt_names)
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
 b = b %>% 
-  mutate(parcela = "b3yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
 c = c %>% 
-  mutate(parcela = "b1yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
 ndii2 = as.data.frame(rbind(a, b, c))
-ndii2 <- ndii2[,c(1,3)]
-colnames(ndii2) = c("ndii", "parcela")
+ndii2 <- ndii2[,c(2,3)]
+colnames(ndii2) = c("ndii", "local")
 ndii2 = ndii2 %>% 
   mutate(data = "2005")
-ndii2_md = ndii2 %>%
-  group_by(parcela) %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2005")
 
-crt <- raster::extract(h06[[6]], area1[3,]); b3yr <- raster::extract(h06[[6]], area1[1,]); b1yr <- raster::extract(h06[[6]], area1[2,])
+
+
+
+crt <- raster::extract(h06[[6]], area1[43:63,])
+b3yr <- raster::extract(h06[[6]], area1[22:42,])
+b1yr <- raster::extract(h06[[6]], area1[1:21,])
+
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
 a = a %>% 
-  mutate(parcela = "controle")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
 b = b %>% 
-  mutate(parcela = "b3yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
 c = c %>% 
-  mutate(parcela = "b1yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
 ndii3 = as.data.frame(rbind(a, b, c))
-ndii3 <- ndii3[,c(1,3)]
-colnames(ndii3) = c("ndii", "parcela")
+ndii3 <- ndii3[,c(2,3)]
+colnames(ndii3) = c("ndii", "local")
 ndii3 = ndii3 %>% 
   mutate(data = "2006")
-ndii3_md = ndii3 %>%
-  group_by(parcela) %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2006")
 
-crt <- raster::extract(h08[[6]], area1[3,]); b3yr <- raster::extract(h08[[6]], area1[1,]); b1yr <- raster::extract(h08[[6]], area1[2,])
+
+
+
+crt <- raster::extract(h08[[6]], area1[43:63,])
+b3yr <- raster::extract(h08[[6]], area1[22:42,])
+b1yr <- raster::extract(h08[[6]], area1[1:21,])
+
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
 a = a %>% 
-  mutate(parcela = "controle")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
 b = b %>% 
-  mutate(parcela = "b3yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
 c = c %>% 
-  mutate(parcela = "b1yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
 ndii4 = as.data.frame(rbind(a, b, c))
-ndii4 <- ndii4[,c(1,3)]
-colnames(ndii4) = c("ndii", "parcela")
+ndii4 <- ndii4[,c(2,3)]
+colnames(ndii4) = c("ndii", "local")
 ndii4 = ndii4 %>% 
   mutate(data = "2008")
-ndii4_md = ndii4 %>%
-  group_by(parcela) %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2008")
 
-crt <- raster::extract(h10[[6]], area1[3,]); b3yr <- raster::extract(h10[[6]], area1[1,]); b1yr <- raster::extract(h10[[6]], area1[2,])
+
+
+
+
+crt <- raster::extract(h10[[6]], area1[43:63,])
+b3yr <- raster::extract(h10[[6]], area1[22:42,])
+b1yr <- raster::extract(h10[[6]], area1[1:21,])
+
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
 a = a %>% 
-  mutate(parcela = "controle")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
 b = b %>% 
-  mutate(parcela = "b3yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
 c = c %>% 
-  mutate(parcela = "b1yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
 ndii5 = as.data.frame(rbind(a, b, c))
-ndii5 <- ndii5[,c(1,3)]
-colnames(ndii5) = c("ndii", "parcela")
+ndii5 <- ndii5[,c(2,3)]
+colnames(ndii5) = c("ndii", "local")
 ndii5 = ndii5 %>% 
   mutate(data = "2010")
-ndii5_md = ndii5 %>%
-  na.omit() %>% 
-  group_by(parcela) %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2010")
 
-crt <- raster::extract(h11[[6]], area1[3,]); b3yr <- raster::extract(h11[[6]], area1[1,]); b1yr <- raster::extract(h11[[6]], area1[2,])
+
+
+
+
+crt <- raster::extract(h11[[6]], area1[43:63,])
+b3yr <- raster::extract(h11[[6]], area1[22:42,])
+b1yr <- raster::extract(h11[[6]], area1[1:21,])
+
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
 a = a %>% 
-  mutate(parcela = "controle")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
 b = b %>% 
-  mutate(parcela = "b3yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
 c = c %>% 
-  mutate(parcela = "b1yr")
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
 ndii6 = as.data.frame(rbind(a, b, c))
-ndii6 <- ndii6[,c(1,3)]
-colnames(ndii6) = c("ndii", "parcela")
+ndii6 <- ndii6[,c(2,3)]
+colnames(ndii6) = c("ndii", "local")
 ndii6 = ndii6 %>% 
   mutate(data = "2011")
-ndii6_md = ndii6 %>%
-  group_by(parcela) %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2011")
-
-crt <- raster::extract(h12[[6]], area1[3,]); b3yr <- raster::extract(h12[[6]], area1[1,]); b1yr <- raster::extract(h12[[6]], area1[2,])
-a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
-a = a %>% 
-  mutate(parcela = "controle")
-b = b %>% 
-  mutate(parcela = "b3yr")
-c = c %>% 
-  mutate(parcela = "b1yr")
-ndii7 = as.data.frame(rbind(a, b, c))
-ndii7 <- ndii7[,c(1,3)]
-colnames(ndii7) = c("ndii", "parcela")
-ndii7 = ndii7 %>% 
-  mutate(data = "2012")
-ndii7_md = ndii7 %>%
-  group_by(parcela) %>% 
-  na.omit() %>% 
-  summarise(ndii = median(ndii)) %>% 
-  mutate(data = "2012")
 
 
-ndii = as.data.frame(rbind(ndii1, ndii2, ndii3, ndii4, ndii5, ndii6, ndii7))
-ndii_md = as.data.frame(rbind(ndii1_md, ndii2_md, ndii3_md, ndii4_md, ndii5_md, ndii6_md, ndii7_md))
+ndii = as.data.frame(rbind(ndii1, ndii2, ndii3, ndii4, ndii5, ndii6))
 
 
 
