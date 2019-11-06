@@ -27,7 +27,7 @@ biomass = melt(biomass)
 colnames(biomass) = c('plot', 'transcto', 'data', 'biomass')
 
 
-# BEM AQUI!!! <==
+# BEM AQUI!!! <== #Transformar linha em transceto e AA, A, AB em AA!!!!
 
 
 biomass = biomass %>% 
@@ -47,6 +47,8 @@ biomass = biomass %>%
 
 #Fuel ==================================
 fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
+
+#Transformar borda, BORDA, Borda, AA, A e AB em AA!!!!
 
 fuel = fuel %>% 
   na.omit() %>% 
