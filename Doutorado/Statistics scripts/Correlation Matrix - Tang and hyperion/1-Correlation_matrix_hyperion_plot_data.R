@@ -37,20 +37,19 @@ hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
 #Plot data organization
 #Biomass ====================================
 biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
-biomass = biomass[,c(1:6)]
-colnames(biomass) = c('plot', '2004', '2008', '2010', '2011', '2012')
+biomass = biomass[,c(1:7)]
+colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012')
 biomass = melt(biomass)
-colnames(biomass) = c('plot', 'data', 'biomass')
+colnames(biomass) = c('plot', 'transcto', 'data', 'biomass')
 
 biomass = biomass %>% 
   na.omit() %>% 
-  group_by(plot, data) %>% 
+  group_by(plot, transcto, data) %>% 
   summarise(biomass = sum(biomass))%>%
   ungroup()%>%
   mutate(parcela=factor(plot,labels=c("controle","b3yr","b1yr")))
-  
-biomass = biomass[,-1]
 
+biomass = biomass[,-1]; biomass = biomass[,-1]
 #LAI ====================================
 lai = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
 
