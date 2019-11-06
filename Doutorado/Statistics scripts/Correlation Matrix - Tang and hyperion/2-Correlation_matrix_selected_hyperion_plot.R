@@ -26,6 +26,10 @@ colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012'
 biomass = melt(biomass)
 colnames(biomass) = c('plot', 'transcto', 'data', 'biomass')
 
+
+# BEM AQUI!!! <==
+
+
 biomass = biomass %>% 
   na.omit() %>% 
   group_by(plot, transcto, data) %>% 
