@@ -41,15 +41,17 @@ biomass = biomass[,c(1:7)]
 colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012')
 biomass = melt(biomass)
 colnames(biomass) = c('plot', 'transcto', 'data', 'biomass')
+biomass = biomass[,-2]
 
 biomass = biomass %>% 
   na.omit() %>% 
-  group_by(plot, transcto, data) %>% 
+  group_by(plot, data) %>% 
   summarise(biomass = sum(biomass))%>%
   ungroup()%>%
   mutate(parcela=factor(plot,labels=c("controle","b3yr","b1yr")))
 
-biomass = biomass[,-1]; biomass = biomass[,-1]
+biomass = biomass[,-1]
+
 #LAI ====================================
 lai = read.csv("LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
 
