@@ -8,6 +8,7 @@
 #OBS: Same years are cutted control. So I change control area to other place that the forest is preserved
 library(raster)
 library(rgdal)
+library(stringr)
 library(rgeos)
 library(maptools)
 library(ggplot2)
@@ -74,6 +75,12 @@ for (x in 1:63) {
   plot(area1[x,], color = 'blue', add = T)
 }
 
+crt_names = c( "controle_AA", "controle_B", "controle_C",  "controle_D",  "controle_E",  "controle_F",  "controle_G",  "controle_H",  "controle_I",  "controle_J",  "controle_K",  "controle_L",  "controle_M",  "controle_N",  "controle_O",  "controle_P",  "controle_Q",  "controle_R",  "controle_S",  "controle_T",  "controle_U")
+
+b3yr_names = c( "b3yr_AA", "b3yr_B", "b3yr_C",  "b3yr_D",  "b3yr_E",  "b3yr_F",  "b3yr_G",  "b3yr_H",  "b3yr_I",  "b3yr_J",  "b3yr_K",  "b3yr_L",  "b3yr_M",  "b3yr_N",  "b3yr_O",  "b3yr_P",  "b3yr_Q",  "b3yr_R",  "b3yr_S",  "b3yr_T",  "b3yr_U")
+
+b1yr_names = c( "b1yr_AA", "b1yr_B", "b1yr_C",  "b1yr_D",  "b1yr_E",  "b1yr_F",  "b1yr_G",  "b1yr_H",  "b1yr_I",  "b1yr_J",  "b1yr_K",  "b1yr_L",  "b1yr_M",  "b1yr_N",  "b1yr_O",  "b1yr_P",  "b1yr_Q",  "b1yr_R",  "b1yr_S",  "b1yr_T",  "b1yr_U")
+
 #NDII ===================================================================
 for (x in 43:63) {
   crt <- raster::extract(h04[[6]], area1[x,])
@@ -92,12 +99,13 @@ crt <- raster::extract(h04[[6]], area1[43:63,])
 
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 
-crt_names = c( "controle_AA", "controle_B", "controle_C",  "controle_D",  "controle_E",  "controle_F",  "controle_G",  "controle_H",  "controle_I",  "controle_J",  "controle_K",  "controle_L",  "controle_M",  "controle_N",  "controle_O",  "controle_P",  "controle_Q",  "controle_R",  "controle_S",  "controle_T",  "controle_U")
 
 
+colnames(a) = c('index', 'transcto')
 a = a %>% 
-  group_by(L1) %>% 
-  mutate(value = median(value)))
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
 
 b = b %>% 
   mutate(parcela = "b3yr")
