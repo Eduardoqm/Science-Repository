@@ -30,11 +30,8 @@ h10 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Douto
 
 h11 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2011", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
-#h12 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2012", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
-#h13 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2013", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
-
-#Polygon to get values
+#Polygon to get values ==================================
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1_AA")
 area1 = spTransform(area1, crs(h04))
 
@@ -293,4 +290,239 @@ ndii6 = ndii6 %>%
 
 
 ndii = as.data.frame(rbind(ndii1, ndii2, ndii3, ndii4, ndii5, ndii6))
+
+
+#LWVI2 ========================================================
+crt <- raster::extract(h04[[4]], area1[43:63,])
+b3yr <- raster::extract(h04[[4]], area1[22:42,])
+b1yr <- raster::extract(h04[[4]], area1[1:21,])
+
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
+a = a %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
+b = b %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
+c = c %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
+lwvi21 = as.data.frame(rbind(a, b, c))
+lwvi21 <- lwvi21[,c(2,3)]
+colnames(lwvi21) = c("lwvi2", "local")
+lwvi21 = lwvi21 %>% 
+  mutate(data = "2004")
+
+
+
+
+crt <- raster::extract(h05[[4]], area1[43:63,])
+b3yr <- raster::extract(h05[[4]], area1[22:42,])
+b1yr <- raster::extract(h05[[4]], area1[1:21,])
+
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
+a = a %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
+b = b %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
+c = c %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
+lwvi22 = as.data.frame(rbind(a, b, c))
+lwvi22 <- lwvi22[,c(2,3)]
+colnames(lwvi22) = c("lwvi2", "local")
+lwvi22 = lwvi22 %>% 
+  mutate(data = "2005")
+
+
+
+
+crt <- raster::extract(h06[[4]], area1[43:63,])
+b3yr <- raster::extract(h06[[4]], area1[22:42,])
+b1yr <- raster::extract(h06[[4]], area1[1:21,])
+
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
+a = a %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
+b = b %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
+c = c %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
+lwvi23 = as.data.frame(rbind(a, b, c))
+lwvi23 <- lwvi23[,c(2,3)]
+colnames(lwvi23) = c("lwvi2", "local")
+lwvi23 = lwvi23 %>% 
+  mutate(data = "2006")
+
+
+
+
+crt <- raster::extract(h08[[4]], area1[43:63,])
+b3yr <- raster::extract(h08[[4]], area1[22:42,])
+b1yr <- raster::extract(h08[[4]], area1[1:21,])
+
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
+a = a %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
+b = b %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
+c = c %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
+lwvi24 = as.data.frame(rbind(a, b, c))
+lwvi24 <- lwvi24[,c(2,3)]
+colnames(lwvi24) = c("lwvi2", "local")
+lwvi24 = lwvi24 %>% 
+  mutate(data = "2008")
+
+
+
+
+
+crt <- raster::extract(h10[[4]], area1[43:63,])
+b3yr <- raster::extract(h10[[4]], area1[22:42,])
+b1yr <- raster::extract(h10[[4]], area1[1:21,])
+
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
+a = a %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
+b = b %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
+c = c %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
+lwvi25 = as.data.frame(rbind(a, b, c))
+lwvi25 <- lwvi25[,c(2,3)]
+colnames(lwvi25) = c("lwvi2", "local")
+lwvi25 = lwvi25 %>% 
+  mutate(data = "2010")
+
+
+
+
+
+crt <- raster::extract(h11[[4]], area1[43:63,])
+b3yr <- raster::extract(h11[[4]], area1[22:42,])
+b1yr <- raster::extract(h11[[4]], area1[1:21,])
+
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+
+colnames(a) = c('index', 'transcto')
+a = a %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = crt_names)
+
+
+colnames(b) = c('index', 'transcto')
+b = b %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b3yr_names)
+
+colnames(c) = c('index', 'transcto')
+c = c %>% 
+  group_by(transcto) %>% 
+  summarise(index = median(index)) %>% 
+  mutate(local = b1yr_names)
+
+
+lwvi26 = as.data.frame(rbind(a, b, c))
+lwvi26 <- lwvi26[,c(2,3)]
+colnames(lwvi26) = c("lwvi2", "local")
+lwvi26 = lwvi26 %>% 
+  mutate(data = "2011")
+
+
+lwvi2 = as.data.frame(rbind(lwvi21, lwvi22, lwvi23, lwvi24, lwvi25, lwvi26))
+
+#Union of indexs
+index = cbind(ndii, lwvi2)
+index = index[,c(1,4,5,6)]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
