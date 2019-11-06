@@ -16,6 +16,10 @@ hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
 
 #Plot data organization
 #Biomass ====================================
+
+#Transformar linha em transceto!!!! <====
+
+
 biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
 biomass = biomass[,c(1:7)]
 colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012')
@@ -73,22 +77,31 @@ fuel = fuel %>%
 
 #Join everything =========================
 index = index %>% 
-  unite(col = "id", c("local", "data"), sep = '_')
+  mutate(local2 = local) %>% 
+  mutate(data2 = data) %>% 
+  unite(col = "id", c("local2", "data2"), sep = '_')
 
 biomass = biomass %>% 
-  unite(col = "id", c("local", "data"), sep = '_')
+  mutate(local2 = local) %>% 
+  mutate(data2 = data) %>% 
+  unite(col = "id", c("local2", "data2"), sep = '_')
 
 fuel = fuel %>% 
-  unite(col = "id", c("local", "data"), sep = '_')
+  mutate(local2 = local) %>% 
+  mutate(data2 = data) %>% 
+  unite(col = "id", c("local2", "data2"), sep = '_')
 
 
 index = full_join(index, biomass, by="id")
 index = full_join(index, fuel, by="id")
 
-index = index %>% 
-  separate(col = "id", c("parcela", "data"), sep = '_')
+#index = index %>% 
+ # separate(col = "id", c("parcela", "data"), sep = '_')
 
-index = index[,c(3,1,2,6,10)]
+index = index[,c(3,1,2,8,14)]
+colnames(index) = c("Parcela", "NDII", "LWVI2", "Biomass", "Fuel")
+
+index = na.omit(index)
 
 ggpairs(index)
 
