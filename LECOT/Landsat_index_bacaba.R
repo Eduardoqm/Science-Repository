@@ -8,7 +8,7 @@ library(gridExtra)
 
 #Before fire =========
 #Data bank
-setwd("C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\EQMapas\\Pratica Divino\\Landsat_bacaba\\2019-09\\Before")
+setwd("C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\EQMapas\\LECOT\\Landsat_bacaba\\2019-09\\Before")
 
 b4 = raster("20190829.B4.tif")
 b5 = raster("20190829.B5.tif")
@@ -56,7 +56,7 @@ levelplot(nbri, margin = FALSE, par.settings = RdBuTheme, main = "NBRI 2019 - be
 
 #After fire ==========
 #Data bank
-setwd("C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\EQMapas\\Pratica Divino\\Landsat_bacaba\\2019-09\\After")
+setwd("C:\\Users\\Eduardo Q Marques\\Documents\\My Jobs\\EQMapas\\LECOT\\Landsat_bacaba\\2019-09\\After")
 
 b4 = raster("20190914.B4.tif")
 b5 = raster("20190914.B5.tif")
@@ -90,6 +90,7 @@ ndwi_b <- (b5-b6)/(b5+b6)
 ndvi_b = mask(ndvi_b, bcb)
 levelplot(ndvi_b, margin = FALSE, par.settings = RdBuTheme, main = "NDVI 2019 - after fire")
 #layer(sp.lines(bcb, lwd=2.0, col='black'))
+#writeRaster(ndvi_b, filename = "ndvi_bcb.tif", format = "GTiff")
 
 #NDWI
 ndwi_b = mask(ndwi_b, bcb)
