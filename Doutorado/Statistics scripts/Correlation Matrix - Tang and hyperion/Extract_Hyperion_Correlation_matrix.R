@@ -33,7 +33,7 @@ h11 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Douto
 
 
 #Polygon to get values ==================================
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1_AA")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1_AA_hyperion")
 area1 = spTransform(area1, crs(h04))
 
 area1df = as.data.frame(area1@data$ID)
