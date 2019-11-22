@@ -117,6 +117,16 @@ ggpairs(index)
 
 
 
+
+
+
+
+
+
+
+
+
+
 #Struture
 struc = hy[,c(2, 4, 10, 12, 18, 19, 21)]
 
