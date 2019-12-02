@@ -142,26 +142,31 @@ bloco_a$index #See name and dates of each scene
 a = bloco_a %>% 
   filter(index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1')
 a$index[a$index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1'] <- 'Control'
-colnames(a) = c('gradient', 'plots', 'ndvi')
+colnames(a) = c('gradient', 'Parcela', 'ndvi')
 
 b = bloco_b %>% 
   filter(index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1')
 b$index[b$index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1'] <- 'B1yr'
-colnames(b) = c('gradient', 'plots', 'ndvi')
+colnames(b) = c('gradient', 'Parcela', 'ndvi')
 
 c = bloco_c %>% 
   filter(index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1')
 c$index[c$index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1'] <- 'B3yr'
-colnames(c) = c('gradient', 'plots', 'ndvi')
+colnames(c) = c('gradient', 'Parcela', 'ndvi')
 
 ndvi = rbind(a,b,c)
 
 #Graphics =======================
-ggplot(ndvi, aes(gradient,ndvi, col=plots))+ 
-  geom_line(aes(group=plots), size = 1)+
-  geom_point()+
-  labs(fill= "Plot",x="Distancia da borda (m)",y="NDVI")+
+ggplot(ndvi, aes(gradient,ndvi, col=Parcela))+ 
+  geom_line(aes(group=Parcela), size = 1.5)+
+  geom_point(size = 2)+
+  labs(fill= "Plot",x="Distância da borda (m)",y="NDVI")+
+  geom_vline(xintercept = 3.5, color = "black", linetype = "dashed")+
+  annotate("text", x = 2.7, y = 0.5, label = "Borda")+
+  annotate("text", x = 4.5, y = 0.5, label = "Núcleo")+
   theme_minimal()+
+  theme(legend.position = c(0.85, 0.25),
+        legend.background = element_rect(colour = 'white', fill = "white"))+
   theme(axis.text.x = element_text(angle = 90))
 
 
