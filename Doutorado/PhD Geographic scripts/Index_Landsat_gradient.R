@@ -25,8 +25,8 @@ crt_df = c(1)
 crt_seq = seq(3,30, by=3)
 
 for (x in crt_seq) {
-  plot(index[[12]], main = 'EXTRACTION PROGRESS - CONTROL')
-  plot(area1[x,], add=TRUE)
+  #plot(index[[12]], main = 'EXTRACTION PROGRESS - CONTROL')
+  #plot(area1[x,], add=TRUE)
   crt <- raster::extract(index, area1[x,])
   b <- melt(crt)
   colnames(b) = c('id', 'index', 'crt', 'l1')
@@ -51,8 +51,8 @@ b3yr_df = c(1)
 b3yr_seq = seq(2,30, by=3)
 
 for (x in b3yr_seq) {
-  plot(index[[12]], main = 'EXTRACTION PROGRESS - B3yr')
-  plot(area1[x,], add=TRUE)
+  #plot(index[[12]], main = 'EXTRACTION PROGRESS - B3yr')
+  #plot(area1[x,], add=TRUE)
   b3yr <- raster::extract(index, area1[x,])
   b <- melt(b3yr)
   colnames(b) = c('id', 'index', 'b3yr', 'l1')
@@ -77,8 +77,8 @@ b1yr_df = c(1)
 b1yr_seq = seq(1,30, by=3)
 
 for (x in b1yr_seq) {
-  plot(index[[12]], main = 'EXTRACTION PROGRESS - B1yr')
-  plot(area1[x,], add=TRUE)
+  #plot(index[[12]], main = 'EXTRACTION PROGRESS - B1yr')
+  #plot(area1[x,], add=TRUE)
   b1yr <- raster::extract(index, area1[x,])
   b <- melt(b1yr)
   colnames(b) = c('id', 'index', 'b1yr', 'l1')
@@ -135,7 +135,7 @@ bloco_c$gradient[bloco_c$gradient == 22] <- 200
 bloco_c$gradient[bloco_c$gradient == 25] <- 100
 bloco_c$gradient[bloco_c$gradient == 28] <- 0
 
-
+bloco_a$index #See name and dates of each scene
 
 #Group by index and all plots
 #NDVI===================
