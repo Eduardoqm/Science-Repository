@@ -15,7 +15,7 @@ list <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/
 index <- stack(list)
 
 #Abrir os shapes para amostrar pixels (100 pontos por shape)
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Amostra_poly",layer="Grid_ABC_100m")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="Grid_ABC_100m_hyperion")
 area1 = spTransform(area1, crs(index))
 
 #Extract data sequence
