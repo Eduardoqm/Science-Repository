@@ -140,18 +140,18 @@ bloco_c$gradient[bloco_c$gradient == 28] <- 0
 #Group by index and all plots
 #NDVI===================
 a = bloco_a %>% 
-  filter(index == 'LT05_L1TP_224069_20040623_20161130_01_T1_sr_band1')
-a$index[a$index == 'LT05_L1TP_224069_20040623_20161130_01_T1_sr_band1'] <- 'Control'
+  filter(index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1')
+a$index[a$index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1'] <- 'Control'
 colnames(a) = c('gradient', 'plots', 'ndvi')
 
 b = bloco_b %>% 
-  filter(index == 'LT05_L1TP_224069_20040623_20161130_01_T1_sr_band1')
-b$index[b$index == 'LT05_L1TP_224069_20040623_20161130_01_T1_sr_band1'] <- 'B1yr'
+  filter(index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1')
+b$index[b$index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1'] <- 'B1yr'
 colnames(b) = c('gradient', 'plots', 'ndvi')
 
 c = bloco_c %>% 
-  filter(index == 'LT05_L1TP_224069_20040623_20161130_01_T1_sr_band1')
-c$index[c$index == 'LT05_L1TP_224069_20040623_20161130_01_T1_sr_band1'] <- 'B3yr'
+  filter(index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1')
+c$index[c$index == 'LT05_L1TP_224069_20110627_20161008_01_T1_sr_band1'] <- 'B3yr'
 colnames(c) = c('gradient', 'plots', 'ndvi')
 
 ndvi = rbind(a,b,c)
