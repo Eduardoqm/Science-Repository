@@ -6,6 +6,7 @@ library(rgdal)
 library(ggplot2)
 library(reshape2)
 library(dplyr)
+library(tidyr)
 
 #Temporal scale=============================================================================
 #Landsat -- obs: Just change de folder name to chande the index and choose the graphic
@@ -156,10 +157,10 @@ colnames(c) = c('gradient', 'plots', 'ndvi')
 ndvi = rbind(a,b,c)
 
 #Graphics =======================
-ggplot(msi, aes(gradient,msi, col=plots))+ 
+ggplot(ndvi, aes(gradient,ndvi, col=plots))+ 
   geom_line(aes(group=plots), size = 1)+
   geom_point()+
-  labs(fill= "Plot",x="Distancia da borda (m)",y="MSI")+
+  labs(fill= "Plot",x="Distancia da borda (m)",y="NDVI")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
