@@ -1,7 +1,7 @@
 ###############################################
 # THE UNION OF THE HYPERION VEGETATION INDEXS #
 #          => A Temporal scale <==            #
-#            => Edge and Core <=              #
+#                 => EDGE <=                  #
 # By: Eduardo Q Marques   03-12-2019          #
 ###############################################
 
