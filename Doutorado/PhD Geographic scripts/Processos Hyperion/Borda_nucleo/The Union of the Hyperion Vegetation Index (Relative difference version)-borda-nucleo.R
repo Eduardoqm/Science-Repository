@@ -1,7 +1,8 @@
 ###############################################
 # THE UNION OF THE HYPERION VEGETATION INDEXS #
 #          => A Temporal scale <==            #
-# By: Eduardo Q Marques   17-09-2019          #
+#            => Edge and Core <=              #
+# By: Eduardo Q Marques   03-12-2019          #
 ###############################################
 
 #OBS: Same years are cutted control. So I change control area to other place that the forest is preserved
@@ -28,14 +29,12 @@ h11 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Douto
 
 h12 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2012", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
 
-#h13 <- stack(list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/2013", pattern = ".tif$", full.names=TRUE,recursive=TRUE))
-
 #Polygon to get values
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="Borda_nucleo_hyperion")
 area1 = spTransform(area1, crs(h04))
 
 #ARI ===================================================================
-crt <- raster::extract(h04[[2]], area1[3,]); b3yr <- raster::extract(h04[[2]], area1[1,]); b1yr <- raster::extract(h04[[2]], area1[2,])
+crt <- raster::extract(h04[[2]], area1[1,]); b3yr <- raster::extract(h04[[2]], area1[3,]); b1yr <- raster::extract(h04[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -53,7 +52,7 @@ ari1_md = ari1 %>%
   summarise(ari = median(ari)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[2]], area1[3,]); b3yr <- raster::extract(h05[[2]], area1[1,]); b1yr <- raster::extract(h05[[2]], area1[2,])
+crt <- raster::extract(h05[[2]], area1[1,]); b3yr <- raster::extract(h05[[2]], area1[3,]); b1yr <- raster::extract(h05[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -71,7 +70,7 @@ ari2_md = ari2 %>%
   summarise(ari = median(ari)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[2]], area1[3,]); b3yr <- raster::extract(h06[[2]], area1[1,]); b1yr <- raster::extract(h06[[2]], area1[2,])
+crt <- raster::extract(h06[[2]], area1[1,]); b3yr <- raster::extract(h06[[2]], area1[3,]); b1yr <- raster::extract(h06[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -89,7 +88,7 @@ ari3_md = ari3 %>%
   summarise(ari = median(ari)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[2]], area1[3,]); b3yr <- raster::extract(h08[[2]], area1[1,]); b1yr <- raster::extract(h08[[2]], area1[2,])
+crt <- raster::extract(h08[[2]], area1[1,]); b3yr <- raster::extract(h08[[2]], area1[3,]); b1yr <- raster::extract(h08[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -107,7 +106,7 @@ ari4_md = ari4 %>%
   summarise(ari = median(ari)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[2]], area1[3,]); b3yr <- raster::extract(h10[[2]], area1[1,]); b1yr <- raster::extract(h10[[2]], area1[2,])
+crt <- raster::extract(h10[[2]], area1[1,]); b3yr <- raster::extract(h10[[2]], area1[3,]); b1yr <- raster::extract(h10[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -126,7 +125,7 @@ ari5_md = ari5 %>%
   summarise(ari = median(ari)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[2]], area1[3,]); b3yr <- raster::extract(h11[[2]], area1[1,]); b1yr <- raster::extract(h11[[2]], area1[2,])
+crt <- raster::extract(h11[[2]], area1[1,]); b3yr <- raster::extract(h11[[2]], area1[3,]); b1yr <- raster::extract(h11[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -144,7 +143,7 @@ ari6_md = ari6 %>%
   summarise(ari = median(ari)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[2]], area1[3,]); b3yr <- raster::extract(h12[[2]], area1[1,]); b1yr <- raster::extract(h12[[2]], area1[2,])
+crt <- raster::extract(h12[[2]], area1[1,]); b3yr <- raster::extract(h12[[2]], area1[3,]); b1yr <- raster::extract(h12[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -216,7 +215,7 @@ b3yr_1=gg[-c(1:7), ]
 b3yr_1$indice = c("ARI")
 
 #EVI ===================================================================
-crt <- raster::extract(h04[[2]], area1[3,]); b3yr <- raster::extract(h04[[2]], area1[1,]); b1yr <- raster::extract(h04[[2]], area1[2,])
+crt <- raster::extract(h04[[2]], area1[1,]); b3yr <- raster::extract(h04[[2]], area1[3,]); b1yr <- raster::extract(h04[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -234,7 +233,7 @@ evi1_md = evi1 %>%
   summarise(evi = median(evi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[2]], area1[3,]); b3yr <- raster::extract(h05[[2]], area1[1,]); b1yr <- raster::extract(h05[[2]], area1[2,])
+crt <- raster::extract(h05[[2]], area1[1,]); b3yr <- raster::extract(h05[[2]], area1[3,]); b1yr <- raster::extract(h05[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -252,7 +251,7 @@ evi2_md = evi2 %>%
   summarise(evi = median(evi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[2]], area1[3,]); b3yr <- raster::extract(h06[[2]], area1[1,]); b1yr <- raster::extract(h06[[2]], area1[2,])
+crt <- raster::extract(h06[[2]], area1[1,]); b3yr <- raster::extract(h06[[2]], area1[3,]); b1yr <- raster::extract(h06[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -270,7 +269,7 @@ evi3_md = evi3 %>%
   summarise(evi = median(evi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[2]], area1[3,]); b3yr <- raster::extract(h08[[2]], area1[1,]); b1yr <- raster::extract(h08[[2]], area1[2,])
+crt <- raster::extract(h08[[2]], area1[1,]); b3yr <- raster::extract(h08[[2]], area1[3,]); b1yr <- raster::extract(h08[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -288,7 +287,7 @@ evi4_md = evi4 %>%
   summarise(evi = median(evi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[2]], area1[3,]); b3yr <- raster::extract(h10[[2]], area1[1,]); b1yr <- raster::extract(h10[[2]], area1[2,])
+crt <- raster::extract(h10[[2]], area1[1,]); b3yr <- raster::extract(h10[[2]], area1[3,]); b1yr <- raster::extract(h10[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -307,7 +306,7 @@ evi5_md = evi5 %>%
   summarise(evi = median(evi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[2]], area1[3,]); b3yr <- raster::extract(h11[[2]], area1[1,]); b1yr <- raster::extract(h11[[2]], area1[2,])
+crt <- raster::extract(h11[[2]], area1[1,]); b3yr <- raster::extract(h11[[2]], area1[3,]); b1yr <- raster::extract(h11[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -325,7 +324,7 @@ evi6_md = evi6 %>%
   summarise(evi = median(evi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[2]], area1[3,]); b3yr <- raster::extract(h12[[2]], area1[1,]); b1yr <- raster::extract(h12[[2]], area1[2,])
+crt <- raster::extract(h12[[2]], area1[1,]); b3yr <- raster::extract(h12[[2]], area1[3,]); b1yr <- raster::extract(h12[[2]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -397,7 +396,7 @@ b3yr_2=gg[-c(1:7), ]
 b3yr_2$indice = c("EVI")
 
 #LWVI2 ===================================================================
-crt <- raster::extract(h04[[4]], area1[3,]); b3yr <- raster::extract(h04[[4]], area1[1,]); b1yr <- raster::extract(h04[[4]], area1[2,])
+crt <- raster::extract(h04[[4]], area1[1,]); b3yr <- raster::extract(h04[[4]], area1[3,]); b1yr <- raster::extract(h04[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -415,7 +414,7 @@ lwvi21_md = lwvi21 %>%
   summarise(lwvi2 = median(lwvi2)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[4]], area1[3,]); b3yr <- raster::extract(h05[[4]], area1[1,]); b1yr <- raster::extract(h05[[4]], area1[2,])
+crt <- raster::extract(h05[[4]], area1[1,]); b3yr <- raster::extract(h05[[4]], area1[3,]); b1yr <- raster::extract(h05[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -433,7 +432,7 @@ lwvi22_md = lwvi22 %>%
   summarise(lwvi2 = median(lwvi2)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[4]], area1[3,]); b3yr <- raster::extract(h06[[4]], area1[1,]); b1yr <- raster::extract(h06[[4]], area1[2,])
+crt <- raster::extract(h06[[4]], area1[1,]); b3yr <- raster::extract(h06[[4]], area1[3,]); b1yr <- raster::extract(h06[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -451,7 +450,7 @@ lwvi23_md = lwvi23 %>%
   summarise(lwvi2 = median(lwvi2)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[4]], area1[3,]); b3yr <- raster::extract(h08[[4]], area1[1,]); b1yr <- raster::extract(h08[[4]], area1[2,])
+crt <- raster::extract(h08[[4]], area1[1,]); b3yr <- raster::extract(h08[[4]], area1[3,]); b1yr <- raster::extract(h08[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -469,7 +468,7 @@ lwvi24_md = lwvi24 %>%
   summarise(lwvi2 = median(lwvi2)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[4]], area1[3,]); b3yr <- raster::extract(h10[[4]], area1[1,]); b1yr <- raster::extract(h10[[4]], area1[2,])
+crt <- raster::extract(h10[[4]], area1[1,]); b3yr <- raster::extract(h10[[4]], area1[3,]); b1yr <- raster::extract(h10[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -488,7 +487,7 @@ lwvi25_md = lwvi25 %>%
   summarise(lwvi2 = median(lwvi2)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[4]], area1[3,]); b3yr <- raster::extract(h11[[4]], area1[1,]); b1yr <- raster::extract(h11[[4]], area1[2,])
+crt <- raster::extract(h11[[4]], area1[1,]); b3yr <- raster::extract(h11[[4]], area1[3,]); b1yr <- raster::extract(h11[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -506,7 +505,7 @@ lwvi26_md = lwvi26 %>%
   summarise(lwvi2 = median(lwvi2)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[4]], area1[3,]); b3yr <- raster::extract(h12[[4]], area1[1,]); b1yr <- raster::extract(h12[[4]], area1[2,])
+crt <- raster::extract(h12[[4]], area1[1,]); b3yr <- raster::extract(h12[[4]], area1[3,]); b1yr <- raster::extract(h12[[4]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -577,7 +576,7 @@ b1yr_3$indice = c("LWVI")
 b3yr_3=gg[-c(1:7), ]
 b3yr_3$indice = c("LWVI")
 #MSI ===================================================================
-crt <- raster::extract(h04[[5]], area1[3,]); b3yr <- raster::extract(h04[[5]], area1[1,]); b1yr <- raster::extract(h04[[5]], area1[2,])
+crt <- raster::extract(h04[[5]], area1[1,]); b3yr <- raster::extract(h04[[5]], area1[3,]); b1yr <- raster::extract(h04[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -595,7 +594,7 @@ msi1_md = msi1 %>%
   summarise(msi = median(msi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[5]], area1[3,]); b3yr <- raster::extract(h05[[5]], area1[1,]); b1yr <- raster::extract(h05[[5]], area1[2,])
+crt <- raster::extract(h05[[5]], area1[1,]); b3yr <- raster::extract(h05[[5]], area1[3,]); b1yr <- raster::extract(h05[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -613,7 +612,7 @@ msi2_md = msi2 %>%
   summarise(msi = median(msi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[5]], area1[3,]); b3yr <- raster::extract(h06[[5]], area1[1,]); b1yr <- raster::extract(h06[[5]], area1[2,])
+crt <- raster::extract(h06[[5]], area1[1,]); b3yr <- raster::extract(h06[[5]], area1[3,]); b1yr <- raster::extract(h06[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -631,7 +630,7 @@ msi3_md = msi3 %>%
   summarise(msi = median(msi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[5]], area1[3,]); b3yr <- raster::extract(h08[[5]], area1[1,]); b1yr <- raster::extract(h08[[5]], area1[2,])
+crt <- raster::extract(h08[[5]], area1[1,]); b3yr <- raster::extract(h08[[5]], area1[3,]); b1yr <- raster::extract(h08[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -649,7 +648,7 @@ msi4_md = msi4 %>%
   summarise(msi = median(msi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[5]], area1[3,]); b3yr <- raster::extract(h10[[5]], area1[1,]); b1yr <- raster::extract(h10[[5]], area1[2,])
+crt <- raster::extract(h10[[5]], area1[1,]); b3yr <- raster::extract(h10[[5]], area1[3,]); b1yr <- raster::extract(h10[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -668,7 +667,7 @@ msi5_md = msi5 %>%
   summarise(msi = median(msi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[5]], area1[3,]); b3yr <- raster::extract(h11[[5]], area1[1,]); b1yr <- raster::extract(h11[[5]], area1[2,])
+crt <- raster::extract(h11[[5]], area1[1,]); b3yr <- raster::extract(h11[[5]], area1[3,]); b1yr <- raster::extract(h11[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -686,7 +685,7 @@ msi6_md = msi6 %>%
   summarise(msi = median(msi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[5]], area1[3,]); b3yr <- raster::extract(h12[[5]], area1[1,]); b1yr <- raster::extract(h12[[5]], area1[2,])
+crt <- raster::extract(h12[[5]], area1[1,]); b3yr <- raster::extract(h12[[5]], area1[3,]); b1yr <- raster::extract(h12[[5]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -757,7 +756,7 @@ b1yr_4$indice = c("MSI")
 b3yr_4=gg[-c(1:7), ]
 b3yr_4$indice = c("MSI")
 #NBRI ===================================================================
-crt <- raster::extract(h04[[6]], area1[3,]); b3yr <- raster::extract(h04[[6]], area1[1,]); b1yr <- raster::extract(h04[[6]], area1[2,])
+crt <- raster::extract(h04[[6]], area1[1,]); b3yr <- raster::extract(h04[[6]], area1[3,]); b1yr <- raster::extract(h04[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -775,7 +774,7 @@ ndii1_md = ndii1 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[6]], area1[3,]); b3yr <- raster::extract(h05[[6]], area1[1,]); b1yr <- raster::extract(h05[[6]], area1[2,])
+crt <- raster::extract(h05[[6]], area1[1,]); b3yr <- raster::extract(h05[[6]], area1[3,]); b1yr <- raster::extract(h05[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -793,7 +792,7 @@ ndii2_md = ndii2 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[6]], area1[3,]); b3yr <- raster::extract(h06[[6]], area1[1,]); b1yr <- raster::extract(h06[[6]], area1[2,])
+crt <- raster::extract(h06[[6]], area1[1,]); b3yr <- raster::extract(h06[[6]], area1[3,]); b1yr <- raster::extract(h06[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -811,7 +810,7 @@ ndii3_md = ndii3 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[6]], area1[3,]); b3yr <- raster::extract(h08[[6]], area1[1,]); b1yr <- raster::extract(h08[[6]], area1[2,])
+crt <- raster::extract(h08[[6]], area1[1,]); b3yr <- raster::extract(h08[[6]], area1[3,]); b1yr <- raster::extract(h08[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -829,7 +828,7 @@ ndii4_md = ndii4 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[6]], area1[3,]); b3yr <- raster::extract(h10[[6]], area1[1,]); b1yr <- raster::extract(h10[[6]], area1[2,])
+crt <- raster::extract(h10[[6]], area1[1,]); b3yr <- raster::extract(h10[[6]], area1[3,]); b1yr <- raster::extract(h10[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -848,7 +847,7 @@ ndii5_md = ndii5 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[6]], area1[3,]); b3yr <- raster::extract(h11[[6]], area1[1,]); b1yr <- raster::extract(h11[[6]], area1[2,])
+crt <- raster::extract(h11[[6]], area1[1,]); b3yr <- raster::extract(h11[[6]], area1[3,]); b1yr <- raster::extract(h11[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -866,7 +865,7 @@ ndii6_md = ndii6 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[6]], area1[3,]); b3yr <- raster::extract(h12[[6]], area1[1,]); b1yr <- raster::extract(h12[[6]], area1[2,])
+crt <- raster::extract(h12[[6]], area1[1,]); b3yr <- raster::extract(h12[[6]], area1[3,]); b1yr <- raster::extract(h12[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -937,7 +936,7 @@ b1yr_5$indice = c("NBRI")
 b3yr_5=gg[-c(1:7), ]
 b3yr_5$indice = c("NBRI")
 #NBRI2 ===================================================================
-crt <- raster::extract(h04[[18]], area1[3,]); b3yr <- raster::extract(h04[[18]], area1[1,]); b1yr <- raster::extract(h04[[18]], area1[2,])
+crt <- raster::extract(h04[[18]], area1[1,]); b3yr <- raster::extract(h04[[18]], area1[3,]); b1yr <- raster::extract(h04[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -955,7 +954,7 @@ nbri21_md = nbri21 %>%
   summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[18]], area1[3,]); b3yr <- raster::extract(h05[[18]], area1[1,]); b1yr <- raster::extract(h05[[18]], area1[2,])
+crt <- raster::extract(h05[[18]], area1[1,]); b3yr <- raster::extract(h05[[18]], area1[3,]); b1yr <- raster::extract(h05[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -973,7 +972,7 @@ nbri22_md = nbri22 %>%
   summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[18]], area1[3,]); b3yr <- raster::extract(h06[[18]], area1[1,]); b1yr <- raster::extract(h06[[18]], area1[2,])
+crt <- raster::extract(h06[[18]], area1[1,]); b3yr <- raster::extract(h06[[18]], area1[3,]); b1yr <- raster::extract(h06[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -991,7 +990,7 @@ nbri23_md = nbri23 %>%
   summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[18]], area1[3,]); b3yr <- raster::extract(h08[[18]], area1[1,]); b1yr <- raster::extract(h08[[18]], area1[2,])
+crt <- raster::extract(h08[[18]], area1[1,]); b3yr <- raster::extract(h08[[18]], area1[3,]); b1yr <- raster::extract(h08[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1009,7 +1008,7 @@ nbri24_md = nbri24 %>%
   summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[18]], area1[3,]); b3yr <- raster::extract(h10[[18]], area1[1,]); b1yr <- raster::extract(h10[[18]], area1[2,])
+crt <- raster::extract(h10[[18]], area1[1,]); b3yr <- raster::extract(h10[[18]], area1[3,]); b1yr <- raster::extract(h10[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1028,7 +1027,7 @@ nbri25_md = nbri25 %>%
   summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[18]], area1[3,]); b3yr <- raster::extract(h11[[18]], area1[1,]); b1yr <- raster::extract(h11[[18]], area1[2,])
+crt <- raster::extract(h11[[18]], area1[1,]); b3yr <- raster::extract(h11[[18]], area1[3,]); b1yr <- raster::extract(h11[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1046,7 +1045,7 @@ nbri26_md = nbri26 %>%
   summarise(nbri2 = median(nbri2)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[18]], area1[3,]); b3yr <- raster::extract(h12[[18]], area1[1,]); b1yr <- raster::extract(h12[[18]], area1[2,])
+crt <- raster::extract(h12[[18]], area1[1,]); b3yr <- raster::extract(h12[[18]], area1[3,]); b1yr <- raster::extract(h12[[18]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1117,7 +1116,7 @@ b1yr_6$indice = c("NBRI2")
 b3yr_6=gg[-c(1:7), ]
 b3yr_6$indice = c("NBRI2")
 #NDII ===================================================================
-crt <- raster::extract(h04[[6]], area1[3,]); b3yr <- raster::extract(h04[[6]], area1[1,]); b1yr <- raster::extract(h04[[6]], area1[2,])
+crt <- raster::extract(h04[[6]], area1[1,]); b3yr <- raster::extract(h04[[6]], area1[3,]); b1yr <- raster::extract(h04[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1135,7 +1134,7 @@ ndii1_md = ndii1 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[6]], area1[3,]); b3yr <- raster::extract(h05[[6]], area1[1,]); b1yr <- raster::extract(h05[[6]], area1[2,])
+crt <- raster::extract(h05[[6]], area1[1,]); b3yr <- raster::extract(h05[[6]], area1[3,]); b1yr <- raster::extract(h05[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1153,7 +1152,7 @@ ndii2_md = ndii2 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[6]], area1[3,]); b3yr <- raster::extract(h06[[6]], area1[1,]); b1yr <- raster::extract(h06[[6]], area1[2,])
+crt <- raster::extract(h06[[6]], area1[1,]); b3yr <- raster::extract(h06[[6]], area1[3,]); b1yr <- raster::extract(h06[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1171,7 +1170,7 @@ ndii3_md = ndii3 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[6]], area1[3,]); b3yr <- raster::extract(h08[[6]], area1[1,]); b1yr <- raster::extract(h08[[6]], area1[2,])
+crt <- raster::extract(h08[[6]], area1[1,]); b3yr <- raster::extract(h08[[6]], area1[3,]); b1yr <- raster::extract(h08[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1189,7 +1188,7 @@ ndii4_md = ndii4 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[6]], area1[3,]); b3yr <- raster::extract(h10[[6]], area1[1,]); b1yr <- raster::extract(h10[[6]], area1[2,])
+crt <- raster::extract(h10[[6]], area1[1,]); b3yr <- raster::extract(h10[[6]], area1[3,]); b1yr <- raster::extract(h10[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1208,7 +1207,7 @@ ndii5_md = ndii5 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[6]], area1[3,]); b3yr <- raster::extract(h11[[6]], area1[1,]); b1yr <- raster::extract(h11[[6]], area1[2,])
+crt <- raster::extract(h11[[6]], area1[1,]); b3yr <- raster::extract(h11[[6]], area1[3,]); b1yr <- raster::extract(h11[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1226,7 +1225,7 @@ ndii6_md = ndii6 %>%
   summarise(ndii = median(ndii)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[6]], area1[3,]); b3yr <- raster::extract(h12[[6]], area1[1,]); b1yr <- raster::extract(h12[[6]], area1[2,])
+crt <- raster::extract(h12[[6]], area1[1,]); b3yr <- raster::extract(h12[[6]], area1[3,]); b1yr <- raster::extract(h12[[6]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1297,7 +1296,7 @@ b1yr_7$indice = c("NDII")
 b3yr_7=gg[-c(1:7), ]
 b3yr_7$indice = c("NDII")
 #NDVI ===================================================================
-crt <- raster::extract(h04[[7]], area1[3,]); b3yr <- raster::extract(h04[[7]], area1[1,]); b1yr <- raster::extract(h04[[7]], area1[2,])
+crt <- raster::extract(h04[[7]], area1[1,]); b3yr <- raster::extract(h04[[7]], area1[3,]); b1yr <- raster::extract(h04[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1315,7 +1314,7 @@ ndvi1_md = ndvi1 %>%
   summarise(ndvi = median(ndvi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[7]], area1[3,]); b3yr <- raster::extract(h05[[7]], area1[1,]); b1yr <- raster::extract(h05[[7]], area1[2,])
+crt <- raster::extract(h05[[7]], area1[1,]); b3yr <- raster::extract(h05[[7]], area1[3,]); b1yr <- raster::extract(h05[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1333,7 +1332,7 @@ ndvi2_md = ndvi2 %>%
   summarise(ndvi = median(ndvi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[7]], area1[3,]); b3yr <- raster::extract(h06[[7]], area1[1,]); b1yr <- raster::extract(h06[[7]], area1[2,])
+crt <- raster::extract(h06[[7]], area1[1,]); b3yr <- raster::extract(h06[[7]], area1[3,]); b1yr <- raster::extract(h06[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1351,7 +1350,7 @@ ndvi3_md = ndvi3 %>%
   summarise(ndvi = median(ndvi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[7]], area1[3,]); b3yr <- raster::extract(h08[[7]], area1[1,]); b1yr <- raster::extract(h08[[7]], area1[2,])
+crt <- raster::extract(h08[[7]], area1[1,]); b3yr <- raster::extract(h08[[7]], area1[3,]); b1yr <- raster::extract(h08[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1369,7 +1368,7 @@ ndvi4_md = ndvi4 %>%
   summarise(ndvi = median(ndvi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[7]], area1[3,]); b3yr <- raster::extract(h10[[7]], area1[1,]); b1yr <- raster::extract(h10[[7]], area1[2,])
+crt <- raster::extract(h10[[7]], area1[1,]); b3yr <- raster::extract(h10[[7]], area1[3,]); b1yr <- raster::extract(h10[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1388,7 +1387,7 @@ ndvi5_md = ndvi5 %>%
   summarise(ndvi = median(ndvi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[7]], area1[3,]); b3yr <- raster::extract(h11[[7]], area1[1,]); b1yr <- raster::extract(h11[[7]], area1[2,])
+crt <- raster::extract(h11[[7]], area1[1,]); b3yr <- raster::extract(h11[[7]], area1[3,]); b1yr <- raster::extract(h11[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1406,7 +1405,7 @@ ndvi6_md = ndvi6 %>%
   summarise(ndvi = median(ndvi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[7]], area1[3,]); b3yr <- raster::extract(h12[[7]], area1[1,]); b1yr <- raster::extract(h12[[7]], area1[2,])
+crt <- raster::extract(h12[[7]], area1[1,]); b3yr <- raster::extract(h12[[7]], area1[3,]); b1yr <- raster::extract(h12[[7]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1477,7 +1476,7 @@ b1yr_8$indice = c("NDVI")
 b3yr_8=gg[-c(1:7), ]
 b3yr_8$indice = c("NDVI")
 #NDWI ===================================================================
-crt <- raster::extract(h04[[8]], area1[3,]); b3yr <- raster::extract(h04[[8]], area1[1,]); b1yr <- raster::extract(h04[[8]], area1[2,])
+crt <- raster::extract(h04[[8]], area1[1,]); b3yr <- raster::extract(h04[[8]], area1[3,]); b1yr <- raster::extract(h04[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1495,7 +1494,7 @@ ndwi1_md = ndwi1 %>%
   summarise(ndwi = median(ndwi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[8]], area1[3,]); b3yr <- raster::extract(h05[[8]], area1[1,]); b1yr <- raster::extract(h05[[8]], area1[2,])
+crt <- raster::extract(h05[[8]], area1[1,]); b3yr <- raster::extract(h05[[8]], area1[3,]); b1yr <- raster::extract(h05[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1513,7 +1512,7 @@ ndwi2_md = ndwi2 %>%
   summarise(ndwi = median(ndwi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[8]], area1[3,]); b3yr <- raster::extract(h06[[8]], area1[1,]); b1yr <- raster::extract(h06[[8]], area1[2,])
+crt <- raster::extract(h06[[8]], area1[1,]); b3yr <- raster::extract(h06[[8]], area1[3,]); b1yr <- raster::extract(h06[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1531,7 +1530,7 @@ ndwi3_md = ndwi3 %>%
   summarise(ndwi = median(ndwi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[8]], area1[3,]); b3yr <- raster::extract(h08[[8]], area1[1,]); b1yr <- raster::extract(h08[[8]], area1[2,])
+crt <- raster::extract(h08[[8]], area1[1,]); b3yr <- raster::extract(h08[[8]], area1[3,]); b1yr <- raster::extract(h08[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1549,7 +1548,7 @@ ndwi4_md = ndwi4 %>%
   summarise(ndwi = median(ndwi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[8]], area1[3,]); b3yr <- raster::extract(h10[[8]], area1[1,]); b1yr <- raster::extract(h10[[8]], area1[2,])
+crt <- raster::extract(h10[[8]], area1[1,]); b3yr <- raster::extract(h10[[8]], area1[3,]); b1yr <- raster::extract(h10[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1568,7 +1567,7 @@ ndwi5_md = ndwi5 %>%
   summarise(ndwi = median(ndwi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[8]], area1[3,]); b3yr <- raster::extract(h11[[8]], area1[1,]); b1yr <- raster::extract(h11[[8]], area1[2,])
+crt <- raster::extract(h11[[8]], area1[1,]); b3yr <- raster::extract(h11[[8]], area1[3,]); b1yr <- raster::extract(h11[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1586,7 +1585,7 @@ ndwi6_md = ndwi6 %>%
   summarise(ndwi = median(ndwi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[8]], area1[3,]); b3yr <- raster::extract(h12[[8]], area1[1,]); b1yr <- raster::extract(h12[[8]], area1[2,])
+crt <- raster::extract(h12[[8]], area1[1,]); b3yr <- raster::extract(h12[[8]], area1[3,]); b1yr <- raster::extract(h12[[8]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1658,7 +1657,7 @@ b1yr_9$indice = c("NDWI")
 b3yr_9=gg[-c(1:7), ]
 b3yr_9$indice = c("NDWI")
 #NIRV ===================================================================
-crt <- raster::extract(h04[[9]], area1[3,]); b3yr <- raster::extract(h04[[9]], area1[1,]); b1yr <- raster::extract(h04[[9]], area1[2,])
+crt <- raster::extract(h04[[9]], area1[1,]); b3yr <- raster::extract(h04[[9]], area1[3,]); b1yr <- raster::extract(h04[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1676,7 +1675,7 @@ nirv1_md = nirv1 %>%
   summarise(nirv = median(nirv)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[9]], area1[3,]); b3yr <- raster::extract(h05[[9]], area1[1,]); b1yr <- raster::extract(h05[[9]], area1[2,])
+crt <- raster::extract(h05[[9]], area1[1,]); b3yr <- raster::extract(h05[[9]], area1[3,]); b1yr <- raster::extract(h05[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1694,7 +1693,7 @@ nirv2_md = nirv2 %>%
   summarise(nirv = median(nirv)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[9]], area1[3,]); b3yr <- raster::extract(h06[[9]], area1[1,]); b1yr <- raster::extract(h06[[9]], area1[2,])
+crt <- raster::extract(h06[[9]], area1[1,]); b3yr <- raster::extract(h06[[9]], area1[3,]); b1yr <- raster::extract(h06[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1712,7 +1711,7 @@ nirv3_md = nirv3 %>%
   summarise(nirv = median(nirv)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[9]], area1[3,]); b3yr <- raster::extract(h08[[9]], area1[1,]); b1yr <- raster::extract(h08[[9]], area1[2,])
+crt <- raster::extract(h08[[9]], area1[1,]); b3yr <- raster::extract(h08[[9]], area1[3,]); b1yr <- raster::extract(h08[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1730,7 +1729,7 @@ nirv4_md = nirv4 %>%
   summarise(nirv = median(nirv)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[9]], area1[3,]); b3yr <- raster::extract(h10[[9]], area1[1,]); b1yr <- raster::extract(h10[[9]], area1[2,])
+crt <- raster::extract(h10[[9]], area1[1,]); b3yr <- raster::extract(h10[[9]], area1[3,]); b1yr <- raster::extract(h10[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1749,7 +1748,7 @@ nirv5_md = nirv5 %>%
   summarise(nirv = median(nirv)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[9]], area1[3,]); b3yr <- raster::extract(h11[[9]], area1[1,]); b1yr <- raster::extract(h11[[9]], area1[2,])
+crt <- raster::extract(h11[[9]], area1[1,]); b3yr <- raster::extract(h11[[9]], area1[3,]); b1yr <- raster::extract(h11[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1767,7 +1766,7 @@ nirv6_md = nirv6 %>%
   summarise(nirv = median(nirv)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[9]], area1[3,]); b3yr <- raster::extract(h12[[9]], area1[1,]); b1yr <- raster::extract(h12[[9]], area1[2,])
+crt <- raster::extract(h12[[9]], area1[1,]); b3yr <- raster::extract(h12[[9]], area1[3,]); b1yr <- raster::extract(h12[[9]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1838,7 +1837,7 @@ b1yr_10$indice = c("NIRV")
 b3yr_10=gg[-c(1:7), ]
 b3yr_10$indice = c("NIRV")
 #PRI ===================================================================
-crt <- raster::extract(h04[[10]], area1[3,]); b3yr <- raster::extract(h04[[10]], area1[1,]); b1yr <- raster::extract(h04[[10]], area1[2,])
+crt <- raster::extract(h04[[10]], area1[1,]); b3yr <- raster::extract(h04[[10]], area1[3,]); b1yr <- raster::extract(h04[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1856,7 +1855,7 @@ pri1_md = pri1 %>%
   summarise(pri = median(pri)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[10]], area1[3,]); b3yr <- raster::extract(h05[[10]], area1[1,]); b1yr <- raster::extract(h05[[10]], area1[2,])
+crt <- raster::extract(h05[[10]], area1[1,]); b3yr <- raster::extract(h05[[10]], area1[3,]); b1yr <- raster::extract(h05[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1874,7 +1873,7 @@ pri2_md = pri2 %>%
   summarise(pri = median(pri)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[10]], area1[3,]); b3yr <- raster::extract(h06[[10]], area1[1,]); b1yr <- raster::extract(h06[[10]], area1[2,])
+crt <- raster::extract(h06[[10]], area1[1,]); b3yr <- raster::extract(h06[[10]], area1[3,]); b1yr <- raster::extract(h06[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1892,7 +1891,7 @@ pri3_md = pri3 %>%
   summarise(pri = median(pri)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[10]], area1[3,]); b3yr <- raster::extract(h08[[10]], area1[1,]); b1yr <- raster::extract(h08[[10]], area1[2,])
+crt <- raster::extract(h08[[10]], area1[1,]); b3yr <- raster::extract(h08[[10]], area1[3,]); b1yr <- raster::extract(h08[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1910,7 +1909,7 @@ pri4_md = pri4 %>%
   summarise(pri = median(pri)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[10]], area1[3,]); b3yr <- raster::extract(h10[[10]], area1[1,]); b1yr <- raster::extract(h10[[10]], area1[2,])
+crt <- raster::extract(h10[[10]], area1[1,]); b3yr <- raster::extract(h10[[10]], area1[3,]); b1yr <- raster::extract(h10[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1929,7 +1928,7 @@ pri5_md = pri5 %>%
   summarise(pri = median(pri)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[10]], area1[3,]); b3yr <- raster::extract(h11[[10]], area1[1,]); b1yr <- raster::extract(h11[[10]], area1[2,])
+crt <- raster::extract(h11[[10]], area1[1,]); b3yr <- raster::extract(h11[[10]], area1[3,]); b1yr <- raster::extract(h11[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -1947,7 +1946,7 @@ pri6_md = pri6 %>%
   summarise(pri = median(pri)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[10]], area1[3,]); b3yr <- raster::extract(h12[[10]], area1[1,]); b1yr <- raster::extract(h12[[10]], area1[2,])
+crt <- raster::extract(h12[[10]], area1[1,]); b3yr <- raster::extract(h12[[10]], area1[3,]); b1yr <- raster::extract(h12[[10]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2018,7 +2017,7 @@ b1yr_11$indice = c("PRI")
 b3yr_11=gg[-c(1:7), ]
 b3yr_11$indice = c("PRI")
 #PSRI ===================================================================
-crt <- raster::extract(h04[[11]], area1[3,]); b3yr <- raster::extract(h04[[11]], area1[1,]); b1yr <- raster::extract(h04[[11]], area1[2,])
+crt <- raster::extract(h04[[11]], area1[1,]); b3yr <- raster::extract(h04[[11]], area1[3,]); b1yr <- raster::extract(h04[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2036,7 +2035,7 @@ psri1_md = psri1 %>%
   summarise(psri = median(psri)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[11]], area1[3,]); b3yr <- raster::extract(h05[[11]], area1[1,]); b1yr <- raster::extract(h05[[11]], area1[2,])
+crt <- raster::extract(h05[[11]], area1[1,]); b3yr <- raster::extract(h05[[11]], area1[3,]); b1yr <- raster::extract(h05[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2054,7 +2053,7 @@ psri2_md = psri2 %>%
   summarise(psri = median(psri)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[11]], area1[3,]); b3yr <- raster::extract(h06[[11]], area1[1,]); b1yr <- raster::extract(h06[[11]], area1[2,])
+crt <- raster::extract(h06[[11]], area1[1,]); b3yr <- raster::extract(h06[[11]], area1[3,]); b1yr <- raster::extract(h06[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2072,7 +2071,7 @@ psri3_md = psri3 %>%
   summarise(psri = median(psri)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[11]], area1[3,]); b3yr <- raster::extract(h08[[11]], area1[1,]); b1yr <- raster::extract(h08[[11]], area1[2,])
+crt <- raster::extract(h08[[11]], area1[1,]); b3yr <- raster::extract(h08[[11]], area1[3,]); b1yr <- raster::extract(h08[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2090,7 +2089,7 @@ psri4_md = psri4 %>%
   summarise(psri = median(psri)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[11]], area1[3,]); b3yr <- raster::extract(h10[[11]], area1[1,]); b1yr <- raster::extract(h10[[11]], area1[2,])
+crt <- raster::extract(h10[[11]], area1[1,]); b3yr <- raster::extract(h10[[11]], area1[3,]); b1yr <- raster::extract(h10[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2109,7 +2108,7 @@ psri5_md = psri5 %>%
   summarise(psri = median(psri)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[11]], area1[3,]); b3yr <- raster::extract(h11[[11]], area1[1,]); b1yr <- raster::extract(h11[[11]], area1[2,])
+crt <- raster::extract(h11[[11]], area1[1,]); b3yr <- raster::extract(h11[[11]], area1[3,]); b1yr <- raster::extract(h11[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2127,7 +2126,7 @@ psri6_md = psri6 %>%
   summarise(psri = median(psri)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[11]], area1[3,]); b3yr <- raster::extract(h12[[11]], area1[1,]); b1yr <- raster::extract(h12[[11]], area1[2,])
+crt <- raster::extract(h12[[11]], area1[1,]); b3yr <- raster::extract(h12[[11]], area1[3,]); b1yr <- raster::extract(h12[[11]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2198,7 +2197,7 @@ b1yr_12$indice = c("PSRI")
 b3yr_12=gg[-c(1:7), ]
 b3yr_12$indice = c("PSRI")
 #PSSR ===================================================================
-crt <- raster::extract(h04[[12]], area1[3,]); b3yr <- raster::extract(h04[[12]], area1[1,]); b1yr <- raster::extract(h04[[12]], area1[2,])
+crt <- raster::extract(h04[[12]], area1[1,]); b3yr <- raster::extract(h04[[12]], area1[3,]); b1yr <- raster::extract(h04[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2216,7 +2215,7 @@ pssr1_md = pssr1 %>%
   summarise(pssr = median(pssr)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[12]], area1[3,]); b3yr <- raster::extract(h05[[12]], area1[1,]); b1yr <- raster::extract(h05[[12]], area1[2,])
+crt <- raster::extract(h05[[12]], area1[1,]); b3yr <- raster::extract(h05[[12]], area1[3,]); b1yr <- raster::extract(h05[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2234,7 +2233,7 @@ pssr2_md = pssr2 %>%
   summarise(pssr = median(pssr)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[12]], area1[3,]); b3yr <- raster::extract(h06[[12]], area1[1,]); b1yr <- raster::extract(h06[[12]], area1[2,])
+crt <- raster::extract(h06[[12]], area1[1,]); b3yr <- raster::extract(h06[[12]], area1[3,]); b1yr <- raster::extract(h06[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2252,7 +2251,7 @@ pssr3_md = pssr3 %>%
   summarise(pssr = median(pssr)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[12]], area1[3,]); b3yr <- raster::extract(h08[[12]], area1[1,]); b1yr <- raster::extract(h08[[12]], area1[2,])
+crt <- raster::extract(h08[[12]], area1[1,]); b3yr <- raster::extract(h08[[12]], area1[3,]); b1yr <- raster::extract(h08[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2270,7 +2269,7 @@ pssr4_md = pssr4 %>%
   summarise(pssr = median(pssr)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[12]], area1[3,]); b3yr <- raster::extract(h10[[12]], area1[1,]); b1yr <- raster::extract(h10[[12]], area1[2,])
+crt <- raster::extract(h10[[12]], area1[1,]); b3yr <- raster::extract(h10[[12]], area1[3,]); b1yr <- raster::extract(h10[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2289,7 +2288,7 @@ pssr5_md = pssr5 %>%
   summarise(pssr = median(pssr)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[12]], area1[3,]); b3yr <- raster::extract(h11[[12]], area1[1,]); b1yr <- raster::extract(h11[[12]], area1[2,])
+crt <- raster::extract(h11[[12]], area1[1,]); b3yr <- raster::extract(h11[[12]], area1[3,]); b1yr <- raster::extract(h11[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2307,7 +2306,7 @@ pssr6_md = pssr6 %>%
   summarise(pssr = median(pssr)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[12]], area1[3,]); b3yr <- raster::extract(h12[[12]], area1[1,]); b1yr <- raster::extract(h12[[12]], area1[2,])
+crt <- raster::extract(h12[[12]], area1[1,]); b3yr <- raster::extract(h12[[12]], area1[3,]); b1yr <- raster::extract(h12[[12]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2378,7 +2377,7 @@ b1yr_13$indice = c("PSSR")
 b3yr_13=gg[-c(1:7), ]
 b3yr_13$indice = c("PSSR")
 #RENDVI ===================================================================
-crt <- raster::extract(h04[[13]], area1[3,]); b3yr <- raster::extract(h04[[13]], area1[1,]); b1yr <- raster::extract(h04[[13]], area1[2,])
+crt <- raster::extract(h04[[13]], area1[1,]); b3yr <- raster::extract(h04[[13]], area1[3,]); b1yr <- raster::extract(h04[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2396,7 +2395,7 @@ rendvi1_md = rendvi1 %>%
   summarise(rendvi = median(rendvi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[13]], area1[3,]); b3yr <- raster::extract(h05[[13]], area1[1,]); b1yr <- raster::extract(h05[[13]], area1[2,])
+crt <- raster::extract(h05[[13]], area1[1,]); b3yr <- raster::extract(h05[[13]], area1[3,]); b1yr <- raster::extract(h05[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2414,7 +2413,7 @@ rendvi2_md = rendvi2 %>%
   summarise(rendvi = median(rendvi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[13]], area1[3,]); b3yr <- raster::extract(h06[[13]], area1[1,]); b1yr <- raster::extract(h06[[13]], area1[2,])
+crt <- raster::extract(h06[[13]], area1[1,]); b3yr <- raster::extract(h06[[13]], area1[3,]); b1yr <- raster::extract(h06[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2432,7 +2431,7 @@ rendvi3_md = rendvi3 %>%
   summarise(rendvi = median(rendvi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[13]], area1[3,]); b3yr <- raster::extract(h08[[13]], area1[1,]); b1yr <- raster::extract(h08[[13]], area1[2,])
+crt <- raster::extract(h08[[13]], area1[1,]); b3yr <- raster::extract(h08[[13]], area1[3,]); b1yr <- raster::extract(h08[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2450,7 +2449,7 @@ rendvi4_md = rendvi4 %>%
   summarise(rendvi = median(rendvi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[13]], area1[3,]); b3yr <- raster::extract(h10[[13]], area1[1,]); b1yr <- raster::extract(h10[[13]], area1[2,])
+crt <- raster::extract(h10[[13]], area1[1,]); b3yr <- raster::extract(h10[[13]], area1[3,]); b1yr <- raster::extract(h10[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2469,7 +2468,7 @@ rendvi5_md = rendvi5 %>%
   summarise(rendvi = median(rendvi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[13]], area1[3,]); b3yr <- raster::extract(h11[[13]], area1[1,]); b1yr <- raster::extract(h11[[13]], area1[2,])
+crt <- raster::extract(h11[[13]], area1[1,]); b3yr <- raster::extract(h11[[13]], area1[3,]); b1yr <- raster::extract(h11[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2487,7 +2486,7 @@ rendvi6_md = rendvi6 %>%
   summarise(rendvi = median(rendvi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[13]], area1[3,]); b3yr <- raster::extract(h12[[13]], area1[1,]); b1yr <- raster::extract(h12[[13]], area1[2,])
+crt <- raster::extract(h12[[13]], area1[1,]); b3yr <- raster::extract(h12[[13]], area1[3,]); b1yr <- raster::extract(h12[[13]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2558,7 +2557,7 @@ b1yr_14$indice = c("RENDVI")
 b3yr_14=gg[-c(1:7), ]
 b3yr_14$indice = c("RENDVI")
 #SIPI ===================================================================
-crt <- raster::extract(h04[[14]], area1[3,]); b3yr <- raster::extract(h04[[14]], area1[1,]); b1yr <- raster::extract(h04[[14]], area1[2,])
+crt <- raster::extract(h04[[14]], area1[1,]); b3yr <- raster::extract(h04[[14]], area1[3,]); b1yr <- raster::extract(h04[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2576,7 +2575,7 @@ sipi1_md = sipi1 %>%
   summarise(sipi = median(sipi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[14]], area1[3,]); b3yr <- raster::extract(h05[[14]], area1[1,]); b1yr <- raster::extract(h05[[14]], area1[2,])
+crt <- raster::extract(h05[[14]], area1[1,]); b3yr <- raster::extract(h05[[14]], area1[3,]); b1yr <- raster::extract(h05[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2594,7 +2593,7 @@ sipi2_md = sipi2 %>%
   summarise(sipi = median(sipi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[14]], area1[3,]); b3yr <- raster::extract(h06[[14]], area1[1,]); b1yr <- raster::extract(h06[[14]], area1[2,])
+crt <- raster::extract(h06[[14]], area1[1,]); b3yr <- raster::extract(h06[[14]], area1[3,]); b1yr <- raster::extract(h06[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2612,7 +2611,7 @@ sipi3_md = sipi3 %>%
   summarise(sipi = median(sipi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[14]], area1[3,]); b3yr <- raster::extract(h08[[14]], area1[1,]); b1yr <- raster::extract(h08[[14]], area1[2,])
+crt <- raster::extract(h08[[14]], area1[1,]); b3yr <- raster::extract(h08[[14]], area1[3,]); b1yr <- raster::extract(h08[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2630,7 +2629,7 @@ sipi4_md = sipi4 %>%
   summarise(sipi = median(sipi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[14]], area1[3,]); b3yr <- raster::extract(h10[[14]], area1[1,]); b1yr <- raster::extract(h10[[14]], area1[2,])
+crt <- raster::extract(h10[[14]], area1[1,]); b3yr <- raster::extract(h10[[14]], area1[3,]); b1yr <- raster::extract(h10[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2649,7 +2648,7 @@ sipi5_md = sipi5 %>%
   summarise(sipi = median(sipi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[14]], area1[3,]); b3yr <- raster::extract(h11[[14]], area1[1,]); b1yr <- raster::extract(h11[[14]], area1[2,])
+crt <- raster::extract(h11[[14]], area1[1,]); b3yr <- raster::extract(h11[[14]], area1[3,]); b1yr <- raster::extract(h11[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2667,7 +2666,7 @@ sipi6_md = sipi6 %>%
   summarise(sipi = median(sipi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[14]], area1[3,]); b3yr <- raster::extract(h12[[14]], area1[1,]); b1yr <- raster::extract(h12[[14]], area1[2,])
+crt <- raster::extract(h12[[14]], area1[1,]); b3yr <- raster::extract(h12[[14]], area1[3,]); b1yr <- raster::extract(h12[[14]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2738,7 +2737,7 @@ b1yr_15$indice = c("SIPI")
 b3yr_15=gg[-c(1:7), ]
 b3yr_15$indice = c("SIPI")
 #VARI ===================================================================
-crt <- raster::extract(h04[[15]], area1[3,]); b3yr <- raster::extract(h04[[15]], area1[1,]); b1yr <- raster::extract(h04[[15]], area1[2,])
+crt <- raster::extract(h04[[15]], area1[1,]); b3yr <- raster::extract(h04[[15]], area1[3,]); b1yr <- raster::extract(h04[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2756,7 +2755,7 @@ vari1_md = vari1 %>%
   summarise(vari = median(vari)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[15]], area1[3,]); b3yr <- raster::extract(h05[[15]], area1[1,]); b1yr <- raster::extract(h05[[15]], area1[2,])
+crt <- raster::extract(h05[[15]], area1[1,]); b3yr <- raster::extract(h05[[15]], area1[3,]); b1yr <- raster::extract(h05[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2774,7 +2773,7 @@ vari2_md = vari2 %>%
   summarise(vari = median(vari)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[15]], area1[3,]); b3yr <- raster::extract(h06[[15]], area1[1,]); b1yr <- raster::extract(h06[[15]], area1[2,])
+crt <- raster::extract(h06[[15]], area1[1,]); b3yr <- raster::extract(h06[[15]], area1[3,]); b1yr <- raster::extract(h06[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2792,7 +2791,7 @@ vari3_md = vari3 %>%
   summarise(vari = median(vari)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[15]], area1[3,]); b3yr <- raster::extract(h08[[15]], area1[1,]); b1yr <- raster::extract(h08[[15]], area1[2,])
+crt <- raster::extract(h08[[15]], area1[1,]); b3yr <- raster::extract(h08[[15]], area1[3,]); b1yr <- raster::extract(h08[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2810,7 +2809,7 @@ vari4_md = vari4 %>%
   summarise(vari = median(vari)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[15]], area1[3,]); b3yr <- raster::extract(h10[[15]], area1[1,]); b1yr <- raster::extract(h10[[15]], area1[2,])
+crt <- raster::extract(h10[[15]], area1[1,]); b3yr <- raster::extract(h10[[15]], area1[3,]); b1yr <- raster::extract(h10[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2829,7 +2828,7 @@ vari5_md = vari5 %>%
   summarise(vari = median(vari)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[15]], area1[3,]); b3yr <- raster::extract(h11[[15]], area1[1,]); b1yr <- raster::extract(h11[[15]], area1[2,])
+crt <- raster::extract(h11[[15]], area1[1,]); b3yr <- raster::extract(h11[[15]], area1[3,]); b1yr <- raster::extract(h11[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2847,7 +2846,7 @@ vari6_md = vari6 %>%
   summarise(vari = median(vari)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[15]], area1[3,]); b3yr <- raster::extract(h12[[15]], area1[1,]); b1yr <- raster::extract(h12[[15]], area1[2,])
+crt <- raster::extract(h12[[15]], area1[1,]); b3yr <- raster::extract(h12[[15]], area1[3,]); b1yr <- raster::extract(h12[[15]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2918,7 +2917,7 @@ b1yr_16$indice = c("VARI")
 b3yr_16=gg[-c(1:7), ]
 b3yr_16$indice = c("VARI")
 #VIG ===================================================================
-crt <- raster::extract(h04[[16]], area1[3,]); b3yr <- raster::extract(h04[[16]], area1[1,]); b1yr <- raster::extract(h04[[16]], area1[2,])
+crt <- raster::extract(h04[[16]], area1[1,]); b3yr <- raster::extract(h04[[16]], area1[3,]); b1yr <- raster::extract(h04[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2936,7 +2935,7 @@ vig1_md = vig1 %>%
   summarise(vig = median(vig)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[16]], area1[3,]); b3yr <- raster::extract(h05[[16]], area1[1,]); b1yr <- raster::extract(h05[[16]], area1[2,])
+crt <- raster::extract(h05[[16]], area1[1,]); b3yr <- raster::extract(h05[[16]], area1[3,]); b1yr <- raster::extract(h05[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2954,7 +2953,7 @@ vig2_md = vig2 %>%
   summarise(vig = median(vig)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[16]], area1[3,]); b3yr <- raster::extract(h06[[16]], area1[1,]); b1yr <- raster::extract(h06[[16]], area1[2,])
+crt <- raster::extract(h06[[16]], area1[1,]); b3yr <- raster::extract(h06[[16]], area1[3,]); b1yr <- raster::extract(h06[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2972,7 +2971,7 @@ vig3_md = vig3 %>%
   summarise(vig = median(vig)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[16]], area1[3,]); b3yr <- raster::extract(h08[[16]], area1[1,]); b1yr <- raster::extract(h08[[16]], area1[2,])
+crt <- raster::extract(h08[[16]], area1[1,]); b3yr <- raster::extract(h08[[16]], area1[3,]); b1yr <- raster::extract(h08[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -2990,7 +2989,7 @@ vig4_md = vig4 %>%
   summarise(vig = median(vig)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[16]], area1[3,]); b3yr <- raster::extract(h10[[16]], area1[1,]); b1yr <- raster::extract(h10[[16]], area1[2,])
+crt <- raster::extract(h10[[16]], area1[1,]); b3yr <- raster::extract(h10[[16]], area1[3,]); b1yr <- raster::extract(h10[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3009,7 +3008,7 @@ vig5_md = vig5 %>%
   summarise(vig = median(vig)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[16]], area1[3,]); b3yr <- raster::extract(h11[[16]], area1[1,]); b1yr <- raster::extract(h11[[16]], area1[2,])
+crt <- raster::extract(h11[[16]], area1[1,]); b3yr <- raster::extract(h11[[16]], area1[3,]); b1yr <- raster::extract(h11[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3027,7 +3026,7 @@ vig6_md = vig6 %>%
   summarise(vig = median(vig)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[16]], area1[3,]); b3yr <- raster::extract(h12[[16]], area1[1,]); b1yr <- raster::extract(h12[[16]], area1[2,])
+crt <- raster::extract(h12[[16]], area1[1,]); b3yr <- raster::extract(h12[[16]], area1[3,]); b1yr <- raster::extract(h12[[16]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3098,7 +3097,7 @@ b1yr_17$indice = c("VIG")
 b3yr_17=gg[-c(1:7), ]
 b3yr_17$indice = c("VIG")
 #WBI ===================================================================
-crt <- raster::extract(h04[[17]], area1[3,]); b3yr <- raster::extract(h04[[17]], area1[1,]); b1yr <- raster::extract(h04[[17]], area1[2,])
+crt <- raster::extract(h04[[17]], area1[1,]); b3yr <- raster::extract(h04[[17]], area1[3,]); b1yr <- raster::extract(h04[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3116,7 +3115,7 @@ wbi1_md = wbi1 %>%
   summarise(wbi = median(wbi)) %>% 
   mutate(data = "2004")
 
-crt <- raster::extract(h05[[17]], area1[3,]); b3yr <- raster::extract(h05[[17]], area1[1,]); b1yr <- raster::extract(h05[[17]], area1[2,])
+crt <- raster::extract(h05[[17]], area1[1,]); b3yr <- raster::extract(h05[[17]], area1[3,]); b1yr <- raster::extract(h05[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3134,7 +3133,7 @@ wbi2_md = wbi2 %>%
   summarise(wbi = median(wbi)) %>% 
   mutate(data = "2005")
 
-crt <- raster::extract(h06[[17]], area1[3,]); b3yr <- raster::extract(h06[[17]], area1[1,]); b1yr <- raster::extract(h06[[17]], area1[2,])
+crt <- raster::extract(h06[[17]], area1[1,]); b3yr <- raster::extract(h06[[17]], area1[3,]); b1yr <- raster::extract(h06[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3152,7 +3151,7 @@ wbi3_md = wbi3 %>%
   summarise(wbi = median(wbi)) %>% 
   mutate(data = "2006")
 
-crt <- raster::extract(h08[[17]], area1[3,]); b3yr <- raster::extract(h08[[17]], area1[1,]); b1yr <- raster::extract(h08[[17]], area1[2,])
+crt <- raster::extract(h08[[17]], area1[1,]); b3yr <- raster::extract(h08[[17]], area1[3,]); b1yr <- raster::extract(h08[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3170,7 +3169,7 @@ wbi4_md = wbi4 %>%
   summarise(wbi = median(wbi)) %>% 
   mutate(data = "2008")
 
-crt <- raster::extract(h10[[17]], area1[3,]); b3yr <- raster::extract(h10[[17]], area1[1,]); b1yr <- raster::extract(h10[[17]], area1[2,])
+crt <- raster::extract(h10[[17]], area1[1,]); b3yr <- raster::extract(h10[[17]], area1[3,]); b1yr <- raster::extract(h10[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3189,7 +3188,7 @@ wbi5_md = wbi5 %>%
   summarise(wbi = median(wbi)) %>% 
   mutate(data = "2010")
 
-crt <- raster::extract(h11[[17]], area1[3,]); b3yr <- raster::extract(h11[[17]], area1[1,]); b1yr <- raster::extract(h11[[17]], area1[2,])
+crt <- raster::extract(h11[[17]], area1[1,]); b3yr <- raster::extract(h11[[17]], area1[3,]); b1yr <- raster::extract(h11[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
@@ -3207,7 +3206,7 @@ wbi6_md = wbi6 %>%
   summarise(wbi = median(wbi)) %>% 
   mutate(data = "2011")
 
-crt <- raster::extract(h12[[17]], area1[3,]); b3yr <- raster::extract(h12[[17]], area1[1,]); b1yr <- raster::extract(h12[[17]], area1[2,])
+crt <- raster::extract(h12[[17]], area1[1,]); b3yr <- raster::extract(h12[[17]], area1[3,]); b1yr <- raster::extract(h12[[17]], area1[5,])
 a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
 a = a %>% 
   mutate(parcela = "controle")
