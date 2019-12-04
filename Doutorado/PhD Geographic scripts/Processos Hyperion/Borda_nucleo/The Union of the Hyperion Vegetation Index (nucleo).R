@@ -3287,8 +3287,10 @@ hy = cbind(ari_md, evi_md, lwvi2_md, msi_md, nbri_md, nbri2_md, ndii_md, ndvi_md
 hy = hy[,c(1,2,5,8,11,14,17,20,23,26,29,32,35,38,41,44,47,50,53,54)]
 hy$dist = as.character("nucleo")
 
+hy_nucleo = hy
+
 #setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
-#write.csv(hy, file = "Hyperion_indexs_median by plot(nucleo).csv", sep = ",")
+#write.csv(hy_nucleo, file = "Hyperion_indexs_median by plot(nucleo).csv", sep = ",")
 
 #Union all differences by index ===================================================
 b3yr = rbind(b3yr_1, b3yr_2, b3yr_3, b3yr_4, b3yr_5, b3yr_6, b3yr_7, b3yr_8, b3yr_9, b3yr_10, b3yr_11, b3yr_12, b3yr_13, b3yr_14, b3yr_15, b3yr_16, b3yr_17, b3yr_18)
