@@ -261,7 +261,7 @@ df = full_join(df, litt, by="id")
 df = df %>% 
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
 
-
+#write.table(df, "Area1_data_edge_core.csv", sep = ",")
 #Correlation Matrix ======================
 ggpairs(df)
 
