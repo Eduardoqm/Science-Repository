@@ -18,8 +18,8 @@ litt  = read.csv("Liteira_Area1_Tang.csv", sep = ",", header = TRUE)
 
 #Data organization
 #Biomass ====================================
-biomass = biomass[,c(1:7)]#Select date
-colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012')
+#biomass = biomass[,c(1:7)]#Select date
+colnames(biomass) = c('plot', 'transcto', '2004', '2008', '2010', '2011', '2012', '2014')
 biomass = melt(biomass)
 colnames(biomass) = c('plot', 'transcto', 'data', 'biomass')
 biomass$transcto = as.character(biomass$transcto)
@@ -62,10 +62,10 @@ biomass$transcto[biomass$transcto == "(500,750]"] <- c("nucleo")
 biomass$transcto[biomass$transcto == "(750,1e+03]"] <- c("nucleo")
 
 #Summary data
-biomass = biomass %>% 
-  #na.omit() %>% 
+biomass = biomass %>
+  na.omit() %>% 
   group_by(plot, transcto, data) %>% 
-  summarise(biomass = sum(biomass, na.rm = TRUE))
+  summarise(biomass = sum(biomass))
 colnames(biomass) = c('parcela', 'dist', 'data', 'biomass')
 
 
