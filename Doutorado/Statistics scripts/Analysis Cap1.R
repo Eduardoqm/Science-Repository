@@ -63,9 +63,9 @@ biomass$transcto[biomass$transcto == "(750,1e+03]"] <- c("nucleo")
 
 #Summary data
 biomass = biomass %>% 
-  na.omit() %>% 
+  #na.omit() %>% 
   group_by(plot, transcto, data) %>% 
-  summarise(biomass = sum(biomass))
+  summarise(biomass = sum(biomass, na.rm = TRUE))
 colnames(biomass) = c('parcela', 'dist', 'data', 'biomass')
 
 
