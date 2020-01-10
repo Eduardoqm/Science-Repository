@@ -8,7 +8,7 @@ library(GGally)
 #Load data
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
-hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
+hy = read.csv("Hyperion_indexs_median by plot_Clean Vs.csv", sep = ",", header = TRUE)
 biomass = read.csv("Biomassa_Tang.csv", sep = ",", header = TRUE)
 lai = read.csv("LAI_Area1_Tang.csv", sep = ",", header = TRUE)
 fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
@@ -62,10 +62,9 @@ biomass$transcto[biomass$transcto == "(500,750]"] <- c("nucleo")
 biomass$transcto[biomass$transcto == "(750,1e+03]"] <- c("nucleo")
 
 #Summary data
-biomass = biomass %>
-  na.omit() %>% 
+biomass = biomass %>%
   group_by(plot, transcto, data) %>% 
-  summarise(biomass = sum(biomass))
+  summarise(biomass = sum(biomass, na.rm = TRUE))
 colnames(biomass) = c('parcela', 'dist', 'data', 'biomass')
 
 
@@ -238,9 +237,9 @@ litt = litt %>%
 hy = hy %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
-biomass = as.data.frame(biomass)#To work
-biomass = biomass %>% 
-  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
+#biomass = as.data.frame(biomass)#To work
+#biomass = biomass %>% 
+#  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
 lai = lai %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
@@ -253,7 +252,7 @@ litt = litt %>%
 
 
 df = hy
-df = full_join(df, biomass, by="id")
+#df = full_join(df, biomass, by="id")
 df = full_join(df, lai, by="id")
 df = full_join(df, fuel, by="id")
 df = full_join(df, litt, by="id")
