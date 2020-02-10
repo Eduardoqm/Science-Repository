@@ -36,7 +36,9 @@ sat_core = sat %>%
 
 #Plot data
 ggplot(sat_edge, aes(date, value, color = variable))+
-  geom_line(aes(group=parcela), size = 1)
+  geom_line(aes(group=variable), size = 1)+
+  geom_point()
+  
 
 
 
