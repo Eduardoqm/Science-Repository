@@ -166,3 +166,7 @@ core = core[,c(1,2,3,6,9,12,15,18)]
 core$dist = c("nucleo")
 
 landsat_all = rbind(edge, core)
+
+#Write data frame
+#setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+#write.csv(landsat_all, file = "Landast_indexs_median by plot.csv", sep = ",")
