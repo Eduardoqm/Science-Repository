@@ -32,32 +32,8 @@ area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/De
 area1 = spTransform(area1, crs(ndvi))
 
 
-#NDVI ======================
-crt <- raster::extract(ndvi, area1[1,]); b3yr <- raster::extract(ndvi, area1[3,]); b1yr <- raster::extract(ndvi, area1[5,])
-a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
-a = a %>% 
-  mutate(parcela = "controle")
-b = b %>% 
-  mutate(parcela = "b3yr")
-c = c %>% 
-  mutate(parcela = "b1yr")
-ndvi = as.data.frame(rbind(a, b, c))
-ndvi1 <- ndvi[,c(2,3,5)]
-colnames(ndvi1) = c("date", "ndvi", "parcela")
-ndvi1$date = substr(ndvi1$date, 18, 21)
-
-ndvi_md = ndvi1 %>%
-  group_by(date, parcela) %>% 
-  summarise(ndvi = median(ndvi))
-
-
-
-
-ggplot(ndvi_md, aes(date, ndvi, col=parcela))+
-    geom_line(aes(group=parcela))
-
- 
-
+#Functions =================
+#To calculate median per plot
 data_time_median = function(x,y,z,w){
   crt <- raster::extract(x, y)
   b3yr <- raster::extract(x, z)
@@ -78,11 +54,18 @@ data_time_median = function(x,y,z,w){
   index_md = index1 %>%
     group_by(date, parcela) %>% 
     summarise(index = median(index))
+  index_md
 }
+
+
+#NDVI ======================
+ndvi_core = data_time_median(ndvi, area1[1,], area1[3,], area1[5,])
+
+ggplot(ndvi_core, aes(date, ndvi, col=parcela))+
+    geom_line(aes(group=parcela))
 
 #EVI =======================
 evi_core = data_time_median(evi, area1[1,], area1[3,], area1[5,])
-evi_core
 
 #VIG =======================
 
