@@ -41,15 +41,14 @@ b = b %>%
   mutate(parcela = "b3yr")
 c = c %>% 
   mutate(parcela = "b1yr")
-ari1 = as.data.frame(rbind(a, b, c))
-ari1 <- ari1[,c(1,3)]
-colnames(ari1) = c("ari", "parcela")
-ari1 = ari1 %>% 
-  mutate(data = "2004")
-ari1_md = ari1 %>%
-  group_by(parcela) %>% 
-  summarise(ari = median(ari)) %>% 
-  mutate(data = "2004")
+ndvi = as.data.frame(rbind(a, b, c))
+ndvi1 <- ndvi[,c(2,3,5)]
+colnames(ndvi1) = c("date", "ndvi", "parcela")
+
+
+ndvi_md = ndvi1 %>%
+  group_by(date, parcela) %>% 
+  summarise(ndvi = median(ndvi))
 
 
 #EVI =======================
