@@ -28,11 +28,24 @@ satellite = satellite %>%
 #Process to plot
 sat = melt(satellite)
 
-sat_edge = sat %>%
-  filter(dist == "borda")
+sat_edge_crt = sat %>%
+  filter(dist == "borda", parcela == "controle")
 
-sat_core = sat %>%
-  filter(dist == "nucleo")
+sat_edge_b3y = sat %>%
+  filter(dist == "borda", parcela == "b3yr")
+
+sat_edge_b1y = sat %>%
+  filter(dist == "borda", parcela == "b1yr")
+
+
+sat_core_crt = sat %>%
+  filter(dist == "nucleo", parcela == "controle")
+
+sat_core_b3y = sat %>%
+  filter(dist == "nucleo", parcela == "b3yr")
+
+sat_core_b1y = sat %>%
+  filter(dist == "nucleo", parcela == "b1yr")
 
 #Plot data
 ggplot(sat_edge, aes(date, value, color = variable))+
