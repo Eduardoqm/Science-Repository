@@ -17,6 +17,9 @@ landsat = landsat %>%
 
 #Hyperion
 hyper = read.csv("Hyperion_indexs_median by plot_2.csv")
+
+hyper = hyper[,c(-12)]
+
 hyper = hyper %>% 
   unite(col = "id", c("parcela", "date", "dist"), sep = '_')
 
@@ -48,7 +51,7 @@ sat_core_b1y = sat %>%
   filter(dist == "nucleo", parcela == "b1yr")
 
 #Plot data
-ggplot(sat_edge, aes(date, value, color = variable))+
+ggplot(sat_edge_crt, aes(date, value, color = variable))+
   geom_line(aes(group=variable), size = 1)+
   geom_point()
   
