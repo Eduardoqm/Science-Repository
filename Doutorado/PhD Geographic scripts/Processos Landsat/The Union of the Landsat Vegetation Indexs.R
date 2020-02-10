@@ -61,7 +61,7 @@ data_time_median = function(x,y,z,w){
 #NDVI ======================
 ndvi_core = data_time_median(ndvi, area1[1,], area1[3,], area1[5,])
 
-colnames(ndvi_core) = c("date", "ndvi", "parcela")
+colnames(ndvi_core) = c("date", "parcela", "ndvi")
 
 ggplot(ndvi_core, aes(date, ndvi, col=parcela))+
     geom_line(aes(group=parcela))
@@ -69,7 +69,7 @@ ggplot(ndvi_core, aes(date, ndvi, col=parcela))+
 #EVI =======================
 evi_core = data_time_median(evi, area1[1,], area1[3,], area1[5,])
 
-colnames(evi_core) = c("date", "evi", "parcela")
+colnames(evi_core) = c("date", "parcela", "evi")
 
 ggplot(ndvi_core, aes(date, evi, col=parcela))+
   geom_line(aes(group=parcela))
