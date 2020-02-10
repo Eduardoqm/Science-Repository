@@ -155,3 +155,14 @@ colnames(nbri_core) = c("date", "parcela", "nbri")
 
 ggplot(nbri_core, aes(date, nbri, col=parcela))+
   geom_line(aes(group=parcela))
+
+#Union of edge and core indexes =====
+edge = cbind(ndvi_edge, evi_edge, vig_edge, ndii_edge, ndwi_edge, nbri_edge)
+edge = edge[,c(1,2,3,6,9,12,15,18)]
+edge$dist = c("borda")
+
+core = cbind(ndvi_core, evi_core, vig_core, ndii_core, ndwi_core, nbri_core)
+core = core[,c(1,2,3,6,9,12,15,18)]
+core$dist = c("nucleo")
+
+landsat_all = rbind(edge, core)
