@@ -33,7 +33,23 @@ area1 = spTransform(area1, crs(ndvi))
 
 
 #NDVI ======================
-
+crt <- raster::extract(ndvi, area1[1,]); b3yr <- raster::extract(ndvi, area1[3,]); b1yr <- raster::extract(ndvi, area1[5,])
+a <- melt(crt); c <- melt(b1yr); b <- melt(b3yr)
+a = a %>% 
+  mutate(parcela = "controle")
+b = b %>% 
+  mutate(parcela = "b3yr")
+c = c %>% 
+  mutate(parcela = "b1yr")
+ari1 = as.data.frame(rbind(a, b, c))
+ari1 <- ari1[,c(1,3)]
+colnames(ari1) = c("ari", "parcela")
+ari1 = ari1 %>% 
+  mutate(data = "2004")
+ari1_md = ari1 %>%
+  group_by(parcela) %>% 
+  summarise(ari = median(ari)) %>% 
+  mutate(data = "2004")
 
 
 #EVI =======================
