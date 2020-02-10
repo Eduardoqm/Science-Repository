@@ -58,16 +58,66 @@ data_time_median = function(x,y,z,w){
 }
 
 
+#Calculate edge indexes ===================
 #NDVI
-ndvi_core = data_time_median(ndvi, area1[1,], area1[3,], area1[5,])
+ndvi_edge = data_time_median(ndvi, area1[1,], area1[3,], area1[5,])
+
+colnames(ndvi_edge) = c("date", "parcela", "ndvi")
+
+ggplot(ndvi_edge, aes(date, ndvi, col=parcela))+
+  geom_line(aes(group=parcela))
+
+#EVI
+evi_edge = data_time_median(evi, area1[1,], area1[3,], area1[5,])
+
+colnames(evi_edge) = c("date", "parcela", "evi")
+
+ggplot(evi_edge, aes(date, evi, col=parcela))+
+  geom_line(aes(group=parcela))
+
+#VIG
+vig_edge = data_time_median(vig, area1[1,], area1[3,], area1[5,])
+
+colnames(vig_edge) = c("date", "parcela", "vig")
+
+ggplot(vig_edge, aes(date, vig, col=parcela))+
+  geom_line(aes(group=parcela))
+
+#NDII
+ndii_edge = data_time_median(ndii, area1[1,], area1[3,], area1[5,])
+
+colnames(ndii_edge) = c("date", "parcela", "ndii")
+
+ggplot(ndii_edge, aes(date, ndii, col=parcela))+
+  geom_line(aes(group=parcela))
+
+#NDWI
+ndwi_edge = data_time_median(ndwi, area1[1,], area1[3,], area1[5,])
+
+colnames(ndwi_edge) = c("date", "parcela", "ndwi")
+
+ggplot(ndwi_edge, aes(date, ndwi, col=parcela))+
+  geom_line(aes(group=parcela))
+
+#NBRI
+nbri_edge = data_time_median(nbri, area1[1,], area1[3,], area1[5,])
+
+colnames(nbri_edge) = c("date", "parcela", "nbri")
+
+ggplot(nbri_edge, aes(date, nbri, col=parcela))+
+  geom_line(aes(group=parcela))
+
+#Calculate core indexes
+#NDVI
+ndvi_core = data_time_median(ndvi, area1[2,], area1[4,], area1[6,])
 
 colnames(ndvi_core) = c("date", "parcela", "ndvi")
 
 ggplot(ndvi_core, aes(date, ndvi, col=parcela))+
-    geom_line(aes(group=parcela))
+  geom_line(aes(group=parcela))
 
 #EVI
-evi_core = data_time_median(evi, area1[1,], area1[3,], area1[5,])
+evi_core = data_time_median(evi, area1[2,], area1[4,], area1[6,])
 
 colnames(evi_core) = c("date", "parcela", "evi")
 
@@ -75,7 +125,7 @@ ggplot(evi_core, aes(date, evi, col=parcela))+
   geom_line(aes(group=parcela))
 
 #VIG
-vig_core = data_time_median(vig, area1[1,], area1[3,], area1[5,])
+vig_core = data_time_median(vig, area1[2,], area1[4,], area1[6,])
 
 colnames(vig_core) = c("date", "parcela", "vig")
 
@@ -83,7 +133,7 @@ ggplot(vig_core, aes(date, vig, col=parcela))+
   geom_line(aes(group=parcela))
 
 #NDII
-ndii_core = data_time_median(ndii, area1[1,], area1[3,], area1[5,])
+ndii_core = data_time_median(ndii, area1[2,], area1[4,], area1[6,])
 
 colnames(ndii_core) = c("date", "parcela", "ndii")
 
@@ -91,7 +141,7 @@ ggplot(ndii_core, aes(date, ndii, col=parcela))+
   geom_line(aes(group=parcela))
 
 #NDWI
-ndwi_core = data_time_median(ndwi, area1[1,], area1[3,], area1[5,])
+ndwi_core = data_time_median(ndwi, area1[2,], area1[4,], area1[6,])
 
 colnames(ndwi_core) = c("date", "parcela", "ndwi")
 
@@ -99,7 +149,7 @@ ggplot(ndwi_core, aes(date, ndwi, col=parcela))+
   geom_line(aes(group=parcela))
 
 #NBRI
-nbri_core = data_time_median(nbri, area1[1,], area1[3,], area1[5,])
+nbri_core = data_time_median(nbri, area1[2,], area1[4,], area1[6,])
 
 colnames(nbri_core) = c("date", "parcela", "nbri")
 
