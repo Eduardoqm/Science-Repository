@@ -22,7 +22,6 @@ hyper = read.csv("Hyperion_indexs_median by plot_2.csv")
 #hyper = hyper[,c(-12)] #PSSR have so high values in comparison with other indexs
 #hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs
 
-#Process to plot ==================
 #Separate by edge and core and tratament
 #Landsat data
 land_edge_crt = land %>%
@@ -35,13 +34,13 @@ land_edge_b1yr = land %>%
   filter(dist == "borda", parcela == "b1yr")
 
 land_core_crt = land %>%
-  filter(dist == "borda", parcela == "controle")
+  filter(dist == "nucleo", parcela == "controle")
 
 land_core_b3yr = land %>%
-  filter(dist == "borda", parcela == "b3yr")
+  filter(dist == "nucleo", parcela == "b3yr")
 
 land_core_b1yr = land %>%
-  filter(dist == "borda", parcela == "b1yr")
+  filter(dist == "nucleo", parcela == "b1yr")
 
 #Hyperion data
 hyper_edge_crt = hyper %>%
@@ -54,13 +53,13 @@ hyper_edge_b1yr = hyper %>%
   filter(dist == "borda", parcela == "b1yr")
 
 hyper_core_crt = hyper %>%
-  filter(dist == "borda", parcela == "controle")
+  filter(dist == "nucleo", parcela == "controle")
 
 hyper_core_b3yr = hyper %>%
-  filter(dist == "borda", parcela == "b3yr")
+  filter(dist == "nucleo", parcela == "b3yr")
 
 hyper_core_b1yr = hyper %>%
-  filter(dist == "borda", parcela == "b1yr")
+  filter(dist == "nucleo", parcela == "b1yr")
 
 
 #Calculate difference ================
@@ -143,10 +142,10 @@ hyper_diff_core = hyper_diff_core[,c(-1)]
 
 #Plot data ===
 #Landsat edge ================
-gg = melt(land_diff_edge)
-colnames(gg) = c("date","dist", "index", "parcela", "value")
-gg1 = gg %>% filter(parcela == 'b1yr')
-gg2 = gg %>% filter(parcela == 'b3yr')
+gg_edge = melt(land_diff_edge)
+colnames(gg_edge) = c("date","dist", "index", "parcela", "value")
+gg1 = gg_edge %>% filter(parcela == 'b1yr')
+gg2 = gg_edge %>% filter(parcela == 'b3yr')
 
 ggplot(gg1, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
@@ -195,12 +194,12 @@ ggplot(gg2, aes(date,value, col=index))+
 
 
 #Landsat core ================
-gg = melt(land_diff_core)
-colnames(gg) = c("date","dist", "index", "parcela", "value")
-gg1 = gg %>% filter(parcela == 'b1yr')
-gg2 = gg %>% filter(parcela == 'b3yr')
+gg_core = melt(land_diff_core)
+colnames(gg_core) = c("date","dist", "index", "parcela", "value")
+gg3 = gg_core %>% filter(parcela == 'b1yr')
+gg4 = gg_core %>% filter(parcela == 'b3yr')
 
-ggplot(gg1, aes(date,value, col=index))+ 
+ggplot(gg3, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   #geom_point()+
   labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference)")+
@@ -223,7 +222,7 @@ ggplot(gg1, aes(date,value, col=index))+
   theme(axis.text.x = element_text(angle = 90))
 
 
-ggplot(gg2, aes(date,value, col=index))+ 
+ggplot(gg4, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   #geom_point()+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference)")+
