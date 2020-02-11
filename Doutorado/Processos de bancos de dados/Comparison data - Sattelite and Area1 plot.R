@@ -12,49 +12,17 @@ library(plotly)
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1')
 
 #Lansat
-landsat = read.csv("Landast_indexs_median by plot.csv")
+land = read.csv("Landast_indexs_median by plot.csv")
 
-landsat = landsat[,c(-6)] #NDWI have so high values in comparison with other indexs
-
-landsat = landsat %>% 
-  unite(col = "id", c("parcela", "date", "dist"), sep = '_')
+#landsat = landsat[,c(-6)] #NDWI have so high values in comparison with other indexs
 
 #Hyperion
 hyper = read.csv("Hyperion_indexs_median by plot_2.csv")
 
 #hyper = hyper[,c(-12)] #PSSR have so high values in comparison with other indexs
-hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs
-
-hyper = hyper %>% 
-  unite(col = "id", c("parcela", "date", "dist"), sep = '_')
-
-#All satellite data
-satellite = full_join(landsat, hyper, by = "id")
-satellite = satellite %>%
-  separate(col = "id", c("parcela", "date", "dist"), sep = '_')
+#hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs
 
 #Process to plot ==================
-sat = melt(satellite)
-
-sat_edge_crt = sat %>%
-  filter(dist == "borda", parcela == "controle")
-
-sat_edge_b3y = sat %>%
-  filter(dist == "borda", parcela == "b3yr")
-
-sat_edge_b1y = sat %>%
-  filter(dist == "borda", parcela == "b1yr")
-
-
-sat_core_crt = sat %>%
-  filter(dist == "nucleo", parcela == "controle")
-
-sat_core_b3y = sat %>%
-  filter(dist == "nucleo", parcela == "b3yr")
-
-sat_core_b1y = sat %>%
-  filter(dist == "nucleo", parcela == "b1yr")
-
 #Calculate difference
 diff_edge = sat_edge_crt[,c(1,2,3,4)]
 
@@ -70,6 +38,32 @@ diff_core$b3yr = ((sat_core_b3y$value-sat_core_crt$value)*100)/sat_core_crt$valu
 diff_core$b1yr = ((sat_core_b1y$value-sat_core_crt$value)*100)/sat_core_crt$value
 
 diff_core = diff_core[,c(-1)]
+
+#Separate by edge and core
+land_edge = land %>%
+  filter(dist == "borda")
+
+land_core = land %>%
+  filter(dist == "nucleo")
+
+hyper_edge = hyper %>%
+  filter(dist == "borda")
+
+hyper_core = hyper %>%
+  filter(dist == "nucleo")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #Plot data ===============
@@ -94,6 +88,3 @@ p <- ggplot(gg, aes(date,value, col=index))+
   theme_minimal()
 
 #ggplotly(p)
-
-
-
