@@ -38,9 +38,10 @@ hyper_core = hyper %>%
 
 
 #Calculate difference
-#land = t(land)
-land = melt(land)
-colnames(gg) = c("date","dist", "index", "parcela", "value")
+land_edge = land_edge[,c(-9)]
+land_edge$date = as.character(land_edge$date)
+land_edge = melt(land_edge)
+colnames(gg) = c("parcela", "date", "index", "value")
 
 diff_edge = sat_edge_crt[,c(1,2,3,4)]
 
