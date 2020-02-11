@@ -8,7 +8,7 @@ library(tidyr)
 library(viridis)
 library(plotly)
 
-#Data bank
+#Data bank =======================
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1')
 
 #Lansat
@@ -63,15 +63,22 @@ hyper_core_b1yr = hyper %>%
   filter(dist == "borda", parcela == "b1yr")
 
 
-#Calculate difference
+#Calculate difference ================
+land_edge_crt$date = as.character(land_edge_crt$date)
+land_edge_crt = melt(land_edge_crt)
+
+land_edge_b3yr$date = as.character(land_edge_b3yr$date)
+land_edge_b3yr = melt(land_edge_b3yr)
+
+land_edge_b1yr$date = as.character(land_edge_b1yr$date)
+land_edge_b1yr = melt(land_edge_b1yr)
 
 
 land_diff_edge = land_edge_crt[,c(1,2,3,4)]
+land_diff_edge$b3yr = ((land_edge_b3yr$value-land_edge_crt$value)*100)/land_edge_crt$value
+land_diff_edge$b1yr = ((land_edge_b1yr$value-land_edge_crt$value)*100)/land_edge_crt$value
 
-
-diff_edge$b1yr = ((sat_edge_b1y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
-
-diff_edge = diff_edge[,c(-1)]
+land_diff_edge = land_diff_edge[,c(-1)]
 
 
 diff_core = sat_core_crt[,c(1,2,3,4)]
