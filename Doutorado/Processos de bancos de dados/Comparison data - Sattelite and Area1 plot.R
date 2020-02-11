@@ -6,6 +6,7 @@ library(reshape2)
 library(dplyr)
 library(tidyr)
 library(viridis)
+library(plotly)
 
 #Data bank
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1')
@@ -85,9 +86,14 @@ ggplot(gg, aes(date,value, col=index))+
 
 
 
+p <- ggplot(gg, aes(date,value, col=index))+ 
+  #geom_line(aes(group=index), size = 1)+
+  geom_point()+
+  labs(fill= "Plot",x="Ano",y="Fogo - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()
 
-
-
+#ggplotly(p)
 
 
 
