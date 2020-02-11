@@ -23,22 +23,6 @@ hyper = read.csv("Hyperion_indexs_median by plot_2.csv")
 #hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs
 
 #Process to plot ==================
-#Calculate difference
-diff_edge = sat_edge_crt[,c(1,2,3,4)]
-
-diff_edge$b3yr = ((sat_edge_b3y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
-diff_edge$b1yr = ((sat_edge_b1y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
-
-diff_edge = diff_edge[,c(-1)]
-
-
-diff_core = sat_core_crt[,c(1,2,3,4)]
-
-diff_core$b3yr = ((sat_core_b3y$value-sat_core_crt$value)*100)/sat_core_crt$value
-diff_core$b1yr = ((sat_core_b1y$value-sat_core_crt$value)*100)/sat_core_crt$value
-
-diff_core = diff_core[,c(-1)]
-
 #Separate by edge and core
 land_edge = land %>%
   filter(dist == "borda")
@@ -53,6 +37,25 @@ hyper_core = hyper %>%
   filter(dist == "nucleo")
 
 
+#Calculate difference
+#land = t(land)
+land = melt(land)
+colnames(gg) = c("date","dist", "index", "parcela", "value")
+
+diff_edge = sat_edge_crt[,c(1,2,3,4)]
+
+diff_edge$b3yr = ((sat_edge_b3y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
+diff_edge$b1yr = ((sat_edge_b1y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
+
+diff_edge = diff_edge[,c(-1)]
+
+
+diff_core = sat_core_crt[,c(1,2,3,4)]
+
+diff_core$b3yr = ((sat_core_b3y$value-sat_core_crt$value)*100)/sat_core_crt$value
+diff_core$b1yr = ((sat_core_b1y$value-sat_core_crt$value)*100)/sat_core_crt$value
+
+diff_core = diff_core[,c(-1)]
 
 
 
