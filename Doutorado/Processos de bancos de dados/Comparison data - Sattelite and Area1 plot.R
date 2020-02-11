@@ -133,14 +133,7 @@ hyper_diff_core$b1yr = ((hyper_core_b1yr$value-hyper_core_crt$value)*100)/hyper_
 hyper_diff_core = hyper_diff_core[,c(-1)]
 
 
-
-
-
-
-
-
-
-#Plot data ===
+#Landsat Plots ========================================================================
 #Landsat edge ================
 gg_edge = melt(land_diff_edge)
 colnames(gg_edge) = c("date","dist", "index", "parcela", "value")
@@ -195,6 +188,111 @@ ggplot(gg2, aes(date,value, col=index))+
 
 #Landsat core ================
 gg_core = melt(land_diff_core)
+colnames(gg_core) = c("date","dist", "index", "parcela", "value")
+gg3 = gg_core %>% filter(parcela == 'b1yr')
+gg4 = gg_core %>% filter(parcela == 'b3yr')
+
+ggplot(gg3, aes(date,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  #geom_point()+
+  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Core)")+
+  geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
+  
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
+  
+  
+  annotate("text", x = 2.5, y = -75, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -83, ymax = -89, alpha = 0.9, fill = "darkgreen")+
+  
+  annotate("text", x = 8.5, y = -75, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -83, ymax = -89, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -85, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -85, label = "x", colour = "yellow")+
+  
+  annotate("text", x = 15.5, y = -75, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -83, ymax = -89, alpha = 0.9, fill = "darkblue")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))
+
+
+ggplot(gg4, aes(date,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  #geom_point()+
+  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Core)")+
+  geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
+  
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
+  
+  
+  annotate("text", x = 2.5, y = -70, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -75, ymax = -80, alpha = 0.9, fill = "darkgreen")+
+  
+  annotate("text", x = 8.5, y = -70, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -75, ymax = -80, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -76, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -76, label = "x", colour = "yellow")+
+  
+  annotate("text", x = 15.5, y = -70, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -75, ymax = -80, alpha = 0.9, fill = "darkblue")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))
+
+
+#Hyperion Plots ==========================================================================
+#Hyperion edge ================
+gg_edge = melt(hyper_diff_edge)
+colnames(gg_edge) = c("date","dist", "index", "parcela", "value")
+gg1 = gg_edge %>% filter(parcela == 'b1yr')
+gg2 = gg_edge %>% filter(parcela == 'b3yr')
+
+ggplot(gg1, aes(date,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  #geom_point()+
+  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
+  geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
+  
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
+  
+  
+  annotate("text", x = 2.5, y = -123, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkgreen")+
+  
+  annotate("text", x = 8.5, y = -123, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -129, ymax = -135, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -130, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -130, label = "x", colour = "yellow")+
+  
+  annotate("text", x = 15.5, y = -123, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkblue")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))
+
+
+ggplot(gg2, aes(date,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  #geom_point()+
+  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
+  geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
+  
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
+  
+  
+  annotate("text", x = 2.5, y = -222, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -229, ymax = -236, alpha = 0.9, fill = "darkgreen")+
+  
+  annotate("text", x = 8.5, y = -222, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -229, ymax = -236, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -230, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -230, label = "x", colour = "yellow")+
+  
+  annotate("text", x = 15.5, y = -222, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -229, ymax = -236, alpha = 0.9, fill = "darkblue")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))
+
+
+#Hyperion core ================
+gg_core = melt(hyper_diff_core)
 colnames(gg_core) = c("date","dist", "index", "parcela", "value")
 gg3 = gg_core %>% filter(parcela == 'b1yr')
 gg4 = gg_core %>% filter(parcela == 'b3yr')
