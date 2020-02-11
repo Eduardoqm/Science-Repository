@@ -1,6 +1,7 @@
 #Plots to comparation Insdex data and Area1 data
 
 #Eduardo Q Marques 06-02-2020
+
 library(ggplot2)
 library(reshape2)
 library(dplyr)
