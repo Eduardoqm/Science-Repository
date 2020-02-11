@@ -64,6 +64,7 @@ hyper_core_b1yr = hyper %>%
 
 
 #Calculate difference ================
+#Landsat Edge
 land_edge_crt$date = as.character(land_edge_crt$date)
 land_edge_crt = melt(land_edge_crt)
 
@@ -80,23 +81,60 @@ land_diff_edge$b1yr = ((land_edge_b1yr$value-land_edge_crt$value)*100)/land_edge
 
 land_diff_edge = land_diff_edge[,c(-1)]
 
+#Landsat Core
+land_core_crt$date = as.character(land_core_crt$date)
+land_core_crt = melt(land_core_crt)
 
-diff_core = sat_core_crt[,c(1,2,3,4)]
+land_core_b3yr$date = as.character(land_core_b3yr$date)
+land_core_b3yr = melt(land_core_b3yr)
 
-diff_core$b3yr = ((sat_core_b3y$value-sat_core_crt$value)*100)/sat_core_crt$value
-diff_core$b1yr = ((sat_core_b1y$value-sat_core_crt$value)*100)/sat_core_crt$value
-
-diff_core = diff_core[,c(-1)]
-
-
-
-
+land_core_b1yr$date = as.character(land_core_b1yr$date)
+land_core_b1yr = melt(land_core_b1yr)
 
 
-land_edge = land_edge[,c(-9)]
-land_edge$date = as.character(land_edge$date)
-land_edge = melt(land_edge)
-colnames(land_edge) = c("parcela", "date", "index", "value")
+land_diff_core = land_core_crt[,c(1,2,3,4)]
+land_diff_core$b3yr = ((land_core_b3yr$value-land_core_crt$value)*100)/land_core_crt$value
+land_diff_core$b1yr = ((land_core_b1yr$value-land_core_crt$value)*100)/land_core_crt$value
+
+land_diff_core = land_diff_core[,c(-1)]
+
+
+#Hyperion Edge
+hyper_edge_crt$date = as.character(hyper_edge_crt$date)
+hyper_edge_crt = melt(hyper_edge_crt)
+
+hyper_edge_b3yr$date = as.character(hyper_edge_b3yr$date)
+hyper_edge_b3yr = melt(hyper_edge_b3yr)
+
+hyper_edge_b1yr$date = as.character(hyper_edge_b1yr$date)
+hyper_edge_b1yr = melt(hyper_edge_b1yr)
+
+
+hyper_diff_edge = hyper_edge_crt[,c(1,2,3,4)]
+hyper_diff_edge$b3yr = ((hyper_edge_b3yr$value-hyper_edge_crt$value)*100)/hyper_edge_crt$value
+hyper_diff_edge$b1yr = ((hyper_edge_b1yr$value-hyper_edge_crt$value)*100)/hyper_edge_crt$value
+
+hyper_diff_edge = hyper_diff_edge[,c(-1)]
+
+#Hyperion Core
+hyper_core_crt$date = as.character(hyper_core_crt$date)
+hyper_core_crt = melt(hyper_core_crt)
+
+hyper_core_b3yr$date = as.character(hyper_core_b3yr$date)
+hyper_core_b3yr = melt(hyper_core_b3yr)
+
+hyper_core_b1yr$date = as.character(hyper_core_b1yr$date)
+hyper_core_b1yr = melt(hyper_core_b1yr)
+
+
+hyper_diff_core = hyper_core_crt[,c(1,2,3,4)]
+hyper_diff_core$b3yr = ((hyper_core_b3yr$value-hyper_core_crt$value)*100)/hyper_core_crt$value
+hyper_diff_core$b1yr = ((hyper_core_b1yr$value-hyper_core_crt$value)*100)/hyper_core_crt$value
+
+hyper_diff_core = hyper_diff_core[,c(-1)]
+
+
+
 
 
 
