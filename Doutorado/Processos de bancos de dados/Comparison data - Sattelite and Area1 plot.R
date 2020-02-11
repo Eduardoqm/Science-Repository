@@ -150,22 +150,22 @@ gg2 = gg_edge %>% filter(parcela == 'b3yr')
 ggplot(gg1, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   #geom_point()+
-  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference)")+
+  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(8.5, 11.5, 15.5), y = 1.5, label = "Dry")+
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
 
   
-  annotate("text", x = 2.5, y = -125, label = "Before fire", colour = "darkgreen")+
-  annotate("rect", xmin = 1, xmax = 5, ymin = -129, ymax = -132, alpha = 0.9, fill = "darkgreen")+
+  annotate("text", x = 2.5, y = -123, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkgreen")+
   
-  annotate("text", x = 8.5, y = -125, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 5, xmax = 12, ymin = -129, ymax = -132, alpha = 0.9, fill = "red")+
+  annotate("text", x = 8.5, y = -123, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -129, ymax = -135, alpha = 0.9, fill = "red")+
   annotate("text", x = c(5.5, 8.5, 11.5), y = -130, label = "xx", colour = "yellow")+
   annotate("text", x = c(6.5, 7.5, 10.5), y = -130, label = "x", colour = "yellow")+
   
-  annotate("text", x = 15.5, y = -125, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 12, xmax = 19, ymin = -129, ymax = -132, alpha = 0.9, fill = "darkblue")+
+  annotate("text", x = 15.5, y = -123, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
@@ -173,22 +173,22 @@ ggplot(gg1, aes(date,value, col=index))+
 ggplot(gg2, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   #geom_point()+
-  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference)")+
+  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(8.5, 11.5, 15.5), y = 1.5, label = "Dry")+
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
   
   
-  annotate("text", x = 2.5, y = -224, label = "Before fire", colour = "darkgreen")+
-  annotate("rect", xmin = 1, xmax = 5, ymin = -229, ymax = -234, alpha = 0.9, fill = "darkgreen")+
+  annotate("text", x = 2.5, y = -222, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -229, ymax = -236, alpha = 0.9, fill = "darkgreen")+
   
-  annotate("text", x = 8.5, y = -224, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 5, xmax = 12, ymin = -229, ymax = -234, alpha = 0.9, fill = "red")+
+  annotate("text", x = 8.5, y = -222, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -229, ymax = -236, alpha = 0.9, fill = "red")+
   annotate("text", x = c(5.5, 8.5, 11.5), y = -230, label = "xx", colour = "yellow")+
   annotate("text", x = c(6.5, 7.5, 10.5), y = -230, label = "x", colour = "yellow")+
   
-  annotate("text", x = 15.5, y = -224, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 12, xmax = 19, ymin = -229, ymax = -234, alpha = 0.9, fill = "darkblue")+
+  annotate("text", x = 15.5, y = -222, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -229, ymax = -236, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
@@ -202,22 +202,22 @@ gg4 = gg_core %>% filter(parcela == 'b3yr')
 ggplot(gg3, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   #geom_point()+
-  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference)")+
+  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Core)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(8.5, 11.5, 15.5), y = 1.5, label = "Dry")+
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
   
   
-  annotate("text", x = 2.5, y = -125, label = "Before fire", colour = "darkgreen")+
-  annotate("rect", xmin = 1, xmax = 5, ymin = -129, ymax = -132, alpha = 0.9, fill = "darkgreen")+
+  annotate("text", x = 2.5, y = -75, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -83, ymax = -89, alpha = 0.9, fill = "darkgreen")+
   
-  annotate("text", x = 8.5, y = -125, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 5, xmax = 12, ymin = -129, ymax = -132, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(5.5, 8.5, 11.5), y = -130, label = "xx", colour = "yellow")+
-  annotate("text", x = c(6.5, 7.5, 10.5), y = -130, label = "x", colour = "yellow")+
+  annotate("text", x = 8.5, y = -75, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -83, ymax = -89, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -85, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -85, label = "x", colour = "yellow")+
   
-  annotate("text", x = 15.5, y = -125, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 12, xmax = 19, ymin = -129, ymax = -132, alpha = 0.9, fill = "darkblue")+
+  annotate("text", x = 15.5, y = -75, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -83, ymax = -89, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
@@ -225,21 +225,21 @@ ggplot(gg3, aes(date,value, col=index))+
 ggplot(gg4, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   #geom_point()+
-  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference)")+
+  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Core)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(8.5, 11.5, 15.5), y = 1.5, label = "Dry")+
+  annotate("text", x = c(8.5, 11.5, 15.5), y = 10, label = "Dry")+
   
   
-  annotate("text", x = 2.5, y = -224, label = "Before fire", colour = "darkgreen")+
-  annotate("rect", xmin = 1, xmax = 5, ymin = -229, ymax = -234, alpha = 0.9, fill = "darkgreen")+
+  annotate("text", x = 2.5, y = -70, label = "Before fire", colour = "darkgreen")+
+  annotate("rect", xmin = 1, xmax = 5, ymin = -75, ymax = -80, alpha = 0.9, fill = "darkgreen")+
   
-  annotate("text", x = 8.5, y = -224, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 5, xmax = 12, ymin = -229, ymax = -234, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(5.5, 8.5, 11.5), y = -230, label = "xx", colour = "yellow")+
-  annotate("text", x = c(6.5, 7.5, 10.5), y = -230, label = "x", colour = "yellow")+
+  annotate("text", x = 8.5, y = -70, label = "Fire experiment", colour = "red")+
+  annotate("rect", xmin = 5, xmax = 12, ymin = -75, ymax = -80, alpha = 0.9, fill = "red")+
+  annotate("text", x = c(5.5, 8.5, 11.5), y = -76, label = "xx", colour = "yellow")+
+  annotate("text", x = c(6.5, 7.5, 10.5), y = -76, label = "x", colour = "yellow")+
   
-  annotate("text", x = 15.5, y = -224, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 12, xmax = 19, ymin = -229, ymax = -234, alpha = 0.9, fill = "darkblue")+
+  annotate("text", x = 15.5, y = -70, label = "Restoration", colour = "darkblue")+
+  annotate("rect", xmin = 12, xmax = 19, ymin = -75, ymax = -80, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
