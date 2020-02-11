@@ -23,29 +23,52 @@ hyper = read.csv("Hyperion_indexs_median by plot_2.csv")
 #hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs
 
 #Process to plot ==================
-#Separate by edge and core
-land_edge = land %>%
-  filter(dist == "borda")
+#Separate by edge and core and tratament
+#Landsat data
+land_edge_crt = land %>%
+  filter(dist == "borda", parcela == "controle")
 
-land_core = land %>%
-  filter(dist == "nucleo")
+land_edge_b3yr = land %>%
+  filter(dist == "borda", parcela == "b3yr")
 
-hyper_edge = hyper %>%
-  filter(dist == "borda")
+land_edge_b1yr = land %>%
+  filter(dist == "borda", parcela == "b1yr")
 
-hyper_core = hyper %>%
-  filter(dist == "nucleo")
+land_core_crt = land %>%
+  filter(dist == "borda", parcela == "controle")
+
+land_core_b3yr = land %>%
+  filter(dist == "borda", parcela == "b3yr")
+
+land_core_b1yr = land %>%
+  filter(dist == "borda", parcela == "b1yr")
+
+#Hyperion data
+hyper_edge_crt = hyper %>%
+  filter(dist == "borda", parcela == "controle")
+
+hyper_edge_b3yr = hyper %>%
+  filter(dist == "borda", parcela == "b3yr")
+
+hyper_edge_b1yr = hyper %>%
+  filter(dist == "borda", parcela == "b1yr")
+
+hyper_core_crt = hyper %>%
+  filter(dist == "borda", parcela == "controle")
+
+hyper_core_b3yr = hyper %>%
+  filter(dist == "borda", parcela == "b3yr")
+
+hyper_core_b1yr = hyper %>%
+  filter(dist == "borda", parcela == "b1yr")
 
 
 #Calculate difference
-land_edge = land_edge[,c(-9)]
-land_edge$date = as.character(land_edge$date)
-land_edge = melt(land_edge)
-colnames(gg) = c("parcela", "date", "index", "value")
 
-diff_edge = sat_edge_crt[,c(1,2,3,4)]
 
-diff_edge$b3yr = ((sat_edge_b3y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
+land_diff_edge = land_edge_crt[,c(1,2,3,4)]
+
+
 diff_edge$b1yr = ((sat_edge_b1y$value-sat_edge_crt$value)*100)/sat_edge_crt$value
 
 diff_edge = diff_edge[,c(-1)]
@@ -63,7 +86,10 @@ diff_core = diff_core[,c(-1)]
 
 
 
-
+land_edge = land_edge[,c(-9)]
+land_edge$date = as.character(land_edge$date)
+land_edge = melt(land_edge)
+colnames(land_edge) = c("parcela", "date", "index", "value")
 
 
 
