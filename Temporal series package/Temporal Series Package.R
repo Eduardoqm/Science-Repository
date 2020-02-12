@@ -16,6 +16,22 @@ library(tidyr)
 library(viridis)
 
 #Functions =============================================================================
+#Extract point temporal data (x is raster, y is point file)
+time_point = function(x,y){
+  ext <- raster::extract(x, y)
+  a <- melt(ext)
+  a_md = a %>%
+    group_by(date, parcela) %>% 
+    summarise(index = median(index))
+}
+
+
+
+
+
+
+
+
 #To calculate median per plot
 data_time_median = function(x,y){
   ext <- raster::extract(x, y)
