@@ -19,8 +19,8 @@ library(viridis)
 #Extract point temporal data (x is raster, y is point file)
 time_point = function(x,y){
   ext <- raster::extract(x, y)
-  ext <- melt(ext)
-  colnames(ext) <- c("id", "time","value")
+  a <- melt(ext)
+  colnames(a) <- c("id", "time","value")
 }
 
 
