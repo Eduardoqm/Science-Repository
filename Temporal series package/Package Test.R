@@ -32,3 +32,29 @@ points = spTransform(points, crs(ndvi))
 point = spTransform(point, crs(ndvi))
 lines = spTransform(lines, crs(ndvi))
 line = spTransform(line, crs(ndvi))
+
+#Tests ===================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
