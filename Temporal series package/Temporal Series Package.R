@@ -15,7 +15,8 @@ library(dplyr)
 library(tidyr)
 library(viridis)
 
-#Functions =============================================================================
+#Functions
+# With Points Vectors ==================================================================
 #Extract point temporal data (x is raster, y is point file)
 df_point = function(x,y){
   ext <- raster::extract(x, y)
@@ -24,15 +25,33 @@ df_point = function(x,y){
 }
 
 #Extract points temporal data (x is raster, y is point file)
-df_points = function(x,y){
+df_points = function(x,y,z){
   ext <- raster::extract(x, y)
   ext <- melt(ext)
   ext <- as.data.frame(ext)
-  ext_md = ext %>%
+    if (z == "median") {
+      ext_md = ext %>%
+        group_by(Var2) %>% 
+        summarise(value = median(value))
+    } else if (z == "mean") {
+      ext_md = ext %>%
+        group_by(Var2) %>% 
+        summarise(value = mean(value))
+    } else if(z == "max"){
+      ext_md = ext %>%
     group_by(Var2) %>% 
-    summarise(value = median(value))
+    summarise(value = max(value))
+    } else if(z == "min"){
+      ext_md = ext %>%
+        group_by(Var2) %>% 
+        summarise(value = min(value))
+    }else if(z == "sd"){
+      ext_md = ext %>%
+        group_by(Var2) %>% 
+        summarise(value = sd(value))
+    }else
+      print("Use a valid method to calculate!")
 }
-
 
 
 

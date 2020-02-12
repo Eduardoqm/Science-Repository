@@ -36,10 +36,10 @@ line = spTransform(line, crs(ndvi))
 #Tests ===================================================================================
 #Points test
 time_point = df_point(ndvi, point)
-View(time_point)
+time_point
 
-time_points = df_points(ndvi, points)
-View(time_points)
+time_points = df_points(ndvi, points, "median")
+time_points
 
 
 

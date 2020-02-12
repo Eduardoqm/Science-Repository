@@ -12,15 +12,15 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "930A687A",
+        "cacheKey" : "23B7A332",
         "caption" : "time_point",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=time_point&cache_key=930A687A",
-        "displayedObservations" : 52,
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=time_point&cache_key=23B7A332",
+        "displayedObservations" : "20",
         "environment" : "",
         "object" : "time_point",
-        "preview" : 0,
-        "totalObservations" : 52,
-        "variables" : 3
+        "preview" : "0",
+        "totalObservations" : "20",
+        "variables" : "3"
     },
     "relative_order" : 3,
     "source_on_save" : false,
