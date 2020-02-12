@@ -35,13 +35,15 @@ line = spTransform(line, crs(ndvi))
 
 #Tests ===================================================================================
 #Points test
+#Data frame
 time_point = df_point(ndvi, point)
 time_point
 
 time_points = df_points(ndvi, points, "median")
 time_points
 
-
+#Plots
+gg_point(ndvi, point)
 
 
 

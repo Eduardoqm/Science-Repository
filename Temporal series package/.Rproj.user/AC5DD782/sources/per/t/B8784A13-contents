@@ -24,7 +24,7 @@ df_point = function(x,y){
   ext <- as.data.frame(ext)
 }
 
-#Extract points temporal data (x is raster, y is point file)
+#Extract points temporal data (x is raster, y is point file, z is method)
 df_points = function(x,y,z){
   ext <- raster::extract(x, y)
   ext <- melt(ext)
@@ -54,15 +54,18 @@ df_points = function(x,y,z){
 }
 
 
-
-
-
-
-#To calculate median per plot
-data_time_median = function(x,y){
+#Extract point temporal data and plot(x is raster, y is point file)
+gg_point = function(x,y){
   ext <- raster::extract(x, y)
-  a <- melt(ext)
-  a_md = a %>%
-    group_by(date, parcela) %>% 
-    summarise(index = median(index))
+  ext <- melt(ext)
+  ext <- as.data.frame(ext)
+  ggplot(time_point, aes(Var2, value))+
+    geom_line(aes(group = 1), size = 1)+
+    labs(x="Time",y="Value")+
+    theme_minimal()+
+    theme(axis.text.x = element_text(angle = 90))
 }
+
+
+
+
