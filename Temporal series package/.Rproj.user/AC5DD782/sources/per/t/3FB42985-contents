@@ -39,24 +39,30 @@ line = spTransform(line, crs(ndvi))
 time_point = df_point(ndvi, point)
 time_point
 
-time_points = df_points(ndvi, points, "median")
+time_points = df_points(ndvi, points, "min")
 time_points
 
 #Plots
-gg_point(ndvi, point)
+gg_point(ndvi, point, "line")
+gg_point(ndvi, point, "point")
+gg_point(ndvi, point, "boxplot")
+gg_point(ndvi, point, "area")
+gg_point(ndvi, point, "bar")
 
 
+gg_points(ndvi, points, "mean", "line")
+gg_points(ndvi, points, "median", "line")
+gg_points(ndvi, points, "max", "line")
+gg_points(ndvi, points, "min", "line")
+gg_points(ndvi, points, "sd", "line")
 
+gg_points(ndvi, points, "sd", "point")
+gg_points(ndvi, points, "sd", "bar")
+gg_points(ndvi, points, "sd", "boxplot")
+gg_points(ndvi, points, "sd", "area")
+gg_points(ndvi, points, "mean", "area")
 
-
-
-
-
-
-
-
-
-
+#Polygon tests
 
 
 
