@@ -63,8 +63,32 @@ gg_points(ndvi, points, "sd", "area")
 gg_points(ndvi, points, "mean", "area")
 
 #Polygon tests
+time_poly = df_poly(ndvi, polygon, "mean")
+time_poly
 
+time_poly2 = df_poly(ndvi, polygons, "mean")
+time_poly2
 
+gg_poly(ndvi, polygon, "mean", "line")
+gg_poly(ndvi, polygon, "median", "line")
+gg_poly(ndvi, polygon, "max", "line")
+gg_poly(ndvi, polygon, "min", "line")
+gg_poly(ndvi, polygon, "sd", "line")
 
+gg_poly(ndvi, polygon, "sd", "point")
+gg_poly(ndvi, polygon, "sd", "bar")
+gg_poly(ndvi, polygon, "sd", "area")
+gg_poly(ndvi, polygon, "sd", "boxplot")
+gg_poly(ndvi, polygons, "sd", "boxplot")
 
-
+#All
+gg_points(ndvi, points, "mean", "line")
+gg_poly(ndvi, polygon, "mean", "line")
+gg_points(ndvi, points, "median", "line")
+gg_poly(ndvi, polygon, "median", "line")
+gg_points(ndvi, points, "max", "line")
+gg_poly(ndvi, polygon, "max", "line")
+gg_points(ndvi, points, "min", "line")
+gg_poly(ndvi, polygon, "min", "line")
+gg_points(ndvi, points, "sd", "line")
+gg_poly(ndvi, polygon, "sd", "line")
