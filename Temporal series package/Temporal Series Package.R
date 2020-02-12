@@ -17,12 +17,21 @@ library(viridis)
 
 #Functions =============================================================================
 #Extract point temporal data (x is raster, y is point file)
-time_point = function(x,y){
+df_point = function(x,y){
   ext <- raster::extract(x, y)
-  a <- melt(ext)
-  colnames(a) <- c("id", "time","value")
+  ext <- melt(ext)
+  ext <- as.data.frame(ext)
 }
 
+#Extract points temporal data (x is raster, y is point file)
+df_points = function(x,y){
+  ext <- raster::extract(x, y)
+  ext <- melt(ext)
+  ext <- as.data.frame(ext)
+  ext_md = ext %>%
+    group_by(Var2) %>% 
+    summarise(value = median(value))
+}
 
 
 

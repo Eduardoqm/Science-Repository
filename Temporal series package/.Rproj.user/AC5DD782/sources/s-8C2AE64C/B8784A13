@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "8|20|16|0|\n",
-    "hash" : "2574694520",
+    "hash" : "2804203338",
     "id" : "B8784A13",
-    "lastKnownWriteTime" : 1581541186,
-    "last_content_update" : 1581541186065,
+    "lastKnownWriteTime" : 1581542293,
+    "last_content_update" : 1581542293987,
     "path" : "~/My Jobs/Programas/R/Science-Repository/Temporal series package/Temporal Series Package.R",
     "project_path" : "Temporal Series Package.R",
     "properties" : {
-        "cursorPosition" : "30,0",
-        "scrollLine" : "0"
+        "cursorPosition" : "41,0",
+        "scrollLine" : "4"
     },
     "relative_order" : 1,
     "source_on_save" : false,

@@ -35,10 +35,11 @@ line = spTransform(line, crs(ndvi))
 
 #Tests ===================================================================================
 #Points test
-df_point = time_point(ndvi, point)
-View(df_point)
+time_point = df_point(ndvi, point)
+View(time_point)
 
-
+time_points = df_points(ndvi, points)
+View(time_points)
 
 
 
