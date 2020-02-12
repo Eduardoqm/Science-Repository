@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1581540982239.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C7513DCE",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1581540982239,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "14EDDCB",
+        "caption" : "df_point",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=df_point&cache_key=14EDDCB",
+        "displayedObservations" : 52,
+        "environment" : "",
+        "object" : "df_point",
+        "preview" : 0,
+        "totalObservations" : 52,
+        "variables" : 3
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
