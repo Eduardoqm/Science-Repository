@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1581539677943.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "8|20|16|0|\n",
+    "hash" : "1383442634",
+    "id" : "B8784A13",
+    "lastKnownWriteTime" : 1581539919,
+    "last_content_update" : 1581539919608,
+    "path" : "~/My Jobs/Programas/R/Science-Repository/Temporal series package/Temporal Series Package.R",
+    "project_path" : "Temporal Series Package.R",
+    "properties" : {
+        "cursorPosition" : "8,88",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
