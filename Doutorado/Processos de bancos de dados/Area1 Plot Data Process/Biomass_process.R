@@ -26,3 +26,41 @@ biomass$dbh.class = as.character(biomass$dbh.class)
 biomass$plot[biomass$plot == "A"] <- c("controle")
 biomass$plot[biomass$plot == "B"] <- c("b3yr")
 biomass$plot[biomass$plot == "C"] <- c("b1yr")
+
+#Add info edge and core
+#By transect
+biomass$transcto[biomass$transcto == "AA"] <- c("borda")
+biomass$transcto[biomass$transcto == "AB"] <- c("borda")
+biomass$transcto[biomass$transcto == "A"] <- c("borda")
+biomass$transcto[biomass$transcto == "B"] <- c("borda")
+biomass$transcto[biomass$transcto == "C"] <- c("borda")
+biomass$transcto[biomass$transcto == "D"] <- c("borda")
+biomass$transcto[biomass$transcto == "E"] <- c("borda")
+biomass$transcto[biomass$transcto == "F"] <- c("borda")
+biomass$transcto[biomass$transcto == "G"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "H"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "I"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "J"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "K"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "L"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "M"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "N"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "O"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "P"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "Q"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "R"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "S"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "T"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "U"] <- c("nucleo")
+#By edge dist
+biomass$transcto[biomass$transcto == "(0,250]"] <- c("borda")
+biomass$transcto[biomass$transcto == "(250,500]"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "(500,750]"] <- c("nucleo")
+biomass$transcto[biomass$transcto == "(750,1e+03]"] <- c("nucleo")
+
+
+
+
+
+
+
