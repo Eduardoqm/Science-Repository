@@ -72,7 +72,9 @@ biomass = biomass %>%
 colnames(biomass) = c('parcela', 'dist', 'width', 'data', 'biomass')
 
 #Part 2 - Calculate tons by hectare==========================================================
+#We know that it has 500 meters per transect and now we have the width of the transect. We will have to multiply to have the area in m2 and transform it into hectares.
 
+biomass$m2 = biomass$width*500
 
 
 
