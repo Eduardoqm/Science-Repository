@@ -9,3 +9,8 @@ library(reshape2)
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Fogo")
 
 biomass = read.csv("Biomassa_Growth_Tanguro_Brando_Recovery_GCB_version5.csv", sep = ",", header = TRUE)
+
+#Part 1 - organize data
+
+biomass = biomass %>%
+  select(parcela, transecto, dbh.class, dap_Bio, dap_c08_Bio, dap_c10_Bio, dap_c11_Bio, dap_c12_Bio, dap.14_Bio, dap.16_Bio)
