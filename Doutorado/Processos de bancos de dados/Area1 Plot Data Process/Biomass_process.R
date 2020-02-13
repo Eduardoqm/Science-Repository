@@ -58,6 +58,14 @@ biomass$transcto[biomass$transcto == "(250,500]"] <- c("nucleo")
 biomass$transcto[biomass$transcto == "(500,750]"] <- c("nucleo")
 biomass$transcto[biomass$transcto == "(750,1e+03]"] <- c("nucleo")
 
+#Convert dbh.class in transect width in meters
+biomass$dbh.class[biomass$dbh.class == "C10"] <- c("2")
+biomass$dbh.class[biomass$dbh.class == "C20"] <- c("5")
+biomass$dbh.class[biomass$dbh.class == "C40A"] <- c("10")
+biomass$dbh.class[biomass$dbh.class == "C40B"] <- c("10")
+
+biomass$dbh.class = as.numeric(biomass$dbh.class)
+
 
 
 
