@@ -76,10 +76,14 @@ colnames(biomass) = c('parcela', 'dist', 'width', 'data', 'biomass')
 biomass$m2 = as.numeric(biomass$width*500)
 biomass$hec = as.numeric(biomass$m2/10000)
 
+#Sum hectares ans tons TALVEZ NAO USAR!!!!
+biomass = biomass %>%
+  group_by(parcela, dist, data) %>% 
+  summarise(biomass = sum(biomass, na.rm = TRUE), hec = sum(hec, na.rm = TRUE))
+
 #Calculate Tons/Hectares
 biomass$ton_hec = as.numeric(biomass$biomass/biomass$hec)
 
-#Union of Tons/Hectares
 
 
 
