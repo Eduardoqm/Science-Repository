@@ -10,7 +10,7 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 
 biomass = read.csv("Biomassa_Growth_Tanguro_Brando_Recovery_GCB_version5.csv", sep = ",", header = TRUE)
 
-#Part 1 - organize data =====================================================================
+#Part 1 - Organize data =====================================================================
 biomass = biomass %>%
   select(parcela, transecto, dbh.class, dap_Bio, dap_c08_Bio, dap_c10_Bio, dap_c11_Bio, dap_c12_Bio, dap.14_Bio, dap.16_Bio)
 colnames(biomass) = c('plot', 'transcto', 'dbh.class', '2004', '2008', '2010', '2011', '2012', '2014', '2016')
@@ -63,10 +63,15 @@ biomass$dbh.class[biomass$dbh.class == "C10"] <- c("2")
 biomass$dbh.class[biomass$dbh.class == "C20"] <- c("5")
 biomass$dbh.class[biomass$dbh.class == "C40A"] <- c("10")
 biomass$dbh.class[biomass$dbh.class == "C40B"] <- c("10")
-
 biomass$dbh.class = as.numeric(biomass$dbh.class)
 
+#Summary data
+biomass = biomass %>%
+  group_by(plot, transcto, dbh.class, data) %>% 
+  summarise(biomass = sum(biomass, na.rm = TRUE))
+colnames(biomass) = c('parcela', 'dist', 'width', 'data', 'biomass')
 
+#Part 2 - Calculate tons by hectare==========================================================
 
 
 
