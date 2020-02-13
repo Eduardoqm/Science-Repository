@@ -82,12 +82,12 @@ biomass$ton_hec = as.numeric(biomass$biomass/biomass$hec)
 #Sum Tons/Hectares
 biomass = biomass %>%
   group_by(parcela, dist, data) %>% 
-  summarise(biomass = sum(ton_hec, na.rm = TRUE))
+  summarise(bio_ton_hec = sum(ton_hec, na.rm = TRUE))
 
 #Part 3 - Export data as CSV ================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
-write.table(biomass, "Biomass_tang.csv", sep = ",")
+#write.table(biomass, "Biomass_tang.csv", sep = ",")
 
 
 
