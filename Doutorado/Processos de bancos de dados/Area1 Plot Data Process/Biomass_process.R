@@ -77,7 +77,7 @@ biomass$m2 = as.numeric(biomass$width*500)
 biomass$hec = as.numeric(biomass$m2/10000)
 
 #Calculate Tons/Hectares
-
+biomass$ton_hec = as.numeric(biomass$biomass/biomass$hec)
 
 
 
