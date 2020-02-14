@@ -56,7 +56,7 @@ litt$ton = as.numeric(litt$litt/1000000)
 litt = litt %>% 
   na.omit() %>% 
   group_by(parcela, dist, data) %>% 
-  summarise(litt = mean(litt))
+  summarise(ton = sum(ton), hec = sum(hec))
 
 
 
