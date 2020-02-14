@@ -26,19 +26,21 @@ litt  = read.csv("Liteira_tang.csv", sep = ",", header = TRUE)
 biomass = biomass %>% 
   filter(data <=2012)
 
-#LAI ====================================
+#LAI
+lai = lai %>% 
+  filter(data <=2012)
 
-#Litterfall ========================
+#Litterfall
+litt = litt %>% 
+  filter(data <=2012)
 
-#Join Data =========================
-#struc = hy[,c(2, 4, 10, 12, 18, 19, 21)]
-
+#Join Data
 hy = hy %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
-#biomass = as.data.frame(biomass)#To work
-#biomass = biomass %>% 
-#  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
+biomass = as.data.frame(biomass)#To work
+biomass = biomass %>% 
+  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
 lai = lai %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
