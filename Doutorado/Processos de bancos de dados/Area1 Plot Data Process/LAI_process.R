@@ -59,13 +59,14 @@ lai$dist[lai$dist == "U"] <- c("nucleo")
 #Part 2 - Summary data=======================================================================
 lai = lai %>% 
   group_by(parcela, dist, data) %>% 
+  filter(lai <= 7) %>% 
   summarise(lai = median(lai))
 
 
 #Part 3 - Export data as CSV ================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
-#write.table(litt, "Liteira_tang.csv", sep = ",")
+write.table(lai, "LAI_tang.csv", sep = ",")
 
 
 
