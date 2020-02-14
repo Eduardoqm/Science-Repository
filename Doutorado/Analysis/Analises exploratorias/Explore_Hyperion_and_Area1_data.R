@@ -31,8 +31,6 @@ litt  = read.csv("Liteira_tang.csv", sep = ",", header = TRUE)
 biomass = biomass %>% 
   filter(data <=2012)
 
-colnames(biomass) = c("id", "biomass")
-
 #LAI
 lai = lai %>% 
   filter(data <=2012)
@@ -41,8 +39,6 @@ lai = lai %>%
 litt = litt %>% 
   filter(data <=2012)
 
-colnames(litt) = c("id", "litter")
-
 #Join Data
 hy = hy %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
@@ -50,12 +46,15 @@ hy = hy %>%
 biomass = as.data.frame(biomass)#To work
 biomass = biomass %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
+colnames(biomass) = c("id", "biomass")
 
 lai = lai %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
 litt = litt %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
+colnames(litt) = c("id", "litter")
+
 
 
 df = hy
@@ -69,7 +68,7 @@ df = df %>%
 
 #write.table(df, "Integration_Area1_data_edge_core.csv", sep = ",")
 #Correlation Matrix ======================================================================
-ggpairs(df)
+#ggpairs(df)
 
 #Data organization =======================================================================
 #Separate by edge and core and tratament
@@ -135,38 +134,24 @@ gg2 = gg_edge %>% filter(parcela == 'b3yr')
 
 ggplot(gg1, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  #geom_point()+
+  geom_point()+
   labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
   annotate("text", x = c(3.5, 5.5), y = 110, label = "Dry")+
   
-  
-  annotate("text", x = 3, y = -123, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 1, xmax = 6, ymin = -129, ymax = -135, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(1.5, 3.7, 5.5), y = -130, label = "xx", colour = "yellow")+
-  
-  annotate("text", x = 6.5, y = -123, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 6, xmax = 7, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
 
 ggplot(gg2, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  #geom_point()+
+  geom_point()+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
   annotate("text", x = c(3.5, 5.5), y = 110, label = "Dry")+
   
-  
-  annotate("text", x = 3, y = -123, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 1, xmax = 6, ymin = -129, ymax = -135, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(1.5, 3.7, 5.5), y = -130, label = "xx", colour = "yellow")+
-  
-  annotate("text", x = 6.5, y = -123, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 6, xmax = 7, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
@@ -179,55 +164,23 @@ gg4 = gg_core %>% filter(parcela == 'b3yr')
 
 ggplot(gg3, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  #geom_point()+
+  geom_point()+
   labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Core)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(3.5, 5.5), y = 110, label = "Dry")+
+  annotate("text", x = c(3.5, 5.5), y = 50, label = "Dry")+
   
-  
-  annotate("text", x = 3, y = -123, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 1, xmax = 6, ymin = -129, ymax = -135, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(1.5, 3.7, 5.5), y = -130, label = "xx", colour = "yellow")+
-  
-  annotate("text", x = 6.5, y = -123, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 6, xmax = 7, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
 ggplot(gg4, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  #geom_point()+
+  geom_point()+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Core)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(3.5, 5.5), y = 110, label = "Dry")+
+  annotate("text", x = c(3.5, 5.5), y = 50, label = "Dry")+
   
-  
-  annotate("text", x = 3, y = -123, label = "Fire experiment", colour = "red")+
-  annotate("rect", xmin = 1, xmax = 6, ymin = -129, ymax = -135, alpha = 0.9, fill = "red")+
-  annotate("text", x = c(1.5, 3.7, 5.5), y = -130, label = "xx", colour = "yellow")+
-  
-  annotate("text", x = 6.5, y = -123, label = "Restoration", colour = "darkblue")+
-  annotate("rect", xmin = 6, xmax = 7, ymin = -129, ymax = -135, alpha = 0.9, fill = "darkblue")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
