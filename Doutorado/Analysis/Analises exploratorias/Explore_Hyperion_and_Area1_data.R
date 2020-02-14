@@ -199,4 +199,4 @@ d = ggplot(gg4, aes(date,value, col=index))+
 
 #Join plots
 figure <- ggarrange(a, b, c, d + font("x.text", size = 10),
-                    ncol = 1, nrow = 4)
+                    ncol = 2, nrow = 2)
