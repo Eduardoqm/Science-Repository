@@ -10,7 +10,7 @@ library(GGally)
 library(ggplot2)
 library(ggpubr)
 
-#Load data
+#Load data ==========================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
 hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
@@ -192,11 +192,8 @@ d = ggplot(gg4, aes(date,value, col=index))+
   theme(axis.text.x = element_text(angle = 90))
 
 
+#Join plots ===================================================================
+ggarrange(a, b, c, d, ncol = 2, nrow = 2)
 
-
-
-
-
-#Join plots
-figure <- ggarrange(a, b, c, d + font("x.text", size = 10),
-                    ncol = 2, nrow = 2)
+#ggarrange(a, b, c, d + font("x.text", size = 10),
+      #    ncol = 2, nrow = 2)
