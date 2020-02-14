@@ -50,14 +50,18 @@ litt$dist[litt$dist == "U"] <- c("nucleo")
 
 
 #Part 2 - Calculate tons by hectare==========================================================
-#We know that it has 500 meters per transect and now we have the width of the transect. We will have to multiply to have the area in m2 and transform it into hectares.
+#We know that the basket is 60x80 cm in size, so we calculate its area and convert it from cm2 to hectares. The weight of the litter is just to convert grams to tons.
 litt$hec = as.numeric(((60*80)/10000)/10000)
 litt$ton = as.numeric(litt$litt/1000000)
+
 litt = litt %>% 
   na.omit() %>% 
   group_by(parcela, dist, data) %>% 
   summarise(ton = sum(ton), hec = sum(hec))
 
+#Convert in Ton/Hectares
+litt$lit_ton_hec = as.numeric(litt$ton/litt$hec)
+litt = litt[,c(1,2,3,6)]
 
 
 #Part 3 - Export data as CSV ================================================================
