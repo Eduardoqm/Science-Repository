@@ -45,9 +45,6 @@ biomass = biomass %>%
 lai = lai %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
-fuel = fuel %>% 
-  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
-
 litt = litt %>% 
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
