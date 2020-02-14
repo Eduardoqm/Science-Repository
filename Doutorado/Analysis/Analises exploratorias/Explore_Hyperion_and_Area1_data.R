@@ -9,6 +9,7 @@ library(dplyr)
 library(GGally)
 library(ggplot2)
 library(ggpubr)
+library(plotly)
 
 #Load data ==========================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
@@ -193,8 +194,11 @@ d = ggplot(gg4, aes(date,value, col=index))+
 
 
 #Join plots ===================================================================
-ggarrange(a + rremove("x.text"), b + rremove("x.text"), c, d ,
-          ncol = 2, nrow = 2)
+#a = ggarrange(a, c, ncol = 2, nrow = 1)
 
-#ggarrange(a, b, c, d + font("x.text", size = 10),
-      #    ncol = 2, nrow = 2)
+#b = ggarrange(b, d, ncol = 2, nrow = 1)
+
+#ggarrange(a, b, ncol = 1, nrow = 2)
+
+c = ggarrange(a, b, c, d + font("x.text", size = 10),
+          ncol = 2, nrow = 2)
