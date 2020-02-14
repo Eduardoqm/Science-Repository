@@ -11,57 +11,55 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 lai = read.csv("MASTER_LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
 
 #Part 1 - Organize data =====================================================================
-litt = litt[,c(1,8,10,13)]
-colnames(litt) = c("parcela", "dist", "data", "litt")
-litt$dist = as.character(litt$dist)
-litt$parcela = as.character(litt$parcela)
+lai = lai[,c(1,3,11,21)]
+lai$transecto = as.character(lai$transecto)
 
 #Add plot info
-litt$parcela[litt$parcela == "A"] <- c("controle")
-litt$parcela[litt$parcela == "B"] <- c("b3yr")
-litt$parcela[litt$parcela == "C"] <- c("b1yr")
+for (x in 1:10) {
+  lai$linhas[lai$linhas == x] <- "controle"
+}
+
+for (x in 11:20) {
+  lai$linhas[lai$linhas == x] <- "b3yr"
+}
+
+for (x in 21:31) {
+  lai$linhas[lai$linhas == x] <- "b1yr"
+}
+
+colnames(lai) = c("parcela", "dist", "lai", "data")
 
 #Add info edge and core
 #By transect
-litt$dist[litt$dist == "Bo"] <- c("borda")
-litt$dist[litt$dist == "AA"] <- c("borda")
-litt$dist[litt$dist == "AB"] <- c("borda")
-litt$dist[litt$dist == "A"] <- c("borda")
-litt$dist[litt$dist == "B"] <- c("borda")
-litt$dist[litt$dist == "C"] <- c("borda")
-litt$dist[litt$dist == "D"] <- c("borda")
-litt$dist[litt$dist == "E"] <- c("borda")
-litt$dist[litt$dist == "F"] <- c("borda")
-litt$dist[litt$dist == "G"] <- c("nucleo")
-litt$dist[litt$dist == "H"] <- c("nucleo")
-litt$dist[litt$dist == "I"] <- c("nucleo")
-litt$dist[litt$dist == "J"] <- c("nucleo")
-litt$dist[litt$dist == "K"] <- c("nucleo")
-litt$dist[litt$dist == "L"] <- c("nucleo")
-litt$dist[litt$dist == "M"] <- c("nucleo")
-litt$dist[litt$dist == "N"] <- c("nucleo")
-litt$dist[litt$dist == "O"] <- c("nucleo")
-litt$dist[litt$dist == "P"] <- c("nucleo")
-litt$dist[litt$dist == "Q"] <- c("nucleo")
-litt$dist[litt$dist == "R"] <- c("nucleo")
-litt$dist[litt$dist == "S"] <- c("nucleo")
-litt$dist[litt$dist == "T"] <- c("nucleo")
-litt$dist[litt$dist == "U"] <- c("nucleo")
+lai$dist[lai$dist == "AA"] <- c("borda")
+lai$dist[lai$dist == "AB"] <- c("borda")
+lai$dist[lai$dist == "A"] <- c("borda")
+lai$dist[lai$dist == "B"] <- c("borda")
+lai$dist[lai$dist == "C"] <- c("borda")
+lai$dist[lai$dist == "D"] <- c("borda")
+lai$dist[lai$dist == "E"] <- c("borda")
+lai$dist[lai$dist == "F"] <- c("borda")
+lai$dist[lai$dist == "G"] <- c("nucleo")
+lai$dist[lai$dist == "H"] <- c("nucleo")
+lai$dist[lai$dist == "I"] <- c("nucleo")
+lai$dist[lai$dist == "J"] <- c("nucleo")
+lai$dist[lai$dist == "K"] <- c("nucleo")
+lai$dist[lai$dist == "L"] <- c("nucleo")
+lai$dist[lai$dist == "M"] <- c("nucleo")
+lai$dist[lai$dist == "N"] <- c("nucleo")
+lai$dist[lai$dist == "O"] <- c("nucleo")
+lai$dist[lai$dist == "P"] <- c("nucleo")
+lai$dist[lai$dist == "Q"] <- c("nucleo")
+lai$dist[lai$dist == "R"] <- c("nucleo")
+lai$dist[lai$dist == "S"] <- c("nucleo")
+lai$dist[lai$dist == "T"] <- c("nucleo")
+lai$dist[lai$dist == "U"] <- c("nucleo")
 
 
-#Part 2 - Calculate tons by hectare==========================================================
-#We know that the basket is 60x80 cm in size, so we calculate its area and convert it from cm2 to hectares. The weight of the litter is just to convert grams to tons.
-litt$hec = as.numeric(((60*80)/10000)/10000)
-litt$ton = as.numeric(litt$litt/1000000)
-
-litt = litt %>% 
-  na.omit() %>% 
+#Part 2 - Summary data=======================================================================
+lai = lai %>% 
   group_by(parcela, dist, data) %>% 
-  summarise(ton = sum(ton), hec = sum(hec))
-
-#Convert in Ton/Hectares
-litt$lit_ton_hec = as.numeric(litt$ton/litt$hec)
-litt = litt[,c(1,2,3,6)]
+  summarise(lai = median(lai))
 
 
 #Part 3 - Export data as CSV ================================================================
