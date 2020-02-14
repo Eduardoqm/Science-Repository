@@ -18,7 +18,7 @@ land = read.csv("Landast_indexs_median by plot.csv")
 #landsat = landsat[,c(-6)] #NDWI have so high values in comparison with other indexs
 
 #Hyperion
-hyper = read.csv("Hyperion_indexs_median by plot_2.csv")
+hyper = read.csv("Hyperion_indexs_median by plot.csv")
 
 #hyper = hyper[,c(-12)] #PSSR have so high values in comparison with other indexs
 hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs

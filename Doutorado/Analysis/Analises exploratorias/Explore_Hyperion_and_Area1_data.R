@@ -13,14 +13,19 @@ library(ggplot2)
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
 hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
+hyper = hyper[,c(-9)] #NDWI have so high values in comparison with other indexs
+
 biomass = read.csv("Biomass_tang.csv", sep = ",", header = TRUE)
+
 lai = read.csv("LAI_tang.csv", sep = ",", header = TRUE)
+
 litt  = read.csv("Liteira_tang.csv", sep = ",", header = TRUE)
+
 #fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
 #fire = read.csv("Fire.csv", sep = ",", header = TRUE) #Make the fire intensity!
 
 
-#Data organization
+#Data integration =======================================================================
 #From Hyperion we have 2004:2012, so let's try use other datas in this range
 #Biomass
 biomass = biomass %>% 
@@ -50,17 +55,39 @@ litt = litt %>%
 
 
 df = hy
-#df = full_join(df, biomass, by="id")
+df = full_join(df, biomass, by="id")
 df = full_join(df, lai, by="id")
-df = full_join(df, fuel, by="id")
 df = full_join(df, litt, by="id")
 
 df = df %>% 
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
 
-#write.table(df, "Area1_data_edge_core.csv", sep = ",")
-#Correlation Matrix ======================
+#write.table(df, "Integration_Area1_data_edge_core.csv", sep = ",")
+#Correlation Matrix ======================================================================
 ggpairs(df)
 
-#GLM and Dredge
+#Data organization =======================================================================
+#Calculate difference in relation to control
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
