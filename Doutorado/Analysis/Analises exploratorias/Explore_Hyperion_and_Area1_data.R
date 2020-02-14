@@ -67,8 +67,59 @@ df = df %>%
 ggpairs(df)
 
 #Data organization =======================================================================
-#Calculate difference in relation to control
+#Separate by edge and core and tratament
+df_edge_crt = df %>%
+  filter(dist == "borda", parcela == "controle")
 
+df_edge_b3yr = df %>%
+  filter(dist == "borda", parcela == "b3yr")
+
+df_edge_b1yr = df %>%
+  filter(dist == "borda", parcela == "b1yr")
+
+df_core_crt = df %>%
+  filter(dist == "nucleo", parcela == "controle")
+
+df_core_b3yr = df %>%
+  filter(dist == "nucleo", parcela == "b3yr")
+
+df_core_b1yr = df %>%
+  filter(dist == "nucleo", parcela == "b1yr")
+
+#Calculate difference in relation to control
+#df Edge
+df_edge_crt$data = as.character(df_edge_crt$data)
+df_edge_crt = melt(df_edge_crt)
+
+df_edge_b3yr$data = as.character(df_edge_b3yr$data)
+df_edge_b3yr = melt(df_edge_b3yr)
+
+df_edge_b1yr$data = as.character(df_edge_b1yr$data)
+df_edge_b1yr = melt(df_edge_b1yr)
+
+
+df_diff_edge = df_edge_crt[,c(1,2,3,4)]
+df_diff_edge$b3yr = ((df_edge_b3yr$value-df_edge_crt$value)*100)/df_edge_crt$value
+df_diff_edge$b1yr = ((df_edge_b1yr$value-df_edge_crt$value)*100)/df_edge_crt$value
+
+df_diff_edge = df_diff_edge[,c(-1)]
+
+#df Core
+df_core_crt$data = as.character(df_core_crt$data)
+df_core_crt = melt(df_core_crt)
+
+df_core_b3yr$data = as.character(df_core_b3yr$data)
+df_core_b3yr = melt(df_core_b3yr)
+
+df_core_b1yr$data = as.character(df_core_b1yr$data)
+df_core_b1yr = melt(df_core_b1yr)
+
+
+df_diff_core = df_core_crt[,c(1,2,3,4)]
+df_diff_core$b3yr = ((df_core_b3yr$value-df_core_crt$value)*100)/df_core_crt$value
+df_diff_core$b1yr = ((df_core_b1yr$value-df_core_crt$value)*100)/df_core_crt$value
+
+df_diff_core = df_diff_core[,c(-1)]
 
 
 
