@@ -66,7 +66,7 @@ lai = lai %>%
 #Part 3 - Export data as CSV ================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
-write.table(lai, "LAI_tang.csv", sep = ",")
+#write.table(lai, "LAI_tang.csv", sep = ",")
 
 
 
