@@ -193,7 +193,8 @@ d = ggplot(gg4, aes(date,value, col=index))+
 
 
 #Join plots ===================================================================
-ggarrange(a, b, c, d, ncol = 2, nrow = 2)
+ggarrange(a + rremove("x.text"), b + rremove("x.text"), c, d ,
+          ncol = 2, nrow = 2)
 
 #ggarrange(a, b, c, d + font("x.text", size = 10),
       #    ncol = 2, nrow = 2)
