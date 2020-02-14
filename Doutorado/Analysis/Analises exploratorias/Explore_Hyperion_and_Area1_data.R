@@ -8,6 +8,7 @@ library(tidyr)
 library(dplyr)
 library(GGally)
 library(ggplot2)
+library(ggpubr)
 
 #Load data
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
@@ -108,6 +109,9 @@ df_diff_edge$b1yr = ((df_edge_b1yr$value-df_edge_crt$value)*100)/df_edge_crt$val
 
 df_diff_edge = df_diff_edge[,c(-1)]
 
+df_diff_edge = df_diff_edge %>% 
+  na.omit()
+
 #df Core
 df_core_crt$data = as.character(df_core_crt$data)
 df_core_crt = melt(df_core_crt)
@@ -125,6 +129,9 @@ df_diff_core$b1yr = ((df_core_b1yr$value-df_core_crt$value)*100)/df_core_crt$val
 
 df_diff_core = df_diff_core[,c(-1)]
 
+df_diff_core = df_diff_core %>% 
+  na.omit()
+
 #DF Plots ==========================================================================
 #DF edge ================
 gg_edge = melt(df_diff_edge)
@@ -132,7 +139,7 @@ colnames(gg_edge) = c("date","dist", "index", "parcela", "value")
 gg1 = gg_edge %>% filter(parcela == 'b1yr')
 gg2 = gg_edge %>% filter(parcela == 'b3yr')
 
-ggplot(gg1, aes(date,value, col=index))+ 
+a = ggplot(gg1, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   geom_point()+
   labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
@@ -144,7 +151,7 @@ ggplot(gg1, aes(date,value, col=index))+
   theme(axis.text.x = element_text(angle = 90))
 
 
-ggplot(gg2, aes(date,value, col=index))+ 
+b = ggplot(gg2, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   geom_point()+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
@@ -162,7 +169,7 @@ colnames(gg_core) = c("date","dist", "index", "parcela", "value")
 gg3 = gg_core %>% filter(parcela == 'b1yr')
 gg4 = gg_core %>% filter(parcela == 'b3yr')
 
-ggplot(gg3, aes(date,value, col=index))+ 
+c = ggplot(gg3, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   geom_point()+
   labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Core)")+
@@ -173,7 +180,7 @@ ggplot(gg3, aes(date,value, col=index))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
-ggplot(gg4, aes(date,value, col=index))+ 
+d = ggplot(gg4, aes(date,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   geom_point()+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Core)")+
@@ -184,3 +191,12 @@ ggplot(gg4, aes(date,value, col=index))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
+
+
+
+
+
+
+#Join plots
+figure <- ggarrange(a, b, c, d + font("x.text", size = 10),
+                    ncol = 1, nrow = 4)
