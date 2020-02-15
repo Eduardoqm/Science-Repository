@@ -191,7 +191,7 @@ d = ggplot(gg4, aes(date,value, col=index))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
-
+a; b; c; d
 #Join plots ===================================================================
 #j = ggarrange(a, c, ncol = 2, nrow = 1)
 
@@ -202,8 +202,8 @@ d = ggplot(gg4, aes(date,value, col=index))+
 #c = ggarrange(a, b, c, d + font("x.text", size = 10),
           #ncol = 2, nrow = 2)
 
-a = ggplotly(a)
-b = ggplotly(b)
-c = ggplotly(c)
-d = ggplotly(d)
+#a = ggplotly(a)
+#b = ggplotly(b)
+#c = ggplotly(c)
+#d = ggplotly(d)
 
