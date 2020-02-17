@@ -4,16 +4,16 @@
     "created" : 1581539677943.000,
     "dirty" : false,
     "encoding" : "UTF-8",
-    "folds" : "8|20|16|0|\n18|22|157|0|\n158|24|251|0|\n160|26|186|0|\n190|28|249|0|\n",
+    "folds" : "8|20|16|0|\n160|26|186|0|\n190|28|249|0|\n",
     "hash" : "1074022583",
     "id" : "B8784A13",
     "lastKnownWriteTime" : 1581550690,
-    "last_content_update" : 1581551553556,
+    "last_content_update" : 1581943177570,
     "path" : "~/My Jobs/Programas/R/Science-Repository/Temporal series package/Temporal Series Package.R",
     "project_path" : "Temporal Series Package.R",
     "properties" : {
         "cursorPosition" : "251,0",
-        "scrollLine" : "0"
+        "scrollLine" : "27"
     },
     "relative_order" : 1,
     "source_on_save" : false,

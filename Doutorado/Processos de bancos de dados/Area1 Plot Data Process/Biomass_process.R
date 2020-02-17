@@ -63,6 +63,7 @@ biomass$dbh.class[biomass$dbh.class == "C10"] <- c("5")
 biomass$dbh.class[biomass$dbh.class == "C20"] <- c("20")
 biomass$dbh.class[biomass$dbh.class == "C40A"] <- c("50")
 biomass$dbh.class[biomass$dbh.class == "C40B"] <- c("50")
+
 biomass$dbh.class = as.numeric(biomass$dbh.class)
 
 #Summary data
