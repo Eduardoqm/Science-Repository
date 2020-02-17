@@ -22,7 +22,8 @@ lai = read.csv("LAI_tang.csv", sep = ",", header = TRUE)
 
 litt  = read.csv("Liteira_tang.csv", sep = ",", header = TRUE)
 
-#fuel = read.csv("Combustivel_Brown_Tang.csv", sep = ",", header = TRUE)
+fuel = read.csv("Fuel_tang.csv", sep = ",", header = TRUE)
+
 #fire = read.csv("Fire.csv", sep = ",", header = TRUE) #Make the fire intensity!
 
 
@@ -56,12 +57,16 @@ litt = litt %>%
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 colnames(litt) = c("id", "litter")
 
+fuel = fuel %>% 
+  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
+colnames(fuel) = c("id", "fuel")
 
 
 df = hy
 df = full_join(df, biomass, by="id")
 df = full_join(df, lai, by="id")
 df = full_join(df, litt, by="id")
+df = full_join(df, fuel, by="id")
 
 df = df %>% 
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
