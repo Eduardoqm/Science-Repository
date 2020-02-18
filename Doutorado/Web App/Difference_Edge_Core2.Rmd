@@ -212,35 +212,42 @@ d = ggplotly(d)
 
 
 ```
-### Here are the graphs of the relative difference between the control and the burned plots, separated for the edge and core of the forest. 
+Here are the graphs of the relative difference between the control and the burned plots, separated for the edge and core of the forest. 
 
-## B1yr - Edge
-```{r pressure, echo=FALSE}
+##  {.tabset .tabset-fade .tabset-pills}
+
+### B1yr - Edge
+```{r pressure, echo=FALSE, fig.height=5, fig.width=9}
 #B1yr - Edge
 a
 ```
 
-## B1yr - Core
-```{r, echo=FALSE}
+### B1yr - Core
+```{r, echo=FALSE, fig.height=5, fig.width=9}
 #B1yr - Core
 c
 ```
 
-## B3yr - Edge
-```{r, echo=FALSE}
+### B3yr - Edge
+```{r, echo=FALSE, fig.height=5, fig.width=9}
 #B3yr - Edge
 b
 ```
 
-## B3yr - Core
-```{r, echo=FALSE}
+### B3yr - Core
+```{r, echo=FALSE, fig.height=5, fig.width=9}
 #B3yr - Core
 d
 ```
 
-## Data Bank
-```{r, echo=FALSE, results='asis'}
+### Data Bank
+```{r, echo=FALSE, results = 'asis'}
 df2 = df[,c(1,2,3,19,20,21,22)]
 knitr::kable(head(df2, 100))
 ```
 
+### Summary Data
+```{r, echo=FALSE, results = 'asis'}
+df3 = df[,c(19,20,21,22)]
+knitr::kable(summary(df3, 100))
+```
