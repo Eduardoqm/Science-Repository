@@ -197,7 +197,7 @@ d = ggplot(gg4, aes(date,value, col=index))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
-a; b; c; d
+#a; b; c; d
 
 #Join plots by the groups ===============================================================
 #Struture Edge ========
@@ -216,15 +216,16 @@ a = ggplot(struc_edge_b1yr, aes(data,value, col=index))+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Structural Indexes (Edge)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 
 b = ggplot(struc_edge_b3yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
-       title = "Structural Indexes (Edge)")+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 #Struture Core
 struc_core = df_diff_core %>% 
@@ -242,23 +243,23 @@ c = ggplot(struc_core_b1yr, aes(data,value, col=index))+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Structural Indexes (Core)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 
 d = ggplot(struc_core_b3yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
-       title = "Structural Indexes (Core)")+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
-
-struc = ggarrange(a, c + rremove("xylab"),
-                  b, d + rremove("ylab"), common.legend = TRUE, ncol = 2, nrow = 2)
-
-struc
-
-
+struc = ggarrange(a + rremove("xlab"),
+                  c + rremove("xylab"),
+                  b, d + rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 2, nrow = 2)
 
 #Biochemistry Edge ========
 bioc_edge = df_diff_edge %>% 
@@ -271,20 +272,21 @@ bioc_edge_b1yr = bioc_edge %>% filter(parcela == 'b1yr')
 bioc_edge_b3yr = bioc_edge %>% filter(parcela == 'b3yr')
 
 
-ggplot(bioc_edge_b1yr, aes(data,value, col=index))+ 
+a = ggplot(bioc_edge_b1yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Biochemistry Indexes (Edge)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 
-ggplot(bioc_edge_b3yr, aes(data,value, col=index))+ 
+b = ggplot(bioc_edge_b3yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
-       title = "Biochemistry Indexes (Edge)")+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 #Biochemistry Core
 bioc_core = df_diff_core %>% 
@@ -297,20 +299,28 @@ bioc_core_b1yr = bioc_core %>% filter(parcela == 'b1yr')
 bioc_core_b3yr = bioc_core %>% filter(parcela == 'b3yr')
 
 
-ggplot(bioc_core_b1yr, aes(data,value, col=index))+ 
+c = ggplot(bioc_core_b1yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Biochemistry Indexes (Core)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 
-ggplot(bioc_core_b3yr, aes(data,value, col=index))+ 
+d = ggplot(bioc_core_b3yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
-       title = "Biochemistry Indexes (Core)")+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+bioc = ggarrange(a + rremove("xlab"),
+                  c + rremove("xylab"),
+                  b, d + rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 2, nrow = 2)
 
 #Physiologic Edge ========
 phy_edge = df_diff_edge %>% 
@@ -323,20 +333,21 @@ phy_edge_b1yr = phy_edge %>% filter(parcela == 'b1yr')
 phy_edge_b3yr = phy_edge %>% filter(parcela == 'b3yr')
 
 
-ggplot(phy_edge_b1yr, aes(data,value, col=index))+ 
+a = ggplot(phy_edge_b1yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Physiologic Indexes (Edge)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 
-ggplot(phy_edge_b3yr, aes(data,value, col=index))+ 
+b = ggplot(phy_edge_b3yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
-       title = "Physiologic Indexes (Edge)")+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 #Physiologic Core
 phy_core = df_diff_core %>% 
@@ -349,19 +360,25 @@ phy_core_b1yr = phy_core %>% filter(parcela == 'b1yr')
 phy_core_b3yr = phy_core %>% filter(parcela == 'b3yr')
 
 
-ggplot(phy_core_b1yr, aes(data,value, col=index))+ 
+c = ggplot(phy_core_b1yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
   labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
        title = "Physiologic Indexes (Core)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 
-ggplot(phy_core_b3yr, aes(data,value, col=index))+ 
+d = ggplot(phy_core_b3yr, aes(data,value, col=index))+ 
   geom_line(aes(group=index), size = 1)+
-  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)",
-       title = "Physiologic Indexes (Core)")+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
   geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
-
+phy = ggarrange(a + rremove("xlab"),
+                  c + rremove("xylab"),
+                  b, d + rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 2, nrow = 2)
