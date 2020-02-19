@@ -253,7 +253,8 @@ d = ggplot(struc_core_b3yr, aes(data,value, col=index))+
   theme_minimal()
 
 
-struc = ggarrange(a + theme(axis.ticks.y = element_blank(), axis.title.y = element_blank() ), c, b, d, common.legend = TRUE, ncol = 2, nrow = 2)
+struc = ggarrange(a, c + rremove("xylab"),
+                  b, d + rremove("ylab"), common.legend = TRUE, ncol = 2, nrow = 2)
 
 struc
 
