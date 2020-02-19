@@ -202,7 +202,7 @@ d = ggplot(gg4, aes(date,value, col=index))+
 #Join plots by the groups ===============================================================
 #Struture Edge ========
 struc_edge = df_diff_edge %>% 
-  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litt','fuel'))
+  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
 
 struc_edge = melt(struc_edge)
 colnames(struc_edge) = c("data","dist", "index", "parcela", "value")
@@ -229,7 +229,7 @@ b = ggplot(struc_edge_b3yr, aes(data,value, col=index))+
 
 #Struture Core
 struc_core = df_diff_core %>% 
-  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litt','fuel'))
+  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
 
 struc_core = melt(struc_core)
 colnames(struc_core) = c("data","dist", "index", "parcela", "value")
@@ -263,7 +263,7 @@ struc = ggarrange(a + rremove("xlab"),
 
 #Biochemistry Edge ========
 bioc_edge = df_diff_edge %>% 
-  filter(variable %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litt','fuel'))
+  filter(variable %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
 
 bioc_edge = melt(bioc_edge)
 colnames(bioc_edge) = c("data","dist", "index", "parcela", "value")
@@ -290,7 +290,7 @@ b = ggplot(bioc_edge_b3yr, aes(data,value, col=index))+
 
 #Biochemistry Core
 bioc_core = df_diff_core %>% 
-  filter(variable %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litt','fuel'))
+  filter(variable %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
 
 bioc_core = melt(bioc_core)
 colnames(bioc_core) = c("data","dist", "index", "parcela", "value")
@@ -316,15 +316,15 @@ d = ggplot(bioc_core_b3yr, aes(data,value, col=index))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 bioc = ggarrange(a + rremove("xlab"),
-                  c + rremove("xylab"),
-                  b, d + rremove("ylab"),
-                  common.legend = TRUE,
-                  legend="bottom",
-                  ncol = 2, nrow = 2)
+                 c + rremove("xylab"),
+                 b, d + rremove("ylab"),
+                 common.legend = TRUE,
+                 legend="bottom",
+                 ncol = 2, nrow = 2)
 
 #Physiologic Edge ========
 phy_edge = df_diff_edge %>% 
-  filter(variable %in% c('pri','rendvi','biomass','lai','litt','fuel'))
+  filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel'))
 
 phy_edge = melt(phy_edge)
 colnames(phy_edge) = c("data","dist", "index", "parcela", "value")
@@ -351,7 +351,7 @@ b = ggplot(phy_edge_b3yr, aes(data,value, col=index))+
 
 #Physiologic Core
 phy_core = df_diff_core %>% 
-  filter(variable %in% c('pri','rendvi','biomass','lai','litt','fuel'))
+  filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel'))
 
 phy_core = melt(phy_core)
 colnames(phy_core) = c("data","dist", "index", "parcela", "value")
@@ -377,8 +377,8 @@ d = ggplot(phy_core_b3yr, aes(data,value, col=index))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 phy = ggarrange(a + rremove("xlab"),
-                  c + rremove("xylab"),
-                  b, d + rremove("ylab"),
-                  common.legend = TRUE,
-                  legend="bottom",
-                  ncol = 2, nrow = 2)
+                c + rremove("xylab"),
+                b, d + rremove("ylab"),
+                common.legend = TRUE,
+                legend="bottom",
+                ncol = 2, nrow = 2)
