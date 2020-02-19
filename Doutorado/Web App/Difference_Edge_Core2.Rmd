@@ -1,6 +1,9 @@
 ---
 title: "Difference by Edge and Core"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -17,6 +20,7 @@ library(tidyr)
 library(dplyr)
 library(ggplot2)
 library(plotly)
+library(ggpubr)
 
 #Load data ==========================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
@@ -145,6 +149,190 @@ df_diff_core = df_diff_core[,c(-1)]
 df_diff_core = df_diff_core %>% 
   na.omit()
 
+#Join plots by the groups ===============================================================
+#Struture Edge ========
+struc_edge = df_diff_edge %>% 
+  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litt','fuel'))
+
+struc_edge = melt(struc_edge)
+colnames(struc_edge) = c("data","dist", "index", "parcela", "value")
+
+struc_edge_b1yr = struc_edge %>% filter(parcela == 'b1yr')
+struc_edge_b3yr = struc_edge %>% filter(parcela == 'b3yr')
+
+
+a = ggplot(struc_edge_b1yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
+       title = "Structural Indexes (Edge)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+
+b = ggplot(struc_edge_b3yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+#Struture Core
+struc_core = df_diff_core %>% 
+  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litt','fuel'))
+
+struc_core = melt(struc_core)
+colnames(struc_core) = c("data","dist", "index", "parcela", "value")
+
+struc_core_b1yr = struc_core %>% filter(parcela == 'b1yr')
+struc_core_b3yr = struc_core %>% filter(parcela == 'b3yr')
+
+
+c = ggplot(struc_core_b1yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
+       title = "Structural Indexes (Core)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+
+d = ggplot(struc_core_b3yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+struc = ggarrange(a + rremove("xlab"),
+                  c + rremove("xylab"),
+                  b, d + rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 2, nrow = 2)
+
+#Biochemistry Edge ========
+bioc_edge = df_diff_edge %>% 
+  filter(variable %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litt','fuel'))
+
+bioc_edge = melt(bioc_edge)
+colnames(bioc_edge) = c("data","dist", "index", "parcela", "value")
+
+bioc_edge_b1yr = bioc_edge %>% filter(parcela == 'b1yr')
+bioc_edge_b3yr = bioc_edge %>% filter(parcela == 'b3yr')
+
+
+a = ggplot(bioc_edge_b1yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
+       title = "Biochemistry Indexes (Edge)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+
+b = ggplot(bioc_edge_b3yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+#Biochemistry Core
+bioc_core = df_diff_core %>% 
+  filter(variable %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litt','fuel'))
+
+bioc_core = melt(bioc_core)
+colnames(bioc_core) = c("data","dist", "index", "parcela", "value")
+
+bioc_core_b1yr = bioc_core %>% filter(parcela == 'b1yr')
+bioc_core_b3yr = bioc_core %>% filter(parcela == 'b3yr')
+
+
+c = ggplot(bioc_core_b1yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
+       title = "Biochemistry Indexes (Core)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+
+d = ggplot(bioc_core_b3yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+bioc = ggarrange(a + rremove("xlab"),
+                  c + rremove("xylab"),
+                  b, d + rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 2, nrow = 2)
+
+#Physiologic Edge ========
+phy_edge = df_diff_edge %>% 
+  filter(variable %in% c('pri','rendvi','biomass','lai','litt','fuel'))
+
+phy_edge = melt(phy_edge)
+colnames(phy_edge) = c("data","dist", "index", "parcela", "value")
+
+phy_edge_b1yr = phy_edge %>% filter(parcela == 'b1yr')
+phy_edge_b3yr = phy_edge %>% filter(parcela == 'b3yr')
+
+
+a = ggplot(phy_edge_b1yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
+       title = "Physiologic Indexes (Edge)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+
+b = ggplot(phy_edge_b3yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+#Physiologic Core
+phy_core = df_diff_core %>% 
+  filter(variable %in% c('pri','rendvi','biomass','lai','litt','fuel'))
+
+phy_core = melt(phy_core)
+colnames(phy_core) = c("data","dist", "index", "parcela", "value")
+
+phy_core_b1yr = phy_core %>% filter(parcela == 'b1yr')
+phy_core_b3yr = phy_core %>% filter(parcela == 'b3yr')
+
+
+c = ggplot(phy_core_b1yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B1yr - Controle (% Relative difference)",
+       title = "Physiologic Indexes (Core)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+
+d = ggplot(phy_core_b3yr, aes(data,value, col=index))+ 
+  geom_line(aes(group=index), size = 1)+
+  labs(fill= "Index",x="Ano",y="B3yr - Controle (% Relative difference)")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+phy = ggarrange(a + rremove("xlab"),
+                  c + rremove("xylab"),
+                  b, d + rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 2, nrow = 2)
+
 #DF Plots ==========================================================================
 #DF edge ================
 gg_edge = melt(df_diff_edge)
@@ -210,7 +398,6 @@ b = ggplotly(b)
 c = ggplotly(c)
 d = ggplotly(d)
 
-
 ```
 Here are the graphs of the relative difference between the control and the burned plots, separated for the edge and core of the forest. 
 
@@ -250,4 +437,21 @@ knitr::kable(head(df2, 100))
 ```{r, echo=FALSE, results = 'asis'}
 df3 = df[,c(19,20,21,22)]
 knitr::kable(summary(df3, 100))
+```
+
+## Graphics by category {.tabset}
+
+### Structural
+```{r, echo=FALSE, fig.height=7, fig.width=9}
+struc
+```
+
+### Biochemistry
+```{r, echo=FALSE, fig.height=7, fig.width=9}
+bioc
+```
+
+### Physiological
+```{r, echo=FALSE, fig.height=7, fig.width=9}
+phy
 ```
