@@ -101,10 +101,50 @@ ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels 
 
 
 
-ggplot(phy)
+
+bioc2 = df %>% 
+  select('data','parcela','dist','ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi')
+
+bioc2 = melt(bioc2)
+colnames(bioc2) = c('data','parcela','dist','variable','index')
+
+bioc3 = df %>% 
+  select('data','parcela','dist','biomass','lai','litter','fuel')
+
+bioc3 = melt(bioc3)
+colnames(bioc3) = c('data','parcela','dist','variable2','plot_data')
+
+bioc4 = full_join(bioc2, bioc3)
+bioc4 = bioc4 %>% 
+  na.omit()
+
+library(viridis)
+
+ggplot(bioc4, aes(x=plot_data, y=index) ) +
+  geom_point(aes(col=variable))+
+  #geom_bin2d(bins = 70) +
+  scale_fill_continuous(type = "viridis") +
+  theme_bw()
 
 
 
+
+ggplot(phy, aes(x=rendvi, y=litter)) + 
+  geom_point(aes(col=dist)) + 
+  geom_smooth(method="loess", se=F) + 
+  labs(y="Index", 
+       x="Litterfall")
+
+a = lm(phy$litter ~ phy$rendvi)
+
+ggplot(phy) + 
+  geom_point(aes(x=rendvi, y=litter, col = dist)) + 
+  geom_point(aes(x=pri, y=litter, col = dist)) + 
+  geom_point(aes(x=rendvi, y=lai, col = dist)) + 
+  geom_point(aes(x=pri, y=lai, col = dist)) + 
+  #geom_smooth(aes(x=rendvi, y=litter), method="loess", se=T) + 
+  labs(y="Plot data", 
+       x="Index")
 
 
 
