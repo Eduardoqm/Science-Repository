@@ -77,7 +77,7 @@ df = df %>%
 struc = df %>% 
   select('dist','evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')
 
-ggcorr(struc)
+ggcorr(struc, label = TRUE)
 ggpairs(struc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
         columns = c('evi','ndvi','nbri','vari','vig','lai','litter'))
 
@@ -85,7 +85,7 @@ ggpairs(struc, aes(color = dist), lower = list(continuous = "smooth"), axisLabel
 bioc = df %>% 
   select('dist','ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')
 
-ggcorr(bioc)
+ggcorr(bioc, label = TRUE)
 ggpairs(bioc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
         columns = c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','lai','litter'))
 
@@ -93,7 +93,7 @@ ggpairs(bioc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels
 phy = df %>% 
   select('dist','pri','rendvi','biomass','lai','litter','fuel')
 
-ggcorr(phy)
+ggcorr(phy, label = TRUE)
 ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
         columns = c('pri','rendvi','lai','litter'))
 
@@ -101,7 +101,7 @@ ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels 
 
 
 
-
+ggplot(phy)
 
 
 
