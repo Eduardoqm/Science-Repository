@@ -20,17 +20,21 @@ ggpairs(phy)
 
 
 phy = df %>% 
-  select('parcela','pri','rendvi','biomass','lai','litter','fuel')
-
-ggpairs(phy, aes(color = parcela), lower = list(continuous = "smooth"), axisLabels = "none")
-
-ggpairs(phy, aes(color = parcela), axisLabels = "none")
+  select('dist','pri','rendvi','biomass','lai','litter','fuel')
 
 
+ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
+        columns = c('pri','rendvi','biomass','lai','litter','fuel'))
+
+ggpairs(phy, aes(color = dist), axisLabels = "none",
+        columns = c('pri','rendvi','biomass','lai','litter','fuel'))
 
 
-ggduo(phy, aes(color = parcela), types = list(continuous = "smooth"), axisLabels = "none")
 
+
+ggduo(phy, aes(color = dist), types = list(continuous = "smooth"), axisLabels = "none")
+
+ggduo(phy, aes(color = dist), axisLabels = "none")
 
 ggcorr(phy)
 
