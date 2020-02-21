@@ -74,32 +74,83 @@ df = df %>%
 
 
 #Correlations =============================================================================
+#Strutural
 struc = df %>% 
   select('dist','evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')
 
 ggcorr(struc, label = TRUE)
-ggpairs(struc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
+p<-ggpairs(struc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
         columns = c('evi','ndvi','nbri','vari','vig','lai','litter'))
+for(i in 1:p$nrow) {
+  for(j in 1:p$ncol){
+    p[i,j] <- p[i,j] + 
+      scale_fill_manual(values=c("#00AFBB", "#FC4E07")) +
+      scale_color_manual(values=c("#00AFBB", "#FC4E07"))  
+  }
+}
+p
 
-
+#Biochemistry
 bioc = df %>% 
   select('dist','ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')
 
 ggcorr(bioc, label = TRUE)
-ggpairs(bioc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
+p<-ggpairs(bioc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
         columns = c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','lai','litter'))
+for(i in 1:p$nrow) {
+  for(j in 1:p$ncol){
+    p[i,j] <- p[i,j] + 
+      scale_fill_manual(values=c("#00AFBB", "#FC4E07")) +
+      scale_color_manual(values=c("#00AFBB", "#FC4E07"))  
+  }
+}
+p
 
-
+#Physiologic
 phy = df %>% 
   select('dist','pri','rendvi','biomass','lai','litter','fuel')
 
 ggcorr(phy, label = TRUE)
-ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
-        columns = c('pri','rendvi','lai','litter'))
+p<-ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
+           columns = c('pri','rendvi','lai','litter'))
+for(i in 1:p$nrow) {
+  for(j in 1:p$ncol){
+    p[i,j] <- p[i,j] + 
+      scale_fill_manual(values=c("#00AFBB", "#FC4E07")) +
+      scale_color_manual(values=c("#00AFBB", "#FC4E07"))  
+  }
+}
+p
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(rayshader)
 
 
 bioc2 = df %>% 
@@ -120,13 +171,13 @@ bioc4 = bioc4 %>%
 
 library(viridis)
 
-ggplot(bioc4, aes(x=plot_data, y=index) ) +
-  geom_point(aes(col=variable))+
-  #geom_bin2d(bins = 70) +
+a = ggplot(bioc4, aes(x=plot_data, y=index) ) +
+  geom_point(aes(col=index))+
+  geom_bin2d(bins = 70) +
   scale_fill_continuous(type = "viridis") +
   theme_bw()
 
-
+plot_gg(a)
 
 
 ggplot(phy, aes(x=rendvi, y=litter)) + 
