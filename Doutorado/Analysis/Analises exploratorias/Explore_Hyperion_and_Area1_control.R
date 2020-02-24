@@ -93,7 +93,7 @@ df_crt$diff = ((df_crt$value - diff$value)*100)/df_crt$value
 df_crt = df_crt[,c(-5)]
 colnames(df_crt) = c("parcela","date","dist", "index", "value")
 df_crt = df_crt %>% 
-  filter(value == 0)
+  filter(value != 0)
 gg1 = df_crt %>% filter(dist == 'borda')
 gg2 = df_crt %>% filter(dist == 'nucleo')
 
@@ -102,10 +102,10 @@ ggplot(gg1, aes(date,value, fill=index))+
   geom_bar(position = "dodge", stat = "identity")+
   #geom_line(aes(group=index), size = 1)+
   #geom_point()+
-  labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
+  #labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  #annotate("text", x = c(3.5, 5.5), y = 0, label = "Dry")+
+  annotate("text", x = c(3.5, 5.5), y = 50, label = "Dry")+
   
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
@@ -118,20 +118,90 @@ ggplot(gg2, aes(date,value, col=index))+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(3.5, 5.5), y = 0, label = "Dry")+
+  #annotate("text", x = c(3.5, 5.5), y = 0, label = "Dry")+
   
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
 
+#Struture ========
+struc_edge = gg1 %>% 
+  filter(index %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
+
+a = ggplot(struc_edge, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  labs(fill= "Index",x="Year",y="Edge")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+struc_core = gg2 %>% 
+  filter(index %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
+
+b = ggplot(struc_core, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  labs(fill= "Index",x="Year",y="Core")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+struc = ggarrange(a + rremove("xlab"), b + rremove("xlab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+                  ncol = 1, nrow = 2)
 
 
+#Biochemistry ========
+bioc_edge = gg1 %>% 
+  filter(index %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
 
+a = ggplot(bioc_edge, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  labs(fill= "Index",x="Year",y="Edge")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
+bioc_core = gg2 %>% 
+  filter(index %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
 
+b = ggplot(bioc_core, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  labs(fill= "Index",x="Year",y="Core")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
+bioc = ggarrange(a + rremove("xlab"), b + rremove("xlab"),
+                 common.legend = TRUE,
+                 legend="bottom",
+                 ncol = 1, nrow = 2)
 
+#Physiologic ========
+phy_edge = gg1 %>% 
+  filter(index %in% c('pri','rendvi','biomass','lai','litter','fuel'))
 
+a = ggplot(phy_edge, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  labs(fill= "Index",x="Year",y="Edge")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+phy_core = gg2 %>% 
+  filter(index %in% c('pri','rendvi','biomass','lai','litter','fuel'))
+
+b = ggplot(phy_core, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
+  labs(fill= "Index",x="Year",y="Core")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+phy = ggarrange(a + rremove("xlab"), b + rremove("xlab"),
+                common.legend = TRUE,
+                legend="bottom",
+                ncol = 1, nrow = 2)
 
 
 
