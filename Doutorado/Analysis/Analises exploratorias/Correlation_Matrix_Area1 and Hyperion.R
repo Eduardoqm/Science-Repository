@@ -9,7 +9,6 @@ library(dplyr)
 library(GGally)
 library(ggplot2)
 library(ggpubr)
-library(plotly)
 
 #Load data ==========================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
