@@ -92,25 +92,29 @@ df_crt$diff = ((df_crt$value - diff$value)*100)/df_crt$value
 #gg_crt = melt(df_crt)
 df_crt = df_crt[,c(-5)]
 colnames(df_crt) = c("parcela","date","dist", "index", "value")
+df_crt = df_crt %>% 
+  filter(value == 0)
 gg1 = df_crt %>% filter(dist == 'borda')
 gg2 = df_crt %>% filter(dist == 'nucleo')
 
 
-ggplot(gg1, aes(date,value, col=index))+ 
-  geom_line(aes(group=index), size = 1)+
-  geom_point()+
+ggplot(gg1, aes(date,value, fill=index))+ 
+  geom_bar(position = "dodge", stat = "identity")+
+  #geom_line(aes(group=index), size = 1)+
+  #geom_point()+
   labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
-  annotate("text", x = c(3.5, 5.5), y = 0, label = "Dry")+
+  #annotate("text", x = c(3.5, 5.5), y = 0, label = "Dry")+
   
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))
 
 
 ggplot(gg2, aes(date,value, col=index))+ 
-  geom_line(aes(group=index), size = 1)+
-  geom_point()+
+  geom_bar(position = "dodge", stat = "identity")+
+  #geom_line(aes(group=index), size = 1)+
+  #geom_point()+
   labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
   geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
   
