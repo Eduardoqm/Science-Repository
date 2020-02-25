@@ -102,21 +102,16 @@ gg2 = df_crt %>% filter(dist == 'nucleo')
 
 ggplot(gg1, aes(x = value, y = index, fill=index)) +
   geom_density_ridges() +
-  theme_ridges() + 
+  labs(x="Value (% Relative difference Edge)",y=" ")+
+  theme_minimal()+
   theme(legend.position = "none")
 
 
-ggplot(gg2, aes(date,value, col=index))+ 
-  geom_bar(position = "dodge", stat = "identity")+
-  #geom_line(aes(group=index), size = 1)+
-  #geom_point()+
-  labs(fill= "Plot",x="Year",y="B3yr - Control (% Relative difference Edge)")+
-  geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
-  
-  #annotate("text", x = c(3.5, 5.5), y = 0, label = "Dry")+
-  
+ggplot(gg2, aes(x = value, y = index, fill=index)) +
+  geom_density_ridges() +
+  labs(x="Value (% Relative difference Core)",y=" ")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 90))
+  theme(legend.position = "none")
 
 
 #Struture ========
