@@ -121,10 +121,6 @@ for(i in 1:p$nrow) {
 }
 p
 
-
-
-
-
 #Correlations GGPLOT =======================================================================
 #Making data
 hy2 = melt(hy)
@@ -143,6 +139,77 @@ df2 = df2 %>%
 
 
 eqm = c("#00AFBB", "#FC4E07") #Pallete colors(Orange and Blue)
+
+
+#Structural
+struc = df2 %>% 
+  filter(index %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
+
+
+a = ggplot(struc, aes(x=value, y=lai, color=dist))+
+  geom_point(size=3)+
+  geom_smooth(method="lm", se=F)+ 
+  facet_wrap(~index, scales="free") +
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+  theme(legend.position="bottom")
+
+a = ggpar(a, palette = eqm)
+
+
+
+b = ggplot(struc, aes(x=value, y=litter, color=dist))+
+  geom_point(size=3)+
+  geom_smooth(method="lm", se=F)+ 
+  facet_wrap(~index, scales="free") +
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+  theme(legend.position="bottom")
+
+b = ggpar(b, palette = eqm)
+
+struc2 = ggarrange(a + rremove("xlab"),
+                   b + rremove("xlab"),
+                   common.legend = TRUE,
+                   legend="bottom",
+                   ncol = 1, nrow = 2)
+
+struc2
+
+
+#Biochemistry
+bioc = df2 %>% 
+  filter(index %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
+
+
+bioc_a = ggplot(bioc, aes(x=value, y=lai, color=dist))+
+  geom_point(size=3)+
+  geom_smooth(method="lm", se=F)+ 
+  facet_wrap(index~, scales="free") +
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+  theme(legend.position="bottom")
+
+bioc_lai = ggpar(a, palette = eqm)
+
+
+
+bioc_b = ggplot(bioc, aes(x=value, y=litter, color=dist))+
+  geom_point(size=3)+
+  geom_smooth(method="lm", se=F)+ 
+  facet_wrap(~index, scales="free") +
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+  theme(legend.position="bottom")
+
+bioc_litt = ggpar(b, palette = eqm)
+
+bioc_lai; bioc_litt
+
 
 #Physiologic
 phy = df2 %>% 
