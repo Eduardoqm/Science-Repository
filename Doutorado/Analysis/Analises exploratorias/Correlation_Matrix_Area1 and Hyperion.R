@@ -126,7 +126,7 @@ p
 
 
 #Correlations GGPLOT =======================================================================
-
+#Making data
 hy2 = melt(hy)
 df2 = hy2
 
@@ -142,7 +142,7 @@ df2 = df2 %>%
 
 
 
-eqm = c("#00AFBB", "#FC4E07")
+eqm = c("#00AFBB", "#FC4E07") #Pallete colors(Orange and Blue)
 
 #Physiologic
 phy = df2 %>% 
