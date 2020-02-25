@@ -9,6 +9,7 @@ library(dplyr)
 library(GGally)
 library(ggplot2)
 library(ggpubr)
+library(ggridges)
 
 #Load data ==========================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
@@ -87,6 +88,7 @@ diff = diff[rep(seq_len(nrow(diff)), each = 7),]
 
 
 df_crt$diff = ((df_crt$value - diff$value)*100)/df_crt$value
+df_crt$diff = abs(df_crt$diff)#Convert to positive
 
 #Plot data =========================
 #gg_crt = melt(df_crt)
@@ -98,17 +100,10 @@ gg1 = df_crt %>% filter(dist == 'borda')
 gg2 = df_crt %>% filter(dist == 'nucleo')
 
 
-ggplot(gg1, aes(date,value, fill=index))+ 
-  geom_bar(position = "dodge", stat = "identity")+
-  #geom_line(aes(group=index), size = 1)+
-  #geom_point()+
-  #labs(fill= "Plot",x="Year",y="B1yr - Control (% Relative difference Edge)")+
-  geom_hline(yintercept = 0, color = "gray", linetype = "dashed")+
-  
-  annotate("text", x = c(3.5, 5.5), y = 50, label = "Dry")+
-  
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 90))
+ggplot(gg1, aes(x = value, y = index, fill=index)) +
+  geom_density_ridges() +
+  theme_ridges() + 
+  theme(legend.position = "none")
 
 
 ggplot(gg2, aes(date,value, col=index))+ 
