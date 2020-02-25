@@ -141,6 +141,9 @@ df2 = df2 %>%
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
 
 
+
+eqm = c("#00AFBB", "#FC4E07")
+
 #Physiologic
 phy = df2 %>% 
   filter(index %in% c('pri','rendvi','biomass','lai','litter','fuel'))
@@ -148,27 +151,27 @@ phy = df2 %>%
 
 a = ggplot(phy, aes(x=value, y=lai, color=dist))+
   geom_point(size=3)+
-  geom_smooth(method="lm", se=T)+ 
+  geom_smooth(method="lm", se=F)+ 
   facet_wrap(~index, scales="free") +
   stat_cor(show.legend = F)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
   theme(legend.position="bottom")
 
-a = ggpar(a, palette = "jco")
+a = ggpar(a, palette = eqm)
 
 
 
 b = ggplot(phy, aes(x=value, y=litter, color=dist))+
   geom_point(size=3)+
-  geom_smooth(method="lm", se=T)+ 
+  geom_smooth(method="lm", se=F)+ 
   facet_wrap(~index, scales="free") +
-  stat_cor()+
+  stat_cor(show.legend = F)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
   theme(legend.position="bottom")
 
-b = ggpar(b, palette = "jco")
+b = ggpar(b, palette = eqm)
 
 phy2 = ggarrange(a + rremove("xlab"),
                 b + rremove("xlab"),
