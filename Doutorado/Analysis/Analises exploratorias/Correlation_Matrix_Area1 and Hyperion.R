@@ -138,7 +138,7 @@ df2 = df2 %>%
 
 
 
-eqm = c("#00AFBB", "#FC4E07") #Pallete colors(Orange and Blue)
+eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
 
 
 #Structural
