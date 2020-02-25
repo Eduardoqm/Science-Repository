@@ -187,13 +187,13 @@ bioc = df2 %>%
 bioc_a = ggplot(bioc, aes(x=value, y=lai, color=dist))+
   geom_point(size=3)+
   geom_smooth(method="lm", se=F)+ 
-  facet_wrap(index~, scales="free") +
+  facet_wrap(~index, scales="free") +
   stat_cor(show.legend = F)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
   theme(legend.position="bottom")
 
-bioc_lai = ggpar(a, palette = eqm)
+bioc_lai = ggpar(bioc_a, palette = eqm)
 
 
 
@@ -206,7 +206,7 @@ bioc_b = ggplot(bioc, aes(x=value, y=litter, color=dist))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
   theme(legend.position="bottom")
 
-bioc_litt = ggpar(b, palette = eqm)
+bioc_litt = ggpar(bioc_b, palette = eqm)
 
 bioc_lai; bioc_litt
 
