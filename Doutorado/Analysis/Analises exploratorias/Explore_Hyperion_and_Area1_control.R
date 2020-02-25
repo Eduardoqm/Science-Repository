@@ -100,18 +100,17 @@ gg1 = df_crt %>% filter(dist == 'borda')
 gg2 = df_crt %>% filter(dist == 'nucleo')
 
 
-ggplot(gg1, aes(x = value, y = index, fill=index)) +
+ggplot(df_crt, aes(x = value, y = index, fill=dist)) +
   geom_density_ridges() +
-  labs(x="Value (% Relative difference Edge)",y=" ")+
-  theme_minimal()+
-  theme(legend.position = "none")
+  labs(x="Value (% Relative difference)",y=" ")+
+  theme_minimal()
 
 
-ggplot(gg2, aes(x = value, y = index, fill=index)) +
-  geom_density_ridges() +
-  labs(x="Value (% Relative difference Core)",y=" ")+
-  theme_minimal()+
-  theme(legend.position = "none")
+#ggplot(gg2, aes(x = value, y = index, fill=index)) +
+#  geom_density_ridges() +
+#  labs(x="Value (% Relative difference Core)",y=" ")+
+#  theme_minimal()+
+#  theme(legend.position = "none")
 
 
 #Struture ========
