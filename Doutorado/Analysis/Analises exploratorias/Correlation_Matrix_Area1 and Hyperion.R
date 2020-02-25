@@ -125,103 +125,55 @@ p
 
 
 
+#Correlations GGPLOT =======================================================================
+
+hy2 = melt(hy)
+df2 = hy2
+
+df2 = full_join(hy2, lai, by="id")
+df2 = full_join(df2, litt, by="id")
+df2 = full_join(df2, biomass, by="id")
+df2 = full_join(df2, fuel, by="id")
+
+colnames(df2) = c('id', 'index', 'value', 'lai', 'litter', 'biomass', 'fuel')
+
+df2 = df2 %>% 
+  separate(col = "id", c("parcela", "data", "dist"), sep = '_')
+
+
+#Physiologic
+phy = df2 %>% 
+  filter(index %in% c('pri','rendvi','biomass','lai','litter','fuel'))
+
+
+a = ggplot(phy, aes(x=value, y=lai, color=dist))+
+  geom_point(size=3)+
+  geom_smooth(method="lm", se=T)+ 
+  facet_wrap(~index, scales="free") +
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+  theme(legend.position="bottom")
+
+a = ggpar(a, palette = "jco")
 
 
 
+b = ggplot(phy, aes(x=value, y=litter, color=dist))+
+  geom_point(size=3)+
+  geom_smooth(method="lm", se=T)+ 
+  facet_wrap(~index, scales="free") +
+  stat_cor()+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+  theme(legend.position="bottom")
 
+b = ggpar(b, palette = "jco")
 
+phy2 = ggarrange(a + rremove("xlab"),
+                b + rremove("xlab"),
+                common.legend = TRUE,
+                legend="bottom",
+                ncol = 1, nrow = 2)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-library(rayshader)
-
-
-bioc2 = df %>% 
-  select('data','parcela','dist','ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi')
-
-bioc2 = melt(bioc2)
-colnames(bioc2) = c('data','parcela','dist','variable','index')
-
-bioc3 = df %>% 
-  select('data','parcela','dist','biomass','lai','litter','fuel')
-
-bioc3 = melt(bioc3)
-colnames(bioc3) = c('data','parcela','dist','variable2','plot_data')
-
-bioc4 = full_join(bioc2, bioc3)
-bioc4 = bioc4 %>% 
-  na.omit()
-
-library(viridis)
-
-a = ggplot(bioc4, aes(x=plot_data, y=index) ) +
-  geom_point(aes(col=index))+
-  geom_bin2d(bins = 70) +
-  scale_fill_continuous(type = "viridis") +
-  theme_bw()
-
-plot_gg(a)
-
-
-ggplot(phy, aes(x=rendvi, y=litter)) + 
-  geom_point(aes(col=dist)) + 
-  geom_smooth(method="loess", se=F) + 
-  labs(y="Index", 
-       x="Litterfall")
-
-a = lm(phy$litter ~ phy$rendvi)
-
-ggplot(phy) + 
-  geom_point(aes(x=rendvi, y=litter, col = dist)) + 
-  geom_point(aes(x=pri, y=litter, col = dist)) + 
-  geom_point(aes(x=rendvi, y=lai, col = dist)) + 
-  geom_point(aes(x=pri, y=lai, col = dist)) + 
-  #geom_smooth(aes(x=rendvi, y=litter), method="loess", se=T) + 
-  labs(y="Plot data", 
-       x="Index")
-
-
-
-phy = df %>% 
-  select('dist','pri','rendvi','biomass','lai','litter','fuel')
-
-
-ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
-        columns = c('pri','rendvi','biomass','lai','litter','fuel'))
-
-ggpairs(phy, aes(color = dist), axisLabels = "none", density =  ,
-        columns = c('pri','rendvi','biomass','lai','litter','fuel'))
-
-
-
-
-ggduo(phy, aes(color = dist), types = list(continuous = "smooth"), axisLabels = "none")
-
-ggduo(phy, aes(color = dist), axisLabels = "none")
-
-ggcorr(phy)
-
-
-
-
-
-
-
-
-
+phy2
