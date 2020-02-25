@@ -188,7 +188,7 @@ bioc_a = ggplot(bioc, aes(x=value, y=lai, color=dist))+
   geom_point(size=3)+
   geom_smooth(method="lm", se=F)+ 
   facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F)+
+  stat_cor(show.legend = F, label.y = 6, colour = "black")+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
   theme(legend.position="bottom")
@@ -201,7 +201,7 @@ bioc_b = ggplot(bioc, aes(x=value, y=litter, color=dist))+
   geom_point(size=3)+
   geom_smooth(method="lm", se=F)+ 
   facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F)+
+  stat_cor(show.legend = F, label.y = 0.37, colour = "black")+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
   theme(legend.position="bottom")
