@@ -64,18 +64,16 @@ colnames(fuel) = c("id", "fuel")
 
 
 df = hy
-df = full_join(df, biomass, by="id")
+#df = full_join(df, biomass, by="id")
 df = full_join(df, lai, by="id")
 df = full_join(df, litt, by="id")
-df = full_join(df, fuel, by="id")
+#df = full_join(df, fuel, by="id")
 
 df = df %>% 
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
 
 
 #write.table(df, "Integration_Area1_data_edge_core.csv", sep = ",")
-#Correlation Matrix ======================================================================
-#ggpairs(df)
 
 #Data organization =======================================================================
 #Separate by edge and core and tratament
@@ -118,6 +116,9 @@ df_diff_edge = df_diff_edge[,c(-1)]
 df_diff_edge = df_diff_edge %>% 
   na.omit()
 
+#df_diff_edge$b3yr = abs(df_diff_edge$b3yr)#Convert to positive
+#df_diff_edge$b1yr = abs(df_diff_edge$b1yr)
+
 #df Core
 df_core_crt$data = as.character(df_core_crt$data)
 df_core_crt = melt(df_core_crt)
@@ -137,6 +138,9 @@ df_diff_core = df_diff_core[,c(-1)]
 
 df_diff_core = df_diff_core %>% 
   na.omit()
+
+#df_diff_core$b3yr = abs(df_diff_core$b3yr)#Convert to positive
+#df_diff_core$b1yr = abs(df_diff_core$b1yr)
 
 #DF Plots ==========================================================================
 #DF edge ================

@@ -194,5 +194,57 @@ phy = ggarrange(a + rremove("xlab"), b + rremove("xlab"),
 
 
 
+#Boxplots
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+
+df = read.csv("Hyperion_indexs_all by plot.csv", sep = ',')
+df$data = as.character(df$data)
+
+df2 = melt(df)
+
+eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
+
+#Structural
+struc = df2 %>% 
+  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')) %>% 
+  filter(parcela == "controle")
 
 
+a = ggplot(struc, aes(data,value, col=dist))+ 
+  geom_boxplot(outlier.alpha = 0.3)+
+  facet_wrap(~variable, scales="free") +
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+struc_control = ggpar(a, palette = eqm)
+struc_control
+
+#Biochemistry
+bioc = df2 %>% 
+  filter(variable %in% c('ari','lwvi2','msi','ndii','ndwi','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')) %>% 
+  filter(parcela == "controle")
+
+
+a = ggplot(bioc, aes(data,value, col=dist))+ 
+  geom_boxplot(outlier.alpha = 0.3)+
+  facet_wrap(~variable, scales="free") +
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+bioc_control = ggpar(a, palette = eqm)
+bioc_control
+
+#Physiologic
+phy = df2 %>% 
+  filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel')) %>% 
+  filter(parcela == "controle")
+
+
+a = ggplot(phy, aes(data,value, col=dist))+ 
+  geom_boxplot(outlier.alpha = 0.3)+
+  facet_grid(variable ~ ., scales="free")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+phy_control = ggpar(a, palette = eqm)
+phy_control

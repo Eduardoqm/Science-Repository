@@ -3230,7 +3230,6 @@ wbi = as.data.frame(rbind(wbi1, wbi2, wbi3, wbi4, wbi5, wbi6, wbi7))
 wbi_md = as.data.frame(rbind(wbi1_md, wbi2_md, wbi3_md, wbi4_md, wbi5_md, wbi6_md, wbi7_md))
 
 
-
 #Boxplot
 ggplot(wbi, aes(data,wbi, col=parcela))+ 
   geom_boxplot(outlier.alpha = 0.1)+
@@ -3291,6 +3290,18 @@ hy_nucleo = hy
 
 #setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 #write.csv(hy_nucleo, file = "Hyperion_indexs_median by plot(nucleo).csv", sep = ",")
+
+#Union to save all data frame to analysis ====
+nbri = ndii
+hy_all = cbind(evi, lwvi2, msi, nbri, nbri2, ndii, ndvi, ndwi,
+               nirv, pri, psri, pssr, rendvi, sipi, vari, vig, wbi,ari)
+
+hy_all = hy_all[,c(1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,53,54)]
+hy_all$dist = as.character("nucleo")
+
+hy_all_nucleo = hy_all
+#setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+#write.csv(hy_all_nucleo, file = "Hyperion_indexs_all by plot(nucleo).csv", sep = ",")
 
 #Union all differences by index ===================================================
 b3yr = rbind(b3yr_1, b3yr_2, b3yr_3, b3yr_4, b3yr_5, b3yr_6, b3yr_7, b3yr_8, b3yr_9, b3yr_10, b3yr_11, b3yr_12, b3yr_13, b3yr_14, b3yr_15, b3yr_16, b3yr_17, b3yr_18)

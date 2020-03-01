@@ -3292,6 +3292,18 @@ hy_borda = hy
 #setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 #write.csv(hy_borda, file = "Hyperion_indexs_median by plot(borda).csv", sep = ",")
 
+#Union to save all data frame to analysis ====
+nbri = ndii
+hy_all = cbind(evi, lwvi2, msi, nbri, nbri2, ndii, ndvi, ndwi,
+               nirv, pri, psri, pssr, rendvi, sipi, vari, vig, wbi,ari)
+
+hy_all = hy_all[,c(1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,53,54)]
+hy_all$dist = as.character("borda")
+
+hy_all_borda = hy_all
+#setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+#write.csv(hy_all_borda, file = "Hyperion_indexs_all by plot(borda).csv", sep = ",")
+
 #Union all differences by index ===================================================
 b3yr = rbind(b3yr_1, b3yr_2, b3yr_3, b3yr_4, b3yr_5, b3yr_6, b3yr_7, b3yr_8, b3yr_9, b3yr_10, b3yr_11, b3yr_12, b3yr_13, b3yr_14, b3yr_15, b3yr_16, b3yr_17, b3yr_18)
 
