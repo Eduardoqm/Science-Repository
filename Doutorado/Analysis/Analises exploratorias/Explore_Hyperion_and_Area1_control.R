@@ -215,6 +215,7 @@ a = ggplot(struc, aes(data,value, fill=dist))+
   geom_violin()+
   facet_wrap(~variable, scales="free") +
   theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 struc_control = ggpar(a, palette = eqm)
@@ -231,6 +232,7 @@ a = ggplot(bioc, aes(data,value, fill=dist))+
   geom_violin()+
   facet_wrap(~variable, scales="free") +
   theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 bioc_control = ggpar(a, palette = eqm)
@@ -247,6 +249,7 @@ a = ggplot(phy, aes(data,value, fill=dist))+
   geom_violin()+
   facet_grid(variable ~ ., scales="free")+
   theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 phy_control = ggpar(a, palette = eqm)
