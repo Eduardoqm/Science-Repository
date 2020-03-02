@@ -13,8 +13,11 @@ library(ggpubr)
 #Load data ==========================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
-hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
-hy = hy[,c(-9)] #NDWI have so high values in comparison with other indexs
+#hy = read.csv("Hyperion_indexs_median by plot.csv", sep = ",", header = TRUE)
+#hy = hy[,c(-9)] #NDWI have so high values in comparison with other indexs
+
+hy = read.csv("Hyperion_indexs_all by plot.csv", sep = ',')
+hy$data = as.character(hy$data)
 
 biomass = read.csv("Biomass_tang.csv", sep = ",", header = TRUE)
 
