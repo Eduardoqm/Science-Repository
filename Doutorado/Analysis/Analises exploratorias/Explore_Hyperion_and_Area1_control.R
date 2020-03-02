@@ -194,7 +194,7 @@ phy = ggarrange(a + rremove("xlab"), b + rremove("xlab"),
 
 
 
-#Boxplots
+#Boxplots ======================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
 df = read.csv("Hyperion_indexs_all by plot.csv", sep = ',')
@@ -210,8 +210,9 @@ struc = df2 %>%
   filter(parcela == "controle")
 
 
-a = ggplot(struc, aes(data,value, col=dist))+ 
-  geom_boxplot(outlier.alpha = 0.3)+
+a = ggplot(struc, aes(data,value, fill=dist))+ 
+  #geom_boxplot(outlier.alpha = 0.3)+
+  geom_violin()+
   facet_wrap(~variable, scales="free") +
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
@@ -225,8 +226,9 @@ bioc = df2 %>%
   filter(parcela == "controle")
 
 
-a = ggplot(bioc, aes(data,value, col=dist))+ 
-  geom_boxplot(outlier.alpha = 0.3)+
+a = ggplot(bioc, aes(data,value, fill=dist))+ 
+  #geom_boxplot(outlier.alpha = 0.3)+
+  geom_violin()+
   facet_wrap(~variable, scales="free") +
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
@@ -240,11 +242,18 @@ phy = df2 %>%
   filter(parcela == "controle")
 
 
-a = ggplot(phy, aes(data,value, col=dist))+ 
-  geom_boxplot(outlier.alpha = 0.3)+
+a = ggplot(phy, aes(data,value, fill=dist))+ 
+  #geom_boxplot(outlier.alpha = 0.3)+
+  geom_violin()+
   facet_grid(variable ~ ., scales="free")+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 phy_control = ggpar(a, palette = eqm)
 phy_control
+
+
+ggplot(df2, aes(x = value, y = variable, fill=dist)) +
+  geom_density_ridges() +
+  labs(x="Value (% Relative difference)",y=" ")+
+  theme_minimal()
