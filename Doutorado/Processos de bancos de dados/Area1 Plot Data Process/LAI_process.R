@@ -68,6 +68,7 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 
 #write.table(lai, "LAI_tang.csv", sep = ",")
 
+#write.table(lai, "LAI_full_tang.csv", sep = ",")
 
 
 

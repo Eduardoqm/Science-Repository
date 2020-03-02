@@ -78,7 +78,7 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 
 #write.table(fuel, "Fuel_tang.csv", sep = ",")
 
-
+#write.table(fuel, "Fuel_full_tang.csv", sep = ",")
 
 
 

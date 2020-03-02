@@ -70,7 +70,7 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 #write.table(litt, "Liteira_tang.csv", sep = ",")
 
 
-
+#write.table(litt, "Liteira_full_tang.csv", sep = ",")
 
 
 

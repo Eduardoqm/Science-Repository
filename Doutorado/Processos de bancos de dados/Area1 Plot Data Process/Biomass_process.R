@@ -90,7 +90,7 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 
 #write.table(biomass, "Biomass_tang.csv", sep = ",")
 
-
+#write.table(biomass, "Biomass_full_tang.csv", sep = ",")
 
 
 
