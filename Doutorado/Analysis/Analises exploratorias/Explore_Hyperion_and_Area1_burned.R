@@ -73,16 +73,17 @@ fuel = fuel %>%
   unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 colnames(fuel) = c("id", "fuel")
 
-
 df = hy
+#df3 = biomass
 #df = full_join(df, biomass, by="id")
-#df = full_join(df, lai, by="id")
-#df = full_join(df, litt, by="id")
-#df = full_join(df, fuel, by="id")
+#df3 = full_join(df3, lai, by="id")
+#df3 = full_join(df3, litt, by="id")
+#df3 = full_join(df3, fuel, by="id")
 
+#df3 = df3 %>% 
+#  separate(col = "id", c("parcela", "data", "dist"), sep = '_')
 df = df %>% 
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
-
 
 #Boxplots ======================================
 #Control x B1yr
@@ -92,8 +93,8 @@ eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange and Blue)
 
 #Structural
 struc = df2 %>% 
-  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')) #%>% 
-  #filter(parcela != "b1yr") %>% 
+  filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')) %>%
+  filter(parcela != "controle") 
   #filter(dist == "borda")
 
 
@@ -105,13 +106,13 @@ a = ggplot(struc, aes(data,value, fill=parcela))+
   theme(axis.text.x = element_text(angle = 90))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
-struc_control = ggpar(a, palette = eqm)
-struc_control
+struc = ggpar(a, palette = eqm)
+struc
 
 #Biochemistry
 bioc = df2 %>% 
-  filter(variable %in% c('ari','lwvi2','msi','ndii','ndwi','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')) #%>% 
-  #filter(parcela != "b1yr") %>% 
+  filter(variable %in% c('ari','lwvi2','msi','ndii','ndwi','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')) %>%
+  filter(parcela != "controle") 
   #filter(dist == "borda")
 
 
@@ -123,13 +124,13 @@ a = ggplot(bioc, aes(data,value, fill=parcela))+
   theme(axis.text.x = element_text(angle = 90))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
-bioc_control = ggpar(a, palette = eqm)
-bioc_control
+bioc = ggpar(a, palette = eqm)
+bioc
 
 #Physiologic
 phy = df2 %>% 
-  filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel')) #%>% 
-  #filter(parcela != "b1yr") %>% 
+  filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel')) %>%
+  filter(parcela != "controle") 
   #filter(dist == "borda")
 
 
@@ -141,8 +142,31 @@ a = ggplot(phy, aes(data,value, fill=parcela))+
   theme(axis.text.x = element_text(angle = 90))+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
-phy_control = ggpar(a, palette = eqm)
-phy_control
+phy = ggpar(a, palette = eqm)
+phy
+
+
+#Field
+#field = melt(df3)
+#field = df3 %>% 
+#  filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel')) #%>% 
+#filter(parcela != "b1yr") %>% 
+#filter(dist == "borda")
+
+
+#a = ggplot(fiels, aes(data,value, fill=parcela))+ 
+#  geom_boxplot(outlier.alpha = 0.3)+
+#  #geom_violin()+
+#  facet_grid(variable ~ ., scales="free")+
+#  theme_minimal()+
+#  theme(axis.text.x = element_text(angle = 90))+
+#  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+
+#field = ggpar(a, palette = eqm)
+#field
+
+
+
 
 
 #ggplot(df2, aes(x = value, y = variable, fill=dist)) +
