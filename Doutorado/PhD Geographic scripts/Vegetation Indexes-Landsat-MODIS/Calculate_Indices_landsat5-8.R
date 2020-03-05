@@ -49,7 +49,7 @@ ndmi <- (b4-b5)/(b4+b5)
 swnd <- (b5-b7)/(b5+b7)
 
 #Normalized Burned Ratio Index (NBRI)
-nbri <- (b4-b7)/(b4+b7)
+nbri <- (b4-b5)/(b4+b5)
 
 #Normalized Pigment Chlorophyll Ratio Index (NPCRI)
 npcri <- (b3-b1)/(b3+b1)
@@ -140,7 +140,7 @@ ndmi_b <- (b5-b6)/(b5+b6)
 swnd_b <- (b6-b7)/(b6+b7)
 
 #Normalized Burned Ratio Index (NBRI)
-nbri_b <- (b5-b7)/(b5+b7)
+nbri_b <- (b5-b6)/(b5+b6)
 
 #Normalized Pigment Chlorophyll Ratio Index (NPCRI)
 npcri_b <- (b4-b2)/(b4+b2)

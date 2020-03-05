@@ -1,4 +1,4 @@
-#Landsat Restoration Time
+#Landsat vs Hyperion
 #By: Eduardo Q Marques 03-03-2020
 
 library(tidyverse)
@@ -16,34 +16,43 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 land = read.csv("Landast_indexs_all by plot.csv", sep = ',')
 land$data = as.character(land$data)
 
+hy = read.csv("Hyperion_indexs_all by plot.csv", sep = ',')
+hy$data = as.character(hy$data)
 
 
-#biomass = read.csv("Biomass_tang.csv", sep = ",", header = TRUE)
-#biomass = read.csv("Biomass_full_tang.csv", sep = ",", header = TRUE)
+#Data integration ===================================================================
+hy2 = melt(hy)
+hy2$sat = c("Hyperion")
 
-#lai = read.csv("LAI_tang.csv", sep = ",", header = TRUE)
-#lai = read.csv("LAI_full_tang.csv", sep = ",", header = TRUE)
+hy2 = hy2 %>% 
+  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
 
-#litt  = read.csv("Liteira_tang.csv", sep = ",", header = TRUE)
-#litt  = read.csv("Liteira_full_tang.csv", sep = ",", header = TRUE)
 
-#fuel = read.csv("Fuel_tang.csv", sep = ",", header = TRUE)
-#fuel = read.csv("Fuel_full_tang.csv", sep = ",", header = TRUE)
+land2 = melt(land)
+land2$sat = c("Landsat")
 
-#fire = read.csv("Fire.csv", sep = ",", header = TRUE) #Make the fire intensity!
+land2 = land2 %>% 
+  unite(col = "id", c("parcela", "data", "dist"), sep = '_')
+
+df2 = rbind(hy2, land2)
+df2 = df2 %>% 
+  separate(col = "id", c("parcela", "data", "dist"), sep = '_')
+
 
 #Boxplots ======================================
 #Restoration time
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange and Blue)
 
-land2 = melt(land)
 
-land3 = land2 %>% 
-  filter(data > 2012) %>% 
+
+land3 = df2 %>% 
+  filter(data %in% c(2004:2012)) %>% 
+  filter(parcela == "controle") %>% 
+  filter(dist == "nucleo") %>% 
   filter(variable %in% c('ndvi','evi','vig'))
 
 
-a = ggplot(land3, aes(data,value, fill=parcela))+ 
+a = ggplot(land3, aes(data,value, fill=sat))+ 
   geom_boxplot(outlier.alpha = 0.3)+
   #geom_violin()+
   #facet_wrap(~variable, scales="free") +
@@ -55,11 +64,13 @@ a = ggplot(land3, aes(data,value, fill=parcela))+
 a = ggpar(a, palette = eqm)
 
 
-land4 = land2 %>% 
-  filter(data > 2012) %>% 
+land4 = df2 %>% 
+  filter(data %in% c(2004:2012)) %>% 
+  filter(parcela == "controle") %>% 
+  filter(dist == "nucleo") %>% 
   filter(variable %in% c('ndwi','ndii','nbri'))
 
-b = ggplot(land4, aes(data,value, fill=parcela))+ 
+b = ggplot(land4, aes(data,value, fill=sat))+ 
   geom_boxplot(outlier.alpha = 0.3)+
   facet_grid(variable ~ ., scales="free")+
   theme_minimal()+
@@ -71,11 +82,5 @@ b = ggpar(b, palette = eqm)
 land_time = ggarrange(a, b, common.legend = TRUE, legend="bottom", ncol = 2, nrow = 1)
 
 land_time
-
-
-
-
-
-
 
 

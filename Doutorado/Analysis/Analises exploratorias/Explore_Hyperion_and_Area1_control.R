@@ -112,7 +112,6 @@ ggplot(df_crt, aes(x = value, y = index, fill=dist)) +
 #  theme_minimal()+
 #  theme(legend.position = "none")
 
-
 #Struture ========
 struc_edge = gg1 %>% 
   filter(index %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
@@ -194,6 +193,20 @@ phy = ggarrange(a + rremove("xlab"), b + rremove("xlab"),
 
 
 
+
+
+
+
+
+library(tidyverse)
+library(reshape2)
+library(tidyr)
+library(dplyr)
+library(GGally)
+library(ggplot2)
+library(ggpubr)
+library(ggridges)
+
 #Boxplots ======================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
 
@@ -207,12 +220,13 @@ eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
 #Structural
 struc = df2 %>% 
   filter(variable %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')) %>% 
-  filter(parcela == "controle")
+  filter(parcela == "controle") %>% 
+  filter(dist == "nucleo")
 
 
 a = ggplot(struc, aes(data,value, fill=dist))+ 
-  #geom_boxplot(outlier.alpha = 0.3)+
-  geom_violin()+
+  geom_boxplot(outlier.alpha = 0.3, show.legend = FALSE)+
+  #geom_violin()+
   facet_wrap(~variable, scales="free") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))+
@@ -224,12 +238,13 @@ struc_control
 #Biochemistry
 bioc = df2 %>% 
   filter(variable %in% c('ari','lwvi2','msi','ndii','ndwi','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')) %>% 
-  filter(parcela == "controle")
+  filter(parcela == "controle") %>% 
+  filter(dist == "nucleo")
 
 
 a = ggplot(bioc, aes(data,value, fill=dist))+ 
-  #geom_boxplot(outlier.alpha = 0.3)+
-  geom_violin()+
+  geom_boxplot(outlier.alpha = 0.3, show.legend = FALSE)+
+  #geom_violin()+
   facet_wrap(~variable, scales="free") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))+
@@ -241,12 +256,13 @@ bioc_control
 #Physiologic
 phy = df2 %>% 
   filter(variable %in% c('pri','rendvi','biomass','lai','litter','fuel')) %>% 
-  filter(parcela == "controle")
+  filter(parcela == "controle") %>% 
+  filter(dist == "nucleo")
 
 
 a = ggplot(phy, aes(data,value, fill=dist))+ 
-  #geom_boxplot(outlier.alpha = 0.3)+
-  geom_violin()+
+  geom_boxplot(outlier.alpha = 0.3, show.legend = FALSE)+
+  #geom_violin()+
   facet_grid(variable ~ ., scales="free")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))+
@@ -256,7 +272,7 @@ phy_control = ggpar(a, palette = eqm)
 phy_control
 
 
-ggplot(df2, aes(x = value, y = variable, fill=dist)) +
-  geom_density_ridges() +
-  labs(x="Value (% Relative difference)",y=" ")+
-  theme_minimal()
+#ggplot(df2, aes(x = value, y = variable, fill=dist)) +
+#  geom_density_ridges() +
+#  labs(x="Value (% Relative difference)",y=" ")+
+#  theme_minimal()
