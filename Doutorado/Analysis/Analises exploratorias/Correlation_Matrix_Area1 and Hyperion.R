@@ -17,6 +17,7 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 #hy = hy[,c(-9)] #NDWI have so high values in comparison with other indexs
 
 hy = read.csv("Hyperion_indexs_all by plot.csv", sep = ',')
+hy = hy[,c(-5, -9)] #NDWI have so high values in comparison with other indexs
 hy$data = as.character(hy$data)
 
 biomass = read.csv("Biomass_tang.csv", sep = ",", header = TRUE)
@@ -73,6 +74,10 @@ df = full_join(df, fuel, by="id")
 
 df = df %>% 
   separate(col = "id", c("parcela", "data", "dist"), sep = '_')
+
+#Vegetation Index Correlation =============================================================
+ggcorr(hy, label = TRUE)
+
 
 
 #Correlations =============================================================================
