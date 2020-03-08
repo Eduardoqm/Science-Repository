@@ -34,7 +34,7 @@ eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
 struc = hy
 
 
-ggplot(struc, aes(x=wbi, y=msi))+
+ggplot(struc, aes(x=msi, y=wbi))+
   geom_point(size=3)+
   geom_smooth(method="lm", se=T)+ 
   theme_minimal()+
