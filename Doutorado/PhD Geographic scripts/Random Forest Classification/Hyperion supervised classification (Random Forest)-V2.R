@@ -107,9 +107,10 @@ eqm2 <- colorFactor(c("#003024","#fee08b","#d73027","#00ff00","#228c22"), domain
 
 leaflet() %>% 
   addTiles() %>% 
+  addMiniMap(position = "bottomleft") %>%
   addProviderTiles("Esri.WorldImagery") %>% 
   addRasterImage(class11, colors = eqm2, opacity = 0.8) %>% 
-  addPolygons(data = area1, color = "black",
+  addPolygons(data = area1, color = "#000000",
               weight = 1, fillOpacity = 0,
               highlightOptions = highlightOptions(color = "white", weight = 2,
                                                   bringToFront = TRUE),
