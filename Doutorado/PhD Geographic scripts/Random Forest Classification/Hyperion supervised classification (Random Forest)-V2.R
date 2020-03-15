@@ -100,7 +100,22 @@ levelplot(class11, margin = FALSE, col.regions = eqm, main = "2011")
 levelplot(class12, margin = FALSE, col.regions = eqm, main = "2012")
 
 #Interative Map
+library(leaflet)
 
+eqm2 <- colorFactor(c("#003024","#fee08b","#d73027","#00ff00","#228c22"), domain = values(class11),
+                    na.color = "transparent")
+
+leaflet() %>% 
+  addTiles() %>% 
+  addProviderTiles("Esri.WorldImagery") %>% 
+  addRasterImage(class11, colors = eqm2, opacity = 0.8) %>% 
+  addPolygons(data = area1, color = "black",
+              weight = 1, fillOpacity = 0,
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>% 
+  addLegend(pal = eqm2, 
+            values = values(class11), 
+            title = "Classes")
 
 #Save class raster
 #writeRaster(rf.class, "rf_ClassificationCrossValidation.tif", overwrite = TRUE)
