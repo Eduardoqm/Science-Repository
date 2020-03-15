@@ -41,7 +41,7 @@ amostras = st_transform(amostras, crs(img11[[1]]))
 plot(amostras, add=T)
 
 
-# ExtraÃ§Ã£o de dados: ----
+#Traine Data
 valsTrain <- raster::extract(img11, amostras)
 
 head(valsTrain)
@@ -53,7 +53,7 @@ names(valsTrain)[ncol(valsTrain)] <- "class"
 valsTrain$class <- as.factor(valsTrain$class)
 class(valsTrain$class)
 
-# Criando modelo randomForest ----
+#Create Random Forest Model
 rf.mdl <- randomForest(valsTrain$class ~., data = valsTrain)
 rf.mdl
 
