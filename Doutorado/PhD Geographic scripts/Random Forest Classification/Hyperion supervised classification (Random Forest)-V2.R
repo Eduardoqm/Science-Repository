@@ -70,7 +70,7 @@ class10 <- raster::predict(img10, rf.mdl, progress = "text", type = "response")
 class11 <- raster::predict(img11, rf.mdl, progress = "text", type = "response")
 class12 <- raster::predict(img12, rf.mdl, progress = "text", type = "response")
 
-#Classification Maps
+#Create Classification Maps
 #Classes(1-Intact Forest, 2-Grass, 3-Soil, 4-Initial Regeneration, 5-intermediate Regeneration)
 #Cutting Area-1
 area1 = spTransform(area1, crs(class11[[1]]))
@@ -98,6 +98,9 @@ levelplot(class10, margin = FALSE, col.regions = eqm, main = "2010")
 levelplot(class11, margin = FALSE, col.regions = eqm, main = "2011")
 
 levelplot(class12, margin = FALSE, col.regions = eqm, main = "2012")
+
+#Interative Map
+
 
 #Save class raster
 #writeRaster(rf.class, "rf_ClassificationCrossValidation.tif", overwrite = TRUE)
