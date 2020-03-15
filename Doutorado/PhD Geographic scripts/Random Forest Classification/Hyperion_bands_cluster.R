@@ -1,4 +1,4 @@
-#Make all Landsat bands data as data frame with XY
+#Hyperion unsupervised calssification
 
 #Eduardo Q Marques 11-03-2020
 
@@ -65,7 +65,7 @@ plot(class10$map)
 class10$model
 
 class11 <- unsuperClass(normImage(hy11), 
-                                  nSamples = 1000, nClasses = 6, nStarts = 25,
+                                  nSamples = 1000, nClasses = 5, nStarts = 25,
                         norm = F, clusterMap = FALSE)
 plot(class11$map)
 class11$model
@@ -94,7 +94,6 @@ levelplot(pred_10, margin = F, main = '2010')
 levelplot(pred_11, margin = F, main = '2011')
 levelplot(pred_12, margin = F, main = '2012')
 
-rasterVis::levelplot(stack(pred_04, pred_06, pred_08))
 
 f_dudu <- function(x, yr)as.data.frame(x) %>% as.tbl() %>% count(layer) %>% mutate(Yr = yr)
 

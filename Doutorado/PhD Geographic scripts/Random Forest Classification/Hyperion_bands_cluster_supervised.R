@@ -1,4 +1,4 @@
-#Make all Landsat bands data as data frame with XY
+#Hyperion supervised calssification (Random Forest)
 
 #Eduardo Q Marques 11-03-2020
 
@@ -13,11 +13,16 @@ library(tidyr)
 library(viridis)
 library(rasterVis)
 library(RStoolbox)
+library(caret)
+library(randomForest)
+library(e1071)
 
 #Data Bank
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
 
-train <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="train")
+#traine <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="train")
+
+traine <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Classification",layer="classpoint_2011")
 
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Registro hyperion/Cortadas")
 
@@ -36,8 +41,8 @@ hy08 = crop(hy, area1)
 hy = brick('Reg_22_july_2010.tif')
 hy10 = crop(hy, area1)
 
-hy = brick('Reg_24_july_2011.tif')
-hy11 = crop(hy, area1)
+hy11 = brick('Reg_24_july_2011.tif')
+#hy11 = crop(hy, area1)
 
 hy = brick('Reg_20_july_2012.tif')
 hy12 = crop(hy, area1)
@@ -47,14 +52,23 @@ hy12 = crop(hy, area1)
 
 #Supervised to one year
 #Classes(Intact Forest, Grass, Soil, Initial Regeneration, intermediate Regeneration)
+traine = spTransform(traine, crs(hy11[[1]]))
+hy11F <-  approxNA(hy11)
+class11B <- superClass(hy11F, trainData = traine, 
+                       responseCol = "class",
+                       model = "rf", nSamples = 1,
+                       tuneLength = 3, trainPartition = 0.6,
+                       predict = TRUE, predType = "prob")
 
-class11 <- superClass(normImage(hy11), 
-                      trainData = train, 
-                      responseCol = "CLASS", model = "rf", 
-                      tuneLength = 1, trainPartition = 0.7)
 
-plot(class11$map)
-class11$model
+levelplot(class11B$map, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)))
+class11B$model
+
+
+ff <- class11B$map
+ff[ff>0.5] = 1
+ff[ff<=0.5] = 0
+levelplot(ff, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(2)))
 
 
 ###
@@ -63,14 +77,34 @@ class11$model
 #Using class to predict other classifications
 hy12 <- resample(hy12,hy11,method='bilinear')
 
-pred_12 <- predict(normImage(hy12), class11$map)
-#pred_12 <- predict(class11, normImage(hy12))
+pred_12 <- raster::predict(class11$map, hy12)
+calc12 <- calc(class11$map,predict)
+
+
+names(hy12) = names(hy10) = names(hy11)
+pred_12 <- predict(class11B, hy12)
+plot(pred_12)
 #pred_11 <- predict(class11, normImage(hy11))
-pred_10 <- predict(class11, normImage(hy10))
+pred_10 <- predict(class11B, hy10)
+plot(pred_10)
 pred_08 <- predict(class11, normImage(hy08))
 pred_06 <- predict(class11, normImage(hy06))
 pred_04 <- predict(class11, normImage(hy04))
 pred_05 <- predict(class11, normImage(hy05))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 levelplot(pred_04, margin = F, main = '2004')
 levelplot(pred_05, margin = F, main = '2005')
@@ -80,7 +114,11 @@ levelplot(pred_10, margin = F, main = '2010')
 levelplot(class11$map, margin = F, main = '2011')
 levelplot(pred_12, margin = F, main = '2012')
 
-rasterVis::levelplot(stack(pred_04, pred_06, pred_08))
+
+
+
+
+
 
 f_dudu <- function(x, yr)as.data.frame(x) %>% as.tbl() %>% count(layer) %>% mutate(Yr = yr)
 
