@@ -11,7 +11,9 @@ library(raster)
 library(rasterVis)
 library(viridis)
 
-#Hyperion data
+#Data Bank
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
+
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Registro hyperion/Cortadas")
 
 img4 = brick('Reg_09_Aug_2004.tif')
@@ -69,19 +71,33 @@ class11 <- raster::predict(img11, rf.mdl, progress = "text", type = "response")
 class12 <- raster::predict(img12, rf.mdl, progress = "text", type = "response")
 
 #Classification Maps
-levelplot(class04, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2004")
+#Classes(1-Intact Forest, 2-Grass, 3-Soil, 4-Initial Regeneration, 5-intermediate Regeneration)
+#Cutting Area-1
+area1 = spTransform(area1, crs(class11[[1]]))
+class04 = crop(class04, area1)
+class05 = crop(class05, area1)
+class06 = crop(class06, area1)
+class08 = crop(class08, area1)
+class10 = crop(class10, area1)
+class11 = crop(class11, area1)
+class12 = crop(class12, area1)
 
-levelplot(class05, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2005")
+eqm = c("#003024","#fee08b","#d73027","#00ff00","#228c22")
+#eqm = c("darkgreen","yellow","red","orange","green")
 
-levelplot(class06, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2006")
+levelplot(class04, margin = FALSE, col.regions = eqm, main = "2004")
 
-levelplot(class08, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2008")
+levelplot(class05, margin = FALSE, col.regions = eqm, main = "2005")
 
-levelplot(class10, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2010")
+levelplot(class06, margin = FALSE, col.regions = eqm, main = "2006")
 
-levelplot(class11, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2011")
+levelplot(class08, margin = FALSE, col.regions = eqm, main = "2008")
 
-levelplot(class12, margin = FALSE, par.settings=rasterTheme(viridis_pal(option = "D")(255)), main = "2012")
+levelplot(class10, margin = FALSE, col.regions = eqm, main = "2010")
+
+levelplot(class11, margin = FALSE, col.regions = eqm, main = "2011")
+
+levelplot(class12, margin = FALSE, col.regions = eqm, main = "2012")
 
 #Save class raster
 #writeRaster(rf.class, "rf_ClassificationCrossValidation.tif", overwrite = TRUE)
