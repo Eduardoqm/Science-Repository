@@ -112,10 +112,12 @@ leaflet() %>%
   addPolygons(data = area1, color = "black",
               weight = 1, fillOpacity = 0,
               highlightOptions = highlightOptions(color = "white", weight = 2,
-                                                  bringToFront = TRUE)) %>% 
+                                                  bringToFront = TRUE),
+              popup = area1@data$Nome, label = area1@data$Nome) %>% 
   addLegend(pal = eqm2, 
             values = values(class11), 
-            title = "Classes")
+            title = "Classes",
+            opacity = 1)
 
 #Save class raster
 #writeRaster(rf.class, "rf_ClassificationCrossValidation.tif", overwrite = TRUE)
