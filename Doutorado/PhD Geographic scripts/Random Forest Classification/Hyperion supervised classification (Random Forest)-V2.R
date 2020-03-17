@@ -121,5 +121,17 @@ leaflet() %>%
             title = "Classes",
             opacity = 1)
 
-#Save class raster
-#writeRaster(rf.class, "rf_ClassificationCrossValidation.tif", overwrite = TRUE)
+#Save class rasters
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Classification/Rasters")
+
+#writeRaster(class04, "class_2004.tif", overwrite = TRUE)
+#writeRaster(class05, "class_2005.tif", overwrite = TRUE)
+#writeRaster(class06, "class_2006.tif", overwrite = TRUE)
+#writeRaster(class08, "class_2008.tif", overwrite = TRUE)
+#writeRaster(class10, "class_2010.tif", overwrite = TRUE)
+#writeRaster(class11, "class_2011.tif", overwrite = TRUE)
+#writeRaster(class12, "class_2012.tif", overwrite = TRUE)
+
+
+
+
