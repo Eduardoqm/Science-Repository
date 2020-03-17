@@ -82,6 +82,7 @@ class10 = crop(class10, area1)
 class11 = crop(class11, area1)
 class12 = crop(class12, area1)
 
+
 #Classes(1-Intact Forest, 2-Grass, 3-Soil, 4-Initial Regeneration, 5-intermediate Regeneration)
 eqm = c("#003024","#fee08b","#d73027","#00ff00","#228c22")
 #eqm = c("darkgreen","yellow","red","orange","green")
