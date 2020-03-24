@@ -20,9 +20,10 @@ df$data = as.character(df$data)
 df2 = melt(df)
 colnames(df2) = c("year", "parcela", "dist","index","value")
 
-#land = df2 %>% 
-  #filter(data > 2012) %>% 
- # filter(index %in% c('ndvi','evi','vig', 'ndii'))
+#Filter to get regeneration
+df2 = df2 %>% 
+  filter(year > 2012)
+
 evi = df2 %>%
 filter(index == 'evi')
 
@@ -69,3 +70,14 @@ a = ggplot(ndii, aes(x = value, y = year, fill=parcela)) +
 
 land4 = ggpar(a, palette = eqm)
 land4
+
+
+land = ggarrange(land1 + rremove("xlab"),
+                 land2 + rremove("xlab") + rremove("ylab"),
+                 land3 + rremove("xlab") + rremove("ylab"),
+                 land4 + rremove("xlab") + rremove("ylab"),
+                 common.legend = TRUE,
+                 legend="bottom",
+                 ncol = 4, nrow = 1)
+
+land
