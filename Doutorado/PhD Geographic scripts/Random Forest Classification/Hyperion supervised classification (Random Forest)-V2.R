@@ -40,9 +40,9 @@ names(img12) <- paste0(rep('band', nlayers(img12)), 1:nlayers(img12))
 #Sample points
 amostras <- read_sf("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Hyperion/Classification/classpoint_2011.shp")
 amostras = st_transform(amostras, crs(img11[[1]]))
-#plot(amostras, add=T)
+plot(amostras, add=T)
 
-#Traine Data =================================================================================
+##Traine Data =================================================================================
 valsTrain <- raster::extract(img11, amostras)
 
 head(valsTrain)
@@ -52,7 +52,7 @@ head(valsTrain)
 names(valsTrain)[ncol(valsTrain)] <- "class"
 
 valsTrain$class <- as.factor(valsTrain$class)
-class(valsTrain$class)
+#class(valsTrain$class)
 
 #Create Random Forest Model ===================================================================
 rf_mdl <- randomForest(valsTrain$class ~., data = valsTrain)

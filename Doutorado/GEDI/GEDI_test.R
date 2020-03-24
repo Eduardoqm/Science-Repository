@@ -42,7 +42,7 @@ library(sp)
 level1BGeo_spdf<-SpatialPointsDataFrame(cbind(level1BGeo$longitude_bin0, level1BGeo$latitude_bin0),
                                         data=level1BGeo)
 
-# Exporting level1BGeo as ESRI Shapefile
+# Exporting level1BGeo as ESRI Shapefile ===========================================================
 raster::shapefile(level1BGeo_spdf,paste0(outdir,"\\GEDI01_B_2019108080338_O01964_T05337_02_003_01_sub"))
 
 library(leaflet)
@@ -165,7 +165,7 @@ level1b_clip_gb <- clipLevel1BGeometry(gedilevel1b,polygon_spdf,output=paste0(ou
 level2a_clip_gb <- clipLevel2AGeometry(gedilevel2a,polygon_spdf,output=paste0(outdir,"//level2a_clip_gb.h5"), split_by=split_by)
 level2b_clip_gb <- clipLevel2BGeometry(gedilevel2b,polygon_spdf,output=paste0(outdir,"//level2b_clip_gb.h5"), split_by=split_by)
 
-#Clip GEDI data (data.table objects)
+#Clip GEDI data (data.table objects) ==========================================================
 ## Clipping GEDI data within boundary box
 level1BGeo_clip_bb <-clipLevel1BGeo(level1bGeo, xmin, xmax, ymin, ymax)
 level2AM_clip_bb <- clipLevel2AM(level2AM, xmin, xmax, ymin, ymax)
@@ -174,7 +174,7 @@ level1BPAIProfile_clip_bb <- clipLevel2BPAIProfile(level2BPAIProfile, xmin, xmax
 level2BPAVDProfile_clip_bb <- clipLevel2BPAVDProfile(level2BPAVDProfile, xmin, xmax, ymin, ymax)
 
 ## Clipping GEDI data by geometry
-level1BGeo_clip_gb <- clipLevel1BGeoGeometry(level1bGeo,polygon_spdf, split_by=split_by)
+level1BGeo_clip_gb <- clipLevel1BGeoGeometry(level1BGeo,polygon_spdf, split_by=split_by)
 level2AM_clip_gb <- clipLevel2AMGeometry(level2AM,polygon_spdf, split_by=split_by)
 level2BVPM_clip_gb <- clipLevel2BVPMGeometry(level2BVPM,polygon_spdf, split_by=split_by)
 level1BPAIProfile_clip_gb <- clipLevel2BPAIProfileGeometry(level2BPAIProfile,polygon_spdf, split_by=split_by)
@@ -223,11 +223,218 @@ m2<-leaflet() %>%
 
 sync(m1, m2)
 
+#Compute descriptive statistics of GEDI Level2A and Level2B data ===============================
+# Define your own function
+mySetOfMetrics = function(x)
+{
+  metrics = list(
+    min =min(x), # Min of x
+    max = max(x), # Max of x
+    mean = mean(x), # Mean of x
+    sd = sd(x)# Sd of x
+  )
+  return(metrics)
+}
+
+# Computing the maximum of RH100 stratified by polygon
+rh100max_st<-polyStatsLevel2AM(level2AM_clip_gb,func=max(rh100), id="poly_id")
+head(rh100max_st)
+
+# Computing a serie statistics for GEDI metrics stratified by polygon
+rh100metrics_st<-polyStatsLevel2AM(level2AM_clip_gb,func=mySetOfMetrics(rh100),
+                                   id="poly_id")
+head(rh100metrics_st)
+
+# Computing the max of the Total Plant Area Index
+pai_max<-polyStatsLevel2BVPM(level2BVPM_clip_gb,func=max(pai), id=NULL)
+pai_max
+
+
+# Computing a serie of statistics of Canopy Cover stratified by polygon
+cover_metrics_st<-polyStatsLevel2BVPM(level2BVPM_clip_gb,func=mySetOfMetrics(cover),
+                                      id="poly_id")
+head(cover_metrics_st)
+
+#Compute Grids with descriptive statistics of GEDI-derived Elevation and Height Metrics (Level2A)====
+# Computing a serie of statistics of GEDI RH100 metric
+rh100metrics<-gridStatsLevel2AM(level2AM = level2AM, func=mySetOfMetrics(rh100), res=0.005)
+
+# View maps
+library(rasterVis)
+library(viridis)
+
+rh100maps<-levelplot(rh100metrics,
+                     layout=c(1, 4),
+                     margin=FALSE,
+                     xlab = "Longitude (degree)", ylab = "Latitude (degree)",
+                     colorkey=list(
+                       space='right',
+                       labels=list(at=seq(0, 18, 2), font=4),
+                       axis.line=list(col='black'),
+                       width=1),
+                     par.settings=list(
+                       strip.border=list(col='gray'),
+                       strip.background=list(col='gray'),
+                       axis.line=list(col='gray')
+                     ),
+                     scales=list(draw=TRUE),
+                     col.regions=viridis,
+                     at=seq(0, 18, len=101),
+                     names.attr=c("rh100 min","rh100 max","rh100 mean", "rh100 sd"))
+
+# Exporting maps 
+png("fig5.png", width = 6, height = 8, units = 'in', res = 300)
+rh100maps
+dev.off()
+
+#Compute Grids with descriptive statistics of GEDI-derived Canopy Cover and Vertical Profile Metrics (Level2B) =================
+# Computing a serie of statistics of Total Plant Area Index
+level2BVPM$pai[level2BVPM$pai==-9999]<-NA # assing NA to -9999
+pai_metrics<-gridStatsLevel2BVPM(level2BVPM = level2BVPM, func=mySetOfMetrics(pai), res=0.005)
+
+# View maps
+pai_maps<-levelplot(pai_metrics,
+                    layout=c(1, 4),
+                    margin=FALSE,
+                    xlab = "Longitude (degree)", ylab = "Latitude (degree)",
+                    colorkey=list(
+                      space='right',
+                      labels=list(at=seq(0, 1.5, 0.2), font=4),
+                      axis.line=list(col='black'),
+                      width=1),
+                    par.settings=list(
+                      strip.border=list(col='gray'),
+                      strip.background=list(col='gray'),
+                      axis.line=list(col='gray')
+                    ),
+                    scales=list(draw=TRUE),
+                    col.regions=viridis,
+                    at=seq(0, 1.5, len=101),
+                    names.attr=c("PAI min","PAI max","PAI mean", "PAI sd"))
+
+# Exporting maps 
+png("fig6.png", width = 6, height = 8, units = 'in', res = 300)
+pai_maps
+dev.off()
+
+#Simulating GEDI full-waveform data from Airborne Laser Scanning (ALS) 3-D point cloud and extracting canopy derived metrics ===============
+# Specifying the path to ALS data
+lasfile_amazon <- paste0(outdir, "\\Amazon.las")
+lasfile_savanna <- paste0(outdir, "\\Savanna.las")
+
+# Reading and plot ALS file
+library(lidR)
+library(plot3D)
+
+las_amazon<-readLAS(lasfile_amazon)
+las_savanna<-readLAS(lasfile_savanna)
+
+# Extracting plot center geolocations
+xcenter_amazon = mean(las_amazon@bbox[1,])
+ycenter_amazon = mean(las_amazon@bbox[2,])
+xcenter_savanna = mean(las_savanna@bbox[1,])
+ycenter_savanna = mean(las_savanna@bbox[2,])
+
+# Simulating GEDI full-waveform
+wf_amazon<-gediWFSimulator(input=lasfile_amazon,output=paste0(getwd(),"//gediWF_amazon_simulation.h5"),coords = c(xcenter_amazon, ycenter_amazon))
+wf_savanna<-gediWFSimulator(input=lasfile_savanna,output=paste0(getwd(),"//gediWF_savanna_simulation.h5"),coords = c(xcenter_savanna, ycenter_savanna))
+
+# Plotting ALS and GEDI simulated full-waveform
+png("gediWf.png", width = 8, height = 6, units = 'in', res = 300)
+
+par(mfrow=c(2,2), mar=c(4,4,0,0), oma=c(0,0,1,1),cex.axis = 1.2)
+scatter3D(las_amazon@data$X,las_amazon@data$Y,las_amazon@data$Z,pch = 16,colkey = FALSE, main="",
+          cex = 0.5,bty = "u",col.panel ="gray90",phi = 30,alpha=1,theta=45,
+          col.grid = "gray50", xlab="UTM Easting (m)", ylab="UTM Northing (m)", zlab="Elevation (m)")
+
+plot(wf_amazon, relative=TRUE, polygon=TRUE, type="l", lwd=2, col="forestgreen",
+     xlab="", ylab="Elevation (m)", ylim=c(90,140))
+grid()
+scatter3D(las_savanna@data$X,las_savanna@data$Y,las_savanna@data$Z,pch = 16,colkey = FALSE, main="",
+          cex = 0.5,bty = "u",col.panel ="gray90",phi = 30,alpha=1,theta=45,
+          col.grid = "gray50", xlab="UTM Easting (m)", ylab="UTM Northing (m)", zlab="Elevation (m)")
+
+plot(wf_savanna, relative=TRUE, polygon=TRUE, type="l", lwd=2, col="green",
+     xlab="Waveform Amplitude (%)", ylab="Elevation (m)", ylim=c(815,835))
+grid()
+dev.off()
+
+#Extracting GEDI full-waveform derived metrics without adding noise to the full-waveform ===========
+wf_amazon_metrics<-gediWFMetrics(input=wf_amazon,
+                                 outRoot=file.path(getwd(), "amazon"))
+wf_savanna_metrics<-gediWFMetrics(input=wf_savanna,
+                                  outRoot=file.path(getwd(), "savanna"))
+
+metrics<-rbind(wf_amazon_metrics,wf_savanna_metrics)
+rownames(metrics)<-c("Amazon","Savanna")
+head(metrics[,1:8])
+
+#Extracting GEDI full-waveform derived metrics after adding noise to the full-waveform =============
+wf_amazon_metrics_noise<-gediWFMetrics(input=wf_amazon,
+                                       outRoot=file.path(getwd(), "amazon"),
+                                       linkNoise= c(3.0103,0.95),
+                                       maxDN= 4096,
+                                       sWidth= 0.5,
+                                       varScale= 3)
+
+wf_savanna_metrics_noise<-gediWFMetrics(
+  input=wf_savanna,
+  outRoot=file.path(getwd(), "savanna"),
+  linkNoise= c(3.0103,0.95),
+  maxDN= 4096,
+  sWidth= 0.5,
+  varScale= 3)
+
+metrics_noise<-rbind(wf_amazon_metrics_noise,wf_savanna_metrics_noise)
+rownames(metrics_noise)<-c("Amazon","Savanna")
+head(metrics_noise[,1:8])
+
+#Always close gedi objects, so HDF5 files won't be blocked! =======================
+close(wf_amazon)
+close(wf_savanna)
+close(gedilevel1b)
+close(gedilevel2a)
+close(gedilevel2b)
 
 
 
+#Edu LAS Exploration
+library(lidR)
+library(plot3D)
+library(ggplot2)
+library(plotly)
+library(rayshader)
+library(rasterVis)
+library(viridis)
+
+setwd('C:\\Users\\Eduardo Q Marques\\Documents\\test_gedi')
+las_amazon<-readLAS("Amazon.las")
+las_savanna<-readLAS("Savanna.las" )
+#las_amazon<-readLAS(lasfile_amazon)
+#las_savanna<-readLAS(lasfile_savanna)
+
+plot(las_amazon)
+amaz = as.data.frame(las_amazon@data)
+sav = as.data.frame(las_savanna@data)
+
+#Tryng rayshader 3D plots
+gg = ggplot(amaz, aes(x=X, y=Y, col=Z))+
+  geom_point(size = 1, alpha = 0.5)
+
+plot_gg(gg,multicore=TRUE,width=10,height=10,scale=100,windowsize=c(1000,500),
+        zoom = 0.55, phi = 50)
+
+gg2 = ggplot(amaz, aes(x=X, y=Y, fill=Z))+
+  geom_raster()+
+  scale_fill_viridis()
+
+plot_gg(gg2,multicore=TRUE,width=10,height=10,scale=100,windowsize=c(1000,500),
+        zoom = 0.55, phi = 50)
 
 
+#Tryng plotly 3D plots
+plot_ly(x = amaz$X, y = amaz$Y, z = amaz$Z, color = amaz$Z, size = I(5))
 
+plot_ly(x = sav$X, y = sav$Y, z = sav$Z, color = sav$Z, size = I(5))
 
-
+        

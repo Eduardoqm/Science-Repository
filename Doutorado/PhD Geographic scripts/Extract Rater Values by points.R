@@ -1,4 +1,4 @@
-#Extract Rater Values by Points
+#Extract Raster Values by Points
 
 #Eduardo Q Marques 12-03-2020
 
