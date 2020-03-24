@@ -17,9 +17,6 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de 
 df = read.csv("Landast_indexs_all by plot.csv", sep = ',')
 df$data = as.character(df$data)
 
-#Select Indices
-eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
-
 df2 = melt(df)
 colnames(df2) = c("year", "parcela", "dist","index","value")
 
@@ -46,29 +43,29 @@ a = ggplot(evi, aes(x = value, y = year, fill=parcela)) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
 
-land = ggpar(a, palette = eqm)
-land
+land1 = ggpar(a, palette = eqm)
+land1
 
 a = ggplot(ndvi, aes(x = value, y = year, fill=parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
 
-land = ggpar(a, palette = eqm)
-land
+land2 = ggpar(a, palette = eqm)
+land2
 
 a = ggplot(vig, aes(x = value, y = year, fill=parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
 
-land = ggpar(a, palette = eqm)
-land
+land3 = ggpar(a, palette = eqm)
+land3
 
 a = ggplot(ndii, aes(x = value, y = year, fill=parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
 
-land = ggpar(a, palette = eqm)
-land
+land4 = ggpar(a, palette = eqm)
+land4
