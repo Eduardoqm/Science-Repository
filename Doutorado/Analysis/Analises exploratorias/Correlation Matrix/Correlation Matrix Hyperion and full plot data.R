@@ -26,7 +26,7 @@ litt  = read.csv("Liteira_full_tang.csv", sep = ",", header = TRUE)
 
 fuel = read.csv("Fuel_full_tang.csv", sep = ",", header = TRUE)
 
-#Data integration =======================================================================
+#Data organization =======================================================================
 #From Hyperion we have 2004:2012, so let's try use other datas in this range
 #Biomass
 biomass = biomass %>% 
@@ -60,16 +60,45 @@ fuel = fuel %>%
   unite(col = "id", c("parcela", "year"), sep = '_')
 colnames(fuel) = c("id", "fuel", "dist")
 
+
+#Transpor Hyperion data
 hy2 = hy[,c(4,5,6)]
-#hy3 = t(hy2)
-hy2 = hy2 %>% 
-  na.omit()
+hy2$id = as.character(hy2$id)
+  
+geti = function(x){
+  z = hy2 %>% 
+    na.omit() %>% 
+    filter(index == x)
+  z = z[,-1]
+}
 
-hy3 = reshape(hy2, v.names = "value", idvar = "id", timevar="index",
-        direction="wide")
+ari = geti("ari");colnames(ari) = c("ari", "id"); ari$id = as.character(ari$id) 
+evi = geti("evi2");colnames(evi) = c("evi", "id"); evi$id = as.character(evi$id) 
+ndvi = geti("ndvi");colnames(ndvi) = c("ndvi", "id"); ndvi$id = as.character(ndvi$id) 
+vari = geti("vari");colnames(vari) = c("vari", "id"); vari$id = as.character(vari$id) 
+vig = geti("vig");colnames(vig) = c("vig", "id"); vig$id = as.character(vig$id)
+lwvi2 = geti("lwvi2");colnames(lwvi2) = c("lwvi2", "id")
+msi = geti("msi");colnames(msi) = c("msi", "id")
+ndii = geti("ndii");colnames(ndii) = c("ndii", "id")
+ndwi = geti("ndwi");colnames(ndwi) = c("ndwi", "id")
+pssr = geti("pssr");colnames(pssr) = c("pssr", "id")
+psri = geti("psri");colnames(psri) = c("psri", "id")
+sipi = geti("sipi");colnames(sipi) = c("sipi", "id")
+wbi = geti("wbi");colnames(wbi) = c("wbi", "id")
+pri = geti("pri");colnames(pri) = c("pri", "id")
+rendvi = geti("rendvi");colnames(rendvi) = c("rendvi", "id")
+
+hy3 = full_join(ari, evi,by="id")
+hy3 = full_join(hy3, ndvi, by="id")
+hy3 = full_join(hy3, vari, by="id")
 
 
 
+
+
+
+
+#Union all hyperion and data ====================================================
 df = hy
 #df1 = full_join(df, biomass, by="id")
 #df2 = full_join(df, lai, by="id")
