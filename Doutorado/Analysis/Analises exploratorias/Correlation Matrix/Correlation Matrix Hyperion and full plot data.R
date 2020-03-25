@@ -42,87 +42,40 @@ litt = litt %>%
 
 #Join Data
 hy = hy %>% 
-  unite(col = "id", c("parcela", "year", "dist"), sep = '_')
+  unite(col = "id", c("parcela", "year"), sep = '_')
 
 biomass = as.data.frame(biomass)#To work
 biomass = biomass %>% 
-  unite(col = "id", c("parcela", "year", "dist"), sep = '_')
-colnames(biomass) = c("id", "biomass")
+  unite(col = "id", c("parcela", "year"), sep = '_')
+colnames(biomass) = c("id", "biomass", "dist")
 
 lai = lai %>% 
-  unite(col = "id", c("parcela", "year", "dist"), sep = '_')
+  unite(col = "id", c("parcela", "year"), sep = '_')
 
 litt = litt %>% 
-  unite(col = "id", c("parcela", "year", "dist"), sep = '_')
-colnames(litt) = c("id", "litter")
+  unite(col = "id", c("parcela", "year"), sep = '_')
+colnames(litt) = c("id", "litter", "dist")
 
 fuel = fuel %>% 
-  unite(col = "id", c("parcela", "year", "dist"), sep = '_')
-colnames(fuel) = c("id", "fuel")
+  unite(col = "id", c("parcela", "year"), sep = '_')
+colnames(fuel) = c("id", "fuel", "dist")
 
+hy2 = hy[,c(4,5,6)]
+hy3 = t(hy2)
 
 df = hy
-df = full_join(df, biomass, by="id")
-df = full_join(df, lai, by="id")
-df = full_join(df, litt, by="id")
-df = full_join(df, fuel, by="id")
+#df1 = full_join(df, biomass, by="id")
+#df2 = full_join(df, lai, by="id")
+#df3 = full_join(df, litt, by="id")
+df4 = full_join(df, fuel, by="id")
 
-df = df %>% 
-  separate(col = "id", c("parcela", "data", "dist"), sep = '_')
+df4 = df4 %>% 
+  separate(col = "id", c("parcela", "year"), sep = '_')
 
-#Vegetation Index Correlation =============================================================
-ggcorr(hy, label = TRUE)
-
-
-
-#Correlations =============================================================================
-#Strutural
-struc = df %>% 
-  select('dist','evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel')
-
-ggcorr(struc, label = TRUE)
-p<-ggpairs(struc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
-           columns = c('evi','ndvi','nbri','vari','vig','lai','litter'))
-for(i in 1:p$nrow) {
-  for(j in 1:p$ncol){
-    p[i,j] <- p[i,j] + 
-      scale_fill_manual(values=c("#00AFBB", "#FC4E07")) +
-      scale_color_manual(values=c("#00AFBB", "#FC4E07"))  
-  }
-}
-p
-
-#Biochemistry
-bioc = df %>% 
-  select('dist','ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel')
-
-ggcorr(bioc, label = TRUE)
-p<-ggpairs(bioc, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
-           columns = c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','lai','litter'))
-for(i in 1:p$nrow) {
-  for(j in 1:p$ncol){
-    p[i,j] <- p[i,j] + 
-      scale_fill_manual(values=c("#00AFBB", "#FC4E07")) +
-      scale_color_manual(values=c("#00AFBB", "#FC4E07"))  
-  }
-}
-p
-
-#Physiologic
-phy = df %>% 
-  select('dist','pri','rendvi','biomass','lai','litter','fuel')
-
-ggcorr(phy, label = TRUE)
-p<-ggpairs(phy, aes(color = dist), lower = list(continuous = "smooth"), axisLabels = "none",
-           columns = c('pri','rendvi','lai','litter'))
-for(i in 1:p$nrow) {
-  for(j in 1:p$ncol){
-    p[i,j] <- p[i,j] + 
-      scale_fill_manual(values=c("#00AFBB", "#FC4E07")) +
-      scale_color_manual(values=c("#00AFBB", "#FC4E07"))  
-  }
-}
-p
+#Simple Correlation Matrix =============================================================
+#Fuel
+fuel_cor = df4[,c(4,5,6,7,9)]
+ggcorr(fuel_cor, label = TRUE)
 
 #Correlations GGPLOT =======================================================================
 #Making data
