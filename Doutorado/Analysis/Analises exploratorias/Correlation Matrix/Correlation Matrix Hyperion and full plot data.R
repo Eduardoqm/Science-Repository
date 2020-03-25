@@ -61,7 +61,14 @@ fuel = fuel %>%
 colnames(fuel) = c("id", "fuel", "dist")
 
 hy2 = hy[,c(4,5,6)]
-hy3 = t(hy2)
+#hy3 = t(hy2)
+hy2 = hy2 %>% 
+  na.omit()
+
+hy3 = reshape(hy2, v.names = "value", idvar = "id", timevar="index",
+        direction="wide")
+
+
 
 df = hy
 #df1 = full_join(df, biomass, by="id")
