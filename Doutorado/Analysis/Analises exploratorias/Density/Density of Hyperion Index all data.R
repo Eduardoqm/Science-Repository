@@ -70,17 +70,29 @@ ggplot(res, aes(x = value, y = year)) +
 
 #Burned
 burn = df %>% 
-  filter(index %in% c('pssr','ari','rendvi')) %>% 
+  filter(index %in% c('pssr')) %>% 
   filter(parcela != "control")
 
-ggplot(burn, aes(x = value, y = year, fill = parcela)) +
-  geom_density_ridges(alpha = 0.75) +
+a = ggplot(burn, aes(x = value, y = year, fill = parcela)) +
+  geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
 
 burn = ggpar(a, palette = eqm)
 burn
 
+#Others
+burn2 = df %>% 
+  filter(index %in% c('ari','lwvi2','rendvi','vari')) %>% 
+  filter(parcela != "control")
+
+a = ggplot(burn2, aes(x = value, y = year, fill = parcela)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+burn2 = ggpar(a, palette = eqm)
+burn2
 
 
 
