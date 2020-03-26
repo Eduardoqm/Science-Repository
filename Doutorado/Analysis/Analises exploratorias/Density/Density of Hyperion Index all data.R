@@ -34,7 +34,7 @@ struc
 
 #Biochemistry
 bioc = df %>% 
-  filter(index %in% c('ari','lwvi2','msi','ndii','ndwi','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
+  filter(index %in% c('nirv','lwvi2','msi','ndii','ndwi','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
 
 
 a = ggplot(bioc, aes(x = value, y = year, fill=parcela)) +
@@ -60,7 +60,7 @@ phy
 #Result
 #Controle
 res = df %>% 
-  filter(index %in% c('pssr','ari','rendvi')) %>% 
+  filter(index %in% c('pssr','rendvi')) %>% 
   filter(parcela == "control")
 
 ggplot(res, aes(x = value, y = year)) +
@@ -83,7 +83,7 @@ burn
 
 #Others
 burn2 = df %>% 
-  filter(index %in% c('ari','lwvi2','rendvi','vari')) %>% 
+  filter(index %in% c('nirv','lwvi2','rendvi','vari')) %>% 
   filter(parcela != "control")
 
 a = ggplot(burn2, aes(x = value, y = year, fill = parcela)) +
