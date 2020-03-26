@@ -81,3 +81,31 @@ land = ggarrange(land1 + rremove("xlab"),
                  ncol = 4, nrow = 1)
 
 land
+
+
+#Result
+#NDVI
+res1 = df2 %>%
+  filter(index == 'ndvi') %>% 
+  filter(parcela != 'controle')
+
+a = ggplot(res1, aes(x = value, y = year, fill=parcela)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+res1 = ggpar(a, palette = eqm)
+res1
+
+#NDII
+res2 = df2 %>%
+  filter(index == 'ndii') %>% 
+  filter(parcela != 'controle')
+
+a = ggplot(res2, aes(x = value, y = year, fill=parcela)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+res2 = ggpar(a, palette = eqm)
+res2
