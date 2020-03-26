@@ -56,3 +56,31 @@ a = ggplot(phy, aes(x = value, y = year, fill=parcela)) +
 
 phy = ggpar(a, palette = eqm)
 phy
+
+#Result
+#Controle
+res = df %>% 
+  filter(index %in% c('pssr','ari','rendvi')) %>% 
+  filter(parcela == "control")
+
+ggplot(res, aes(x = value, y = year)) +
+  geom_density_ridges(alpha = 0.75, fill = "#00AFBB") +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+#Burned
+burn = df %>% 
+  filter(index %in% c('pssr','ari','rendvi')) %>% 
+  filter(parcela != "control")
+
+ggplot(burn, aes(x = value, y = year, fill = parcela)) +
+  geom_density_ridges(alpha = 0.75) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+burn = ggpar(a, palette = eqm)
+burn
+
+
+
+
