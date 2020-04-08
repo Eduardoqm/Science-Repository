@@ -8,7 +8,7 @@
 
 #Aqui temos duas planilhas uma CSV e uma TXT, nosso aobjetivo é exploralas e junta-las.
 #Abrindo uma planilha de dados (.CSV e .TXT)
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Introdução ao ambiente estatístico R/Material alunos")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Programas/R/Science-Repository/Courses/Introdução ao ambiente estatístico R/Material alunos")
 dir()
 
 txtobj <- read.table("DF_intro_R.txt", sep = "\t", header = TRUE)
