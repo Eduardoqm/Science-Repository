@@ -96,10 +96,14 @@ nirv = geti("nirv"); colnames(nirv) = c("index", "id")
 #Join with field data
 lai = lai[,c(-2)]
 lai$id = as.character(lai$id)
+lai$lai = lai$lai/10
+lai2 = melt(lai)
 
 litt = litt[,c(-2)]
 litt$id = as.character(litt$id)
+litt2 = melt(litt)
 
+area = rbind(lai2, litt2)
 
 #Function to join and plot
 plotcor = function(x,y){
@@ -107,27 +111,23 @@ plotcor = function(x,y){
     group_by(id) %>% 
     summarise(index = median(index)) 
   
-  x = full_join(lai, x, by="id")
-  x = full_join(litt, x, by="id")
+  #x = full_join(lai, x, by="id")
+  #x = full_join(litt, x, by="id")
+  x = full_join(area, x, by="id")
+  x = na.omit(x)
   
-  a = ggplot(x, aes(x=lai, y=index))+
-    geom_point(size=3, col = "#FC4E07")+
-    geom_smooth(method="lm", se=F, col = "#FC4E07")+ 
+  eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
+  
+  a = ggplot(x, aes(x=value, y=index, col = variable))+
+    geom_point(size=3)+
+    #geom_point(size=3, col = "#FC4E07")+
+    geom_smooth(method="lm", se=F)+ 
     stat_cor(show.legend = F)+
     theme_minimal()+
     ggtitle(y)+
     theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
   
-  b = ggplot(x, aes(x=litter, y=index))+
-    geom_point(size=3, col = "#00AFBB")+
-    geom_smooth(method="lm", se=F, col = "#00AFBB")+ 
-    stat_cor(show.legend = F)+
-    theme_minimal()+
-    theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
-  
-  ggarrange(a + rremove("ylab"),
-            b + rremove("ylab"),
-            ncol = 1, nrow = 2)
+  a = ggpar(a, palette = eqm)
 }
 
 evi = plotcor(evi, "EVI")
@@ -146,215 +146,41 @@ pri = plotcor(pri,"PRI")
 rendvi = plotcor(rendvi,"RENDVI")
 nirv = plotcor(nirv,"NIRV")
 
-
-
-evi;ndvi;vari;vig;lwvi2;msi;ndii;ndwi;pssr;psri;sipi;wbi;pri;rendvi;nirv
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-evi = evi %>% 
-  group_by(id) %>% 
-  summarise(index = median(index)) 
-  
-evi = full_join(lai, evi,by="id"); evi = full_join(litt, evi,by="id")
-
-a = ggplot(evi, aes(x=lai, y=index))+
-  geom_point(size=3, col = "#FC4E07")+
-  geom_smooth(method="lm", se=F, col = "#FC4E07")+ 
-  stat_cor(show.legend = F)+
-  theme_minimal()+
-  ggtitle("Leaf Area Index")+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
-
-b = ggplot(evi, aes(x=litter, y=index))+
-  geom_point(size=3, col = "#00AFBB")+
-  geom_smooth(method="lm", se=F, col = "#00AFBB")+ 
-  stat_cor(show.legend = F)+
-  theme_minimal()+
-  ggtitle("Litterfall")+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
-
-ggarrange(a + rremove("ylab"),
-                   b + rremove("ylab"),
-                   ncol = 1, nrow = 2)
-
-
-
-
-
-
-
-
-
-
-
-#Union all hyperion and data ====================================================
-df = hy
-#df1 = full_join(df, biomass, by="id")
-#df2 = full_join(df, lai, by="id")
-#df3 = full_join(df, litt, by="id")
-df4 = full_join(df, fuel, by="id")
-
-df4 = df4 %>% 
-  separate(col = "id", c("parcela", "year"), sep = '_')
-
-#Simple Correlation Matrix =============================================================
-#Fuel
-fuel_cor = df4[,c(4,5,6,7,9)]
-ggcorr(fuel_cor, label = TRUE)
-
-#Correlations GGPLOT =======================================================================
-#Making data
-hy2 = melt(hy)
-df2 = hy2
-
-df2 = full_join(hy2, lai, by="id")
-df2 = full_join(df2, litt, by="id")
-df2 = full_join(df2, biomass, by="id")
-df2 = full_join(df2, fuel, by="id")
-
-colnames(df2) = c('id', 'index', 'value', 'lai', 'litter', 'biomass', 'fuel')
-
-df2 = df2 %>% 
-  separate(col = "id", c("parcela", "data", "dist"), sep = '_')
-
-
-
-eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
-
-
-#Structural
-struc = df2 %>% 
-  filter(index %in% c('evi','ndvi','nbri','vari','vig','biomass','lai','litter','fuel'))
-
-
-a = ggplot(struc, aes(x=value, y=lai, color=dist))+
-  geom_point(size=3)+
-  geom_smooth(method="lm", se=F)+ 
-  facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F)+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
-  theme(legend.position="bottom")
-
-a = ggpar(a, palette = eqm)
-
-
-
-b = ggplot(struc, aes(x=value, y=litter, color=dist))+
-  geom_point(size=3)+
-  geom_smooth(method="lm", se=F)+ 
-  facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F)+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
-  theme(legend.position="bottom")
-
-b = ggpar(b, palette = eqm)
-
-struc2 = ggarrange(a + rremove("xlab"),
-                   b + rremove("xlab"),
-                   common.legend = TRUE,
-                   legend="bottom",
-                   ncol = 1, nrow = 2)
-
-struc2
-
-
-#Biochemistry
-bioc = df2 %>% 
-  filter(index %in% c('ari','lwvi2','msi','ndii','pssr','psri','sipi','wbi','biomass','lai','litter','fuel'))
-
-
-bioc_a = ggplot(bioc, aes(x=value, y=lai, color=dist))+
-  geom_point(size=3)+
-  geom_smooth(method="lm", se=F)+ 
-  facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F, label.y = 6, colour = "black")+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
-  theme(legend.position="bottom")
-
-bioc_lai = ggpar(bioc_a, palette = eqm)
-
-
-
-bioc_b = ggplot(bioc, aes(x=value, y=litter, color=dist))+
-  geom_point(size=3)+
-  geom_smooth(method="lm", se=F)+ 
-  facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F, label.y = 0.37, colour = "black")+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
-  theme(legend.position="bottom")
-
-bioc_litt = ggpar(bioc_b, palette = eqm)
-
-bioc_lai; bioc_litt
-
-
-#Physiologic
-phy = df2 %>% 
-  filter(index %in% c('pri','rendvi','biomass','lai','litter','fuel'))
-
-
-a = ggplot(phy, aes(x=value, y=lai, color=dist))+
-  geom_point(size=3)+
-  geom_smooth(method="lm", se=F)+ 
-  facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F)+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
-  theme(legend.position="bottom")
-
-a = ggpar(a, palette = eqm)
-
-
-
-b = ggplot(phy, aes(x=value, y=litter, color=dist))+
-  geom_point(size=3)+
-  geom_smooth(method="lm", se=F)+ 
-  facet_wrap(~index, scales="free") +
-  stat_cor(show.legend = F)+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
-  theme(legend.position="bottom")
-
-b = ggpar(b, palette = eqm)
-
-phy2 = ggarrange(a + rremove("xlab"),
-                 b + rremove("xlab"),
+#evi;ndvi;vari;vig;lwvi2;msi;ndii;ndwi;pssr;psri;sipi;wbi;pri;rendvi;nirv
+
+struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
+                  ndvi+rremove("xlab")+rremove("ylab"),
+                  vari+rremove("xlab")+rremove("ylab"),
+                  vig+rremove("xlab")+rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="bottom",
+          ncol = 2, nrow = 2)
+struc
+
+bioc = ggarrange(lwvi2+rremove("xlab")+rremove("ylab"),
+                 msi+rremove("xlab")+rremove("ylab"),
+                 ndii+rremove("xlab")+rremove("ylab"),
+                  ndwi+rremove("xlab")+rremove("ylab"),
+                 pssr+rremove("xlab")+rremove("ylab"),
+                 psri+rremove("xlab")+rremove("ylab"),
+                 sipi+rremove("xlab")+rremove("ylab"),
+                 wbi+rremove("xlab")+rremove("ylab"),
+                 nirv+rremove("xlab")+rremove("ylab"),
                  common.legend = TRUE,
                  legend="bottom",
-                 ncol = 1, nrow = 2)
+                  ncol = 3, nrow = 3)
+bioc
 
-phy2
+phy = ggarrange(pri+rremove("xlab")+rremove("ylab"),
+                rendvi+rremove("xlab")+rremove("ylab"),
+                common.legend = TRUE,
+                legend="bottom",
+                  ncol = 1, nrow = 2)
+phy
+
+#phy2 = ggarrange(a + rremove("xlab"),
+ #                b + rremove("xlab"),
+  #               common.legend = TRUE,
+   #              legend="bottom",
+    #             ncol = 1, nrow = 2)
+
