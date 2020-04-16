@@ -102,6 +102,77 @@ litt$id = as.character(litt$id)
 
 
 #Function to join and plot
+plotcor = function(x,y){
+  x = x %>% 
+    group_by(id) %>% 
+    summarise(index = median(index)) 
+  
+  x = full_join(lai, x, by="id")
+  x = full_join(litt, x, by="id")
+  
+  a = ggplot(x, aes(x=lai, y=index))+
+    geom_point(size=3, col = "#FC4E07")+
+    geom_smooth(method="lm", se=F, col = "#FC4E07")+ 
+    stat_cor(show.legend = F)+
+    theme_minimal()+
+    ggtitle(y)+
+    theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+  
+  b = ggplot(x, aes(x=litter, y=index))+
+    geom_point(size=3, col = "#00AFBB")+
+    geom_smooth(method="lm", se=F, col = "#00AFBB")+ 
+    stat_cor(show.legend = F)+
+    theme_minimal()+
+    theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+  
+  ggarrange(a + rremove("ylab"),
+            b + rremove("ylab"),
+            ncol = 1, nrow = 2)
+}
+
+evi = plotcor(evi, "EVI")
+ndvi = plotcor(ndvi,"NDVI")
+vari = plotcor(vari,"VARI")
+vig = plotcor(vig,"VIG")
+lwvi2 = plotcor(lwvi2,"LWVI2")
+msi = plotcor(msi,"MSI")
+ndii = plotcor(ndii,"NDII")
+ndwi = plotcor(ndwi,"NDWI")
+pssr = plotcor(pssr,"PSSR")
+psri = plotcor(psri,"PSRI")
+sipi = plotcor(sipi,"SIPI")
+wbi = plotcor(wbi,"WBI")
+pri = plotcor(pri,"PRI")
+rendvi = plotcor(rendvi,"RENDVI")
+nirv = plotcor(nirv,"NIRV")
+
+
+
+evi;ndvi;vari;vig;lwvi2;msi;ndii;ndwi;pssr;psri;sipi;wbi;pri;rendvi;nirv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,17 +190,21 @@ evi = full_join(lai, evi,by="id"); evi = full_join(litt, evi,by="id")
 a = ggplot(evi, aes(x=lai, y=index))+
   geom_point(size=3, col = "#FC4E07")+
   geom_smooth(method="lm", se=F, col = "#FC4E07")+ 
-  stat_cor(show.legend = F)
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  ggtitle("Leaf Area Index")+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
 b = ggplot(evi, aes(x=litter, y=index))+
   geom_point(size=3, col = "#00AFBB")+
   geom_smooth(method="lm", se=F, col = "#00AFBB")+ 
-  stat_cor(show.legend = F)
+  stat_cor(show.legend = F)+
+  theme_minimal()+
+  ggtitle("Litterfall")+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
 
-ggarrange(a + rremove("xlab"),
-                   b + rremove("xlab"),
-                   common.legend = TRUE,
-                   legend="bottom",
+ggarrange(a + rremove("ylab"),
+                   b + rremove("ylab"),
                    ncol = 1, nrow = 2)
 
 
