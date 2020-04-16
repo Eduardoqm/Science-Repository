@@ -110,9 +110,7 @@ plotcor = function(x,y){
   x = x %>% 
     group_by(id) %>% 
     summarise(index = median(index)) 
-  
-  #x = full_join(lai, x, by="id")
-  #x = full_join(litt, x, by="id")
+
   x = full_join(area, x, by="id")
   x = na.omit(x)
   
@@ -120,7 +118,6 @@ plotcor = function(x,y){
   
   a = ggplot(x, aes(x=value, y=index, col = variable))+
     geom_point(size=3)+
-    #geom_point(size=3, col = "#FC4E07")+
     geom_smooth(method="lm", se=F)+ 
     stat_cor(show.legend = F)+
     theme_minimal()+
@@ -177,10 +174,4 @@ phy = ggarrange(pri+rremove("xlab")+rremove("ylab"),
                 legend="bottom",
                   ncol = 1, nrow = 2)
 phy
-
-#phy2 = ggarrange(a + rremove("xlab"),
- #                b + rremove("xlab"),
-  #               common.legend = TRUE,
-   #              legend="bottom",
-    #             ncol = 1, nrow = 2)
 
