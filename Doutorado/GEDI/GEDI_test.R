@@ -1,10 +1,16 @@
 library(rGEDI)
 
 # Study area boundary box coordinates
-xmin<- -44.17246
-xmax<- -44.0654
-ymin<- -13.76913
-ymax<- -13.67646
+#xmin<- -44.17246
+#xmax<- -44.0654
+#ymin<- -13.76913
+#ymax<- -13.67646
+
+#Area1
+xmin<- -52.40545
+xmax<- -52.38156
+ymin<- -13.08365
+ymax<- -13.07418
 
 # Get path to GEDI data
 gLevel1B<-gedifinder(level="GEDI01_B",xmin, xmax, ymin, ymax)

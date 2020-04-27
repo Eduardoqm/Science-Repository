@@ -97,10 +97,12 @@ nirv = geti("nirv"); colnames(nirv) = c("index", "id")
 lai = lai[,c(-2)]
 lai$id = as.character(lai$id)
 lai$lai = lai$lai/10
+colnames(lai) = c("id", "LAI")
 lai2 = melt(lai)
 
 litt = litt[,c(-2)]
 litt$id = as.character(litt$id)
+colnames(litt) = c("id", "Litterfall")
 litt2 = melt(litt)
 
 area = rbind(lai2, litt2)
@@ -117,7 +119,7 @@ plotcor = function(x,y){
   eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
   
   a = ggplot(x, aes(x=value, y=index, col = variable))+
-    geom_point(size=3)+
+    geom_point(size=3, alpha = 0.3)+
     geom_smooth(method="lm", se=F)+ 
     stat_cor(show.legend = F)+
     theme_minimal()+
