@@ -1,0 +1,106 @@
+---
+title: "Indices of diversity from NDVI"
+author: 'Por: Eduardo Q Marques'
+date: "30 de abril de 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rasterdiv)
+library(raster)
+library(rgdal)
+library(rasterVis)
+library(RColorBrewer)
+```
+
+## Process before calculate diversity
+
+Here I use Landsat-5 NDVI from Tanguro Area-1 (year 2011).
+
+```{r pre}
+library(rasterdiv)
+library(raster)
+library(rgdal)
+library(rasterVis)
+library(RColorBrewer)
+
+setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Landsat/NDVI')
+
+ndvi = raster("LT05_L1TP_224069_20110830_20161007_01_T1_sr_band1.tif")
+
+#Polygon Area1
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes",layer="Area1")
+area1 = spTransform(area1, crs(ndvi))
+
+ndvi = crop(ndvi, area1)
+plot(ndvi)
+```
+
+## Calculating diversity
+
+```{r calc, results = "hide"}
+#Derive Hill’s and Renyi’s indices
+#Shannon's Diversity
+sha <- Shannon(ndvi,window=9,np=1,na.tolerance=0.1)
+
+#Pielou's Evenness
+pie <- Pielou(ndvi,window=9,np=1,na.tolerance=0.1)
+
+#Berger-Parker
+ber <- BergerParker(ndvi,window=9,np=1,na.tolerance=0.1)
+
+#Rao's quadratic Entropy
+rao <- Rao(ndvi,window=9,np=1,na.tolerance=0.1,dist_m="euclidean",shannon=FALSE)
+
+#Cumulative Residual Entropy
+cre <- CRE(ndvi,window=9,np=1,na.tolerance=0.1)
+
+#Hill's numbers
+hil <- Hill(ndvi,window=9,np=1,na.tolerance=0.1,alpha=seq(0,2,0.5))
+
+#Renyi
+ren <- Renyi(ndvi,window=9,np=1,na.tolerance=0.1,alpha=seq(0,2,0.5))
+
+
+#Transform output matrices to RasterLayer
+shara <- raster(sha,template=ndvi)
+piera <- raster(pie,template=ndvi)
+berra <- raster(ber,template=ndvi)
+raora <- raster(rao,template=ndvi)
+crera <- raster(cre,template=ndvi)
+hilra <- lapply(hil, function(x) raster(x,template=ndvi))
+renra <- lapply(ren, function(x) raster(x,template=ndvi))
+```
+
+## Plot diversity
+
+Map result of diversity index calculate:
+
+```{r plots}
+#Shannon's Diversity
+levelplot(shara,main="Shannon's entropy (9 px-side moving window)")
+
+#Pielou's Evenness
+levelplot(piera,main="Pielou's evenness (9 px-side moving window)")
+
+#Berger-Parker' Index
+levelplot(berra,main="Berger-Parker's index (9 px-side moving window)")
+
+#Rao's quadratic Entropy
+levelplot(crera,main="Rao's quadratic entropy (9 px-side moving window)")
+
+#Cumulative Residual Entropy
+levelplot(crera,main="Cumulative Resiudal Entropy (9 px-side moving window)")
+
+#Hill's numbers (alpha=0, 1, 1.5 and 2)
+levelplot(stack(hilra),main="Hill's numbers (9 px-side moving window)")
+
+#Renyi' Index (alpha=0, 1, 1.5 and 2)
+levelplot(stack(renra),main="Renyi's entropy (9 px-side moving window)")
+
+```
+
+I still don't really know how to discuss this data so I will study it and resolve it over time. So I will need your help in interpreting these results.
+
+Another point I'm thinking of is using only Landsat data to generate these analyzes and maps. Because Landsat had a time series that fills the study well and because Hyperion has the control portion displaced to another forest rescue intact and this breaks the analyzes and maps.
