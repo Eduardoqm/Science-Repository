@@ -1,5 +1,5 @@
 #Correlation Matrix Hyperion and full plot data
-#By: Eduardo Q Marques 15-04-2020
+#By: Eduardo Q Marques 11-05-2020
 #Obs: looking Analysis Cap1.R
 
 library(tidyverse)
@@ -8,6 +8,7 @@ library(tidyr)
 library(dplyr)
 library(GGally)
 library(ggplot2)
+library(ggcorrplot)
 library(ggpubr)
 
 #Load data ==========================================================================
@@ -72,26 +73,30 @@ hy2 = hy[,c(4,5,6)]
 geti = function(x){
   z = hy2 %>% 
     na.omit() %>% 
-    filter(index == x)
-  z = z[,-1]
+    filter(index == x) %>% 
+    group_by(id) %>% 
+    summarise(value = median(value))
 }
 
-ari = geti("ari");colnames(ari) = c("index", "id")
-evi = geti("evi2");colnames(evi) = c("index", "id")
-ndvi = geti("ndvi");colnames(ndvi) = c("index", "id")
-vari = geti("vari");colnames(vari) = c("index", "id")
-vig = geti("vig");colnames(vig) = c("index", "id")
-lwvi2 = geti("lwvi2");colnames(lwvi2) = c("index", "id")
-msi = geti("msi");colnames(msi) = c("index", "id")
-ndii = geti("ndii");colnames(ndii) = c("index", "id")
-ndwi = geti("ndwi");colnames(ndwi) = c("index", "id")
-pssr = geti("pssr");colnames(pssr) = c("index", "id")
-psri = geti("psri");colnames(psri) = c("index", "id")
-sipi = geti("sipi");colnames(sipi) = c("index", "id")
-wbi = geti("wbi");colnames(wbi) = c("index", "id")
-pri = geti("pri");colnames(pri) = c("index", "id")
-rendvi = geti("rendvi");colnames(rendvi) = c("index", "id")
-nirv = geti("nirv"); colnames(nirv) = c("index", "id")
+ari = geti("ari");colnames(ari) = c("id","ari")
+evi = geti("evi2");colnames(evi) = c("id","evi")
+ndvi = geti("ndvi");colnames(ndvi) = c("id","ndvi")
+vari = geti("vari");colnames(vari) = c("id","vari")
+vig = geti("vig");colnames(vig) = c("id","vig")
+lwvi2 = geti("lwvi2");colnames(lwvi2) = c("id","lwvi2")
+msi = geti("msi");colnames(msi) = c("id","msi")
+ndii = geti("ndii");colnames(ndii) = c("id","ndii")
+ndwi = geti("ndwi");colnames(ndwi) = c("id","ndwi")
+pssr = geti("pssr");colnames(pssr) = c("id","pssr")
+psri = geti("psri");colnames(psri) = c("id","psri")
+sipi = geti("sipi");colnames(sipi) = c("id","sipi")
+wbi = geti("wbi");colnames(wbi) = c("id","wbi")
+pri = geti("pri");colnames(pri) = c("id","pri")
+rendvi = geti("rendvi");colnames(rendvi) = c("id","rendvi")
+nirv = geti("nirv"); colnames(nirv) = c("id","nirv")
+
+indexs = cbind(evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+indexs = indexs[,c(1,2,4,8,10,12,14,16,18,20,22,24,26,28)]
 
 #Join with field data
 lai = lai[,c(-2)]
@@ -105,31 +110,44 @@ litt$id = as.character(litt$id)
 colnames(litt) = c("id", "Litterfall")
 litt2 = melt(litt)
 
-area = rbind(lai2, litt2)
+area = full_join(lai2, litt2, by = "id")
+area = area[,c(-2,-4)]
+colnames(area) = c('id', 'LAI', 'Litterfall')
+
+df = full_join(area, indexs, by = "id")
+df = df[,c(-1)]
+
+#Correlation by ggally
+ggcorr(df, geom = "circle", nbreaks = 8)
+
+
 
 #Function to join and plot
-plotcor = function(x,y){
+plotcor = function(x){
   x = x %>% 
     group_by(id) %>% 
     summarise(index = median(index)) 
-
+  
   x = full_join(area, x, by="id")
   x = na.omit(x)
+  x = as.numeric(x)
   
-  eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
   
-  a = ggplot(x, aes(x=value, y=index, col = variable))+
-    geom_point(size=3, alpha = 0.3)+
-    geom_smooth(method="lm", se=F)+ 
-    stat_cor(show.legend = F)+
-    theme_minimal()+
-    ggtitle(y)+
-    theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
   
-  a = ggpar(a, palette = eqm)
+  #eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
+  
+  #a = ggplot(x, aes(x=value, y=index, col = variable))+
+   # geom_point(size=3, alpha = 0.3)+
+    #geom_smooth(method="lm", se=F)+ 
+    #stat_cor(show.legend = F)+
+    #theme_minimal()+
+    #ggtitle(y)+
+    #theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
+  
+  #a = ggpar(a, palette = eqm)
 }
 
-evi = plotcor(evi, "EVI")
+evi = plotcor(evi)
 ndvi = plotcor(ndvi,"NDVI")
 vari = plotcor(vari,"VARI")
 vig = plotcor(vig,"VIG")
@@ -153,13 +171,13 @@ struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
                   vig+rremove("xlab")+rremove("ylab"),
                   common.legend = TRUE,
                   legend="bottom",
-          ncol = 2, nrow = 2)
+                  ncol = 2, nrow = 2)
 struc
 
 bioc = ggarrange(lwvi2+rremove("xlab")+rremove("ylab"),
                  msi+rremove("xlab")+rremove("ylab"),
                  ndii+rremove("xlab")+rremove("ylab"),
-                  ndwi+rremove("xlab")+rremove("ylab"),
+                 ndwi+rremove("xlab")+rremove("ylab"),
                  pssr+rremove("xlab")+rremove("ylab"),
                  psri+rremove("xlab")+rremove("ylab"),
                  sipi+rremove("xlab")+rremove("ylab"),
@@ -167,13 +185,13 @@ bioc = ggarrange(lwvi2+rremove("xlab")+rremove("ylab"),
                  nirv+rremove("xlab")+rremove("ylab"),
                  common.legend = TRUE,
                  legend="bottom",
-                  ncol = 3, nrow = 3)
+                 ncol = 3, nrow = 3)
 bioc
 
 phy = ggarrange(pri+rremove("xlab")+rremove("ylab"),
                 rendvi+rremove("xlab")+rremove("ylab"),
                 common.legend = TRUE,
                 legend="bottom",
-                  ncol = 1, nrow = 2)
+                ncol = 1, nrow = 2)
 phy
 
