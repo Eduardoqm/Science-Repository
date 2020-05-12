@@ -38,6 +38,7 @@ biomass = biomass %>%
   filter(data <=2012)
 
 #LAI
+lai$data = as.numeric(lai$data)
 lai = lai %>% 
   filter(data <=2012)
 
@@ -115,83 +116,32 @@ area = area[,c(-2,-4)]
 colnames(area) = c('id', 'LAI', 'Litterfall')
 
 df = full_join(area, indexs, by = "id")
-df = df[,c(-1)]
+
+df = df %>% 
+  separate(id, c('plot','year'), sep = '_')
+
+control = df %>% 
+  filter(plot == "control")
+control = control[,c(-1,-2)]
+
+b3yr = df %>% 
+  filter(plot == "b3yr")
+b3yr = b3yr[,c(-1,-2)]
+
+b1yr = df %>% 
+  filter(plot == "b1yr")
+b1yr = b1yr[,c(-1,-2)]
+
 
 #Correlation by ggally
-ggcorr(df, geom = "circle", nbreaks = 8)
+df2 = df[,c(-1)]
+ggcorr(df2, geom = "circle", nbreaks = 8)
+
+ggcorr(control, geom = "circle", nbreaks = 8)
+ggcorr(b3yr, geom = "circle", nbreaks = 8)
+ggcorr(b1yr, geom = "circle", nbreaks = 8)
 
 
 
-#Function to join and plot
-plotcor = function(x){
-  x = x %>% 
-    group_by(id) %>% 
-    summarise(index = median(index)) 
-  
-  x = full_join(area, x, by="id")
-  x = na.omit(x)
-  x = as.numeric(x)
-  
-  
-  
-  #eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
-  
-  #a = ggplot(x, aes(x=value, y=index, col = variable))+
-   # geom_point(size=3, alpha = 0.3)+
-    #geom_smooth(method="lm", se=F)+ 
-    #stat_cor(show.legend = F)+
-    #theme_minimal()+
-    #ggtitle(y)+
-    #theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))
-  
-  #a = ggpar(a, palette = eqm)
-}
 
-evi = plotcor(evi)
-ndvi = plotcor(ndvi,"NDVI")
-vari = plotcor(vari,"VARI")
-vig = plotcor(vig,"VIG")
-lwvi2 = plotcor(lwvi2,"LWVI2")
-msi = plotcor(msi,"MSI")
-ndii = plotcor(ndii,"NDII")
-ndwi = plotcor(ndwi,"NDWI")
-pssr = plotcor(pssr,"PSSR")
-psri = plotcor(psri,"PSRI")
-sipi = plotcor(sipi,"SIPI")
-wbi = plotcor(wbi,"WBI")
-pri = plotcor(pri,"PRI")
-rendvi = plotcor(rendvi,"RENDVI")
-nirv = plotcor(nirv,"NIRV")
-
-#evi;ndvi;vari;vig;lwvi2;msi;ndii;ndwi;pssr;psri;sipi;wbi;pri;rendvi;nirv
-
-struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
-                  ndvi+rremove("xlab")+rremove("ylab"),
-                  vari+rremove("xlab")+rremove("ylab"),
-                  vig+rremove("xlab")+rremove("ylab"),
-                  common.legend = TRUE,
-                  legend="bottom",
-                  ncol = 2, nrow = 2)
-struc
-
-bioc = ggarrange(lwvi2+rremove("xlab")+rremove("ylab"),
-                 msi+rremove("xlab")+rremove("ylab"),
-                 ndii+rremove("xlab")+rremove("ylab"),
-                 ndwi+rremove("xlab")+rremove("ylab"),
-                 pssr+rremove("xlab")+rremove("ylab"),
-                 psri+rremove("xlab")+rremove("ylab"),
-                 sipi+rremove("xlab")+rremove("ylab"),
-                 wbi+rremove("xlab")+rremove("ylab"),
-                 nirv+rremove("xlab")+rremove("ylab"),
-                 common.legend = TRUE,
-                 legend="bottom",
-                 ncol = 3, nrow = 3)
-bioc
-
-phy = ggarrange(pri+rremove("xlab")+rremove("ylab"),
-                rendvi+rremove("xlab")+rremove("ylab"),
-                common.legend = TRUE,
-                legend="bottom",
-                ncol = 1, nrow = 2)
-phy
 
