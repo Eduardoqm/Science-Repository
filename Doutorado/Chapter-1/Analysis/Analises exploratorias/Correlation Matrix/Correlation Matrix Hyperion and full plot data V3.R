@@ -137,9 +137,9 @@ b1yr = b1yr[,c(-1,-2)]
 df2 = df[,c(-1)]
 ggcorr(df2, geom = "circle", nbreaks = 8)
 
-ggcorr(control, geom = "circle", nbreaks = 8)
-ggcorr(b3yr, geom = "circle", nbreaks = 8)
-ggcorr(b1yr, geom = "circle", nbreaks = 8)
+ggcorr(control, geom = "circle", nbreaks = 8) + ggtitle("Control")
+ggcorr(b3yr, geom = "circle", nbreaks = 8) + ggtitle("B3yr")
+ggcorr(b1yr, geom = "circle", nbreaks = 8) + ggtitle("B1yr")
 
 
 
