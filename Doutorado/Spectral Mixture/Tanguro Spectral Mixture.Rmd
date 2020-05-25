@@ -1,0 +1,65 @@
+---
+title: "Tanguro Spectral Mixture"
+author: 'Por: Eduardo Q Marques'
+date: "15 de maio de 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(raster)
+library(rasterVis)
+library(rgdal)
+library(viridis)
+```
+
+## Load data
+
+```{r load}
+library(raster)
+library(rasterVis)
+library(rgdal)
+library(viridis)
+
+setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Fraction_Landsat')
+dir()
+
+frac = brick("L8_224069_20140705_frac")
+
+area1 = readOGR(dsn = 'C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Shapes', layer = 'Polygon_A_B_C')
+```
+
+## The bands
+
+Fraction images have 7 bands:<br/>
+Band 1 - Fractional cover of bare substrate (S), expressed as a percentage (0-100%)<br/>
+Band 2 - Fractional cover of photosynthetic vegetation (PV), expressed as a percentage (0-100%)<br/>
+Band 3 - Fractional cover of non-photosynthetic vegetation (NPV), expressed as a percentage (0-100%)<br/>
+Band 4 - Uncertainty of the S fraction, expressed as the standard deviation of AutoMCU iterations<br/>
+Band 5 - Uncertainty of the PV fraction, expressed as the standard deviation of AutoMCU iterations<br/>
+Band 6 - Uncertainty of the NPV fraction, expressed as the standard deviation of AutoMCU iterations<br/>
+Band 7 - Total error, expressed as the RMSE of the modeled versus observed reflectance signature
+
+```{r plot}
+levelplot(frac, margin = FALSE, col.regions = viridis(100))
+```
+
+## Tanguro time-series
+
+The images that Sonaira is working on comprise the entire Landsat scene. That way she takes the entire Tanguro farm. When it finishes processing we will have a time series of all Tanguro from 2000 to 2019.
+
+```{r plot2}
+area1 = spTransform(area1, crs(frac))
+frac = crop(frac, area1)
+
+levelplot(frac, margin = FALSE, col.regions = viridis(100))
+```
+
+## NPV
+
+Next week I will have more images and I will try to explore a little more and start some comparisons with the vegetation indices of Landsat and Hyperion.
+
+```{r plot3}
+levelplot(frac[[3]], margin = FALSE, col.regions = viridis(100))
+```
