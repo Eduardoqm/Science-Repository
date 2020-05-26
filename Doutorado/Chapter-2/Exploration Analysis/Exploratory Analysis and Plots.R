@@ -2,9 +2,9 @@
 #Blowdown Data (AREA-1)
 #Eduardo Q Marques 25-05-2020
 
-library(ggplot2)
 library(tidyverse)
 library(reshape2)
+library(ggplot2)
 
 #Load data
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Campo vento')
@@ -48,19 +48,21 @@ plot_tree = df %>%
   filter(count >= 5)
 
 ggplot(plot_tree, aes(x=nomecomum, y=count))+
-  geom_bar(position = "dodge", stat = "identity")+
-  facet_wrap(~parcela)+
+  geom_bar(position = "dodge", stat = "identity",
+           fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~parcela, scales = "free")+
   theme(axis.text.x = element_text(angle=45))
 
 #By kind of broken
 brok_tree = df %>% 
   group_by(tipo_de_dano, nomecomum) %>% 
   summarise(count = sum(count)) %>% 
-  filter(count >= 5)
+  filter(count >= 4)
 
-ggplot(brok_tree, aes(x=nomecomum, y=count, fill = tipo_de_dano))+
-  geom_bar(position = "dodge", stat = "identity")+
-  theme_minimal()+
+ggplot(brok_tree, aes(x=nomecomum, y=count))+
+  geom_bar(position = "dodge", stat = "identity",
+           fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~tipo_de_dano, scales = "free")+
   theme(axis.text.x = element_text(angle=45))
 
 #Trees with fire scar (It is the old trees) ------------------------------------------------
@@ -79,8 +81,8 @@ ggplot(scar, aes(x=cicatriz, y=count, fill = cicatriz))+
 
 #Have similar alt of broken and alt of scar?
 scar2 = df %>% 
-  filter(cicatriz == "s") %>% 
-  filter(tipo_de_dano == "q")
+  filter(cicatriz == "Scar") %>% 
+  filter(tipo_de_dano == "Broken")
 
 ggplot(scar2, aes(x=altura_quebra, y=alt_cic))+
   geom_point()+
@@ -90,9 +92,9 @@ ggplot(scar2, aes(x=altura_quebra, y=alt_cic))+
 
 #Similarity closer to 0 is better!
 scar3 = scar2 %>%
-  mutate(simi = c(altura_quebra - alt_cic))
+  mutate(proximity = c(altura_quebra - alt_cic))
 
-ggplot(scar3, aes(x=simi))+
+ggplot(scar3, aes(x=proximity))+
   geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
   theme_minimal()
 
