@@ -1,4 +1,4 @@
-#Exploratory Analysis and Plots
+#Exploratory Analysis and Plots V2
 #Blowdown Data (AREA-1)
 #Eduardo Q Marques 25-05-2020
 
@@ -13,79 +13,79 @@ df = read.csv("storm_data_full_C.csv", sep = ",")
 
 #Resume data
 df = df[,c(3,4,5,6,7,8,9,10,11,12)]
-#colnames(df) = c("nomecomum","parcela","linha","transecto","cicatriz","alt_cic","caiu _com_vento?","direcao","tipo_de_dano","altura_quebra","count")
-df$count = 1
+colnames(df) = c("Specie","Treatment","Line","Transect","Scar?","Alt Scar","Wind?","Direction","Damage Type","Alt Broken")
+df$Number of trees = 1
 
 #Summary information
 summary(df)
 
 #Plot data
 #Most popular plot down on wind
-ggplot(df, aes(x=parcela))+
+ggplot(df, aes(x=Treatment))+
   geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)
 
 
 #Kind of damage data
-ggplot(df, aes(x=tipo_de_dano, fill = parcela))+
+ggplot(df, aes(x=Damage Type, fill = Treatment))+
   geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)
 
 #Popular trees was broken?
 #Orverview
 pop_tree = df %>% 
-  group_by(nomecomum) %>% 
-  summarise(count = sum(count)) %>% 
-  filter(count >= 10)
+  group_by(Specie) %>% 
+  summarise(Number of trees = sum(Number of trees)) %>% 
+  filter(Number of trees >= 10)
 
-ggplot(pop_tree, aes(x=nomecomum, y=count))+
+ggplot(pop_tree, aes(x=Specie, y=Number of trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45))
- 
+
 #By plot
 plot_tree = df %>% 
-  group_by(parcela, nomecomum) %>% 
-  summarise(count = sum(count)) %>% 
-  filter(count >= 5)
+  group_by(Treatment, Specie) %>% 
+  summarise(Number of trees = sum(Number of trees)) %>% 
+  filter(Number of trees >= 5)
 
-ggplot(plot_tree, aes(x=nomecomum, y=count))+
+ggplot(plot_tree, aes(x=Specie, y=Number of trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
-  facet_wrap(~parcela, scales = "free")+
+  facet_wrap(~Treatment, scales = "free")+
   theme(axis.text.x = element_text(angle=45))
 
 #By kind of broken
 brok_tree = df %>% 
-  group_by(tipo_de_dano, nomecomum) %>% 
-  summarise(count = sum(count)) %>% 
-  filter(count >= 4)
+  group_by(Damage Type, Specie) %>% 
+  summarise(Number of trees = sum(Number of trees)) %>% 
+  filter(Number of trees >= 4)
 
-ggplot(brok_tree, aes(x=nomecomum, y=count))+
+ggplot(brok_tree, aes(x=Specie, y=Number of trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
-  facet_wrap(~tipo_de_dano, scales = "free")+
+  facet_wrap(~Damage Type, scales = "free")+
   theme(axis.text.x = element_text(angle=45))
 
 #Trees with fire scar (It is the old trees) ------------------------------------------------
 #How much broken? (Number of trees and percentege)
 scar = df %>% 
-  group_by(cicatriz, parcela) %>% 
-  summarise(count = sum(count))
+  group_by(Scar?, Treatment) %>% 
+  summarise(Number of trees = sum(Number of trees))
 
 scar$percent = c(99,62,57,1,38,43)
 
-ggplot(scar, aes(x=cicatriz, y=count, fill = cicatriz))+
+ggplot(scar, aes(x=Scar?, y=Number of trees, fill = Scar?))+
   geom_bar(position = "dodge", stat = "identity")+
-  geom_text(aes(x=cicatriz, y=percent, label = paste0(percent,"%"))) +
-  facet_wrap(~parcela)
+  geom_text(aes(x=Scar?, y=percent, label = paste0(percent,"%"))) +
+  facet_wrap(~Treatment)
 
 
 #Have similar alt of broken and alt of scar?
 scar2 = df %>% 
-  filter(cicatriz == "Scar") %>% 
-  filter(tipo_de_dano == "Broken")
+  filter(Scar? == "Scar") %>% 
+  filter(Damage Type == "Broken")
 
-ggplot(scar2, aes(x=altura_quebra, y=alt_cic))+
+ggplot(scar2, aes(x=Alt Broken, y=Alt Scar))+
   geom_point()+
   stat_smooth(method = "gam")+
   theme_minimal()+
@@ -93,7 +93,7 @@ ggplot(scar2, aes(x=altura_quebra, y=alt_cic))+
 
 #Similarity closer to 0 is better!
 scar3 = scar2 %>%
-  mutate(proximity = c(altura_quebra - alt_cic))
+  mutate(proximity = c(Alt Broken - Alt Scar))
 
 ggplot(scar3, aes(x=proximity))+
   geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
