@@ -13,91 +13,107 @@ df = read.csv("storm_data_full_C.csv", sep = ",")
 
 #Resume data
 df = df[,c(3,4,5,6,7,8,9,10,11,12)]
-colnames(df) = c("Specie","Treatment","Line","Transect","Scar?","Alt Scar","Wind?","Direction","Damage Type","Alt Broken")
-df$Number of trees = 1
+df$nt = 1
+colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Numer_of_Trees")
+
 
 #Summary information
 summary(df)
 
 #Plot data
-#Most popular plot down on wind
+#Orverview ---------------------------------------------------------------------------------
+#Damage by plot down on wind
 ggplot(df, aes(x=Treatment))+
-  geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)
+  geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)+
+  ggtitle("Number of damage by plot down on wind")
 
 
 #Kind of damage data
-ggplot(df, aes(x=Damage Type, fill = Treatment))+
-  geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)
+ggplot(df, aes(x=Damage, fill = Treatment))+
+  geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)+
+  ggtitle("Kind of damage data")
 
-#Popular trees was broken?
-#Orverview
+#Kind of damage by treatment
+ggplot(df, aes(x=Damage))+
+  geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~Treatment)+
+  ggtitle("Kind of damage by treatment")
+
+#Fall direction
+
+#Popular trees was broken? -----------------------------------------------------------------
 pop_tree = df %>% 
   group_by(Specie) %>% 
-  summarise(Number of trees = sum(Number of trees)) %>% 
-  filter(Number of trees >= 10)
+  summarise(Numer_of_Trees = sum(Numer_of_Trees)) %>% 
+  filter(Numer_of_Trees >= 10)
 
-ggplot(pop_tree, aes(x=Specie, y=Number of trees))+
+ggplot(pop_tree, aes(x=Specie, y=Numer_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45))
+  theme(axis.text.x = element_text(angle=45))+
+  ggtitle("Most damage trees (>=5)")
 
-#By plot
+#By treatment
 plot_tree = df %>% 
   group_by(Treatment, Specie) %>% 
-  summarise(Number of trees = sum(Number of trees)) %>% 
-  filter(Number of trees >= 5)
+  summarise(Numer_of_Trees = sum(Numer_of_Trees)) %>% 
+  filter(Numer_of_Trees >= 5)
 
-ggplot(plot_tree, aes(x=Specie, y=Number of trees))+
+ggplot(plot_tree, aes(x=Specie, y=Numer_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   facet_wrap(~Treatment, scales = "free")+
-  theme(axis.text.x = element_text(angle=45))
+  theme(axis.text.x = element_text(angle=45))+
+  ggtitle("Most damage trees by treatment (>=5)")
 
-#By kind of broken
+#By kind of damage
 brok_tree = df %>% 
-  group_by(Damage Type, Specie) %>% 
-  summarise(Number of trees = sum(Number of trees)) %>% 
-  filter(Number of trees >= 4)
+  group_by(Damage, Specie) %>% 
+  summarise(Numer_of_Trees = sum(Numer_of_Trees)) %>% 
+  filter(Numer_of_Trees >= 4)
 
-ggplot(brok_tree, aes(x=Specie, y=Number of trees))+
+ggplot(brok_tree, aes(x=Specie, y=Numer_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
-  facet_wrap(~Damage Type, scales = "free")+
-  theme(axis.text.x = element_text(angle=45))
+  facet_wrap(~Damage, scales = "free")+
+  theme(axis.text.x = element_text(angle=45))+
+  ggtitle("Most damage trees by kind of damage (>=4)")
 
 #Trees with fire scar (It is the old trees) ------------------------------------------------
-#How much broken? (Number of trees and percentege)
+#How much broken? (Numer_of_Trees and percentege)
 scar = df %>% 
-  group_by(Scar?, Treatment) %>% 
-  summarise(Number of trees = sum(Number of trees))
+  group_by(Condition, Treatment) %>% 
+  summarise(Numer_of_Trees = sum(Numer_of_Trees))
 
-scar$percent = c(99,62,57,1,38,43)
+scar$percent = c(57,62,99,43,38,1)
 
-ggplot(scar, aes(x=Scar?, y=Number of trees, fill = Scar?))+
+ggplot(scar, aes(x=Condition, y=Numer_of_Trees, fill = Condition))+
   geom_bar(position = "dodge", stat = "identity")+
-  geom_text(aes(x=Scar?, y=percent, label = paste0(percent,"%"))) +
-  facet_wrap(~Treatment)
+  geom_text(aes(x=Condition, y=percent, label = paste0(percent,"%"))) +
+  facet_wrap(~Treatment)+
+  ggtitle("Number of scarred trees")
 
 
 #Have similar alt of broken and alt of scar?
 scar2 = df %>% 
-  filter(Scar? == "Scar") %>% 
-  filter(Damage Type == "Broken")
+  filter(Condition == "Scar") %>% 
+  filter(Damage == "Broken")
 
-ggplot(scar2, aes(x=Alt Broken, y=Alt Scar))+
+ggplot(scar2, aes(x=Alt_Broken, y=Alt_Scar))+
   geom_point()+
   stat_smooth(method = "gam")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45))
+  ggtitle("Scar height X Break height")
 
 #Similarity closer to 0 is better!
 scar3 = scar2 %>%
-  mutate(proximity = c(Alt Broken - Alt Scar))
+  mutate(proximity = c(Alt_Broken - Alt_Scar))
 
 ggplot(scar3, aes(x=proximity))+
   geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
-  theme_minimal()
+  theme_minimal()+
+  ggtitle("Proximity of the break point with the scar")
 
 
 
