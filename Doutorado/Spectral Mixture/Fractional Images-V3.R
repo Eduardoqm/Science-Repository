@@ -1,15 +1,19 @@
 #Fractional Images V3
 
-#Eduardo Q Marques 20-05-2020
+#Eduardo Q Marques 03-06-2020
 
 library(raster)
 library(rasterVis)
 library(rgdal)
+library(rgeos)
+library(sf)
+library(ggplot2)
+library(ggridges)
+library(ggmap)
+library(ggsn)
 library(viridis)
 library(tidyverse)
 library(reshape2)
-library(ggplot2)
-library(ggridges)
 
 #Overview ====================================================================================
 #Load data
@@ -63,27 +67,14 @@ names(npv) = files
 
 #Area1 maps ================================================================================
 #Plot data
-#levelplot(bs, margin = FALSE, col.regions = viridis(100), main = "Bare Substrate")
+levelplot(bs, margin = FALSE, col.regions = viridis(100), main = "Bare Substrate")
 
-#levelplot(pv, margin = FALSE, col.regions = viridis(100), main = "Photosynthetic Vegetation")
+levelplot(pv, margin = FALSE, col.regions = viridis(100), main = "Photosynthetic Vegetation")
 
-#levelplot(npv, margin = FALSE, col.regions = viridis(100), main = "Non-Photosynthetic Vegetation")
+levelplot(npv, margin = FALSE, col.regions = viridis(100), main = "Non-Photosynthetic Vegetation")
 
-storm_pv = stack(pv[[9]], pv[[15]])
-levelplot(storm_pv, margin = FALSE, col.regions = viridis(100), main = "Photosynthetic Vegetation (2018-2019")
 
-storm_npv = stack(npv[[9]], npv[[15]])
-levelplot(storm_npv, margin = FALSE, col.regions = viridis(100), main = "Non-Photosynthetic Vegetation (2018-2019")
-
-#storm_pv = mask(storm_pv, area1)
-#storm_npv = mask(storm_npv, area1)
-
-library(rgeos)
-library(sf)
-library(ggmap)
-library(ggsn)
-
-#Area-1 GGPLOT Maps
+#Area-1 GGPLOT Maps (2018-2019) ============================================================
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Shapes/Landsat')
 
 limit = read_sf('Polygon_A_B_C.shp')
@@ -95,7 +86,7 @@ storm = as.data.frame(storm_npv, xy =TRUE)
 colnames(storm) = c('x','y','a2018','a2019')
 storm$diff = storm$a2019 - storm$a2018 #Calc difference
 npv_df = melt(data = storm,  measure.vars = c("a2018", "a2019"))
-colnames(npv_df) = c('x','y','diff','year','value')
+colnames(npv_df) = c('x','y','diff', 'year','value')
 
 #PV
 storm = as.data.frame(storm_pv, xy =TRUE)
@@ -106,11 +97,13 @@ colnames(pv_df) = c('x','y','diff','year','value')
 
 
 #Before and after storm
+eqm = c('darkred','red','yellow','green','darkgreen')
+
 ggplot(npv_df) +
   geom_raster(data = npv_df, aes(x, y, fill = value))+
-  scale_fill_gradientn("value", colours = viridis(6))+
+  scale_fill_gradientn("value", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  facet_wrap(~year)+
+  facet_grid(rows = vars(year))+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
@@ -119,9 +112,9 @@ ggplot(npv_df) +
 
 ggplot(pv_df) +
   geom_raster(data = pv_df, aes(x, y, fill = value))+
-  scale_fill_gradientn("value", colours = viridis(6))+
+  scale_fill_gradientn("value", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  facet_wrap(~year)+
+  facet_grid(rows = vars(year))+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
@@ -131,106 +124,20 @@ ggplot(pv_df) +
 
 
 #Diference across before and after
-eqm = c('darkred','red','yellow','green','darkgreen')
+npv_df$kind = c("npv")
+pv_df$kind = c("pv")
+dif = rbind(npv_df, pv_df)
 
-ggplot(npv_df) +
-  geom_raster(data = npv_df, aes(x, y, fill = diff))+
+ggplot(dif) +
+  geom_raster(data = dif, aes(x, y, fill = diff))+
   scale_fill_gradientn("diff", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
+  facet_grid(~kind)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
-  ggtitle("Difference across 2018-2019 NPV")+
-  north(limit, symbol = 12)
-
-ggplot(pv_df) +
-  geom_raster(data = pv_df, aes(x, y, fill = diff))+
-  scale_fill_gradientn("diff", colours = eqm)+
-  geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  theme_minimal()+
-  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
-  theme(axis.text = element_blank(), axis.title = element_blank())+
-  ggtitle("Difference across 2018-2019 PV")+
+  ggtitle("Difference across 2018-2019")+
   north(limit, symbol = 12)
 
 
-
-#Crop by plot ================================================================================
-bs_control = crop(bs, area1[1,]); bs_b3yr = crop(bs, area1[2,]); bs_b1yr = crop(bs, area1[3,])
-
-pv_control = crop(pv, area1[1,]); pv_b3yr = crop(pv, area1[2,]); pv_b1yr = crop(pv, area1[3,])
-
-npv_control = crop(npv, area1[1,]); npv_b3yr = crop(npv, area1[2,]); npv_b1yr = crop(npv, area1[3,])
-
-#Extract data and analyse by plot ============================================================
-#Bare Substrate
-a = bs_control %>%
-  as.data.frame()%>%
-  melt()
-colnames(a) = c("id","Bare Substrate_Control")
-
-b = bs_b3yr %>%
-  as.data.frame()%>%
-  melt()
-colnames(b) = c("id","Bare Substrate_B3yr")
-
-c = bs_b1yr %>%
-  as.data.frame()%>%
-  melt()
-colnames(c) = c("id","Bare Substrate_B1yr")
-
-bs_df = cbind(a,b)
-bs_df = bs_df[,c(-3)]
-bs_df = full_join(bs_df,c, by = "id")
-
-#Photosynthetic Vegetation
-a = pv_control %>%
-  as.data.frame()%>%
-  melt()
-colnames(a) = c("id","Photosynthetic Vegetation_Control")
-
-b = pv_b3yr %>%
-  as.data.frame()%>%
-  melt()
-colnames(b) = c("id","Photosynthetic Vegetation_B3yr")
-
-c = pv_b1yr %>%
-  as.data.frame()%>%
-  melt()
-colnames(c) = c("id","Photosynthetic Vegetation_B1yr")
-
-pv_df = cbind(a,b)
-pv_df = pv_df[,c(-3)]
-pv_df = full_join(pv_df,c, by = "id")
-
-#Non-Photosynthetic Vegetation
-a = npv_control %>%
-  as.data.frame()%>%
-  melt()
-colnames(a) = c("id","Non-Photosynthetic Vegetation_Control")
-
-b = npv_b3yr %>%
-  as.data.frame()%>%
-  melt()
-colnames(b) = c("id","Non-Photosynthetic Vegetation_B3yr")
-
-c = npv_b1yr %>%
-  as.data.frame()%>%
-  melt()
-colnames(c) = c("id","Non-Photosynthetic Vegetation_B1yr")
-
-npv_df = cbind(a,b)
-npv_df = npv_df[,c(-3)]
-npv_df = full_join(npv_df,c, by = "id")
-
-#Join data
-area1_df = cbind(bs_df, pv_df, npv_df)
-area1_df = area1_df[,c(-5, -9)]
-
-#Make a usual dataframe
-df = melt(area1_df); colnames(df) = c("id","class","value")
-df = df %>% separate(class, c("class", "plot"), sep = "_")#Separate class and plot
-df$id = substr(df$id, 11, 14)#Staying only year
-
-#write.csv(df, file = "sma.csv", sep = ",")
 
