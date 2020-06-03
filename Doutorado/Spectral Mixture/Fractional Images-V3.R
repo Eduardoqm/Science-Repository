@@ -75,17 +75,34 @@ levelplot(storm_pv, margin = FALSE, col.regions = viridis(100), main = "Photosyn
 storm_npv = stack(npv[[9]], npv[[15]])
 levelplot(storm_npv, margin = FALSE, col.regions = viridis(100), main = "Non-Photosynthetic Vegetation (2018-2019")
 
+#storm_pv = mask(storm_pv, area1)
+#storm_npv = mask(storm_npv, area1)
 
 library(rgeos)
 library(sf)
 library(ggmap)
 
+setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Shapes/Landsat')
+
+limit = read_sf('Polygon_A_B_C.shp')
+limit = st_transform(limit, crs(npv)) #Use st_transform becouse using read_sf
+
+storm1 = as.data.frame(storm_npv[[1]], xy =TRUE)
+colnames(storm1) = c('x','y','value')
+
+storm2 = as.data.frame(storm_npv[[2]], xy =TRUE)
+colnames(storm2) = c('x','y','value')
+
+
+ggplot(storm1) +
+  geom_raster(data = storm1, aes(x, y, fill = value))+
+  geom_sf(data = limit, fill = NA, col = "black", size = 1)
 
 
 
 
-
-
+storm = as.data.frame(storm_npv, xy =TRUE)
+colnames(storm1) = c('x','y','value')
 
 
 
