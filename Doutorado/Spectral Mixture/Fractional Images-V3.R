@@ -81,6 +81,7 @@ levelplot(storm_npv, margin = FALSE, col.regions = viridis(100), main = "Non-Pho
 library(rgeos)
 library(sf)
 library(ggmap)
+library(ggsn)
 
 #Area-1 GGPLOT Maps
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Shapes/Landsat')
@@ -113,7 +114,8 @@ ggplot(npv_df) +
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
-  ggtitle("Before and after blowdown (NPV after 1 year)")
+  ggtitle("Before and after blowdown (NPV after 1 year)")+
+  north(limit, symbol = 12)
 
 ggplot(pv_df) +
   geom_raster(data = pv_df, aes(x, y, fill = value))+
@@ -123,28 +125,33 @@ ggplot(pv_df) +
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
-  ggtitle("Before and after blowdown (PV after 1 year)")
+  ggtitle("Before and after blowdown (PV after 1 year)")+
+  north(limit, symbol = 12)
 
 
 
 #Diference across before and after
+eqm = c('darkred','red','yellow','green','darkgreen')
+
 ggplot(npv_df) +
   geom_raster(data = npv_df, aes(x, y, fill = diff))+
-  scale_fill_gradientn("diff", colours = viridis(6))+
+  scale_fill_gradientn("diff", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
-  ggtitle("Difference across 2018-2019 NPV")
+  ggtitle("Difference across 2018-2019 NPV")+
+  north(limit, symbol = 12)
 
 ggplot(pv_df) +
   geom_raster(data = pv_df, aes(x, y, fill = diff))+
-  scale_fill_gradientn("diff", colours = viridis(6))+
+  scale_fill_gradientn("diff", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
-  ggtitle("Difference across 2018-2019 PV")
+  ggtitle("Difference across 2018-2019 PV")+
+  north(limit, symbol = 12)
 
 
 
