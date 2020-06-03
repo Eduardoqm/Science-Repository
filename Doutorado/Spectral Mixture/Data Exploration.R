@@ -57,6 +57,7 @@ a = ggplot(npv, aes(x=value, y=id, fill=plot))+
 npv = ggpar(a, palette = eqm)
 npv 
 
+#Fire Experiment
 npv2 = npv %>% 
   filter(id %in% c(2000, 2014, 2018))
 
@@ -67,3 +68,16 @@ a = ggplot(npv2, aes(x=value, y=id, fill=plot))+
 npv2 = ggpar(a, palette = eqm)
 npv2 
   
+#Blowdown
+npv3 = npv %>% 
+  filter(id %in% c(2018, 2019))
+
+a = ggplot(npv3, aes(x=value, y=id, fill=plot))+
+  geom_density_ridges(alpha = 0.5)+
+  facet_wrap(~plot, scales = "free")+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))
+  
+
+npv3 = ggpar(a, palette = eqm)
+npv3 

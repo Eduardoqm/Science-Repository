@@ -5,6 +5,7 @@
 library(tidyverse)
 library(reshape2)
 library(ggplot2)
+library(fmsb)
 
 #Load data
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Campo vento')
@@ -14,7 +15,7 @@ df = read.csv("storm_data_full_C.csv", sep = ",")
 #Resume data
 df = df[,c(3,4,5,6,7,8,9,10,11,12)]
 df$nt = 1
-colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Numer_of_Trees")
+colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Number_of_Trees")
 
 
 #Summary information
@@ -40,14 +41,43 @@ ggplot(df, aes(x=Damage))+
   ggtitle("Kind of damage by treatment")
 
 #Fall direction
+ggplot(df, aes(x=Direction))+
+  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
+  theme_minimal()+
+  ggtitle("Direction the trees fell (Degrees)")
+
+wind = df %>% 
+  group_by(Direction) %>% 
+  summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
+  na.omit()
+wind$Direction = as.factor(wind$Direction)
+
+ggplot(wind, aes(x=Direction, y = Number_of_Trees, fill = Number_of_Trees))+
+  geom_bar(stat="identity")+
+  theme_minimal()+
+  theme(
+    axis.text.y = element_blank(),
+    axis.title = element_blank())+
+  coord_polar(start = 0)+
+  ggtitle("Direction the trees fell (Degrees)")
+
+library(plotly)
+
+gg = ggplot(df, aes(x=Direction))+
+  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
+  theme_minimal()+
+  coord_polar(start = 0)+
+  ggtitle("Direction the trees fell (Degrees)")
+
+ggplotly(gg)
 
 #Popular trees was broken? -----------------------------------------------------------------
 pop_tree = df %>% 
   group_by(Specie) %>% 
-  summarise(Numer_of_Trees = sum(Numer_of_Trees)) %>% 
-  filter(Numer_of_Trees >= 10)
+  summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
+  filter(Number_of_Trees >= 10)
 
-ggplot(pop_tree, aes(x=Specie, y=Numer_of_Trees))+
+ggplot(pop_tree, aes(x=Specie, y=Number_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   theme_minimal()+
@@ -57,10 +87,10 @@ ggplot(pop_tree, aes(x=Specie, y=Numer_of_Trees))+
 #By treatment
 plot_tree = df %>% 
   group_by(Treatment, Specie) %>% 
-  summarise(Numer_of_Trees = sum(Numer_of_Trees)) %>% 
-  filter(Numer_of_Trees >= 5)
+  summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
+  filter(Number_of_Trees >= 5)
 
-ggplot(plot_tree, aes(x=Specie, y=Numer_of_Trees))+
+ggplot(plot_tree, aes(x=Specie, y=Number_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   facet_wrap(~Treatment, scales = "free")+
@@ -70,10 +100,10 @@ ggplot(plot_tree, aes(x=Specie, y=Numer_of_Trees))+
 #By kind of damage
 brok_tree = df %>% 
   group_by(Damage, Specie) %>% 
-  summarise(Numer_of_Trees = sum(Numer_of_Trees)) %>% 
-  filter(Numer_of_Trees >= 4)
+  summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
+  filter(Number_of_Trees >= 4)
 
-ggplot(brok_tree, aes(x=Specie, y=Numer_of_Trees))+
+ggplot(brok_tree, aes(x=Specie, y=Number_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   facet_wrap(~Damage, scales = "free")+
@@ -81,14 +111,14 @@ ggplot(brok_tree, aes(x=Specie, y=Numer_of_Trees))+
   ggtitle("Most damage trees by kind of damage (>=4)")
 
 #Trees with fire scar (It is the old trees) ------------------------------------------------
-#How much broken? (Numer_of_Trees and percentege)
+#How much broken? (Number_of_Trees and percentege)
 scar = df %>% 
   group_by(Condition, Treatment) %>% 
-  summarise(Numer_of_Trees = sum(Numer_of_Trees))
+  summarise(Number_of_Trees = sum(Number_of_Trees))
 
 scar$percent = c(57,62,99,43,38,1)
 
-ggplot(scar, aes(x=Condition, y=Numer_of_Trees, fill = Condition))+
+ggplot(scar, aes(x=Condition, y=Number_of_Trees, fill = Condition))+
   geom_bar(position = "dodge", stat = "identity")+
   geom_text(aes(x=Condition, y=percent, label = paste0(percent,"%"))) +
   facet_wrap(~Treatment)+
