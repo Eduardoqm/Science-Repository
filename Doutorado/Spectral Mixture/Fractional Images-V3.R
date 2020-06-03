@@ -82,32 +82,69 @@ library(rgeos)
 library(sf)
 library(ggmap)
 
+#Area-1 GGPLOT Maps
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Shapes/Landsat')
 
 limit = read_sf('Polygon_A_B_C.shp')
 limit = st_transform(limit, crs(npv)) #Use st_transform becouse using read_sf
 
-storm1 = as.data.frame(storm_npv[[1]], xy =TRUE)
-colnames(storm1) = c('x','y','value')
-
-storm2 = as.data.frame(storm_npv[[2]], xy =TRUE)
-colnames(storm2) = c('x','y','value')
-
-
-ggplot(storm1) +
-  geom_raster(data = storm1, aes(x, y, fill = value))+
-  geom_sf(data = limit, fill = NA, col = "black", size = 1)
-
-
-
-
+#Convert image in Data Frame
+#NPV
 storm = as.data.frame(storm_npv, xy =TRUE)
-colnames(storm1) = c('x','y','value')
+colnames(storm) = c('x','y','a2018','a2019')
+storm$diff = storm$a2019 - storm$a2018 #Calc difference
+npv_df = melt(data = storm,  measure.vars = c("a2018", "a2019"))
+colnames(npv_df) = c('x','y','diff','year','value')
+
+#PV
+storm = as.data.frame(storm_pv, xy =TRUE)
+colnames(storm) = c('x','y','a2018','a2019')
+storm$diff = storm$a2019 - storm$a2018 #Calc difference
+pv_df = melt(data = storm,  measure.vars = c("a2018", "a2019"))
+colnames(pv_df) = c('x','y','diff','year','value')
+
+
+#Before and after storm
+ggplot(npv_df) +
+  geom_raster(data = npv_df, aes(x, y, fill = value))+
+  scale_fill_gradientn("value", colours = viridis(6))+
+  geom_sf(data = limit, fill = NA, col = "black", size = 1)+
+  facet_wrap(~year)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
+  theme(axis.text = element_blank(), axis.title = element_blank())+
+  ggtitle("Before and after blowdown (NPV after 1 year)")
+
+ggplot(pv_df) +
+  geom_raster(data = pv_df, aes(x, y, fill = value))+
+  scale_fill_gradientn("value", colours = viridis(6))+
+  geom_sf(data = limit, fill = NA, col = "black", size = 1)+
+  facet_wrap(~year)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
+  theme(axis.text = element_blank(), axis.title = element_blank())+
+  ggtitle("Before and after blowdown (PV after 1 year)")
 
 
 
+#Diference across before and after
+ggplot(npv_df) +
+  geom_raster(data = npv_df, aes(x, y, fill = diff))+
+  scale_fill_gradientn("diff", colours = viridis(6))+
+  geom_sf(data = limit, fill = NA, col = "black", size = 1)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
+  theme(axis.text = element_blank(), axis.title = element_blank())+
+  ggtitle("Difference across 2018-2019 NPV")
 
-
+ggplot(pv_df) +
+  geom_raster(data = pv_df, aes(x, y, fill = diff))+
+  scale_fill_gradientn("diff", colours = viridis(6))+
+  geom_sf(data = limit, fill = NA, col = "black", size = 1)+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
+  theme(axis.text = element_blank(), axis.title = element_blank())+
+  ggtitle("Difference across 2018-2019 PV")
 
 
 
