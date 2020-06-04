@@ -81,6 +81,17 @@ limit = read_sf('Polygon_A_B_C.shp')
 limit = st_transform(limit, crs(npv)) #Use st_transform becouse using read_sf
 
 #Convert image in Data Frame
+storm_bs = stack(bs[[9]], bs[[15]])
+storm_npv = stack(npv[[9]], npv[[15]])
+storm_pv = stack(pv[[9]], pv[[15]])
+
+#BS
+storm = as.data.frame(storm_bs, xy =TRUE)
+colnames(storm) = c('x','y','a2018','a2019')
+storm$diff = storm$a2019 - storm$a2018 #Calc difference
+bs_df = melt(data = storm,  measure.vars = c("a2018", "a2019"))
+colnames(bs_df) = c('x','y','diff','year','value')
+
 #NPV
 storm = as.data.frame(storm_npv, xy =TRUE)
 colnames(storm) = c('x','y','a2018','a2019')
@@ -97,8 +108,22 @@ colnames(pv_df) = c('x','y','diff','year','value')
 
 
 #Before and after storm
-eqm = c('darkred','red','yellow','green','darkgreen')
+#eqm = c('darkred','red','yellow','green','darkgreen')
+#eqm = c('darkred','red','orange','yellow','green','darkgreen')
+eqm = c('darkgreen','yellow','red','darkred')
+ggplot(bs_df) +
+  geom_raster(data = bs_df, aes(x, y, fill = value))+
+  scale_fill_gradientn("value", colours = eqm)+
+  geom_sf(data = limit, fill = NA, col = "black", size = 1)+
+  facet_grid(rows = vars(year))+
+  theme_minimal()+
+  theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
+  theme(axis.text = element_blank(), axis.title = element_blank())+
+  ggtitle("Before and after blowdown (Bare Substrate after 1 year)")+
+  north(limit, symbol = 12)
 
+
+eqm = c('yellow','red','darkred')
 ggplot(npv_df) +
   geom_raster(data = npv_df, aes(x, y, fill = value))+
   scale_fill_gradientn("value", colours = eqm)+
@@ -110,6 +135,7 @@ ggplot(npv_df) +
   ggtitle("Before and after blowdown (NPV after 1 year)")+
   north(limit, symbol = 12)
 
+eqm = c('white','yellow','green','darkgreen')
 ggplot(pv_df) +
   geom_raster(data = pv_df, aes(x, y, fill = value))+
   scale_fill_gradientn("value", colours = eqm)+
@@ -124,10 +150,13 @@ ggplot(pv_df) +
 
 
 #Diference across before and after
+bs_df$kind = c("bs")
 npv_df$kind = c("npv")
 pv_df$kind = c("pv")
-dif = rbind(npv_df, pv_df)
+dif = rbind(bs_df, npv_df, pv_df)
 
+
+eqm = c('darkred','red','orange','white','blue','darkblue')
 ggplot(dif) +
   geom_raster(data = dif, aes(x, y, fill = diff))+
   scale_fill_gradientn("diff", colours = eqm)+
@@ -138,6 +167,7 @@ ggplot(dif) +
   theme(axis.text = element_blank(), axis.title = element_blank())+
   ggtitle("Difference across 2018-2019")+
   north(limit, symbol = 12)
+
 
 
 
