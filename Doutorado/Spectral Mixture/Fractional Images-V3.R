@@ -115,7 +115,7 @@ ggplot(bs_df) +
   geom_raster(data = bs_df, aes(x, y, fill = value))+
   scale_fill_gradientn("value", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  facet_grid(rows = vars(year))+
+  facet_grid(~year)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
@@ -128,7 +128,7 @@ ggplot(npv_df) +
   geom_raster(data = npv_df, aes(x, y, fill = value))+
   scale_fill_gradientn("value", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  facet_grid(rows = vars(year))+
+  facet_grid(~year)+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
@@ -140,7 +140,8 @@ ggplot(pv_df) +
   geom_raster(data = pv_df, aes(x, y, fill = value))+
   scale_fill_gradientn("value", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  facet_grid(rows = vars(year))+
+  facet_grid(~year)+
+  #facet_grid(rows = vars(year))+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
@@ -161,7 +162,8 @@ ggplot(dif) +
   geom_raster(data = dif, aes(x, y, fill = diff))+
   scale_fill_gradientn("diff", colours = eqm)+
   geom_sf(data = limit, fill = NA, col = "black", size = 1)+
-  facet_grid(~kind)+
+  #facet_grid(~kind)+
+  facet_grid(rows = vars(kind))+
   theme_minimal()+
   theme(panel.border = element_rect(colour = "gray", fill=NA, size=1))+
   theme(axis.text = element_blank(), axis.title = element_blank())+
