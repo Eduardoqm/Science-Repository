@@ -12,8 +12,6 @@ df = read.csv("sma.csv", sep = ",")
 df$id = as.factor(df$id)
 #df$id = as.numeric(df$id)
 #df$value = as.numeric(df$value)
-df = df %>% 
-  filter(value != 0)
 
 #Exploration data ============================================================================
 #ggplot(df, aes(x=value, y=id, col=plot))+

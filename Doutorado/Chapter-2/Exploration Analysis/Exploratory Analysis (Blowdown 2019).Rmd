@@ -35,7 +35,13 @@ summary(df)
 
 ## Overview
 
-Basic information by blowdown
+Basic information by blowdown: </br>
+Most of the damage occurred in treatment B1yr (120), followed by Control (108) and B3yr (69). Most damage types are Broken (151), followed by Uprooted (105) and Crown damage (41). </br>
+</br>
+When looking for some type of damage in each plot: </br>
+All Broken treatment is the type of damage most serious, followed by Uprooted and Crown. But the biggest difference in the type of damage is in the B3yr. </br>
+</br>
+About the direction of the tree fell, most of the trees fell at 339 °, in the northwest direction. We need to see the wind direction to make the comparison.
 
 ```{r over}
 #Damage by plot down on wind
@@ -46,7 +52,7 @@ ggplot(df, aes(x=Treatment))+
 #Kind of damage data
 ggplot(df, aes(x=Damage, fill = Treatment))+
   geom_bar(position = "dodge", fill = "darkblue", alpha = 0.5)+
-  ggtitle("Kind of damage data")
+  ggtitle("Kind of damage")
 
 #Kind of damage by treatment
 ggplot(df, aes(x=Damage))+
@@ -73,7 +79,9 @@ ggplot(wind, aes(x=Direction, y = Number_of_Trees, fill = Number_of_Trees))+
 
 ## Which species suffered the most damage? And what kind of damage did they suffer the most?
 
-Basic information by blowdown
+The most damaged tree species was Tachi do Campo (30 trees), followed by Breu Aroeira (18 trees) and Mangabinha (17 trees). </br>
+The most damaged by the treatment is Tachi do Campo in B1yr (24 trees); in B3yr is Taquari (7 trees), Sardinheira (7 trees) and Tachi do campo (6 trees); Control is Tatapiririca (9 trees) and Carapanauba (9 trees). </br>
+The most damaged trees by type of damage are: Broken are Tachi do Campo (14 trees), Uprooted are Tachi do Campo (12 trees) and Crown damage are Taquari (7 trees), but follow by Tachi do Campo (4 trees).
 
 ```{r species}
 #Species
@@ -116,9 +124,15 @@ ggplot(brok_tree, aes(x=Specie, y=Number_of_Trees))+
   ggtitle("Most damage trees by kind of damage (>=4)")
 ```
 
-## Scarred trees (Trees that have suffered degradation by fire)
+##Scarred trees (trees that have suffered degradation by fire)
 
-Basic information by blowdown
+Most damaged trees have no scarring. In the control it is normal that 100% have no scars, but we found one scarred tree. In B3yr, 38% of damaged trees are scarred and in B1yr 43% of damaged trees are scarred. </br>
+I tried to correlate the height of the scar with the break heigth only with the broken and scarred trees. Most of the trees that broke near the base of the tree also broke near the fire scar. </br>
+To check the proximity, I created an index using the formula: </br>
+</br>
+Proximity = Breaking height - Scar height </br>
+</br>
+In this index result, the closer to zero returns means the closer the height of the break is to the height of the scar. The result of the index shows that a large part of the scarred trees break near the point of the fire scar.
 
 ```{r scar}
 #Trees with fire scar (It is the old trees) ------------------------------------------------
@@ -156,3 +170,16 @@ ggplot(scar3, aes(x=proximity))+
   theme_minimal()+
   ggtitle("Proximity of the break point with the scar")
 ```
+
+##Discussion
+
+###Overview
+The treatment that suffered the most from the wind storm was the B1yr plot, which during the fire experiment was burned every year from 2004 to 2010. The Control plot was also badly damaged, being the second most damaged. In our study, the B3yr treatment suffered the least amount of wind degradation.
+These results are different from the results found by Silvério et al (2019), that's during the wind storm that occurred in the same area in 2012 registered that the treatment that suffered the most damage caused by the wind was the B3yr plot. This difference can be linked to two factors. The first is that this amount of greater damage to B1yr and Control may be a reflection of the 2012 degradation, where the B3yr treatment suffered so much degradation that due to the high mortality of trees it started to have fewer trees to break than the other treatments ( CITATION?). The second factor may be the number of recruits (pioneer trees) that grew in the B1yr treatment during the interval from 2012 to 2019. This inflated the amount of trees available to suffer degradation by windstorms (CITATION?).
+
+###Which species suffered the most damage? And what kind of damage did they suffer the most?
+Our data show that most of the species that suffered from degradation in the fire degraded plots (B3yr and B1yr) are pioneer species. Unlike the previous storm event studied by Silvério et al (2019), where trees of more consolidated species in the area suffered the most from the degradation caused by the fire.
+The species that suffered the most from wind damage was Tachi do Campo, with almost twice the second most affected species, Breu Aroeira. Most of the damaged Field Tachi was in the B1yr plot. The field Tachi is a fast-growing pioneer species. Therefore, its wood is not so dense, which makes it more vulnerable to strong winds, and can easily suffer the breaking of its trunk or uprooting (CITATION?). As we can see in the data that practically show the Tachi do Campo suffering damage by breaking or uprooting in very similar proportions, while only four Tachis suffered crown damage.
+
+###Scarred trees (trees that have suffered degradation by fire)
+As mentioned before, the pioneer species were the majority of the species that suffered some kind of damage in the plots burned by the fire experiment (B3yr and B1yr). But many individuals with a fire scar were also degraded. The B1yr plot had the highest proportion with 43% of the degraded individuals having a fire scar. This heritage of the fire experiment is very important for the forest's history (CITATION?). The data collected in the field show that most of the trees that resisted the fire experiment broke at the same height or very close to the height of the scar. The same can be observed in studies such as Silvério et al (2019) and CITATION et al (xx). Thus showing that individuals with scars are increasingly fragile and subject to breakage in windy storm events (CITATION?).
