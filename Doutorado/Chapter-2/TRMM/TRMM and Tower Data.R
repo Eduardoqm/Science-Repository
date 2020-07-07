@@ -10,7 +10,7 @@ library(plotly)
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Capitulo2/Dados cap2/TRMM')
 dir()
 
-#trmm13 = read.csv('2013.csv', sep = ',')
+trmm13 = read.csv('2013.csv', sep = ',')
 trmm14 = read.csv('2014.csv', sep = ',')
 trmm15 = read.csv('2015.csv', sep = ',')
 trmm16 = read.csv('2016.csv', sep = ',')
@@ -18,7 +18,7 @@ trmm17 = read.csv('2017.csv', sep = ',')
 trmm18 = read.csv('2018.csv', sep = ',')
 trmm19 = read.csv('2019.csv', sep = ',')
 
-trmm = rbind(trmm14,trmm15,trmm16,trmm17,trmm18,trmm19)
+trmm = rbind(trmm13, trmm14,trmm15,trmm16,trmm17,trmm18,trmm19)
 colnames(trmm) = c('Date', 'mm')
 
 #Change date format (OBS: as.Date dont work here!)
@@ -62,15 +62,21 @@ dir()
 tower = read.csv('Dados_Vento_Torre_Controle.csv', sep = ',')
 
 #Manage data to mating (01-01-2014 until 30-12-2019) ==========================================
-tower = tower[c(-1:-173),]
-tower = tower[c(-80797:-86012),]
+#tower = tower[c(-1:-173),]
+trmm$id = trmm$Date
+tower$id = tower$datetime
+tower = tower %>% 
+  separate(id, c("id", "time"), sep = ' ')
+#tower = tower[,c(-10)]
+
+df = full_join(trmm, tower, by = "id")
 
 
 
+#Tests
 
-
-
-
+df2 = df %>% 
+  na.omit()
 
 
 
