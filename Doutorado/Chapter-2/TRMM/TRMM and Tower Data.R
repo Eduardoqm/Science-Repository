@@ -73,10 +73,17 @@ tower = read.csv('Dados_Vento_Torre_Controle.csv', sep = ',')
 
 
 #Plot data ====================================================================================
+#TRMM
+trmm$grp = c('a')
 
+ggplot(trmm, aes(x=Date, y=mm))+
+  geom_line(aes(group=grp), col = "blue")+
+  theme_minimal()
 
-
-
+#Wind Speed
+ggplot(tower, aes(x=datetime, y=max_speed))+
+  geom_bar(position = "dodge", stat = "identity")+
+  theme_minimal()
 
 
 
