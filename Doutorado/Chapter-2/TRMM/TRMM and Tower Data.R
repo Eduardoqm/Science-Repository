@@ -78,12 +78,14 @@ trmm$grp = c('a')
 
 ggplot(trmm, aes(x=Date, y=mm))+
   geom_line(aes(group=grp), col = "blue")+
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=90))
 
 #Wind Speed
 ggplot(tower, aes(x=datetime, y=max_speed))+
   geom_bar(position = "dodge", stat = "identity")+
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=45))
 
 
 
