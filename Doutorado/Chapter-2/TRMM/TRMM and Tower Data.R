@@ -63,27 +63,24 @@ tower = read.csv('Dados_Vento_Torre_Controle.csv', sep = ',')
 
 #Manage data to mating (01-01-2014 until 30-12-2019) ==========================================
 #tower = tower[c(-1:-173),]
-trmm$id = trmm$Date
-tower$id = tower$datetime
-tower = tower %>% 
-  separate(id, c("id", "time"), sep = ' ')
+#trmm$id = trmm$Date
+#tower$id = tower$datetime
+#tower = tower %>% 
+#  separate(id, c("id", "time"), sep = ' ')
 #tower = tower[,c(-10)]
 
-df = full_join(trmm, tower, by = "id")
+#df = full_join(trmm, tower, by = "id")
+
+
+#Plot data ====================================================================================
 
 
 
-#Tests
 
-df2 = df %>% 
-  na.omit()
 
-library(GGally)
 
-ggcorr(df2)
 
-df3 = df2[,c(3,7,8,9)]
-ggpairs(df3)
+
 
 
 
