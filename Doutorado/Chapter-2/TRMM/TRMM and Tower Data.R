@@ -78,8 +78,12 @@ df = full_join(trmm, tower, by = "id")
 df2 = df %>% 
   na.omit()
 
+library(GGally)
 
+ggcorr(df2)
 
+df3 = df2[,c(3,7,8,9)]
+ggpairs(df3)
 
 
 
