@@ -88,6 +88,8 @@ ggplot(tower, aes(x=datetime, y=max_speed))+
   theme(axis.text.x = element_text(angle=45))
 
 
+#Resume by day =================================================================================
+#Total precipitation and Max Speed
 
 
 
