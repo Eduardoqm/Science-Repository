@@ -3,8 +3,10 @@
 #Eduardo Q Marques 07-07-2020
 
 library(tidyverse)
+library(reshape2)
 library(ggplot2)
 library(plotly)
+library(GGally)
 
 #Open TRMM Data ==============================================================================
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Capitulo2/Dados cap2/TRMM')
@@ -56,7 +58,7 @@ trmm$day[trmm$day == "9"] <- c('09')
 trmm = trmm %>%
   unite(Date, c("year","month2", "day"), sep = '-')
 
-#Open TRMM Data ===============================================================================
+#Open TOWER Data ===============================================================================
 setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Dados das torres')
 dir()
 tower = read.csv('Dados_Vento_Torre_Controle.csv', sep = ',')
@@ -90,6 +92,84 @@ ggplot(tower, aes(x=datetime, y=max_speed))+
 
 #Resume by day =================================================================================
 #Total precipitation and Max Speed
+#TRMM
+trmm2 = trmm %>% 
+  group_by(Date) %>% 
+  summarise(mm = sum(mm))
+
+#TOWER
+tower$id = tower$datetime
+
+tower2 = tower %>% 
+  separate(id, c("Date", "time"), sep = ' ') %>% 
+  group_by(Date) %>% 
+  summarise(max_speed = max(max_speed))
+
+df = full_join(trmm2, tower2, by = "Date")
+df = na.omit(df)
+df$Date = as.Date(df$Date)
+
+ggcorr(df)
+df2 = df[,c(-1)]
+ggpairs(df2)
+
+df$grp = c('a')
+ggplot(df)+
+  geom_line(aes(x=Date, y=mm, group=grp), col = "blue")+
+  geom_line(aes(x=Date, y=max_speed, group=grp), col = "red")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=90))
+
+df3 = melt(df)
+ggplot(df3, aes(x=Date, y=value))+
+  geom_line(aes(group = grp))+
+  facet_grid(rows = vars(variable), scales = "free")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=90))
+
+
+
+df4 = df3 %>% 
+  separate(Date, c("y","m","d"), sep = "-") %>% 
+  filter(y == 2019) %>% 
+  unite(Date, c("y","m","d"), sep = "-")
+
+#datas = as.Date(unique(df4$Date))
+
+#df4$Date = as.Date(df4$Date) 
+ 
+ggplot(df4, aes(x=Date, y=value))+
+  geom_line(aes(group = grp))+
+  facet_grid(rows = vars(variable), scales = "free")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=90))
+  #scale_x_date(breaks = datas,
+   #            labels = scales::date_format("%Y"),
+    #           limits = range(datas))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
