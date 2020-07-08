@@ -105,14 +105,17 @@ tower2 = tower %>%
   group_by(Date) %>% 
   summarise(max_speed = max(max_speed))
 
+#Join precipitation and wind speed =============================================================
 df = full_join(trmm2, tower2, by = "Date")
 df = na.omit(df)
 
-
+#Correlation ===================================================================================
 ggcorr(df)
 df2 = df[,c(-1)]
 ggpairs(df2)
 
+#Plot data together ============================================================================
+#All data on the same plot
 df$grp = c('a')
 ggplot(df)+
   geom_line(aes(x=Date, y=mm, group=grp), col = "blue")+
@@ -120,6 +123,7 @@ ggplot(df)+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45))
 
+#All data in differents plots
 df3 = melt(df)
 df3$Date = as.Date(df3$Date)
 
@@ -129,14 +133,12 @@ ggplot(df3, aes(x=Date, y=value))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45))
 
-
-
+#Only 2019 data
 df4 = df3 %>% 
   separate(Date, c("y","m","d"), sep = "-") %>% 
   filter(y == 2019) %>% 
   unite(Date, c("y","m","d"), sep = "-")
 df4$Date = as.Date(df4$Date)
-#datas = as.Date(unique(df4$Date))
  
 ggplot(df4, aes(x=Date, y=value))+
   geom_line(aes(group = grp))+
