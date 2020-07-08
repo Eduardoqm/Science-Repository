@@ -107,7 +107,7 @@ tower2 = tower %>%
 
 df = full_join(trmm2, tower2, by = "Date")
 df = na.omit(df)
-df$Date = as.Date(df$Date)
+
 
 ggcorr(df)
 df2 = df[,c(-1)]
@@ -121,6 +121,8 @@ ggplot(df)+
   theme(axis.text.x = element_text(angle=90))
 
 df3 = melt(df)
+df3$Date = as.Date(df3$Date)
+
 ggplot(df3, aes(x=Date, y=value))+
   geom_line(aes(group = grp))+
   facet_grid(rows = vars(variable), scales = "free")+
