@@ -81,7 +81,7 @@ trmm$grp = c('a')
 ggplot(trmm, aes(x=Date, y=mm))+
   geom_line(aes(group=grp), col = "blue")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=90))
+  theme(axis.text.x = element_text(angle=45))
 
 #Wind Speed
 ggplot(tower, aes(x=datetime, y=max_speed))+
@@ -118,7 +118,7 @@ ggplot(df)+
   geom_line(aes(x=Date, y=mm, group=grp), col = "blue")+
   geom_line(aes(x=Date, y=max_speed, group=grp), col = "red")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=90))
+  theme(axis.text.x = element_text(angle=45))
 
 df3 = melt(df)
 df3$Date = as.Date(df3$Date)
@@ -127,7 +127,7 @@ ggplot(df3, aes(x=Date, y=value))+
   geom_line(aes(group = grp))+
   facet_grid(rows = vars(variable), scales = "free")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=90))
+  theme(axis.text.x = element_text(angle=45))
 
 
 
@@ -135,22 +135,14 @@ df4 = df3 %>%
   separate(Date, c("y","m","d"), sep = "-") %>% 
   filter(y == 2019) %>% 
   unite(Date, c("y","m","d"), sep = "-")
-
+df4$Date = as.Date(df4$Date)
 #datas = as.Date(unique(df4$Date))
-
-#df4$Date = as.Date(df4$Date) 
  
 ggplot(df4, aes(x=Date, y=value))+
   geom_line(aes(group = grp))+
   facet_grid(rows = vars(variable), scales = "free")+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=90))
-  #scale_x_date(breaks = datas,
-   #            labels = scales::date_format("%Y"),
-    #           limits = range(datas))
-
-
-
+  theme(axis.text.x = element_text(angle=45))
 
 
 
