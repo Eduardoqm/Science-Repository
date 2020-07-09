@@ -103,7 +103,8 @@ tower$id = tower$datetime
 tower2 = tower %>% 
   separate(id, c("Date", "time"), sep = ' ') %>% 
   group_by(Date) %>% 
-  summarise(max_speed = max(max_speed))
+  summarise(max_speed = max(max_speed)) 
+  #summarise(wind_speed = max(wind_speed)) #Choose wind_speed or max_speed
 
 #Join precipitation and wind speed =============================================================
 df = full_join(trmm2, tower2, by = "Date")
