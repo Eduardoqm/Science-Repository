@@ -134,6 +134,12 @@ ggplot(df3, aes(x=Date, y=value))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45))
 
+ggplot(df3, aes(x=Date, y=value))+
+  geom_area(aes(group = grp))+
+  facet_grid(rows = vars(variable), scales = "free")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=45))
+
 #Only 2019 data
 df4 = df3 %>% 
   separate(Date, c("y","m","d"), sep = "-") %>% 
@@ -143,6 +149,12 @@ df4$Date = as.Date(df4$Date)
  
 ggplot(df4, aes(x=Date, y=value))+
   geom_line(aes(group = grp))+
+  facet_grid(rows = vars(variable), scales = "free")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=45))
+
+ggplot(df4, aes(x=Date, y=value))+
+  geom_area(aes(group = grp))+
   facet_grid(rows = vars(variable), scales = "free")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45))
