@@ -19,10 +19,10 @@ hy = hy[,c(-5, -9)]
 hy$data = as.character(hy$data)
 
 #Exclude MSI, NBRI, SIPI, PSRI, VARI, ARI
-hy2 = hy[,c(-3, -4, -9, -12, -13, -16)]
+#hy2 = hy[,c(-3, -4, -9, -12, -13, -16)]
 
 
-df2 = melt(hy2)
+df2 = melt(hy)
 
 eqm = c("#FC4E07","#00AFBB") #Pallete colors(Orange and Blue)
 
