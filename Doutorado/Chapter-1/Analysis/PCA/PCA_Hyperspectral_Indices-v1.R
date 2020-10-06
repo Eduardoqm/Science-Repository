@@ -8,6 +8,8 @@
 library(stats)
 library(tidyverse)
 library(reshape2)
+library(FactoMineR)
+library(factoextra)
 
 #Data =============================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -16,7 +18,7 @@ df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
 
 #Transform data for analysis ======================================================================
 df2 = df[c(5,7)]
-df2$value = log(df2$value)
+#df2$value = log(df2$value)
 
 #Transpor variables in columns
 transp = function(x){
@@ -51,6 +53,90 @@ colnames(df3)[1] = "Parcela"
 
 
 #PCA Analysis =====================================================================================
+#Tutorial video
+#Select numeric data
+df3 = na.omit(df3)
+df4 = df3[,c(-1)]
+
+#Standart scale, but you dont need this step if use FactorMiner to do PCA
+#df4 = scale(df4)
+
+#Running PCA
+df4_pca = PCA(df4, graph = F)
+
+#Extract variance values
+eig_val = get_eigenvalue(df4_pca)
+eig_val
+
+#Plot each variable proportion of variance
+fviz_eig(df4_pca, addlabels = T, ylim = c(0,90))
+
+#Extract data to plot PCA =========================================================================
+var = get_pca_var(df4_pca)
+ind = get_pca_ind(df4_pca)
+
+#Plot PCA variables
+fviz_pca_var(df4_pca, col.var = "red")
+
+#Plot cluster treatmant
+grp = as.factor(df3[,c(1)])
+
+fviz_pca_biplot(df4_pca, habillage = grp,
+                col.var = "red",
+                geom.ind = c("point"))
+
+
+a
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Meu
 df4 = na.omit(df3)
 df4 = df4[,c(-1)]
 df4_pca = prcomp(df4, center = T)
