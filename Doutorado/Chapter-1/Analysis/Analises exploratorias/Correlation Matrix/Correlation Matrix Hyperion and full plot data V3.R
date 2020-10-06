@@ -12,7 +12,7 @@ library(ggcorrplot)
 library(ggpubr)
 
 #Load data ==========================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 
 hy = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
@@ -142,6 +142,32 @@ ggcorr(b3yr, geom = "circle", nbreaks = 8) + ggtitle("B3yr")
 ggcorr(b1yr, geom = "circle", nbreaks = 8) + ggtitle("B1yr")
 
 
+#Only for all indices ===========================================================================
+getix = function(x){
+  z = hy2 %>% 
+    #na.omit() %>% 
+    filter(index == x)
+}
 
+ari = getix("ari");colnames(ari) = c("id","ari","id2")
+evi = getix("evi2");colnames(evi) = c("id","evi","id2")
+ndvi = getix("ndvi");colnames(ndvi) = c("id","ndvi","id2")
+vari = getix("vari");colnames(vari) = c("id","vari","id2")
+vig = getix("vig");colnames(vig) = c("id","vig","id2")
+lwvi2 = getix("lwvi2");colnames(lwvi2) = c("id","lwvi2","id2")
+msi = getix("msi");colnames(msi) = c("id","msi","id2")
+ndii = getix("ndii");colnames(ndii) = c("id","ndii","id2")
+ndwi = getix("ndwi");colnames(ndwi) = c("id","ndwi","id2")
+pssr = getix("pssr");colnames(pssr) = c("id","pssr","id2")
+psri = getix("psri");colnames(psri) = c("id","psri","id2")
+sipi = getix("sipi");colnames(sipi) = c("id","sipi","id2")
+wbi = getix("wbi");colnames(wbi) = c("id","wbi","id2")
+pri = getix("pri");colnames(pri) = c("id","pri","id2")
+rendvi = getix("rendvi");colnames(rendvi) = c("id","rendvi","id2")
+nirv = getix("nirv"); colnames(nirv) = c("id","nirv","id2")
 
+indexs2 = cbind(evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+indexs2 = indexs2[,c(2,5,8,11,14,17,20,23,26,29,32,35,38,41,42)]
+
+ggcorr(indexs2, label = TRUE)
 

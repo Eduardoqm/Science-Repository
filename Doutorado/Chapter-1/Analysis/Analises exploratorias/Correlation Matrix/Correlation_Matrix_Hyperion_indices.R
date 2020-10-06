@@ -11,12 +11,13 @@ library(ggplot2)
 library(ggpubr)
 
 #Load data ==========================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 
-hy = read.csv("Hyperion_indexs_all by plot.csv", sep = ',')
-hy = hy[,c(-5, -9)]
-hy$data = as.character(hy$data)
+hy = read.csv("#Hyperion_indexs_all by plot.csv", sep = ',')
+hy = hy[,c(-4, -5, -18, -19, -20, -21)]
+#hy$data = as.character(hy$data)
+
 
 
 #Vegetation Index Correlation =============================================================
