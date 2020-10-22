@@ -64,11 +64,28 @@ hy05r$treat = c("Real")
 
 #Glue
 hy04 = rbind(hy04f, hy04r)
+hy04$year = c(2004)
+
 hy05 = rbind(hy05f, hy05r)
+hy05$year = c(2005)
 
+hyfull = rbind(hy04, hy05)
 
+#Plots
+ggplot(hy04, aes(x = value, y = variable, fill=treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~variable, scales="free") +
+  theme_minimal()
 
+ggplot(hy05, aes(x = value, y = variable, fill=treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~variable, scales="free") +
+  theme_minimal()
 
+ggplot(hyfull, aes(x = value, y = year, fill=treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~variable, scales="free") +
+  theme_minimal()
 
 
 
