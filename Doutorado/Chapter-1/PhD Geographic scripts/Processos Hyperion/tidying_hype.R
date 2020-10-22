@@ -13,11 +13,11 @@ library(tidyr)
 library(viridis)
 library(rasterVis)
 
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
 
 
 
-setwd("~/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Hyperion/all")
+setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyperion")
 (r1 = list.files())
 r2 = lapply(r1,raster)
 r3 = lapply(r2, crop, area1,snap='near')
@@ -60,15 +60,26 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
 #write.csv(dfT, "Hyperion_indexs_all_xy.csv")
 
 
+#Test plots
 df2 = dfT%>%
   group_by(index,treat,year,y) %>%
   summarise(value = mean(value,na.rm=TRUE))
 
-ari = df2 %>% 
-  filter(index == "ari")
+pssr = df2 %>% filter(index == "pssr")
+
+wbi = df2 %>% filter(index == "wbi")
+
+ndii = df2 %>% filter(index == "ndii")
 
 
-ggplot(ari, aes(year, y, fill = value))+ 
-  geom_tile()+
-  facet_wrap(~parcela,scales="free")+
-  scale_fill_viridis(discrete=FALSE)
+tile_plot = function(x){
+  ggplot(x, aes(year, y, fill = value))+ 
+    geom_tile()+
+    facet_wrap(~treat)+
+    scale_fill_viridis(discrete=FALSE)
+}
+
+tile_plot(pssr)
+tile_plot(wbi)
+tile_plot(ndii)
+
