@@ -62,6 +62,20 @@ hy05r = as.data.frame(hyc2005r)
 hy05r = melt(hy05r)
 hy05r$treat = c("Real")
 
+#Glue
+hy04 = rbind(hy04f, hy04r)
+hy05 = rbind(hy05f, hy05r)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
