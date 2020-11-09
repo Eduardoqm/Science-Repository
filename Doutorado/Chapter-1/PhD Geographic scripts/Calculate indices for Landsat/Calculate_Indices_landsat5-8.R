@@ -3,7 +3,7 @@
 #OBS: Update to calculate full Landsat-5 time series in 09-11-2020
 
 library(raster)
-library(rasterVis)
+#library(rasterVis)
 
 #TM-------------------------------------------------------------------------------------------------------------------
 #List of satellite bands (menos a banda 6)
