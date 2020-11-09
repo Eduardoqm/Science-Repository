@@ -7,12 +7,12 @@ library(raster)
 
 #TM-------------------------------------------------------------------------------------------------------------------
 #List of satellite bands (menos a banda 6)
-list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop5", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
-list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop5", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
-list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop5", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
-list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop5", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
-list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop5", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
-list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop5", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
+list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
+list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
+list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
+list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
+list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
+list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
 
 #Convert data into rasterbrick for faster processing
 b1 <- brick(stack(list1))
@@ -40,64 +40,72 @@ evi2 <- 2.5*((b4-b3)/(b4+2.4*b3+1))
 #Normalized Difference Vegetation Index (NDVI)
 ndvi <- (b4-b3)/(b4+b3)
 
-#Green Red Normalized Difference (GRND)
-grnd <- (b2-b3)/(b2+b3)
-
-#Normalized Difference Moisture Index (NDMI) obs: Lenio (MSI)
-ndmi <- (b4-b5)/(b4+b5)
+#Green Red Normalized Difference (GRND) or Vegetation Indice of Greeness (VIG)
+vig <- (b2-b3)/(b2+b3)
 
 #SWND infrared index
 swnd <- (b5-b7)/(b5+b7)
 
-#Normalized Burned Ratio Index (NBRI)
-nbri <- (b4-b5)/(b4+b5)
-
 #Normalized Pigment Chlorophyll Ratio Index (NPCRI)
 npcri <- (b3-b1)/(b3+b1)
 
+#Normalized Difference Infra-red (NDII) obs: the same formula (NBRI, NDWI, MSI)
+ndii <- (b4-b5)/(b4+b5)
+
+#Normalized Difference Moisture Index (NDMI) obs: Lenio (MSI)
+#ndmi <- (b4-b5)/(b4+b5)
+
+#Normalized Burned Ratio Index (NBRI)
+#nbri <- (b4-b5)/(b4+b5)
+
 #Normalized Difference Water Index (NDWI)
-ndwi <- (b4-b5)/(b4+b5)
+#ndwi <- (b4-b5)/(b4+b5)
 
 #Pigment Specific Simple Ratio (PSSR)
 #pssr <- (b4-b3)
 
 #Salve NDVI rasters----------------------------------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/EVI")
-for (i in 1:length(evi)) {
-  writeRaster(evi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
-}
-setwd("C:/Users/Eduardo Q Marques/Documents/EVI2")
+#setwd("C:/Users/Eduardo Q Marques/Documents/EVI")
+#for (i in 1:length(evi)) {
+#  writeRaster(evi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
+#}
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/EVI2")
 for (i in 1:length(evi2)) {
   writeRaster(evi2[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
 }
-setwd("C:/Users/Eduardo Q Marques/Documents/NDVI")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/NDVI")
 for (i in 1:length(ndvi)) {
   writeRaster(ndvi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
 }
-setwd("C:/Users/Eduardo Q Marques/Documents/GRND")
-for (i in 1:length(grnd)) {
-  writeRaster(grnd[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/VIG")
+for (i in 1:length(vig)) {
+  writeRaster(vig[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
 }
-setwd("C:/Users/Eduardo Q Marques/Documents/NDMI")
-for (i in 1:length(ndmi)) {
-  writeRaster(ndmi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
-}
-setwd("C:/Users/Eduardo Q Marques/Documents/SWND")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/SWND")
 for (i in 1:length(swnd)) {
   writeRaster(swnd[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
 }
-setwd("C:/Users/Eduardo Q Marques/Documents/NBRI")
-for (i in 1:length(nbri)) {
-  writeRaster(nbri[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
-}
-setwd("C:/Users/Eduardo Q Marques/Documents/NPCRI")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/NPCRI")
 for (i in 1:length(npcri)) {
   writeRaster(npcri[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
 }
-setwd("C:/Users/Eduardo Q Marques/Documents/NDWI")
-for (i in 1:length(ndwi)) {
-  writeRaster(ndwi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/NDII")
+for (i in 1:length(ndii)) {
+  writeRaster(ndii[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
 }
+#setwd("C:/Users/Eduardo Q Marques/Documents/NDMI")
+#for (i in 1:length(ndmi)) {
+#  writeRaster(ndmi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
+#}
+#setwd("C:/Users/Eduardo Q Marques/Documents/NBRI")
+#for (i in 1:length(nbri)) {
+#  writeRaster(nbri[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
+#}
+
+#setwd("C:/Users/Eduardo Q Marques/Documents/NDWI")
+#for (i in 1:length(ndwi)) {
+#  writeRaster(ndwi[[i]], names(b1[[i]]), format = "GTiff", bylayer = FALSE)
+#}
 
 #OLI------------------------------------------------------------------------------------------------------------------
 #List of satellite bands(banda 2 ate a banda 7 são equivalentes as bandas do landsat5)
