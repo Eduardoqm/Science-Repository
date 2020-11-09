@@ -10,6 +10,8 @@ library(reshape2)
 library(dplyr)
 library(tidyr)
 library(viridis)
+library(ggpubr)
+library(GGally)
 library(rasterVis)
 
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
@@ -64,14 +66,21 @@ hy05r$treat = c("Real")
 
 #Glue
 hy04 = rbind(hy04f, hy04r)
-hy04$year = c(2004)
+hy04 = filter(hy04, variable != "evi.2004")
+hy04 = filter(hy04, variable != "ari.2004")
 
 hy05 = rbind(hy05f, hy05r)
-hy05$year = c(2005)
+hy05 = filter(hy05, variable != "evi.2005")
+hy05 = filter(hy05, variable != "ari.2005")
 
 hyfull = rbind(hy04, hy05)
+hyfull = hyfull %>% 
+  separate(variable, c("index","year"))
 
-#Plots
+
+#Plots of Density
+eqm = c("yellow", "blue")
+
 ggplot(hy04, aes(x = value, y = variable, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~variable, scales="free") +
@@ -84,8 +93,74 @@ ggplot(hy05, aes(x = value, y = variable, fill=treat)) +
 
 ggplot(hyfull, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
-  facet_wrap(~variable, scales="free") +
-  theme_minimal()
+  facet_wrap(~index, scales="free") +
+  theme_minimal()+
+  scale_fill_manual(values = eqm)
+
+#Boxplot
+ggplot(hyfull, aes(x = year, y = value, fill=treat)) +
+  geom_boxplot(alpha = 0.55) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()+
+  scale_fill_manual(values = eqm)
+
+
+#Correlation this years
+
+hyfull2 = hyfull %>% 
+  unite(col=id, c("index", "treat"), sep = "-", remove = F)
+
+eqm2 = c("orange", "blue")
+
+corr = function(x, y){
+  r = hyfull2 %>% 
+    filter(index == x) %>% 
+    filter(treat == "Real")
+  
+  f = hyfull2 %>% 
+    filter(index == x) %>% 
+    filter(treat == "Deslocated")
+  
+  df = cbind(r, f)
+  df = df[,c(3,4,9)]
+  colnames(df) = c("year", "real", "deslocated")
+  
+  ggplot(df, aes(x=real, y=deslocated, col = year))+
+    geom_point(size=3, alpha = 0.3)+
+    geom_smooth(method="lm", se=F)+ 
+    stat_cor(show.legend = F)+
+    theme_minimal()+
+    ggtitle(x)+
+    theme(panel.border = element_rect(colour = "gray", fill=NA, size=0.5))+
+    scale_color_manual(values = eqm2)
+}
+
+corr("evi2")
+corr("ndvi")
+corr("vari")
+corr("vig")
+corr("lwvi2")
+corr("msi")
+corr("ndii")
+corr("ndwi")
+corr("nirv")
+corr("psri")
+corr("pssr")
+corr("sipi")
+corr("wbi")
+corr("pri")
+corr("rendvi")
+
+
+
+
+
+
+
+
+
+
+
 
 
 

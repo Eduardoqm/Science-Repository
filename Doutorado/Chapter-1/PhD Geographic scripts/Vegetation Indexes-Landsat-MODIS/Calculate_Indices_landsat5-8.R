@@ -1,6 +1,6 @@
 #Geracao de indices com imagens Landsat para a Area1 - Tang
 #Eduardo Q Marques /30/07/2019/
-#OBS: Update to calculate PSSR in 07-09-2020
+#OBS: Update to calculate full Landsat-5 time series in 09-11-2020
 
 library(raster)
 library(rasterVis)
@@ -59,7 +59,7 @@ npcri <- (b3-b1)/(b3+b1)
 ndwi <- (b4-b5)/(b4+b5)
 
 #Pigment Specific Simple Ratio (PSSR)
-pssr <- (b4-b3)
+#pssr <- (b4-b3)
 
 #Salve NDVI rasters----------------------------------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/EVI")
@@ -153,7 +153,7 @@ npcri_b <- (b4-b2)/(b4+b2)
 ndwi_b <- (b5-b6)/(b5+b6)
 
 #Pigment Specific Simple Ratio (PSSR)
-pssr_b <- (b5-b4)
+#pssr_b <- (b5-b4)
 
 #Salve NDVI rasters-----------------------------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/EVI")
