@@ -9,12 +9,12 @@ library(dplyr)
 
 #Temporal scale================================================================================
 #Landsat -- obs: Just change de folder name to chande the index and choose the graphic
-list <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Tanguro Indices/Landsat/EVI2", pattern = ".tif$", full.names=TRUE,recursive=TRUE)
+list <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/EVI2", pattern = ".tif$", full.names=TRUE,recursive=TRUE)
 
 index <- stack(list)
 
 #Abrir os shapes para amostrar pixels (100 pontos por shape)
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
 area1 = spTransform(area1, crs(index))
 
 #Extrair valor dos pixels
@@ -48,6 +48,14 @@ gg <- melt(df_md, id.vars="data")
 colnames(gg) = c('Data', 'Parcela', 'Refl')
 
 #EVI =======================
+ggplot(gg, aes(Data,Refl, col=Parcela))+ 
+  geom_line(aes(group=Parcela), size = 1)+
+  geom_smooth(aes(group=Parcela))+
+  geom_point()+
+  labs(fill= "Plot",x="Ano",y="EVI")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))
+
 ggplot(gg, aes(Data,Refl, col=Parcela))+ 
   geom_line(aes(group=Parcela), size = 1)+
   geom_point()+
