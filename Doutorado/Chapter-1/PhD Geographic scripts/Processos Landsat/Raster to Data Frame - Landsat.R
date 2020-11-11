@@ -78,12 +78,13 @@ df2 = dfT%>%
   group_by(index,treat,year,y) %>%
   summarise(value = mean(value,na.rm=TRUE))
 
-pssr = df2 %>% filter(index == "pssr")
+evi2 = df2 %>% filter(index == "evi2")
 
-wbi = df2 %>% filter(index == "wbi")
+ndvi = df2 %>% filter(index == "ndvi")
 
 ndii = df2 %>% filter(index == "ndii")
 
+vig = df2 %>% filter(index == "vig")
 
 tile_plot = function(x){
   ggplot(x, aes(year, y, fill = value))+ 
