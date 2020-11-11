@@ -5,7 +5,7 @@
 library(raster)
 #library(rasterVis)
 
-#TM-------------------------------------------------------------------------------------------------------------------
+#TM =============================================================================================
 #List of satellite bands (menos a banda 6)
 list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
 list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
@@ -30,7 +30,7 @@ b4 <- b4/10000
 b5 <- b5/10000
 b7 <- b7/10000
 
-#Index-------------------------------------------------------------------------------------------------------------
+#Calculate indices ------------------------------------------------------------------------------
 #Enhanced Vegetation Index (EVI)
 #evi <- 2.5*((b4-b3)/(b4+6*b3-7.5*b1+1))
 
@@ -70,7 +70,7 @@ name2 = c("ndii")
 ndii_names = paste(name2, name1, sep = "-", collapse = NULL)
 
 
-#Save ---------------------------------------------------------------------------------------
+#Save
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All Indices")
 
 for (i in 1:length(evi2)) {
@@ -90,8 +90,8 @@ for (i in 1:length(ndii)) {
 }
 
 
-#OLI------------------------------------------------------------------------------------------------------------------
-#List of satellite bands(banda 2 ate a banda 7 sÃ£o equivalentes as bandas do landsat5)
+#OLI=============================================================================================
+#List of satellite bands(banda 2 ate a banda 7 sao equivalentes as bandas do landsat5)
 list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
 list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
 list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
