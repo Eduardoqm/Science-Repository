@@ -1,6 +1,6 @@
 #Cut images to make stack
 #Eduardo Q Marques
-#11/07/2019 adapt in 09-11-2020
+#11/07/2019 adapt in 11-11-2020
 
 library(raster)
 #Landsat - 5 ==============================================================================================
@@ -9,7 +9,7 @@ library(raster)
 ref <- raster('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/Extent_raster/Extent_raster.tif')
 e <- extent(ref)
 #Criar uma pasta para salvar as bandas recortadas
-outpath <- "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999/"
+outpath <- "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011/"
 dir.create(outpath)
 
 #Criar lista com as bandas
@@ -29,12 +29,12 @@ for(i in 1:length(files)) {
 
 #Load and verify results for each band============================================================================
 #Listar as bandas (menos a banda 6)
-list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
-list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
-list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
-list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
-list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
-list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-1999", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
+list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
+list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
+list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
+list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
+list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
+list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
 
 #Fazer os stacks das bandas
 b1 <- stack(list1)
