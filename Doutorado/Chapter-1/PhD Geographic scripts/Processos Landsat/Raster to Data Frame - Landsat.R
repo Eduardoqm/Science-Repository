@@ -1,6 +1,6 @@
 #Make all Landsat data as data frame with XY
 
-#Eduardo Q Marques 10-11-2020
+#Eduardo Q Marques 11-11-2020
 
 library(tidyverse)
 library(ggridges)
@@ -17,18 +17,16 @@ area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Ba
 
 
 
-setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/EVI2")
-r1 = list.files()
-#r2 = lapply(r1,raster)
-r2 = raster(r1)
+setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All Indices")
+(r1 = list.files())
+r2 = lapply(r1,raster)
 
 area1 = spTransform(area1, crs(r2[[1]]))
-
 r3 = lapply(r2, crop, area1,snap='near')
 #r4 = lapply(r3,resample,r3[[114]],method='ngb')
 r5 = stack(r3)
 
-levelplot(r5[[24]])
+#levelplot(r5)
 
 
 ##area1
