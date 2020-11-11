@@ -49,19 +49,9 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
 
 
 
-
-
-
-
-
-
-
-
-
-
 #Save the converted images
 #setwd("~/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
-#write.csv(dfT, "Hyperion_indexs_all_xy.csv")
+#write.csv(dfT, "Landsat_indexs_all_xy.csv")
 
 
 
@@ -92,13 +82,15 @@ tile_plot(ndii)
 tile_plot(vig)
 
 mod = function(x){
-  ggplot(x, aes(year, value, col = treat))+ 
-    geom_smooth(aes(group=treat))+
+  ggplot(x, aes(year, value, fill = treat))+ 
+    geom_boxplot()+
+    geom_smooth(aes(group=treat), col = "black")+
     #geom_point()+
-    #geom_boxplot()+
+    facet_grid(rows = vars(treat))+
     labs(fill= "Plot",x="Year",y="Index")+
-    theme_minimal()+
-    theme(axis.text.x = element_text(angle = 90))
+    theme_bw()+
+    theme(axis.text.x = element_text(angle = 90),
+          legend.position = "none")
 }
 
 mod(evi2)
