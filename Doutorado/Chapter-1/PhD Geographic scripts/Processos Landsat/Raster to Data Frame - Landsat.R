@@ -91,3 +91,17 @@ tile_plot(ndvi)
 tile_plot(ndii)
 tile_plot(vig)
 
+mod = function(x){
+  ggplot(x, aes(year, value, col = treat))+ 
+    geom_smooth(aes(group=treat))+
+    #geom_point()+
+    #geom_boxplot()+
+    labs(fill= "Plot",x="Year",y="Index")+
+    theme_minimal()+
+    theme(axis.text.x = element_text(angle = 90))
+}
+
+mod(evi2)
+mod(ndvi)
+mod(ndii)
+mod(vig)
