@@ -97,3 +97,17 @@ mod(evi2)
 mod(ndvi)
 mod(ndii)
 mod(vig)
+
+
+mapx = function(k){
+  z = filter(dfT, index == k)
+  z = filter(z, year == 20080720)
+  ggplot(z, aes(x, y, fill = value))+
+    geom_raster()+
+    scale_fill_viridis(discrete=FALSE)
+}
+
+mapx("evi2")
+mapx("ndvi")
+mapx("ndii")
+mapx("vig")
