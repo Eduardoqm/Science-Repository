@@ -66,14 +66,7 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
 
 
 
-
-
-
-
-
-
-
-#Test plots
+#Test Results ============================================================================
 df2 = dfT%>%
   group_by(index,treat,year,y) %>%
   summarise(value = mean(value,na.rm=TRUE))
