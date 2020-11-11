@@ -23,7 +23,7 @@ r2 = lapply(r1,raster)
 
 area1 = spTransform(area1, crs(r2[[1]]))
 r3 = lapply(r2, crop, area1,snap='near')
-#r4 = lapply(r3,resample,r3[[114]],method='ngb')
+
 r5 = stack(r3)
 
 #levelplot(r5)
