@@ -86,7 +86,8 @@ tile_plot = function(x){
     scale_fill_viridis(discrete=FALSE)
 }
 
-tile_plot(pssr)
-tile_plot(wbi)
+tile_plot(evi2)
+tile_plot(ndvi)
 tile_plot(ndii)
+tile_plot(vig)
 
