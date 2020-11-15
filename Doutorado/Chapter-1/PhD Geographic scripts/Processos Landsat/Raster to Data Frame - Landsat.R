@@ -21,7 +21,16 @@ setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All In
 (r1 = list.files())
 r2 = lapply(r1,raster)
 
-area1 = spTransform(area1, crs(r2[[1]]))
+#area1 = spTransform(area1, crs(r2[[1]]))
+for (x in 1:length(r2)) {
+  print(x)
+  print(crs(r2[[x]]))
+  print("Convert to:")
+  r2[[x]] = projectRaster(r2[[x]], crs = crs(area1))
+  print(crs(r2[[x]]))
+  print("DONE!"); print(" ")
+}
+
 r3 = lapply(r2, crop, area1,snap='near')
 
 r5 = stack(r3)
@@ -50,7 +59,7 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
 
 
 #Save the converted images
-#setwd("~/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+#setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 #write.csv(dfT, "Landsat_indexs_all_xy.csv")
 
 
@@ -73,7 +82,9 @@ tile_plot = function(x){
   ggplot(x, aes(year, y, fill = value))+ 
     geom_tile()+
     facet_wrap(~treat)+
-    scale_fill_viridis(discrete=FALSE)
+    scale_fill_viridis(discrete=FALSE)+
+    theme(axis.text.x = element_text(angle = 90),
+          legend.position = "none")
 }
 
 tile_plot(evi2)
