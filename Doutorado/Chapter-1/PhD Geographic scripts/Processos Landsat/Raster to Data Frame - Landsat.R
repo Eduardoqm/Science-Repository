@@ -13,33 +13,30 @@ library(tidyr)
 library(viridis)
 library(rasterVis)
 
+#Open data ------------------------------------------------------------------------------
+#Vector to extract information
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
 
-
-
+#Raster data directory
 setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All Indices")
+
+#Process data ---------------------------------------------------------------------------
+#Make a list of rasters
 (r1 = list.files())
 r2 = lapply(r1,raster)
 
-#area1 = spTransform(area1, crs(r2[[1]]))
+#Change raster projection to the same of vector
 for (x in 1:length(r2)) {
-  y = (x/264)*100
-  print(paste(y,"%"))
-  print(crs(r2[[x]]))
-  print("Convert to:")
   r2[[x]] = projectRaster(r2[[x]], crs = crs(area1))
-  print(crs(r2[[x]]))
-  print(""); print("")
+  y = (x/264)*100
+  print(paste(y,"% done!"))
 }
 
+#Crop and Stack rasters
 r3 = lapply(r2, crop, area1,snap='near')
-
 r5 = stack(r3)
 
-#levelplot(r5)
-
-
-##area1
+#Convert Raster do DATAFRAME ------------------------------------------------------------
 #Raterize Area-1 to extract info by pixel
 rastA = rasterize(area1,r5[[1]],field="Parcela",background=NA)#Before change Area1 CRS
 
@@ -48,6 +45,7 @@ r6 = stack(r5,rastA)
 df = as.data.frame(cbind(id = 1:ncell(r6),
                          as.data.frame(r6,xy=TRUE))); head(df)
 
+#Convertion
 (dfT = as.tbl(df) %>%
   gather("yr", "value", -c(id,x,y,layer)) %>%
     separate(yr,c("index","year")) %>%
@@ -57,14 +55,9 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
            dist = -13.07458 - y) %>%
     drop_na(treat))
 
-
-
-#Save the converted images
+#Save the converted images --------------------------------------------------------------
 #setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 #write.csv(dfT, "Landsat_indexs_all_xy.csv")
-
-
-
 
 #Test Results ============================================================================
 df2 = dfT%>%
