@@ -23,12 +23,13 @@ r2 = lapply(r1,raster)
 
 #area1 = spTransform(area1, crs(r2[[1]]))
 for (x in 1:length(r2)) {
-  print(x)
+  y = (x/264)*100
+  print(paste(y,"%"))
   print(crs(r2[[x]]))
   print("Convert to:")
   r2[[x]] = projectRaster(r2[[x]], crs = crs(area1))
   print(crs(r2[[x]]))
-  print("DONE!"); print(" ")
+  print(""); print("")
 }
 
 r3 = lapply(r2, crop, area1,snap='near')
