@@ -1,10 +1,11 @@
-#=======================================================#
-# PCA Hyperspectral and Multispectral Indices  by Years #
-#                                                       #
-# Eduardo Q Marques 17-11-2020                          #
-#=======================================================#
+#==========================================================#
+# PCA Hyperspectral Indices  by Years                      #
+# and PCA Hyperspectral and Multispectral Indices Together #                                       
+#                                                          #
+# Eduardo Q Marques 17-11-2020                             #
+#==========================================================#
 
-#OBS: Almost like version 3, add Landsat PCAs and both sensor mult and hyper together
+#OBS: Almost like version 3, add PCAs for both sensor mult and hyper together
 
 library(stats)
 library(tidyverse)
@@ -108,8 +109,7 @@ fviz_pca_biplot(pcaz, habillage = grp,
 
 #For Landsat data ============================================================================
 #Transform data for analysis
-land2 = land[c(5,7)]
-#land2$value = log(land2$value)
+land2 = land[c(6,8)]
 
 #Transpor variables in columns
 transp = function(x){
@@ -118,28 +118,16 @@ transp = function(x){
   z = as.data.frame(z[,c(2)])
 }
 
-ari = transp("ari");colnames(ari) = c("ari")
-evi = transp("evi2");colnames(evi) = c("evi")
-ndvi = transp("ndvi");colnames(ndvi) = c("ndvi")
-vari = transp("vari");colnames(vari) = c("vari")
-vig = transp("vig");colnames(vig) = c("vig")
-lwvi2 = transp("lwvi2");colnames(lwvi2) = c("lwvi2")
-msi = transp("msi");colnames(msi) = c("msi")
-ndii = transp("ndii");colnames(ndii) = c("ndii")
-ndwi = transp("ndwi");colnames(ndwi) = c("ndwi")
-pssr = transp("pssr");colnames(pssr) = c("pssr")
-psri = transp("psri");colnames(psri) = c("psri")
-sipi = transp("sipi");colnames(sipi) = c("sipi")
-wbi = transp("wbi");colnames(wbi) = c("wbi")
-pri = transp("pri");colnames(pri) = c("pri")
-rendvi = transp("rendvi");colnames(rendvi) = c("rendvi")
-nirv = transp("nirv"); colnames(nirv) = c("nirv")
+evi = transp("evi2");colnames(evi) = c("land_evi")
+ndvi = transp("ndvi");colnames(ndvi) = c("land_ndvi")
+vig = transp("vig");colnames(vig) = c("land_vig")
+ndii = transp("ndii");colnames(ndii) = c("land_ndii")
 
 #Stract treatmant name
-treat = land[c(1:11781),]; treat = treat[,c(6,7,8)]
+treat = land[c(1:116688),]; treat = treat[,c(7,8,9)]
 
 #Join everything
-land3 = cbind(treat$parcela,treat$year,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+land3 = cbind(treat$treat,treat$year,evi,ndvi,vig,ndii)
 colnames(land3)[1] = "Parcela"; colnames(land3)[2] = "year"
 
 #Make data frame by year
