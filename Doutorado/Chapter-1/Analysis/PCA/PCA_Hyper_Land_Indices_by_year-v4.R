@@ -146,11 +146,13 @@ land3$year = substr(land3$year, 1, 4)
 
 land5 = land3 %>% 
   filter(year %in% c(2004, 2005, 2006, 2008, 2010, 2011, 2012)) %>% 
-  unite(id = c("Parcela", "year"))
+  unite("id", Parcela, year, sep = "_")
 
+hy5 = hy3 %>% 
+  unite("id", Parcela, year, sep = "_")
 
-
-
+df = full_join(hy5, land5, id = "id")
+df2 = na.omit(df)
 
 
 
