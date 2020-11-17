@@ -1,9 +1,10 @@
-#=====================================#
-# PCA Hyperspectral Indices  by Years #
-#                                     #
-# Eduardo Q Marques 17-10-2020        #
-#=====================================#
+#=======================================================#
+# PCA Hyperspectral and Multispectral Indices  by Years #
+#                                                       #
+# Eduardo Q Marques 17-11-2020                          #
+#=======================================================#
 
+#OBS: Almost like version 3, add Landsat PCAs and both sensor mult and hyper together
 
 library(stats)
 library(tidyverse)
