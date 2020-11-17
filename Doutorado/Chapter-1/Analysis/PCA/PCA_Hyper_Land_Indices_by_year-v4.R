@@ -140,10 +140,13 @@ fviz_pca_biplot(pcaz, habillage = grp,
                 geom.ind = c("point"),
                 title = "Maultispectral Indices All Years")
 
-#Match with Hyperion period =======================================================================
+#Match Hyperion and Lansat data ===================================================================
+#Match Landsat and Hyperion period
 land3$year = substr(land3$year, 1, 4)
+
 land5 = land3 %>% 
-  filter(year %in% c(2004, 2005, 2006, 2008, 2010, 2011, 2012))
+  filter(year %in% c(2004, 2005, 2006, 2008, 2010, 2011, 2012)) %>% 
+  unite(id = c("Parcela", "year"))
 
 
 
