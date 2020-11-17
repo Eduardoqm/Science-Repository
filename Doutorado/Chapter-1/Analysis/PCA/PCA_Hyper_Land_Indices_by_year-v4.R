@@ -138,7 +138,7 @@ grp = as.factor(land4[,c(1)])
 fviz_pca_biplot(pcaz, habillage = grp,
                 col.var = "black",
                 geom.ind = c("point"),
-                title = "Maultispectral Indices All Years")
+                title = "Multispectral Indices All Years")
 
 #Match Hyperion and Lansat data ===================================================================
 #Match Landsat and Hyperion period
@@ -152,9 +152,20 @@ hy5 = hy3 %>%
   unite("id", Parcela, year, sep = "_")
 
 df = full_join(hy5, land5, id = "id")
-df2 = na.omit(df)
+df2 = df %>% 
+  na.omit() %>% 
+  separate(id, c("Parcela", "year"), sep = "_")
 
 
+#PCA for all Sensors
+
+land4b = land4[,c(-1,-2)]
+pcaz = PCA(land4b, graph = F)
+grp = as.factor(land4[,c(1)])
+fviz_pca_biplot(pcaz, habillage = grp,
+                col.var = "black",
+                geom.ind = c("point"),
+                title = "Multispectral Indices All Years")
 
 
 
