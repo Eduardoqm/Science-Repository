@@ -130,17 +130,43 @@ treat = land[c(1:116688),]; treat = treat[,c(7,8,9)]
 land3 = cbind(treat$treat,treat$year,evi,ndvi,vig,ndii)
 colnames(land3)[1] = "Parcela"; colnames(land3)[2] = "year"
 
-#Make data frame by year
-getyear = function(x){
-  land3 %>% 
-    na.omit() %>% 
-    filter(year == x)
-}
+#PCA for all years together
+land4 = na.omit(land3)
+land4b = land4[,c(-1,-2)]
+pcaz = PCA(land4b, graph = F)
+grp = as.factor(land4[,c(1)])
+fviz_pca_biplot(pcaz, habillage = grp,
+                col.var = "black",
+                geom.ind = c("point"),
+                title = "Maultispectral Indices All Years")
 
-p2004 = getyear(2004)
-p2005 = getyear(2005)
-p2006 = getyear(2006)
-p2008 = getyear(2008)
-p2010 = getyear(2010)
-p2011 = getyear(2011)
-p2012 = getyear(2012)
+#Match with Hyperion period =======================================================================
+land3$year = substr(land3$year, 1, 4)
+land5 = land3 %>% 
+  filter(year %in% c(2004, 2005, 2006, 2008, 2010, 2011, 2012))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
