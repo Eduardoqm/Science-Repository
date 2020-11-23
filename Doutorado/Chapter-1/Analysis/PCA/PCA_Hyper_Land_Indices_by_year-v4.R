@@ -159,13 +159,13 @@ df2 = df %>%
 
 #PCA for all Sensors
 
-land4b = land4[,c(-1,-2)]
-pcaz = PCA(land4b, graph = F)
-grp = as.factor(land4[,c(1)])
+df3 = df2[,c(-1,-2)]
+pcaz = PCA(df3, graph = F)
+grp = as.factor(df2[,c(1)])
 fviz_pca_biplot(pcaz, habillage = grp,
                 col.var = "black",
                 geom.ind = c("point"),
-                title = "Multispectral Indices All Years")
+                title = "Mult and Hyper Indices (2004-2012)")
 
 
 
