@@ -15,6 +15,10 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tan
 
 land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
 
+date = land %>% 
+  group_by(index, year) %>% 
+  summarise(value, skewness(value))
+
 #Select indices
 ndvi = land %>%
   filter(index == "ndvi")
@@ -35,6 +39,7 @@ curt = kurtosis(ndvi$value); curt
 #Plot results
 ggplot(ndvi, aes(value))+
   geom_density(aes(fill = treat), alpha = 0.35)
+
 
 ggplot(ndvi, aes(x = value, y = year, fill = treat)) +
   geom_density_ridges(alpha = 0.35) +
