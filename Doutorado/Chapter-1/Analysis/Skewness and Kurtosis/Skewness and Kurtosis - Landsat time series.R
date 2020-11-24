@@ -15,38 +15,57 @@ setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tan
 
 land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
 
-date = land %>% 
-  group_by(index, year) %>% 
-  summarise(value, skewness(value))
+#Skewness and Kurtosis calculation
+land_sks = land %>% 
+  group_by(index, treat, year) %>% 
+  summarise(value = skewness(value))
 
-#Select indices
-ndvi = land %>%
+land_curt = land %>% 
+  group_by(index, treat, year) %>% 
+  summarise(value = kurtosis(value))
+
+#Select indices (Skewness)
+ndvi = land_sks %>%
   filter(index == "ndvi")
 
-evi = land %>%
+evi = land_sks %>%
   filter(index == "evi2")
 
-ndii = land %>%
+ndii = land_sks %>%
   filter(index == "ndii")
 
-vig = land %>%
+vig = land_sks %>%
   filter(index == "vig")
 
-#Skewness and Kurtosis calculation
-sks = skewness(ndvi$value); sks
-curt = kurtosis(ndvi$value); curt
+#Plot results
+ggplot(ndvi, aes(x=as.factor(year), y=value))+
+  geom_line(aes(group = treat, col = treat), size = 1)+
+  geom_point(aes(col = treat), size = 3)+
+  theme_bw()+
+  ggtitle("Skewness (NDVI-Landsat)")+
+  theme(axis.text.x = element_text(angle=90))
+
+
+#Select indices (Kurtosis)
+ndvi = land_curt %>%
+  filter(index == "ndvi")
+
+evi = land_curt %>%
+  filter(index == "evi2")
+
+ndii = land_curt %>%
+  filter(index == "ndii")
+
+vig = land_curt %>%
+  filter(index == "vig")
 
 #Plot results
-ggplot(ndvi, aes(value))+
-  geom_density(aes(fill = treat), alpha = 0.35)
-
-
-ggplot(ndvi, aes(x = value, y = year, fill = treat)) +
-  geom_density_ridges(alpha = 0.35) +
-  #facet_wrap(~index, scales="free") +
-  theme_minimal()
-
-
+ggplot(ndvi, aes(x=as.factor(year), y=value))+
+  geom_line(aes(group = treat, col = treat), size = 1)+
+  geom_point(aes(col = treat), size = 3)+
+  theme_bw()+
+  ggtitle("Kurtosis (NDVI-Landsat)")+
+  theme(axis.text.x = element_text(angle=90))
 
 
 
