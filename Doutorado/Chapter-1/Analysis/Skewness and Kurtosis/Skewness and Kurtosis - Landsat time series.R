@@ -38,12 +38,19 @@ vig = land_sks %>%
   filter(index == "vig")
 
 #Plot results
-ggplot(ndvi, aes(x=as.factor(year), y=value))+
-  geom_line(aes(group = treat, col = treat), size = 1)+
-  geom_point(aes(col = treat), size = 3)+
-  theme_bw()+
-  ggtitle("Skewness (NDVI-Landsat)")+
-  theme(axis.text.x = element_text(angle=90))
+plt = function(z, w){
+  ggplot(z, aes(x=as.factor(year), y=value))+
+    geom_line(aes(group = treat, col = treat), size = 1)+
+    geom_point(aes(col = treat), size = 3)+
+    theme_bw()+
+    ggtitle(paste("Skewness", w))+
+    theme(axis.text.x = element_text(angle=90))
+}
+
+plt(ndvi, "NDVI")
+plt(evi, "EVI")
+plt(ndii, "NDII")
+plt(vig, "VIG")
 
 
 #Select indices (Kurtosis)
@@ -60,12 +67,45 @@ vig = land_curt %>%
   filter(index == "vig")
 
 #Plot results
-ggplot(ndvi, aes(x=as.factor(year), y=value))+
-  geom_line(aes(group = treat, col = treat), size = 1)+
-  geom_point(aes(col = treat), size = 3)+
-  theme_bw()+
-  ggtitle("Kurtosis (NDVI-Landsat)")+
-  theme(axis.text.x = element_text(angle=90))
+plt = function(z, w){
+  ggplot(z, aes(x=as.factor(year), y=value))+
+    geom_line(aes(group = treat, col = treat), size = 1)+
+    geom_point(aes(col = treat), size = 3)+
+    theme_bw()+
+    ggtitle(paste("Kurtosis", w))+
+    theme(axis.text.x = element_text(angle=90))
+}
+
+plt(ndvi, "NDVI")
+plt(evi, "EVI")
+plt(ndii, "NDII")
+plt(vig, "VIG")
+
+#Save dataframe of tests
+colnames(land_sks)[4] = "skewness"
+land_sks = land_sks %>% 
+  unite("id", index, treat, year, sep = "_")
+  
+colnames(land_curt)[4] = "kurtosis"
+land_curt = land_curt %>% 
+  unite("id", index, treat, year, sep = "_")
+
+
+df = full_join(land_sks, land_curt, by = "id")
+df = df %>% 
+  separate(id, c("index", "treat", "year"), sep = "_")
+
+write.table(df, file = "skewness_kurtosis_landsat.csv", sep = ",", row.names = F)
+
+
+
+
+
+
+
+
+
+
 
 
 
