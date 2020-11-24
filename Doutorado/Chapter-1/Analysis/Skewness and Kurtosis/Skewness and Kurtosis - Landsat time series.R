@@ -5,22 +5,45 @@
 #########################################################
 
 library(ggplot2)
+library(ggridges)
 library(e1071)
+library(tidyverse)
+library(reshape2)
 
 #Load Data
-data = as.data.frame(c(1:100))
-data$values = rnorm(100)
-colnames(data) = c("x", "values")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+
+land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
+
+#Select indices
+ndvi = land %>%
+  filter(index == "ndvi")
+
+evi = land %>%
+  filter(index == "evi2")
+
+ndii = land %>%
+  filter(index == "ndii")
+
+vig = land %>%
+  filter(index == "vig")
 
 #Skewness and Kurtosis calculation
-sks = skewness(data$values)
-curt = kurtosis(data$values)
-
-sks
-curt
+sks = skewness(ndvi$value); sks
+curt = kurtosis(ndvi$value); curt
 
 #Plot results
-ggplot(data, aes(values))+
-  geom_density(fill = "blue", alpha = 0.5)+
-  geom_vline(xintercept = sks, color = "red", size = 1)+
-  geom_vline(xintercept = curt, color = "black", size = 1)
+ggplot(ndvi, aes(value))+
+  geom_density(aes(fill = treat), alpha = 0.35)
+
+ggplot(ndvi, aes(x = value, y = year, fill = treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  #facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+
+
+
+
+
+
