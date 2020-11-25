@@ -44,8 +44,8 @@ vig = land_sks %>%
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 plts = function(z, w){
   ggplot(z, aes(x=year, y=value))+
-    geom_line(aes(group = treat, col = treat), size = 1)+
-    geom_point(aes(col = treat), size = 3)+
+    geom_line(aes(group = treat, col = treat), size = 1, alpha = 0.7)+
+    geom_point(aes(col = treat), size = 3, alpha = 0.7)+
     scale_color_manual(values = eqm)+
     theme_bw()+
     ggtitle(paste("Skewness", w))+
@@ -74,8 +74,8 @@ vig = land_curt %>%
 #Plot results
 pltk = function(z, w){
   ggplot(z, aes(x=year, y=value))+
-    geom_line(aes(group = treat, col = treat), size = 1)+
-    geom_point(aes(col = treat), size = 3)+
+    geom_line(aes(group = treat, col = treat), size = 1, alpha = 0.7)+
+    geom_point(aes(col = treat), size = 3, alpha = 0.7)+
     scale_color_manual(values = eqm)+
     theme_bw()+
     ggtitle(paste("Kurtosis", w))+
