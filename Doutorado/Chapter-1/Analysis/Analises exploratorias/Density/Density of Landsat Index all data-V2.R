@@ -22,9 +22,9 @@ df$year = as.character(df$year)
 df$year = substr(df$year, 1,4)
 
 #Filter to get regeneration
-#df2 = df
-df2 = df %>% 
-  filter(year > 2000)
+df2 = df
+#df2 = df %>% 
+#  filter(year > 2000)
 
 evi = df2 %>%
 filter(index == 'evi2')
@@ -43,7 +43,7 @@ eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 
 a = ggplot(evi, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
-  facet_wrap(~index, ncol = 4, scales="free") +
+  facet_wrap(~index, scales="free") +
   theme_minimal()
 
 land1 = ggpar(a, palette = eqm)

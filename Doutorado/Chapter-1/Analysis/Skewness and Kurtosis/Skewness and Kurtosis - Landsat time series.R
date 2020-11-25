@@ -14,6 +14,9 @@ library(reshape2)
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
+land$year = as.character(land$year)
+
+land$year = substr(land$year, 1,4)
 
 #Skewness and Kurtosis calculation
 land_sks = land %>% 
@@ -38,19 +41,21 @@ vig = land_sks %>%
   filter(index == "vig")
 
 #Plot results
-plt = function(z, w){
-  ggplot(z, aes(x=as.factor(year), y=value))+
+eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
+plts = function(z, w){
+  ggplot(z, aes(x=year, y=value))+
     geom_line(aes(group = treat, col = treat), size = 1)+
     geom_point(aes(col = treat), size = 3)+
+    scale_color_manual(values = eqm)+
     theme_bw()+
     ggtitle(paste("Skewness", w))+
     theme(axis.text.x = element_text(angle=90))
 }
 
-plt(ndvi, "NDVI")
-plt(evi, "EVI")
-plt(ndii, "NDII")
-plt(vig, "VIG")
+plts(ndvi, "NDVI")
+plts(evi, "EVI")
+plts(ndii, "NDII")
+plts(vig, "VIG")
 
 
 #Select indices (Kurtosis)
@@ -67,19 +72,20 @@ vig = land_curt %>%
   filter(index == "vig")
 
 #Plot results
-plt = function(z, w){
-  ggplot(z, aes(x=as.factor(year), y=value))+
+pltk = function(z, w){
+  ggplot(z, aes(x=year, y=value))+
     geom_line(aes(group = treat, col = treat), size = 1)+
     geom_point(aes(col = treat), size = 3)+
+    scale_color_manual(values = eqm)+
     theme_bw()+
     ggtitle(paste("Kurtosis", w))+
     theme(axis.text.x = element_text(angle=90))
 }
 
-plt(ndvi, "NDVI")
-plt(evi, "EVI")
-plt(ndii, "NDII")
-plt(vig, "VIG")
+pltk(ndvi, "NDVI")
+pltk(evi, "EVI")
+pltk(ndii, "NDII")
+pltk(vig, "VIG")
 
 #Save dataframe of tests
 colnames(land_sks)[4] = "skewness"
@@ -95,7 +101,7 @@ df = full_join(land_sks, land_curt, by = "id")
 df = df %>% 
   separate(id, c("index", "treat", "year"), sep = "_")
 
-write.table(df, file = "skewness_kurtosis_landsat.csv", sep = ",", row.names = F)
+#write.table(df, file = "skewness_kurtosis_landsat.csv", sep = ",", row.names = F)
 
 
 
