@@ -14,20 +14,23 @@ library(ggpubr)
 library(ggridges)
 
 #Data ======================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-df = read.csv("Landast_indexs_all by plot.csv", sep = ',')
-df$data = as.character(df$data)
+df = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
+df$year = as.character(df$year)
 
-df2 = melt(df)
-colnames(df2) = c("year", "parcela", "dist","index","value")
+df$year = substr(df$year, 1,4)
+
+#df2 = melt(df)
+#colnames(df2) = c("year", "treat", "dist","index","value")
 
 #Filter to get regeneration
-df2 = df2 %>% 
-  filter(year > 2012)
+df2 = df
+#df2 = df %>% 
+ # filter(year > 2012)
 
 evi = df2 %>%
-filter(index == 'evi')
+filter(index == 'evi2')
 
 ndvi = df2 %>%
   filter(index == 'ndvi')
@@ -41,15 +44,15 @@ ndii = df2 %>%
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 
 
-a = ggplot(evi, aes(x = value, y = year, fill=parcela)) +
+a = ggplot(evi, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
-  facet_wrap(~index, scales="free") +
+  facet_wrap(~index, ncol = 4, scales="free") +
   theme_minimal()
 
 land1 = ggpar(a, palette = eqm)
 land1
 
-a = ggplot(ndvi, aes(x = value, y = year, fill=parcela)) +
+a = ggplot(ndvi, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
@@ -57,7 +60,7 @@ a = ggplot(ndvi, aes(x = value, y = year, fill=parcela)) +
 land2 = ggpar(a, palette = eqm)
 land2
 
-a = ggplot(vig, aes(x = value, y = year, fill=parcela)) +
+a = ggplot(vig, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
@@ -65,7 +68,7 @@ a = ggplot(vig, aes(x = value, y = year, fill=parcela)) +
 land3 = ggpar(a, palette = eqm)
 land3
 
-a = ggplot(ndii, aes(x = value, y = year, fill=parcela)) +
+a = ggplot(ndii, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
@@ -89,9 +92,9 @@ land
 #NDVI
 res1 = df2 %>%
   filter(index == 'ndvi') %>% 
-  filter(parcela != 'controle')
+  filter(treat != 'controle')
 
-a = ggplot(res1, aes(x = value, y = year, fill=parcela)) +
+a = ggplot(res1, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
@@ -102,9 +105,9 @@ res1
 #NDII
 res2 = df2 %>%
   filter(index == 'ndii') %>% 
-  filter(parcela != 'controle')
+  filter(treat != 'controle')
 
-a = ggplot(res2, aes(x = value, y = year, fill=parcela)) +
+a = ggplot(res2, aes(x = value, y = year, fill=treat)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
