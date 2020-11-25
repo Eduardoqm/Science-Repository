@@ -21,13 +21,10 @@ df$year = as.character(df$year)
 
 df$year = substr(df$year, 1,4)
 
-#df2 = melt(df)
-#colnames(df2) = c("year", "treat", "dist","index","value")
-
 #Filter to get regeneration
-df2 = df
-#df2 = df %>% 
- # filter(year > 2012)
+#df2 = df
+df2 = df %>% 
+  filter(year > 2000)
 
 evi = df2 %>%
 filter(index == 'evi2')
