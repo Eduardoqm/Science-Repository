@@ -111,3 +111,71 @@ a = ggplot(res2, aes(x = value, y = year, fill=treat)) +
 
 res2 = ggpar(a, palette = eqm)
 res2
+
+#BONUS - BOXPLOTS and Models
+ggplot(evi, aes(x = year, y = value, fill=treat)) +
+  geom_boxplot(alpha = 0.7) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))+
+  scale_fill_manual(values = eqm)
+
+ggplot(evi, aes(x = year, y = value, color=treat)) +
+  geom_smooth(aes(group=treat), alpha = 0.7) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90))+
+  scale_color_manual(values = eqm)
+
+
+
+
+a = ggplot(ndvi, aes(x = year, y = value, fill=treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+land2 = ggpar(a, palette = eqm)
+land2
+
+a = ggplot(vig, aes(x = value, y = year, fill=treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+land3 = ggpar(a, palette = eqm)
+land3
+
+a = ggplot(ndii, aes(x = value, y = year, fill=treat)) +
+  geom_density_ridges(alpha = 0.35) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()
+
+land4 = ggpar(a, palette = eqm)
+land4
+
+
+land = ggarrange(land1 + rremove("xlab"),
+                 land2 + rremove("xlab") + rremove("ylab"),
+                 land3 + rremove("xlab") + rremove("ylab"),
+                 land4 + rremove("xlab") + rremove("ylab"),
+                 common.legend = TRUE,
+                 legend="bottom",
+                 ncol = 4, nrow = 1)
+
+land
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
