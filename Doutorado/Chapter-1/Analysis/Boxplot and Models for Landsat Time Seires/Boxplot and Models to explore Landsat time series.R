@@ -30,9 +30,9 @@ vig = df %>%
 ndii = df %>%
   filter(index == 'ndii')
 
+#BOXPLOTS and Models =========================================================================
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 
-#BOXPLOTS and Models =========================================================================
 ggplot(evi, aes(x = year, y = value, fill=treat)) +
   geom_boxplot(alpha = 0.7) +
   theme_minimal()+
