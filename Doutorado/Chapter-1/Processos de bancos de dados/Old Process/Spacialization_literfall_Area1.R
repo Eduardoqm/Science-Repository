@@ -5,7 +5,7 @@ library(ggplot2); library(reshape2); library(dplyr);
 library(tidyr); library(rgdal); library(raster)
 
 #Fire data -----------------------------------------------------------------------------------
-setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Tanguro Parcela')
+setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Area1-plot/Tanguro Parcela')
 lit <- read.csv("1_master_liteira_area_1_jun2019.csv", header = TRUE, sep = ",")
 #View(lit)
 
@@ -21,7 +21,7 @@ lit2 = lit %>%
 colnames(lit2) = c("ID", "litt_peso")
 
 #Shape do input data --------------------------------------------------------------------------
-grid <- readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1_AA")
+grid <- readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes/Grid_Area1",layer="Grid_Area1_AA")
 grid@data$n = c(1:651)
 
 master = merge(grid@data, lit2, by = "ID", all.x = T)
