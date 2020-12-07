@@ -33,7 +33,7 @@ cls5 = img #Soy/Cotton double crop rotation
 cls5[cls5 != 5] = 0; cls5[cls5 == 5] = 1
 
 cls6 = img #Soy/Corn double crop roation
-cls6[cls6 != 6] = 0; cls6[cls6 == 6] = 1
+cls6[cls != 6] = 0; cls6[cls == 6] = 1
 
 
 #Extracting data
