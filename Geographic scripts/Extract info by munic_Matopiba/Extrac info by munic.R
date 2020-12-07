@@ -49,7 +49,7 @@ colnames(c4) = c("muni_id", "class4")
 colnames(c5) = c("muni_id", "class5")
 colnames(c6) = c("muni_id", "class6")
 
-muni2@data = cbind(muni2@data, c1, c2, c3, c4, c5)
+muni2@data = cbind(muni2@data, c1, c2, c4, c5, c6)
 
 
 

@@ -33,7 +33,7 @@ cls5 = img #Soy/Cotton double crop rotation
 cls5[cls5 != 5] = 0; cls5[cls5 == 5] = 1
 
 cls6 = img #Soy/Corn double crop roation
-cls6[cls != 6] = 0; cls6[cls == 6] = 1
+cls6[cls6 != 6] = 0; cls6[cls6 == 6] = 1
 
 
 #Extracting data
@@ -49,7 +49,7 @@ colnames(c4) = c("muni_id", "class4")
 colnames(c5) = c("muni_id", "class5")
 colnames(c6) = c("muni_id", "class6")
 
-muni2@data = cbind(muni2@data, c1, c2, c3, c4, c5)
+muni2@data = cbind(muni2@data, c1, c2, c4, c5, c6)
 
 
 
