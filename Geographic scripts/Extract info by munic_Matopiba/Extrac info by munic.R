@@ -4,7 +4,7 @@ library(raster)
 library(rgdal)
 library(tidyverse)
 
-#Load data ========================================
+#Load data ==================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Programas/R/Science-Repository/Geographic scripts/Extract info by munic_Matopiba")
 
 img = raster("spera_latlong_2016.tif")
@@ -12,14 +12,10 @@ img = raster("spera_latlong_2016.tif")
 muni = readOGR("PAM_2019.csv.shp")
 
 
-#Make tests with toy ========================================================================
-#Reduce polygons to Tocantins
-muni2 = muni[1:139,]
+#Create column to id munic in shape data ====================================================
+muni@data$muni_id = c(1:length(muni$MUNI))
 
-#Create column to id munic in shape data
-muni2@data$muni_id = c(1:length(muni2$MUNI))
-
-#Separete Spera data in binary raster do wich class
+#Separete Spera data in binary raster do wich class =========================================
 cls1 = img #Soy single cropped
 cls1[cls1 != 1] = 0
 
@@ -36,13 +32,14 @@ cls6 = img #Soy/Corn double crop roation
 cls6[cls6 != 6] = 0; cls6[cls6 == 6] = 1
 
 
-#Extracting data
+#Extracting data ============================================================================
 c1 = raster::extract(cls1, muni2, na.rm = T, df = T, fun = sum)
 c2 = raster::extract(cls2, muni2, na.rm = T, df = T, fun = sum)
 c4 = raster::extract(cls4, muni2, na.rm = T, df = T, fun = sum)
 c5 = raster::extract(cls5, muni2, na.rm = T, df = T, fun = sum)
 c6 = raster::extract(cls6, muni2, na.rm = T, df = T, fun = sum)
 
+#Bind classes data with vector data =========================================================
 colnames(c1) = c("muni_id", "class1")
 colnames(c2) = c("muni_id", "class2")
 colnames(c4) = c("muni_id", "class4")
@@ -51,7 +48,7 @@ colnames(c6) = c("muni_id", "class6")
 
 muni2@data = cbind(muni2@data, c1, c2, c4, c5, c6)
 
-
+#Cleaning vector data =======================================================================
 
 
 
