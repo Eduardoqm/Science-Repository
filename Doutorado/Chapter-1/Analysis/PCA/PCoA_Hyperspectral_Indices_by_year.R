@@ -79,14 +79,19 @@ library(vegan)
 veg = vegdist(p2010c, "bray")
 res = pcoa(veg)
 
-view(res$values)
+#view(res$values)
 biplot(res)
 
 pcoa2010 = as.data.frame(res$vectors[,c(1,2)])
 pcoa2010$treat = p2010$Parcela
 
+eqm = c("orange", "red", "blue")
+
 ggplot(pcoa2010, aes(x=Axis.1, y=Axis.2, col = treat))+
-  geom_point()
+  geom_point()+
+  ggtitle("PCoA 2010")+
+  scale_color_manual(values = eqm)+
+  theme_light()
 
 
 
