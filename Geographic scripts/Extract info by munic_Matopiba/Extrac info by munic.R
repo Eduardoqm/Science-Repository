@@ -37,4 +37,21 @@ cls6[cls != 6] = 0; cls6[cls == 6] = 1
 
 
 #Extracting data
-muni_c1 = extract(cls1, muni2, na.rm = T, df = T)
+c1 = raster::extract(cls1, muni2, na.rm = T, df = T, fun = sum)
+c2 = raster::extract(cls2, muni2, na.rm = T, df = T, fun = sum)
+c4 = raster::extract(cls4, muni2, na.rm = T, df = T, fun = sum)
+c5 = raster::extract(cls5, muni2, na.rm = T, df = T, fun = sum)
+c6 = raster::extract(cls6, muni2, na.rm = T, df = T, fun = sum)
+
+colnames(c1) = c("muni_id", "class1")
+colnames(c2) = c("muni_id", "class2")
+colnames(c4) = c("muni_id", "class4")
+colnames(c5) = c("muni_id", "class5")
+colnames(c6) = c("muni_id", "class6")
+
+muni2@data = cbind(muni2@data, c1, c2, c3, c4, c5)
+
+
+
+
+
