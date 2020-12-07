@@ -32,11 +32,11 @@ cls6[cls6 != 6] = 0; cls6[cls6 == 6] = 1
 
 
 #Extracting data ============================================================================
-c1 = raster::extract(cls1, muni2, na.rm = T, df = T, fun = sum)
-c2 = raster::extract(cls2, muni2, na.rm = T, df = T, fun = sum)
-c4 = raster::extract(cls4, muni2, na.rm = T, df = T, fun = sum)
-c5 = raster::extract(cls5, muni2, na.rm = T, df = T, fun = sum)
-c6 = raster::extract(cls6, muni2, na.rm = T, df = T, fun = sum)
+c1 = raster::extract(cls1, muni, na.rm = T, df = T, fun = sum)
+c2 = raster::extract(cls2, muni, na.rm = T, df = T, fun = sum)
+c4 = raster::extract(cls4, muni, na.rm = T, df = T, fun = sum)
+c5 = raster::extract(cls5, muni, na.rm = T, df = T, fun = sum)
+c6 = raster::extract(cls6, muni, na.rm = T, df = T, fun = sum)
 
 #Bind classes data with vector data =========================================================
 colnames(c1) = c("muni_id", "class1")
@@ -45,15 +45,13 @@ colnames(c4) = c("muni_id", "class4")
 colnames(c5) = c("muni_id", "class5")
 colnames(c6) = c("muni_id", "class6")
 
-muni2@data = cbind(muni2@data, c1, c2, c4, c5, c6)
+muni@data = cbind(muni@data, c1, c2, c4, c5, c6)
 
 #Cleaning vector data =======================================================================
-
-
-
+muni@data = muni@data[,c(-7,-9,-11,-13,-15)]
 
 #Export Shape ===============================================================================
-
+writeOGR(muni, layer = "Munic_Spera_2016", driver = "ESRI Shapefile")
 
 
 
