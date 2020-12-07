@@ -15,6 +15,8 @@ muni = readOGR("PAM_2019.csv.shp")
 #Make tests with toy ========================================================================
 #Reduce polygons to Tocantins
 muni2 = muni[1:139,]
+
+#Create column to id munic in shape data
 muni2@data$muni_id = c(1:length(muni2$MUNI))
 
 #Separete Spera data in binary raster do wich class
@@ -34,12 +36,5 @@ cls6 = img #Soy/Corn double crop roation
 cls6[cls != 6] = 0; cls6[cls == 6] = 1
 
 
-
-
-
-
-#Create column to id munic in shape data
-
-
 #Extracting data
-muni_ext = extract(img, muni, na.rm = T, df = T)
+muni_c1 = extract(cls1, muni2, na.rm = T, df = T)
