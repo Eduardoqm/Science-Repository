@@ -38,9 +38,29 @@ ggplot(df, aes(x=year, y=value, color = treat))+
 
 
 #Running a Generalized Additive Model =======================================================
+#NDVI
 df$year = as.numeric(df$year)
 ndvi = df %>% 
   filter(index == "ndvi")
+
+land = gam(value~s(year, by = treat), data = ndvi, method = "REML")
+
+plot(land, pages = 1)
+
+summary(land)
+
+#REML = Restricted Maximum Likelihood 
+#K =  numbers of basis function to make smooth
+
+
+
+
+
+
+
+
+
+
 
 #land = gam(value~s(year, k=16), data = ndvi, method = "REML")
 #land = gam(value~s(year), data = ndvi, method = "REML")
