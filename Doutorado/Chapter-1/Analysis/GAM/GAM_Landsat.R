@@ -44,8 +44,8 @@ ndvi = df %>%
   filter(index == "ndvi")
 
 land = gam(value~s(year, by = treat), data = ndvi, method = "REML")
-
-plot(land, pages = 1)
+#REML = Restricted Maximum Likelihood 
+#K =  numbers of basis function to make smooth
 
 summary(land)
 #---------------------------------------------------------
@@ -59,12 +59,16 @@ summary(land)
 #s(year):treatb3yr    8.951  8.999 1390.55  <2e-16 ***
 #s(year):treatcontrol 8.857  8.994   97.41  <2e-16 ***
 
-#edf values high is smoother and low is more linear
-
+#edf values high is smoother and low is more linear.
+#The Ref.df and F are test used in an ANOVA to test overall significance of the smooth.
+#p-value response of this model are significant.
 #---------------------------------------------------------
 
-#REML = Restricted Maximum Likelihood 
-#K =  numbers of basis function to make smooth
+#Plots tests
+plot(land, pages = 1)
+plot(land, pages = 1, shade = T)
+plot(land, pages = 1, shade = T, shade.col = "orange")
+plot(land, pages = 1, shade = T, shade.col = eqm)
 
 
 
