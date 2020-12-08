@@ -51,7 +51,8 @@ muni@data = cbind(muni@data, c1, c2, c4, c5, c6)
 muni@data = muni@data[,c(-7,-9,-11,-13,-15)]
 
 #Export Shape ===============================================================================
-writeOGR(muni, layer = "Munic_Spera_2016", driver = "ESRI Shapefile")
+writeOGR(muni, layer = "Munic_Spera_2016", driver = "ESRI Shapefile",
+         dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Programas/R/Science-Repository/Geographic scripts/Extract info by munic_Matopiba")
 
 
 
