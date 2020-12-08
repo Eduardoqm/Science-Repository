@@ -44,8 +44,11 @@ ndvi = df %>%
   filter(index == "ndvi")
 
 land = gam(value~s(year, by = treat), data = ndvi, method = "REML")
+#land = gam(value~s(year, k = 15, by = treat), data = ndvi, method = "REML")
+#---------------------------------------------------------
 #REML = Restricted Maximum Likelihood 
 #K =  numbers of basis function to make smooth
+#---------------------------------------------------------
 
 summary(land)
 #---------------------------------------------------------
@@ -65,10 +68,15 @@ summary(land)
 #---------------------------------------------------------
 
 #Plots tests
+x11()
 plot(land, pages = 1)
+plot(land, residuals = T, pch = 1, cex = 1, pages = 1)
 plot(land, pages = 1, shade = T)
 plot(land, pages = 1, shade = T, shade.col = "orange")
-plot(land, pages = 1, shade = T, shade.col = eqm)
+plot(land, pages = 1, shade = T, shade.col = "orange", seWithMean = T)
+plot(land, pages = 1, shade = T, shade.col = "orange", shift = coef(land)[1])
+plot(land, pages = 1, shade = T, shade.col = "orange",
+     seWithMean = T, shift = coef(land)[1])
 
 
 
@@ -80,17 +88,7 @@ plot(land, pages = 1, shade = T, shade.col = eqm)
 
 
 
-#land = gam(value~s(year, k=16), data = ndvi, method = "REML")
-#land = gam(value~s(year), data = ndvi, method = "REML")
-land = gam(value~s(year, by = treat), data = ndvi, method = "REML")
 
-
-summary(land)
-plot(land, pages = 1)
-#plot(land, residuals = T, pch = 1, cex = 1)
-
-#REML = Restricted Maximum Likelihood 
-#K =  numbers of basis function to make smooth
 
   
   
