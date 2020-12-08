@@ -48,6 +48,20 @@ land = gam(value~s(year, by = treat), data = ndvi, method = "REML")
 plot(land, pages = 1)
 
 summary(land)
+#---------------------------------------------------------
+#Parametric coefficients:
+#               Estimate Std. Error t value Pr(>|t|)    
+#(Intercept) 0.7777836  0.0001578    4930   <2e-16 *** 
+
+#Approximate significance of smooth terms:
+#                       edf Ref.df       F p-value    
+#s(year):treatb1yr    8.895  8.997 1151.65  <2e-16 ***
+#s(year):treatb3yr    8.951  8.999 1390.55  <2e-16 ***
+#s(year):treatcontrol 8.857  8.994   97.41  <2e-16 ***
+
+#edf values high is smoother and low is more linear
+
+#---------------------------------------------------------
 
 #REML = Restricted Maximum Likelihood 
 #K =  numbers of basis function to make smooth
