@@ -69,14 +69,13 @@ summary(land)
 
 #Plots tests
 x11()
-plot(land, pages = 1)
 plot(land, residuals = T, pch = 1, cex = 1, pages = 1)
+plot(land, pages = 1)
 plot(land, pages = 1, shade = T)
 plot(land, pages = 1, shade = T, shade.col = "orange")
 plot(land, pages = 1, shade = T, shade.col = "orange", seWithMean = T)
-plot(land, pages = 1, shade = T, shade.col = "orange", shift = coef(land)[1])
 plot(land, pages = 1, shade = T, shade.col = "orange",
-     seWithMean = T, shift = coef(land)[1])
+     shift = coef(land)[1]) #With values of ndvi
 
 
 
