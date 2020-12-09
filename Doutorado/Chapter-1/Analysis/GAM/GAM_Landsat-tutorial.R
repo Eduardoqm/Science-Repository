@@ -137,13 +137,21 @@ visreg(land, overlay = T)
 visreg(land, "year", overlay = T)
 visreg(land, "year", by = "treat")
 visreg(land, "year", by = "treat", overlay = T)
+
 visreg(land, "year", by = "treat", overlay = T,
        partial = F)
+
 visreg(land, "year", by = "treat", overlay = T,
-       partial = F, gg = T)
+       gg = T, partial = F)
+
+visreg(land, "year", by = "treat", overlay = T,
+       gg = T, partial = T)+
+  scale_color_manual(values = eqm)+
+  scale_fill_manual(values = eqm)
 
 
-
+visreg(land, "year", by = "treat", overlay = T,
+       partial = F, col = eqm)
 
 
 
