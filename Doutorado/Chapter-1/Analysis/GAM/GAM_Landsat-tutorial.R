@@ -168,9 +168,14 @@ visreg(land, "year", by = "treat", overlay = T,
 g = visreg(land, "year", by = "treat", overlay = T,
            partial = F)
 
-ggplot(g$fit, aes(year, visregFit, col = treat))+
-  geom_line()+
-  scale_color_manual(values = eqm)
+ggplot(g$fit, aes(year, visregFit, col = treat, fill = treat))+
+  geom_ribbon(aes(ymin=visregLwr, ymax=visregUpr), alpha=0.1) +
+  geom_line(size = 1, aplha = 0.5)+
+  scale_color_manual(values = eqm)+
+  scale_fill_manual(values = eqm)+
+  ggtitle("NDVI")+
+  ylab("Index")+
+  theme_light()
   
   
 
