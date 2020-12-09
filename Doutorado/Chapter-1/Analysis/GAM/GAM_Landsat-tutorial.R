@@ -161,7 +161,7 @@ visreg(land, "year", by = "treat", overlay = T,
 visreg(land, "year", by = "treat", overlay = T,
        partial = F,
        line = list(col=eqm),
-       fill = list(col=eqm))
+       fill = list(col=eqm), alpha = 0.9)
 
 
 
