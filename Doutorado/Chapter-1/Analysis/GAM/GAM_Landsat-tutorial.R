@@ -37,14 +37,13 @@ ggplot(df, aes(x=year, y=value, color = treat))+
   theme(axis.text.x = element_text(angle = 90))
 
 
-#Running a Generalized Additive Model =======================================================
-#NDVI
+#Running a Generalized Additive Model just to NDVI ==========================================
 df$year = as.numeric(df$year)
 ndvi = df %>% 
   filter(index == "ndvi")
 
 land = gam(value~s(year, by = treat), data = ndvi, method = "REML")
-#land = gam(value~s(year, k = 15, by = treat), data = ndvi, method = "REML")
+#land = gam(value~s(year, k = 30, by = treat), data = ndvi, method = "REML")
 #---------------------------------------------------------
 #REML = Restricted Maximum Likelihood 
 #K =  numbers of basis function to make smooth
@@ -67,7 +66,7 @@ summary(land)
 #p-value response of this model are significant.
 #---------------------------------------------------------
 
-#Plots tests
+#Plots tests ===============================================================================
 x11()
 plot(land, residuals = T, pch = 1, cex = 1, pages = 1)
 plot(land, pages = 1)
@@ -78,20 +77,77 @@ plot(land, pages = 1, shade = T, shade.col = "orange",
      shift = coef(land)[1]) #With values of ndvi
 
 
+#Model check with gam,check ================================================================
+gam.check(land)
+#--------------------------------------------------------
+#Basis dimension (k) checking results. Low p-value (k-index<1) may
+#indicate that k is too low, especially if edf is close to k'.
 
+#                       k'  edf k-index p-value    
+#s(year):treatb1yr    9.00 8.90    0.92  <2e-16 ***
+#s(year):treatb3yr    9.00 8.95    0.92  <2e-16 ***
+#s(year):treatcontrol 9.00 8.86    0.92  <2e-16 ***
 
+#Here the p-value need to be >0.05, so I need to increase the k value of my model
+#--------------------------------------------------------
 
+#Update GAM with increase k value
+land = gam(value~s(year, k = 33, by = treat), data = ndvi, method = "REML")
 
+X11()
+plot(land, pages = 1, shade = T, shade.col = "orange",
+     shift = coef(land)[1]) #With values of ndvi
 
+summary(land)
 
+gam.check(land)
+#--------------------------------------------------------
+#Basis dimension (k) checking results. Low p-value (k-index<1) may
+#indicate that k is too low, especially if edf is close to k'.
 
+#                       k'  edf k-index p-value
+#s(year):treatb1yr    32.0 31.7    1.01    0.66
+#s(year):treatb3yr    32.0 31.8    1.01    0.70
+#s(year):treatcontrol 32.0 31.3    1.01    0.68
 
-
-
-
+#Now p-value is >0.05
+#--------------------------------------------------------
   
-  
-  
-  
+#Checking concurvity ======================================================================
+concurvity(land, full = T)
+concurvity(land, full = F)
+#--------------------------------------------------------
+#First we test with full = TRUE, if some value be over 0.8
+#we use full = FALSE to see the matrix
+
+#Just be atention in the interpretion for models with values over 0.8
+#--------------------------------------------------------
+
+#Test new plots ============================================================================
+#First plot form
+X11()
+plot(land, pages = 1, shade = T, shade.col = "orange",
+     shift = coef(land)[1]) #With values of ndvi
+
+#New form
+library(visreg)
+
+visreg(land)
+visreg(land, overlay = T)
+visreg(land, "year", overlay = T)
+visreg(land, "year", by = "treat")
+visreg(land, "year", by = "treat", overlay = T)
+
+
+
+
+
+
+
+
+
+
+
+
   
   
