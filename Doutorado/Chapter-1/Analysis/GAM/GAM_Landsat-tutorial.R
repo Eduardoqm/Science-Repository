@@ -164,8 +164,24 @@ visreg(land, "year", by = "treat", overlay = T,
        fill = list(col="gray"))
 
 
+#Transform in a GGPLOT =====================================================================
+g = visreg(land, "year", by = "treat", overlay = T,
+           partial = F)
 
-
-
+ggplot(g$fit, aes(year, visregFit, col = treat))+
+  geom_line()+
+  scale_color_manual(values = eqm)
   
   
+
+
+
+
+
+
+
+
+
+
+
+
