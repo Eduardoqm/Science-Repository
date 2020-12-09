@@ -178,7 +178,12 @@ ggplot(g$fit, aes(year, visregFit, col = treat, fill = treat))+
   theme_light()
   
   
-
+#Comparioson GAM and GGPLOT GAM ============================================================
+ggplot(ndvi, aes(x=year, y=value, color = treat))+
+  geom_smooth(aes(group = treat))+
+  theme_light()+
+  scale_color_manual(values = eqm)+
+  theme(axis.text.x = element_text(angle = 90))
 
 
 
