@@ -137,6 +137,10 @@ visreg(land, overlay = T)
 visreg(land, "year", overlay = T)
 visreg(land, "year", by = "treat")
 visreg(land, "year", by = "treat", overlay = T)
+visreg(land, "year", by = "treat", overlay = T,
+       partial = F)
+visreg(land, "year", by = "treat", overlay = T,
+       partial = F, gg = T)
 
 
 
