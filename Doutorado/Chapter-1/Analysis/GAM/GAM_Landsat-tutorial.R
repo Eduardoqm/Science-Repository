@@ -1,5 +1,5 @@
 ######################################################
-# Generalized Additive Models to Landsat time series #
+# Generalized Additive Models tutorial and tests     #
 #                                                    #
 # Eduardo Q Marques 08-12-2020                       #
 ######################################################
