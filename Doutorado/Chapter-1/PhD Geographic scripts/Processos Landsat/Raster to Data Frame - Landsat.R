@@ -15,10 +15,10 @@ library(rasterVis)
 
 #Open data ------------------------------------------------------------------------------
 #Vector to extract information
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
 
 #Raster data directory
-setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All Indices")
+setwd("~/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat")
 
 #Process data ---------------------------------------------------------------------------
 #Make a list of rasters
@@ -56,8 +56,8 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
     drop_na(treat))
 
 #Save the converted images --------------------------------------------------------------
-#setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
-#write.csv(dfT, "Landsat_indexs_all_xy.csv")
+#setwd("~/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+#write.csv(dfT, "Landsat_indexs_all_xy.csv", row.names = F)
 
 #Test Results ============================================================================
 df2 = dfT%>%

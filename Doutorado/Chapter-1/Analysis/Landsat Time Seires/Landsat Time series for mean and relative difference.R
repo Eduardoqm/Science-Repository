@@ -74,7 +74,7 @@ ggplot(df_diff2, aes(x=Ano, y=Valor2, color = Tratamento))+
             fill = "blue", color = NA, alpha = 0.009)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
   facet_grid(rows = vars(Indice), scales = "free")+
-  labs(y = "DiferenÃ§a em relaÃ§Ã£o o Controle (%)")+
+  labs(y = "Diferença em relação o Controle (%)")+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed")+
   scale_color_manual(values = eqm)+

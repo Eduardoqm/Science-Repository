@@ -7,12 +7,12 @@ library(raster)
 
 #TM =============================================================================================
 #List of satellite bands (menos a banda 6)
-list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
-list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
-list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
-list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
-list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
-list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
+list1 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band1.tif$", full.names=TRUE,recursive=TRUE)
+list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
+list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
+list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
+list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
+list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop5_1985-2011", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
 
 #Convert data into rasterbrick for faster processing
 b1 <- brick(stack(list1))
@@ -71,7 +71,7 @@ ndii_names = paste(name2, name1, sep = "-", collapse = NULL)
 
 
 #Save
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All Indices")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat")
 
 for (i in 1:length(evi2)) {
   writeRaster(evi2[[i]], evi2_names[[i]], format = "GTiff", bylayer = FALSE)
@@ -92,12 +92,12 @@ for (i in 1:length(ndii)) {
 
 #OLI=============================================================================================
 #List of satellite bands(banda 2 ate a banda 7 sao equivalentes as bandas do landsat5)
-list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
-list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
-list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
-list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
-list6 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band6.tif$", full.names=TRUE,recursive=TRUE)
-list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
+list2 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band2.tif$", full.names=TRUE,recursive=TRUE)
+list3 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band3.tif$", full.names=TRUE,recursive=TRUE)
+list4 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band4.tif$", full.names=TRUE,recursive=TRUE)
+list5 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band5.tif$", full.names=TRUE,recursive=TRUE)
+list6 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band6.tif$", full.names=TRUE,recursive=TRUE)
+list7 <- list.files(path="C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Landsat/landsatcrop8", pattern = "band7.tif$", full.names=TRUE,recursive=TRUE)
 
 #Convert data into rasterbrick for faster processing
 b2 <- brick(stack(list2))
@@ -157,7 +157,7 @@ ndii_names = paste(name2, name1, sep = "-", collapse = NULL)
 
 
 #Save
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat/All Indices")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Landsat")
 
 for (i in 1:length(evi2_b)) {
   writeRaster(evi2_b[[i]], evi2_names[[i]], format = "GTiff", bylayer = FALSE)
