@@ -1,6 +1,7 @@
 #Density of Landsat Index all data
 
 #Eduardo Q Marques 25-11-2020
+#Updated in 26-01-2021
 
 #Include the new dataframe transformation for Landsat
 
@@ -12,14 +13,32 @@ library(GGally)
 library(ggplot2)
 library(ggpubr)
 library(ggridges)
+library(extrafont)
+font_import()
+loadfonts(device = "win", quiet = TRUE)
 
-#Data ======================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
-
+#Data ============================================================
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 df = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
-df$year = as.character(df$year)
 
+#Modify Data =====================================================
 df$year = substr(df$year, 1,4)
+df$index = as.character(df$index)
+df$treat = as.character(df$treat)
+
+#Modify elements of dataframe
+df$index[df$index == "evi2"] <- c("EVI")
+df$index[df$index == "ndvi"] <- c("NDVI")
+df$index[df$index == "ndii"] <- c("NDII")
+df$index[df$index == "vig"] <- c("VIG")
+
+df$treat[df$treat == "control"] <- c("Controle")
+df$treat[df$treat == "b3yr"] <- c("B3yr")
+df$treat[df$treat == "b1yr"] <- c("B1yr")
+
+eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
+
+colnames(df)[8] = c("Parcela")
 
 #Filter to get regeneration
 df2 = df
@@ -27,50 +46,56 @@ df2 = df
 #  filter(year > 2000)
 
 evi = df2 %>%
-filter(index == 'evi2')
+filter(index == 'EVI')
 
 ndvi = df2 %>%
-  filter(index == 'ndvi')
+  filter(index == 'NDVI')
 
 vig = df2 %>%
-  filter(index == 'vig')
+  filter(index == 'VIG')
 
 ndii = df2 %>%
-  filter(index == 'ndii')
-
-eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
+  filter(index == 'NDII')
 
 
-a = ggplot(evi, aes(x = value, y = year, fill=treat)) +
+land1 = ggplot(evi, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
-  theme_minimal()
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  labs(x = "")+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-land1 = ggpar(a, palette = eqm)
 land1
 
-a = ggplot(ndvi, aes(x = value, y = year, fill=treat)) +
+land2 = ggplot(ndvi, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
-  theme_minimal()
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  labs(x = "", y = "")+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-land2 = ggpar(a, palette = eqm)
 land2
 
-a = ggplot(vig, aes(x = value, y = year, fill=treat)) +
+land3 = ggplot(vig, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
-  theme_minimal()
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  labs(x = "", y = "")+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-land3 = ggpar(a, palette = eqm)
 land3
 
-a = ggplot(ndii, aes(x = value, y = year, fill=treat)) +
+land4 = ggplot(ndii, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
-  theme_minimal()
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  labs(x = "", y = "")+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-land4 = ggpar(a, palette = eqm)
 land4
 
 
@@ -82,6 +107,7 @@ land = ggarrange(land1 + rremove("xlab"),
                  legend="bottom",
                  ncol = 4, nrow = 1)
 
+
 land
 
 
@@ -89,9 +115,9 @@ land
 #NDVI
 res1 = df2 %>%
   filter(index == 'ndvi') %>% 
-  filter(treat != 'controle')
+  filter(Parcela != 'controle')
 
-a = ggplot(res1, aes(x = value, y = year, fill=treat)) +
+a = ggplot(res1, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
@@ -102,9 +128,9 @@ res1
 #NDII
 res2 = df2 %>%
   filter(index == 'ndii') %>% 
-  filter(treat != 'controle')
+  filter(Parcela != 'controle')
 
-a = ggplot(res2, aes(x = value, y = year, fill=treat)) +
+a = ggplot(res2, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
