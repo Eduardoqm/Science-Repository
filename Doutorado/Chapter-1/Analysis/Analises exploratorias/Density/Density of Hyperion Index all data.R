@@ -25,7 +25,7 @@ struc = df %>%
 
 
 a = ggplot(struc, aes(x = value, y = year, fill=parcela)) +
-  geom_density_ridges(alpha = 0.35) +
+  geom_density_ridges(alpha = 0.30) +
   facet_wrap(~index, scales="free") +
   theme_minimal()
 
