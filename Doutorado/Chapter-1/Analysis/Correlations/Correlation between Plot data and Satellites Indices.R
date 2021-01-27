@@ -36,7 +36,9 @@ litt = litt %>%
   unite("id", c("parcela", "year"), sep = "_")
 litt2 = litt[,c(1,5)]
 
-
+#Join Data ---------------------------------------------------------
+df3 = full_join(df2, lai2, by = "id")
+df4 = full_join(df3, litt2, by = "id")
 
 
 
