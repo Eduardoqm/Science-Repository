@@ -40,6 +40,10 @@ litt2 = litt[,c(1,5)]
 df3 = full_join(df2, lai2, by = "id")
 df4 = full_join(df3, litt2, by = "id")
 
+#Plot correlation --------------------------------------------------
+ggplot(df4, aes(x=value, y=lai))+
+  geom_point()+
+  facet_wrap(~index)
 
 
 
