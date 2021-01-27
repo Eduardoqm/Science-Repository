@@ -12,7 +12,7 @@ library(ggcorrplot)
 library(ggpubr)
 
 #Load data ==========================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 
 hy = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
