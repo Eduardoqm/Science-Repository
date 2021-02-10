@@ -66,7 +66,7 @@ df_b1yr$value = df_b1yr$value - df_crt$value
 df_diff = rbind(df_b3yr, df_b1yr)
 df_diff2 = df_diff
 colnames(df_diff2) = c("Ano", "Tratamento", "Indice", "Valor")
-df_diff2$Valor2 = df_diff2$Valor*100
+df_diff2$Valor2 = df_diff2$Valor*100 #To be percentege
 
 
 ggplot(df_diff2, aes(x=Ano, y=Valor2, color = Tratamento))+
@@ -79,3 +79,33 @@ ggplot(df_diff2, aes(x=Ano, y=Valor2, color = Tratamento))+
   geom_hline(yintercept = 0, linetype = "dashed")+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
+
+#Abstract difference
+#All
+summary(df_diff2)
+
+report = function(x,y){
+  summary(df_diff2 %>% filter(Tratamento == y) %>% filter(Indice == x))
+}
+
+#NDVI
+report("NDVI", "B3yr")
+report("NDVI", "B1yr")
+
+#EVI
+report("EVI", "B3yr")
+report("EVI", "B1yr")
+
+#NDII
+report("NDII", "B3yr")
+report("NDII", "B1yr")
+
+#VIG
+report("VIG", "B3yr")
+report("VIG", "B1yr")
+
+
+
+
+
+

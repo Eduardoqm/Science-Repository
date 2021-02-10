@@ -1,4 +1,5 @@
 library(stats)
+library(cluster) 
 library(tidyverse)
 library(reshape2)
 library(FactoMineR)
@@ -49,16 +50,30 @@ df3 = na.omit(df3)
 df4 = df3[,3:16]
 df4 = scale(df4)
 df5 = cbind(df3[,1:2], df4)
+df5 = df5[,c(-2)]
+df5 = df5 %>% 
+  unite("id", "Parcela", "year", sep = "_")
+
+df6 = na.omit(df5)
 
 #Compute and visualize the distance matrix ==================================================
 distance <- get_dist(df5)
+distance <- get_dist(df6)
 #fviz_dist(distance, gradient = list(low = "blue", mid = "white", high = "red"))
 
 #Computing k-means clustering in R
-k2 <- kmeans(df, centers = 2, nstart = 25)
-str(k2)
+#k2 <- kmeans(df, centers = 2, nstart = 25)
+#str(k2)
 
+#Calculate ideal numebers of cluster (k)
+fviz_nbclust(df5, kmeans, method = "silhouette")
+fviz_nbclust(df6, kmeans, method = "silhouette")
 
+#Final results vizualization
+final <- kmeans(df5, 2, nstart = 25)
+print(final)
+
+fviz_cluster(final, data = df)
 
 
 
