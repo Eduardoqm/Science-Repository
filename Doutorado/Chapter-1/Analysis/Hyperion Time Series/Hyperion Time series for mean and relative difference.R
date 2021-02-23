@@ -42,7 +42,12 @@ df_m = df %>%
 df_m2 = df_m #To not have problem in diff...I dont know why!
 colnames(df_m2) = c("Ano", "Tratamento", "Indice", "Valor")
 
-ggplot(df_m2, aes(x=Ano, y=Valor, color = Tratamento))+
+
+
+df_m2 %>% 
+  filter(Indice != "ARI") %>% 
+  filter(Indice != "EVI") %>% 
+  ggplot(aes(x=Ano, y=Valor, color = Tratamento))+
   #geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
    #         fill = "blue", color = NA, alpha = 0.003)+
   #annotate("text", x = 2007.5, y = 0.3, size = 4, label = "Fire period")+
@@ -61,43 +66,55 @@ df_crt = filter(df_m, parcela == "Controle")
 df_b3yr = filter(df_m, parcela == "B3yr")
 df_b1yr = filter(df_m, parcela == "B1yr")
 
-df_b3yr$value = df_b3yr$value - df_crt$value
-df_b1yr$value = df_b1yr$value - df_crt$value
+df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
+df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
+#df_diff2 = df_diff
+colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
+#df_diff2$Valor2 = 100 - (df_diff2$Valor)
+
+
+#df_crt = filter(df_m, parcela == "Controle")
+#df_b3yr = filter(df_m, parcela == "B3yr")
+#df_b1yr = filter(df_m, parcela == "B1yr")
+
+#df_b3yr$value = df_b3yr$value - df_crt$value
+#df_b1yr$value = df_b1yr$value - df_crt$value
+#df_diff = rbind(df_b3yr, df_b1yr)
 
 #Percent Calculation
-df_diff2 = df_diff
+#df_diff2 = df_diff
 
 #Normalized indices
-normal = df_diff2 %>% 
-  filter(index != "ARI") %>% 
-  filter(index != "WBI") %>% 
-  filter(index != "PSSR")
+#normal = df_diff2 %>% 
+#  filter(index != "ARI") %>% 
+#  filter(index != "WBI") %>% 
+#  filter(index != "PSSR")
 
-normal$Valor2 = normal$value*100 #To be percentege
+#normal$Valor2 = normal$value*100 #To be percentege
 
 #No normalized indices
-anormal = df_diff2 %>% 
-  filter(index %in% c("ARI", "WBI", "PSSR"))
+#anormal = df_diff2 %>% 
+#  filter(index %in% c("ARI", "WBI", "PSSR"))
 
-anor_crt = df_crt %>% 
-  filter(index %in% c("ARI", "WBI", "PSSR"))
+#anor_crt = df_crt %>% 
+#  filter(index %in% c("ARI", "WBI", "PSSR"))
 
-anor_crt = rbind(anor_crt, anor_crt)
+#anor_crt = rbind(anor_crt, anor_crt)
 
-anormal$Valor2 = (anormal$value*100)/anor_crt$value
+#anormal$Valor2 = (anormal$value*100)/anor_crt$value
 
-df_diff3 = rbind(normal, anormal)
-colnames(df_diff3) = c("Ano", "Tratamento", "Indice", "Valor", "Valor2")
+#df_diff3 = rbind(normal, anormal)
+#colnames(df_diff3) = c("Ano", "Tratamento", "Indice", "Valor", "Valor2")
 
 #Adjust to plot
-df_diff3 = df_diff3 %>% 
+df_diff3 = df_diff %>% 
   filter(Indice != "ARI") %>% 
   filter(Indice != "EVI")
 #df$Indice[df$Indice == "EVI2"] <- c("EVI")
   
 
-ggplot(df_diff3, aes(x=Ano, y=Valor2, color = Tratamento))+
+ggplot(df_diff3, aes(x=Ano, y=Valor, color = Tratamento))+
   #geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
             #fill = "blue", color = NA, alpha = 0.009)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
@@ -123,8 +140,8 @@ report("PSSR", "B3yr")
 report("PSSR", "B1yr")
 
 #EVI
-report("EVI", "B3yr")
-report("EVI", "B1yr")
+report("RENDVI", "B3yr")
+report("RENDVI", "B1yr")
 
 #NDII
 report("NDII", "B3yr")

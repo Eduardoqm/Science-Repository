@@ -61,15 +61,22 @@ df_crt = filter(df_m, treat == "Controle")
 df_b3yr = filter(df_m, treat == "B3yr")
 df_b1yr = filter(df_m, treat == "B1yr")
 
-df_b3yr$value = df_b3yr$value - df_crt$value
-df_b1yr$value = df_b1yr$value - df_crt$value
+df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
+df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
-df_diff2 = df_diff
-colnames(df_diff2) = c("Ano", "Tratamento", "Indice", "Valor")
-df_diff2$Valor2 = df_diff2$Valor*100 #To be percentege
+#df_diff2 = df_diff
+colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
+#df_diff2$Valor2 = 100 - (df_diff2$Valor)
+
+#df_b3yr$value = df_b3yr$value - df_crt$value
+#df_b1yr$value = df_b1yr$value - df_crt$value
+#df_diff = rbind(df_b3yr, df_b1yr)
+#df_diff2 = df_diff
+#colnames(df_diff2) = c("Ano", "Tratamento", "Indice", "Valor")
+#df_diff2$Valor2 = df_diff2$Valor*100 #To be percentege
 
 
-ggplot(df_diff2, aes(x=Ano, y=Valor2, color = Tratamento))+
+ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
             fill = "blue", color = NA, alpha = 0.009)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
@@ -82,10 +89,10 @@ ggplot(df_diff2, aes(x=Ano, y=Valor2, color = Tratamento))+
 
 #Abstract difference
 #All
-summary(df_diff2)
+summary(df_diff)
 
 report = function(x,y){
-  summary(df_diff2 %>% filter(Tratamento == y) %>% filter(Indice == x))
+  summary(df_diff %>% filter(Tratamento == y) %>% filter(Indice == x))
 }
 
 #NDVI

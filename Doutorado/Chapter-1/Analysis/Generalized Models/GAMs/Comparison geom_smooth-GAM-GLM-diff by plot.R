@@ -70,7 +70,7 @@ ggplot(a$fit, aes(year, visregFit, col = treat))+
   theme_light()
 
 #GLM ===============================================================
-ndvi_glm = glm(value~year+treat, data = ndvi, family=poisson())
+ndvi_glm = glm(value~year+treat, data = ndvi, family=quasibinomial(link="logit"))
 
 summary(ndvi_glm)
 plot(ndvi_glm)
