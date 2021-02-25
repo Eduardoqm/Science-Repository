@@ -1,14 +1,14 @@
 #Organize Litterfall by Edge and Core on Area-1
 
-#Eduardo Q Marques 13/02/2020 Update: 13-10-2020
+#Eduardo Q Marques 13/02/2020 Update: 25-02-2021
 
 library(tidyverse)
 library(reshape2)
 
 #Data Bank ==================================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Area1-plot/Tanguro Parcela")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Lai e Liteira")
 
-lai = read.csv("MASTER_LAI_Area1_ABC_out2017.csv", sep = ",", header = TRUE)
+lai = read.csv("MASTER_LAI_Area1_ABC_fev2020.csv", sep = ",", header = TRUE)
 
 #Part 1 - Organize data =====================================================================
 lai = lai[,c(1,3,11,21)]
@@ -67,11 +67,11 @@ colnames(lai)[3] = c("lai")
 colnames(lai)[4] = c("year")
 
 #Part 3 - Export data as CSV ================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 #write.table(lai, "LAI_tang.csv", sep = ",")
 
-#write.table(lai, "LAI_full_tang.csv", sep = ",")
+#write.table(lai, "LAI_full_tang.csv", sep = ",", row.names = F)
 
 
 
