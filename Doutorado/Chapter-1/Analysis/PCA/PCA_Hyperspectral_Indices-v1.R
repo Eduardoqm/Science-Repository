@@ -2,6 +2,7 @@
 #PCA Hyperspectral Indices    #
 #                             #
 #Eduardo Q Marques 05-10-2020 #
+#Update in 01-03-2021         #
 #=============================#
 
 
@@ -12,7 +13,7 @@ library(FactoMineR)
 library(factoextra)
 
 #Data =============================================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
 
@@ -45,18 +46,18 @@ rendvi = transp("rendvi");colnames(rendvi) = c("rendvi")
 nirv = transp("nirv"); colnames(nirv) = c("nirv")
 
 #Stract treatmant name
-treat = df[c(1:11781),]; treat = treat[,c(7,8)]
+treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
 
 #Join everything
-df3 = cbind(treat$parcela,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
-colnames(df3)[1] = "Parcela"
+df3 = cbind(treat$year, treat$parcela,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+colnames(df3)[1:2] = c("Ano", "Parcela")
 
 
 #PCA Analysis =====================================================================================
 #Tutorial video
 #Select numeric data
 df3 = na.omit(df3)
-df4 = df3[,c(-1)]
+df4 = df3[,c(-1, -2)]
 
 #Standart scale, but you dont need this step if use FactorMiner to do PCA
 #df4 = scale(df4)
@@ -78,12 +79,51 @@ ind = get_pca_ind(df4_pca)
 #Plot PCA variables
 fviz_pca_var(df4_pca, col.var = "red")
 
-#Plot cluster treatmant
+#Plot cluster treatmant -------------------------------------------------------------------
+grp = as.factor(df3[,c(2)])
+
+fviz_pca_biplot(df4_pca, habillage = grp,
+                #addEllipses=TRUE,
+                #ellipse.level=0.99,
+                col.var = "black",
+                geom.ind = c("point"),
+                title = "Hyperspectral Indices by plots")+
+  scale_color_manual(values=c("orange", "red", "blue"))
+
+#Plot cluster year ------------------------------------------------------------------------
 grp = as.factor(df3[,c(1)])
 
 fviz_pca_biplot(df4_pca, habillage = grp,
+                #addEllipses=TRUE,
+                #ellipse.level=0.99,
                 col.var = "black",
                 geom.ind = c("point"),
-                title = "Hyperspectral Indices")
+                title = "Hyperspectral Indices by years")
+
+#Plot cluster experiment moment -----------------------------------------------------------
+df3$cond[df3$Ano == 2004] <- "Pre-Fire"
+df3$cond[df3$Ano == 2005] <- "Fire"
+df3$cond[df3$Ano == 2006] <- "Fire"
+df3$cond[df3$Ano == 2008] <- "Fire"
+df3$cond[df3$Ano == 2010] <- "Fire"
+df3$cond[df3$Ano == 2011] <- "Fire"
+df3$cond[df3$Ano == 2012] <- "Post-Fire"
+
+grp = as.factor(df3[,c(17)])
+
+fviz_pca_biplot(df4_pca, habillage = grp,
+                #addEllipses=TRUE,
+                #ellipse.level=0.99,
+                col.var = "black",
+                geom.ind = c("point"),
+                title = "Hyperspectral Indices by experiment moment")+
+  scale_color_manual(values=c("red", "orange", "darkgreen"))
+
+
+
+
+
+
+
 
 
