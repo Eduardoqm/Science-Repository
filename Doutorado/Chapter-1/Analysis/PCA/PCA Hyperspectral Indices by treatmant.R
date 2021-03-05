@@ -29,22 +29,22 @@ transp = function(x){
   z = as.data.frame(z[,c(2)])
 }
 
-ari = transp("ari");colnames(ari) = c("ari")
-evi = transp("evi2");colnames(evi) = c("evi")
-ndvi = transp("ndvi");colnames(ndvi) = c("ndvi")
-vari = transp("vari");colnames(vari) = c("vari")
-vig = transp("vig");colnames(vig) = c("vig")
-lwvi2 = transp("lwvi2");colnames(lwvi2) = c("lwvi2")
-msi = transp("msi");colnames(msi) = c("msi")
-ndii = transp("ndii");colnames(ndii) = c("ndii")
-ndwi = transp("ndwi");colnames(ndwi) = c("ndwi")
-pssr = transp("pssr");colnames(pssr) = c("pssr")
-psri = transp("psri");colnames(psri) = c("psri")
-sipi = transp("sipi");colnames(sipi) = c("sipi")
-wbi = transp("wbi");colnames(wbi) = c("wbi")
-pri = transp("pri");colnames(pri) = c("pri")
-rendvi = transp("rendvi");colnames(rendvi) = c("rendvi")
-nirv = transp("nirv"); colnames(nirv) = c("nirv")
+ari = transp("ari");colnames(ari) = c("ARI")
+evi = transp("evi2");colnames(evi) = c("EVI")
+ndvi = transp("ndvi");colnames(ndvi) = c("NDVI")
+vari = transp("vari");colnames(vari) = c("VARI")
+vig = transp("vig");colnames(vig) = c("VIG")
+lwvi2 = transp("lwvi2");colnames(lwvi2) = c("LWVI2")
+msi = transp("msi");colnames(msi) = c("MSI")
+ndii = transp("ndii");colnames(ndii) = c("NDII")
+ndwi = transp("ndwi");colnames(ndwi) = c("NDWI")
+pssr = transp("pssr");colnames(pssr) = c("PSSR")
+psri = transp("psri");colnames(psri) = c("PSRI")
+sipi = transp("sipi");colnames(sipi) = c("SIPI")
+wbi = transp("wbi");colnames(wbi) = c("WBI")
+pri = transp("pri");colnames(pri) = c("PRI")
+rendvi = transp("rendvi");colnames(rendvi) = c("RENDVI")
+nirv = transp("nirv"); colnames(nirv) = c("NIRv")
 
 #Stract treatmant name
 treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
@@ -52,6 +52,12 @@ treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
 #Join everything
 df3 = cbind(treat$year, treat$parcela,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
 colnames(df3)[1:2] = c("Ano", "Parcela")
+
+#Change names
+df3$Parcela = as.character(df3$Parcela)
+df3$Parcela[df3$Parcela == "b1yr"] <- "B1yr"
+df3$Parcela[df3$Parcela == "b3yr"] <- "B3yr"
+df3$Parcela[df3$Parcela == "control"] <- "Controle"
 
 #Plot cluster experiment moment
 df3$cond[df3$Ano == 2004] <- "Pre-Fire"
@@ -74,10 +80,6 @@ df4_pca = PCA(df4, graph = T)
 #Extract variance values
 get_eigenvalue(df4_pca)
 
-#Extract data to plot PCA ==================================================================
-#var = get_pca_var(df4_pca)
-#ind = get_pca_ind(df4_pca)
-
 #Plot general PCAs--------------------------------------------------------------------------
 #Treatment
 grp = as.factor(df3[,c(2)])
@@ -88,6 +90,7 @@ fviz_pca_biplot(df4_pca, habillage = grp,
                 geom.ind = c("point"),
                 col.var = "black", alpha = 0.3,
                 title = NULL, legend.title = "Parcela")+
+  #xlim(-20, 20) + ylim (-20, 20)+
   scale_color_manual(values=c("orange", "red", "blue"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
@@ -100,6 +103,7 @@ fviz_pca_biplot(df4_pca, habillage = grp,
                 geom.ind = c("point"),
                 col.var = "black", alpha = 0.3,
                 title = NULL, legend.title = "Momento")+
+  #xlim(-20, 20) + ylim (-20, 20)+
   scale_color_manual(values=c("red", "orange", "blue"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
@@ -179,13 +183,3 @@ fviz_pca_biplot(fire2_pca, habillage = grp,
                 title = NULL, legend.title = "Parcela")+
   scale_color_manual(values=c( "orange", "red", "blue"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
-
-
-
-
-
-
-
-
-
-

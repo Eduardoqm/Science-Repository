@@ -2,6 +2,7 @@
 # PCA Hyperspectral Indices  by Years #
 #                                     #
 # Eduardo Q Marques 05-10-2020        #
+# Update: 05-03-2021                  #
 #=====================================#
 
 
@@ -12,7 +13,7 @@ library(FactoMineR)
 library(factoextra)
 
 #Data =============================================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
 
@@ -27,22 +28,22 @@ transp = function(x){
   z = as.data.frame(z[,c(2)])
 }
 
-ari = transp("ari");colnames(ari) = c("ari")
-evi = transp("evi2");colnames(evi) = c("evi")
-ndvi = transp("ndvi");colnames(ndvi) = c("ndvi")
-vari = transp("vari");colnames(vari) = c("vari")
-vig = transp("vig");colnames(vig) = c("vig")
-lwvi2 = transp("lwvi2");colnames(lwvi2) = c("lwvi2")
-msi = transp("msi");colnames(msi) = c("msi")
-ndii = transp("ndii");colnames(ndii) = c("ndii")
-ndwi = transp("ndwi");colnames(ndwi) = c("ndwi")
-pssr = transp("pssr");colnames(pssr) = c("pssr")
-psri = transp("psri");colnames(psri) = c("psri")
-sipi = transp("sipi");colnames(sipi) = c("sipi")
-wbi = transp("wbi");colnames(wbi) = c("wbi")
-pri = transp("pri");colnames(pri) = c("pri")
-rendvi = transp("rendvi");colnames(rendvi) = c("rendvi")
-nirv = transp("nirv"); colnames(nirv) = c("nirv")
+ari = transp("ari");colnames(ari) = c("ARI")
+evi = transp("evi2");colnames(evi) = c("EVI")
+ndvi = transp("ndvi");colnames(ndvi) = c("NDVI")
+vari = transp("vari");colnames(vari) = c("VARI")
+vig = transp("vig");colnames(vig) = c("VIG")
+lwvi2 = transp("lwvi2");colnames(lwvi2) = c("LWVI2")
+msi = transp("msi");colnames(msi) = c("MSI")
+ndii = transp("ndii");colnames(ndii) = c("NDII")
+ndwi = transp("ndwi");colnames(ndwi) = c("NDWI")
+pssr = transp("pssr");colnames(pssr) = c("PSSR")
+psri = transp("psri");colnames(psri) = c("PSRI")
+sipi = transp("sipi");colnames(sipi) = c("SIPI")
+wbi = transp("wbi");colnames(wbi) = c("WBI")
+pri = transp("pri");colnames(pri) = c("PRI")
+rendvi = transp("rendvi");colnames(rendvi) = c("RENDVI")
+nirv = transp("nirv"); colnames(nirv) = c("NIRv")
 
 #Stract treatmant name
 treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
@@ -50,6 +51,12 @@ treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
 #Join everything
 df3 = cbind(treat$parcela,treat$year,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
 colnames(df3)[1] = "Parcela"; colnames(df3)[2] = "year"
+
+#Change names
+df3$Parcela = as.character(df3$Parcela)
+df3$Parcela[df3$Parcela == "b1yr"] <- "B1yr"
+df3$Parcela[df3$Parcela == "b3yr"] <- "B3yr"
+df3$Parcela[df3$Parcela == "control"] <- "Controle"
 
 #Make data frame by year ==========================================================================
 getyear = function(x){
@@ -74,10 +81,13 @@ pcax = function(x){
   z = x[,c(-1,-2)]
   pcaz = PCA(z, graph = F)
   grp = as.factor(x[,c(1)])
-  fviz_pca_biplot(pcaz, habillage = grp,
-                  col.var = "black",
+  fviz_pca_biplot(pcaz, habillage = grp,pointshape = 19, pointsize = 2,
                   geom.ind = c("point"),
-                  title = name)
+                  col.var = "black", alpha = 0.25,
+                  title = name, legend.title = "Parcela")+
+    scale_color_manual(values=c( "orange", "red", "blue"))+
+    theme(text = element_text(family = "Times New Roman", size = 14))
+  
   
 }
 
