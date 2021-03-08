@@ -47,7 +47,7 @@ ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   theme(axis.text.x = element_text(angle = 90))+
-  scale_color_manual(values = c("#F9A602","#CF0E0E","#00AFBB"))+
+  scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Mean time series =================================================
