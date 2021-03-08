@@ -41,9 +41,7 @@ df_smt$year = as.character(df_smt$year)
 colnames(df_smt) = c("Ano", "Tratamento", "Indice", "Valor")
 
 ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
-  #geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            #fill = "blue", color = NA, alpha = 0.003)+
-  geom_smooth(aes(group=Tratamento), alpha = 0.7) +
+  geom_smooth(aes(group=Tratamento),size = 1)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
   facet_grid(rows = vars(Indice), scales = "free")+
