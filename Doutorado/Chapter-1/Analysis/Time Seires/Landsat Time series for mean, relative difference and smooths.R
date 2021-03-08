@@ -41,13 +41,13 @@ df_smt$year = as.character(df_smt$year)
 colnames(df_smt) = c("Ano", "Tratamento", "Indice", "Valor")
 
 ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_smooth(aes(group=Tratamento),size = 1)+
+  geom_smooth(aes(group=Tratamento),size = 1.2, level = 0.9999)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   theme(axis.text.x = element_text(angle = 90))+
-  scale_color_manual(values = eqm)+
+  scale_color_manual(values = c("#F9A602","#CF0E0E","#00AFBB"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Mean time series =================================================
