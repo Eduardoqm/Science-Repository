@@ -35,6 +35,23 @@ df$treat[df$treat == "b1yr"] <- c("B1yr")
 
 eqm = c("orange", "red", "blue") #My color palette
 
+#Smooth time series ===============================================
+df_smt = df[,c(6,8,5,7)]
+df_smt$year = as.character(df_smt$year)
+colnames(df_smt) = c("Ano", "Tratamento", "Indice", "Valor")
+
+ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
+  #geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
+            #fill = "blue", color = NA, alpha = 0.003)+
+  geom_smooth(aes(group=Tratamento), alpha = 0.7) +
+  geom_vline(xintercept = "2004", linetype = "dashed")+
+  geom_vline(xintercept = "2011", linetype = "dashed")+
+  facet_grid(rows = vars(Indice), scales = "free")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90))+
+  scale_color_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
+
 #Mean time series =================================================
 df_m = df %>% 
   group_by(year, treat, index) %>% 
@@ -52,7 +69,7 @@ ggplot(df_m2, aes(x=Ano, y=Valor, color = Tratamento))+
   theme_bw()+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
-  
+
 
 
 #Diference by sbtraction ===========================================
