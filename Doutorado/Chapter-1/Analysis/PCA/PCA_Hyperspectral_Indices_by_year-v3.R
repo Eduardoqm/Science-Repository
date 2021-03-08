@@ -97,7 +97,7 @@ pcax(p2005)
 pcax(p2006)
 pcax(p2008)
 pcax(p2010)
-pcax(p2011)
+pcax(p2011)+ylim (-5, 6)
 pcax(p2012)
 
 
