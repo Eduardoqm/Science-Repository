@@ -166,8 +166,28 @@ pri = getix("pri");colnames(pri) = c("id","pri","id2")
 rendvi = getix("rendvi");colnames(rendvi) = c("id","rendvi","id2")
 nirv = getix("nirv"); colnames(nirv) = c("id","nirv","id2")
 
-indexs2 = cbind(evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
-indexs2 = indexs2[,c(2,5,8,11,14,17,20,23,26,29,32,35,38,41,42)]
+indexs2 = cbind(evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv,lwvi2)
+indexs2 = indexs2[,c(2,5,8,11,14,17,20,23,26,29,32,35,38,41,44)]
 
 ggcorr(indexs2, label = TRUE)
 
+ggpairs(indexs2)+
+  theme_bw()
+
+#Use ggpairs
+indexs3 = cbind(hy$id, indexs2)
+indexs3 = indexs3 %>% 
+  separate(col = "hy$id", c("Parcela", "year"), sep = '_')
+
+X11()
+p = ggpairs(indexs3, columns = 3:17, ggplot2::aes(color=Parcela))+
+  theme_bw()
+
+for(i in 1:p$nrow) {
+  for(j in 1:p$ncol){
+    p[i,j] <- p[i,j] + 
+      scale_fill_manual(values=c("orange", "red", "blue")) +
+      scale_color_manual(values=c("orange", "red", "blue"))  
+  }
+}
+p 
