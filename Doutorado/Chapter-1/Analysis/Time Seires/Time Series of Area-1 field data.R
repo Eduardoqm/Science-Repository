@@ -38,8 +38,12 @@ litt$year = as.character(litt$year)
 colnames(litt)[1] = c("Parcela")
 
 #Biomass
-colnames(bmas) = c("Parcela", "dist", "Ano", "biomass")
+colnames(bmas) = c("Parcela", "dist", "DBH", "Ano", "biomass")
 bmas$Ano = as.character(bmas$Ano)
+
+bmas = bmas %>%
+  group_by(Parcela, Ano) %>% 
+  summarise(biomass = sum(biomass))
 
 #Plot boxplots ---------------------------------------------------------------------------
 eqm = c("orange", "red", "blue") #My color palette
@@ -61,9 +65,10 @@ ggplot(litt, aes(x=year, y=lit_ton_hec, fill = Parcela))+
 
 #Biomass
 ggplot(bmas, aes(x=Ano, y=biomass, fill = Parcela))+
-  geom_boxplot(alpha = 0.7)+
+  #geom_boxplot(alpha = 0.7)+
+  geom_bar(position="dodge", stat="identity", alpha = 0.7)+
   theme_bw()+
-  labs(y = "Biomassa Ton/hec", x = "Ano")+
+  labs(y = "Biomassa Ton/Tratamento", x = "Ano")+
   scale_fill_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
