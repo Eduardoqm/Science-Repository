@@ -41,11 +41,11 @@ lai2 = lai2 %>%
 
 
 litt = litt %>% 
-  filter(year == c(2005:2017)) %>% 
+  filter(year == c(2004:2019)) %>% 
   filter(year != 2012) %>% 
   unite("id", c("parcela", "year"), sep = "_")
 
-litt2 = litt[,c(1,5)]
+litt2 = litt[,c(1,7)]
 litt2 = litt2 %>% 
   group_by(id) %>% 
   summarise(lit_ton_hec = mean(lit_ton_hec))
@@ -53,6 +53,7 @@ litt2 = litt2 %>%
 #Join Data ---------------------------------------------------------
 df3 = full_join(df2, lai2, by = "id")
 df4 = full_join(df3, litt2, by = "id")
+df4 = df4 %>% na.omit()
 
 #Plot correlation --------------------------------------------------
 a = ggplot(df4, aes(x=value, y=lai))+
