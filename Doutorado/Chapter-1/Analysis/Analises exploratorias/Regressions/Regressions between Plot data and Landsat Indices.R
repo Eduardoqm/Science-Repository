@@ -117,14 +117,7 @@ ggarrange(a, b, c,
 
 
 
-ggplot(df_lai, aes(x=value, y=lai))+
-  geom_point(size = 3, col = "red")+
-  geom_smooth(method="lm", se=T, col = "black")+ 
-  facet_grid(cols = vars(index), scales = "free")+
-  stat_cor(show.legend = F)+
-  theme_bw()+
-  labs(x = "", y = "LAI")+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+
 
   
 

@@ -12,7 +12,7 @@ library(ggpubr)
 library(ggridges)
 library(viridis)
 
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
 df$year = as.character(df$year)
@@ -31,10 +31,10 @@ ggplot(pssr, aes(year, y, fill = value))+
   scale_fill_viridis(discrete=FALSE)
 
 
+df3 = df %>% 
+  filter(index == "wbi")
 
+ggplot(df3, aes(x=year,y=value, col=parcela))+
+  geom_boxplot()
 
-ggplot(aes(x=y,y=`mean(value, na.rm = TRUE)`,
-           col=year,
-           group=treat)) +
-  geom_boxplot() +
-  facet_wrap(~index,scales="free")
+  
