@@ -1,6 +1,6 @@
 #Exploratory Analysis and Plots V2
 #Blowdown Data (AREA-1)
-#Eduardo Q Marques 25-05-2020
+#Eduardo Q Marques 25-05-2020 Update in 02-04-2021
 
 library(tidyverse)
 library(reshape2)
@@ -8,14 +8,14 @@ library(ggplot2)
 library(fmsb)
 
 #Load data
-setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Campo vento')
+setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
-df = read.csv("storm_data_full_C.csv", sep = ",")
+df = read.csv("blowdown_full_update_2021.csv", sep = ",")
 
 #Resume data
-df = df[,c(3,4,5,6,7,8,9,10,11,12)]
+df = df[,c(2,7,8,9,10,11,12,13,14,15,22,23)]
 df$nt = 1
-colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Number_of_Trees")
+colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Alt_tree", "DAP", "Number_of_Trees")
 
 
 #Summary information
@@ -61,23 +61,13 @@ ggplot(wind, aes(x=Direction, y = Number_of_Trees, fill = Number_of_Trees))+
   coord_polar(start = 0)+
   ggtitle("Direction the trees fell (Degrees)")
 
-library(plotly)
-
-gg = ggplot(df, aes(x=Direction))+
-  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
-  theme_minimal()+
-  coord_polar(start = 0)+
-  ggtitle("Direction the trees fell (Degrees)")
-
-ggplotly(gg)
-
 #Popular trees was broken? -----------------------------------------------------------------
 pop_tree = df %>% 
   group_by(Specie) %>% 
   summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
   filter(Number_of_Trees >= 10)
 
-ggplot(pop_tree, aes(x=Specie, y=Number_of_Trees))+
+ggplot(pop_tree, aes(x=reorder(Specie, -Number_of_Trees), y=Number_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   theme_minimal()+
@@ -90,7 +80,7 @@ plot_tree = df %>%
   summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
   filter(Number_of_Trees >= 5)
 
-ggplot(plot_tree, aes(x=Specie, y=Number_of_Trees))+
+ggplot(plot_tree, aes(x=reorder(Specie, -Number_of_Trees), y=Number_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   facet_wrap(~Treatment, scales = "free")+
@@ -103,7 +93,7 @@ brok_tree = df %>%
   summarise(Number_of_Trees = sum(Number_of_Trees)) %>% 
   filter(Number_of_Trees >= 4)
 
-ggplot(brok_tree, aes(x=Specie, y=Number_of_Trees))+
+ggplot(brok_tree, aes(x=reorder(Specie, -Number_of_Trees), y=Number_of_Trees))+
   geom_bar(position = "dodge", stat = "identity",
            fill = "darkblue", alpha = 0.5)+
   facet_wrap(~Damage, scales = "free")+
@@ -116,12 +106,9 @@ scar = df %>%
   group_by(Condition, Treatment) %>% 
   summarise(Number_of_Trees = sum(Number_of_Trees))
 
-scar$percent = c(57,62,99,43,38,1)
-
-ggplot(scar, aes(x=Condition, y=Number_of_Trees, fill = Condition))+
-  geom_bar(position = "dodge", stat = "identity")+
-  geom_text(aes(x=Condition, y=percent, label = paste0(percent,"%"))) +
-  facet_wrap(~Treatment)+
+ggplot(scar, aes(x=Treatment, y=Number_of_Trees, fill = Condition))+
+  geom_bar(stat = "identity")+
+  #facet_wrap(~Treatment)+
   ggtitle("Number of scarred trees")
 
 
@@ -145,9 +132,40 @@ ggplot(scar3, aes(x=proximity))+
   theme_minimal()+
   ggtitle("Proximity of the break point with the scar")
 
+#Alt and DAP of tree -----------------------------------------------------------------------------
+#DAP
+dap = df %>% 
+  select(DAP, Damage, Treatment) %>% 
+  na.omit()
+  
+ggplot(dap, aes(x=DAP))+
+  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~Damage)+
+  theme_bw()+
+  ggtitle("DAP of trees by kind of damage")
 
+ggplot(dap, aes(x=DAP))+
+  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~Treatment)+
+  theme_bw()+
+  ggtitle("DAP of trees by Treatment")
 
+#Tree height
+alt = df %>% 
+  select(Alt_tree, Damage, Treatment) %>% 
+  na.omit()
 
+ggplot(alt, aes(x=Alt_tree))+
+  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~Damage)+
+  theme_bw()+
+  ggtitle("Tree height by kind of damage")
+
+ggplot(alt, aes(x=Alt_tree))+
+  geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
+  facet_wrap(~Treatment)+
+  theme_bw()+
+  ggtitle("Tree height by Treatment")
 
 
 
