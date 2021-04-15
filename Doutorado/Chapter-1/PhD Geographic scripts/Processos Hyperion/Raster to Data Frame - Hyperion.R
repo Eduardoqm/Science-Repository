@@ -57,7 +57,7 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
 
 
 #setwd("~/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
-#write.csv(dfT, "Hyperion_indexs_all_xy-B.csv", row.names = F)
+#write.csv(dfT, "Hyperion_indexs_all_xy-B.csv")
 
 
 #Test plots

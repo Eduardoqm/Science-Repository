@@ -15,7 +15,7 @@ library(factoextra)
 #Data =============================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 
 #Transform data for analysis ======================================================================
 df2 = df[c(5,7)]
@@ -46,10 +46,13 @@ rendvi = transp("rendvi");colnames(rendvi) = c("RENDVI")
 nirv = transp("nirv"); colnames(nirv) = c("NIRv")
 
 #Stract treatmant name
-treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
+treat = df[c(1:12019),]; treat = treat[,c(8,6)]
 
 #Join everything
-df3 = cbind(treat$parcela,treat$year,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+df3 = cbind(treat,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+#df3 = df3[,c(-2)]
+
+
 colnames(df3)[1] = "Parcela"; colnames(df3)[2] = "year"
 
 #Change names
@@ -97,7 +100,7 @@ pcax(p2005)
 pcax(p2006)
 pcax(p2008)
 pcax(p2010)
-pcax(p2011)+ylim (-5, 6)
+pcax(p2011)#+ylim (-5, 6)
 pcax(p2012)
 
 
