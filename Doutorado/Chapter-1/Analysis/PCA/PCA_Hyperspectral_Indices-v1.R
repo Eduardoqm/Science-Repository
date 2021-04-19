@@ -15,10 +15,13 @@ library(factoextra)
 #Data =============================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+#df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 
 #Transform data for analysis ======================================================================
-df2 = df[c(5,7)]
+#df2 = df[c(5,7)]
+df2 = df %>% 
+  select(index, value)
 #df2$value = log(df2$value)
 
 #Transpor variables in columns
@@ -46,7 +49,10 @@ rendvi = transp("rendvi");colnames(rendvi) = c("rendvi")
 nirv = transp("nirv"); colnames(nirv) = c("nirv")
 
 #Stract treatmant name
-treat = df[c(1:11781),]; treat = treat[,c(6,7,8)]
+treat = df[c(1:11781),]#; treat = treat[,c(6,7,8)]
+treat = treat %>% 
+  select(year, parcela)
+
 
 #Join everything
 df3 = cbind(treat$year, treat$parcela,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)

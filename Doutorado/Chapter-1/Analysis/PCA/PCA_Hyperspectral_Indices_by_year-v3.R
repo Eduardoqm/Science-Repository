@@ -18,8 +18,8 @@ setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Ta
 df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 
 #Transform data for analysis ======================================================================
-df2 = df[c(5,7)]
-#df2$value = log(df2$value)
+df2 = df %>% 
+  select(index, value)
 
 #Transpor variables in columns
 transp = function(x){
@@ -46,12 +46,12 @@ rendvi = transp("rendvi");colnames(rendvi) = c("RENDVI")
 nirv = transp("nirv"); colnames(nirv) = c("NIRv")
 
 #Stract treatmant name
-treat = df[c(1:12019),]; treat = treat[,c(8,6)]
+treat = df[c(1:11781),]#; treat = treat[,c(4,7)]
+treat = treat %>% 
+  select(year, parcela)
 
 #Join everything
-df3 = cbind(treat,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
-#df3 = df3[,c(-2)]
-
+df3 = cbind(treat$parcela,treat$year,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
 
 colnames(df3)[1] = "Parcela"; colnames(df3)[2] = "year"
 

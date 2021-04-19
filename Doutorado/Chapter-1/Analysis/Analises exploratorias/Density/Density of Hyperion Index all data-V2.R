@@ -17,7 +17,8 @@ loadfonts(device = "win", quiet = TRUE)
 #Data ======================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+#df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 
 df$year = as.character(df$year)
 df$index = as.character(df$index)
@@ -46,7 +47,7 @@ df$parcela[df$parcela == "control"] <- c("Controle")
 df$parcela[df$parcela == "b3yr"] <- c("B3yr")
 df$parcela[df$parcela == "b1yr"] <- c("B1yr")
 
-colnames(df)[8] = c("Parcela")
+colnames(df)[7] = c("Parcela")
 
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 #eqm = c("orange", "red", "blue")
@@ -92,8 +93,8 @@ ggplot(phy, aes(x = value, y = year, fill=Parcela)) +
 #Result
 #Controle
 res = df %>% 
-  filter(index %in% c('pssr','rendvi')) %>% 
-  filter(Parcela == "control")
+  filter(index %in% c('PSSR', 'Red-Edge NDVI')) %>% 
+  filter(Parcela != "controle")
 
 ggplot(res, aes(x = value, y = year)) +
   geom_density_ridges(alpha = 0.75, fill = "#00AFBB") +
@@ -102,8 +103,8 @@ ggplot(res, aes(x = value, y = year)) +
 
 #Burned
 burn = df %>% 
-  filter(index %in% c('pssr')) %>% 
-  filter(Parcela != "control")
+  filter(index %in% c('PSSR')) %>% 
+  filter(Parcela != "controle")
 
 ggplot(burn, aes(x = value, y = year, fill = Parcela)) +
   geom_density_ridges(alpha = 0.35) +
@@ -114,8 +115,8 @@ ggplot(burn, aes(x = value, y = year, fill = Parcela)) +
 
 #Others
 burn2 = df %>% 
-  filter(index %in% c('nirv','lwvi2','rendvi','vari')) %>% 
-  filter(Parcela != "control")
+  filter(index %in% c('NIRv','LWVI2','Red-Edge NDVI','VARI')) %>% 
+  filter(Parcela != "controle")
 
 ggplot(burn2, aes(x = value, y = year, fill = Parcela)) +
   geom_density_ridges(alpha = 0.35) +

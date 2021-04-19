@@ -65,6 +65,7 @@ df2$x = as.numeric(df2$x)
 df2$y = as.numeric(df2$y)
 df2$year = as.numeric(df2$year)
 
+#Plot new data to verify --------------------------------------------------------------------------
 df2 %>% 
   filter(index == "wbi") %>%
   filter(year == 2012) %>%
@@ -85,7 +86,12 @@ df2 %>%
   ggplot(aes(x=x, y=y, fill = value))+
   geom_raster()
 
+#Export new data ----------------------------------------------------------------------------------
 
+#AFTER EXPORT NEED TO REMOVE WRONG VALUES ON THE TABLE!
+
+#setwd("~/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+#write.csv(df2, "Hyperion_indexs_all_xy-B.csv", row.names = F)
 
 
 
