@@ -157,7 +157,8 @@ fviz_pca_biplot(post_pca, habillage = grp,
                 col.var = "black", alpha = 0.4,
                 title = NULL, legend.title = "Parcela")+
   scale_color_manual(values=c( "orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+  theme(text = element_text(family = "Times New Roman", size = 14))+
+  ylim (-3, 5)
 
 
 #During Fire in two plots

@@ -16,7 +16,7 @@ loadfonts(device = "win", quiet = TRUE)
 #Landsat =========================================================
 #Data ------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
-df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 lai = read.csv("LAI_full_tang.csv", sep = ',')
 litt = read.csv("Liteira_full_tang.csv", sep = ',')
 bmas = read.csv("Biomass_full_tang.csv", sep = ',')
@@ -31,13 +31,13 @@ df2 = df2 %>%
   group_by(id, index) %>% 
   summarise(value = mean(value))
 df2 = df2 %>%
-  filter(index %in% c("pssr", "vig", "evi2", "rendvi", "ndwi", "msi"))
+  filter(index %in% c("pssr", "psri", "evi2", "rendvi", "ndwi", "msi"))
 
 df2$index = as.character(df2$index)
 df2$index[df2$index == "evi2"] <- c("EVI")
 df2$index[df2$index == "ndwi"] <- c("NDWI")
 df2$index[df2$index == "rendvi"] <- c("RENDVI")
-df2$index[df2$index == "vig"] <- c("VIG")
+df2$index[df2$index == "psri"] <- c("PSRI")
 df2$index[df2$index == "pssr"] <- c("PSSR")
 df2$index[df2$index == "msi"] <- c("MSI")
 
