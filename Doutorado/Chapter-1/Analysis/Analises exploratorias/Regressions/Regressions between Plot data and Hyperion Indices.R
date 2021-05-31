@@ -13,7 +13,7 @@ library(extrafont)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
 
-#Landsat =========================================================
+#Hyperion =========================================================
 #Data ------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
