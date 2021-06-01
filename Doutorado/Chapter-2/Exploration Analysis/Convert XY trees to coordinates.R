@@ -13,7 +13,7 @@ setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Ta
 df = read.csv("blowdown_full_update_2021_B.csv", sep = ",")
 
 df2 = df[,c(1,7,8,9,18,19,20,21,22,23,27,28)]
-df2 = df2[,c(-4,-6)]
+df2 = df2[,c(-4,-6,-7)]
 
 # ===============================================================================================
 
@@ -23,9 +23,16 @@ df2 = df2[,c(-4,-6)]
 #3-nsdist com o transecto e em metros referente ao norte ou sul do transecto
 #4-nsdits sem o transsecto e em metros referente a borda da parcela
 
+#Linhas de 1 a 31, a cada 100 metros
 
 
+#Posso separar os metodos nas etapas de transformacao para as classes:
 
+#5-10
+
+#10-20
+
+#40
 
 
 
