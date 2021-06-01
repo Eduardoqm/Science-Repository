@@ -17,9 +17,11 @@ df2 = df2[,c(-4,-6)]
 
 # ===============================================================================================
 
-#OBS: Metragem e a distancia do canto nordeste da parcela indo de leste para oeste
-
-
+#OBS:
+#1-metragem e a distancia do canto nordeste da parcela indo de leste para oeste
+#2-lodist e a distancia em metros da linha no sentido leste ou oeste
+#3-nsdist com o transecto e em metros referente ao norte ou sul do transecto
+#4-nsdits sem o transsecto e em metros referente a borda da parcela
 
 
 
