@@ -18,22 +18,31 @@ df2 = df2[,c(-4,-6,-7)]
 # ===============================================================================================
 
 #OBS:
-#1-metragem e a distancia do canto nordeste da parcela indo de leste para oeste
+#1-metragem e a distancia do canto da parcela leste para oeste, linha 1 (0m) para linha 31 (1500m)
 #2-lodist e a distancia em metros da linha no sentido leste ou oeste
 #3-nsdist com o transecto e em metros referente ao norte ou sul do transecto
 #4-nsdits sem o transsecto e em metros referente a borda da parcela
 
-#Linhas de 1 a 31, a cada 100 metros
+#Linhas de 1 a 31, a cada 50 metros (X)
+#Transectos de A a U, a cada 50 metros (Y)
+#Execoes A, AA, AB, B:
+#A = 0m
+#AA = 5m?
+#AB = 25m
+#B = 50m
 
+#X = 0:1500
+#Y = 0:1000
 
 #Posso separar os metodos nas etapas de transformacao para as classes:
 
-#5-10
+#5-10 tem nsdist, transecto e metragem
 
-#10-20
+#10-20 tem transecto(Y) e metragem(X)
 
-#40
+#40 tem linha(X), nsdist(Y) e lodist
 
+#==============================================================================================
 
 
 
