@@ -61,7 +61,7 @@ df6 = df5 %>%
 #Export data ---------------------------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento")
 
-write.table(df5, file = "blowdown_full_update_2021.csv", sep = ",", row.names = F)
+write.table(df5, file = "blowdown_full_update_2021_B.csv", sep = ",", row.names = F)
 
 
 
