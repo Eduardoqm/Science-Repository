@@ -36,7 +36,7 @@ df2 = df2[,c(-4,-6,-7)]
 
 #Posso separar os metodos nas etapas de transformacao para as classes:
 
-#5-10 tem nsdist, transecto e metragem
+#5-10 tem nsdist(Y), transecto(Y) e metragem(X)
 
 #10-20 tem transecto(Y) e metragem(X)
 
