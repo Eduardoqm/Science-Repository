@@ -10,9 +10,9 @@ library(fmsb)
 #Load data
 setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
-df = read.csv("blowdown_full_update_2021.csv", sep = ",")
+df = read.csv("blowdown_full_update_2021_B.csv", sep = ",")
 
-df2 = df[,c(1,7,8,9,19,20)]
+df2 = df[,c(1,7,8,9,18,19,20,21,22,23,27,28)]
 
 # ===============================================================================================
 
