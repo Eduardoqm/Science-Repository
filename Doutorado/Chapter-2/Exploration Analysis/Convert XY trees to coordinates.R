@@ -13,10 +13,11 @@ setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Ta
 df = read.csv("blowdown_full_update_2021_B.csv", sep = ",")
 
 df2 = df[,c(1,7,8,9,18,19,20,21,22,23,27,28)]
+df2 = df2[,c(-4,-6)]
 
 # ===============================================================================================
 
-
+#OBS: Metragem e a distancia do canto nordeste da parcela indo de leste para oeste
 
 
 
@@ -36,7 +37,6 @@ df2 = df[,c(1,7,8,9,18,19,20,21,22,23,27,28)]
 #Interative Map ===============================================================================
 library(leaflet)
 library(raster)
-
 
 leaflet() %>% 
   addTiles() %>% 
