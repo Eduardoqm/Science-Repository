@@ -190,7 +190,7 @@ leaflet() %>%
 
 #Do interpolate raster from points
 #bb_hire = as(extent(loc_trees), "SpatialPolygons")
-bb_hire = extent(loc_trees)
+bb_hire = as(extent(loc_trees), "SpatialPolygons")
 r = raster(bb_hire, ncol = 15, nrow = 10)
 rc = rasterize(loc_trees@coords, r, fun = "count")
 plot(rc, col = viridis(100))
@@ -200,7 +200,18 @@ plot(rc2, col = viridis(100))
 
 #Resample the coarser raster to match finer grid
 r.big <- raster(ncol=60, nrow=40, bb_hire)
-r.res <- resample(x=rc2, y=r.big, method="bilinear")
+rc3 <- resample(x=rc2, y=r.big, method="bilinear")
 
-plot(r.res, col = viridis(100))
+plot(rc3, col = viridis(100))
 plot(loc_trees, add = T)
+
+
+
+
+eqm2 <- colorFactor(c("#003024","#fee08b","#d73027","#00ff00","#228c22"), domain = values(rc3),
+                    na.color = "transparent")
+
+leaflet() %>% 
+  addTiles() %>% 
+  addProviderTiles("Esri.WorldImagery") %>% 
+  addRasterImage(rc3, colors = eqm2, opacity = 0.8) 
