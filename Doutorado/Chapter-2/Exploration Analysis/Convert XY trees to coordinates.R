@@ -103,29 +103,8 @@ df$y = -((df$y*0.000009)+13.07375168)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #Tests ggplot
+x11()
 eqm = c("red","orange", "blue")
 ggplot(df, aes(x=x, y=y))+
   #stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
@@ -159,8 +138,6 @@ ggplot(df, aes(x=x, y=y))+
 
 
 
-
-
 #3D Map ===============================================================================
 a = ggplot(df, aes(x=x, y=y))+
   stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
@@ -186,24 +163,36 @@ library(rayshader)
 
 library(leaflet)
 library(raster)
+library(sp)
+library(rgdal)
 
-df2 = df[,c(33, 32, 1)]
-img = rasterFromXYZ(df2)
+df2 = df[,c(33, 32, 14)] %>% na.omit()
+xy = df2[,c(1, 2)]
+
+loc_trees = SpatialPointsDataFrame(coords = xy, data = df2,
+                                   proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 
 
 
-
-
-eqm2 <- colorFactor(c(viridis(100)), domain = values(img2),
-                    na.color = "transparent")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
 
 leaflet() %>% 
-  addTiles() %>% 
   #  addMiniMap(position = "bottomleft") %>%
-  #addProviderTiles("Esri.WorldImagery") %>%
-  addTiles() %>%
-  addRasterImage(img2, colors = eqm2, opacity = 0.8) %>% 
-  addLegend(pal = eqm2, 
-            values = values(img2), 
-            title = "Occurrence Model",
-            opacity = 1)
+  addProviderTiles("Esri.WorldImagery") %>% 
+  addPolygons(data = area1, color = "white", weight = 1, fillOpacity = 0) %>% 
+  addCircles(data = loc_trees, color = "yellow", opacity = 0.9,
+             highlightOptions = highlightOptions(color = "red", weight = 2,
+                                                 bringToFront = TRUE),
+             popup = loc_trees@data$tipo_de_dano,
+             label = loc_trees@data$tipo_de_dano)
+  
+  
+
+#Do interpolate raster from points
+
+
+
+
+
+
+
