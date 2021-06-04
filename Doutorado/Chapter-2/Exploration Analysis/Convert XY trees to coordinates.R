@@ -189,10 +189,18 @@ leaflet() %>%
   
 
 #Do interpolate raster from points
+#bb_hire = as(extent(loc_trees), "SpatialPolygons")
+bb_hire = extent(loc_trees)
+r = raster(bb_hire, ncol = 15, nrow = 10)
+rc = rasterize(loc_trees@coords, r, fun = "count")
+plot(rc, col = viridis(100))
 
+rc2 <- replace(rc,is.na(rc),0)
+plot(rc2, col = viridis(100))
 
+#Resample the coarser raster to match finer grid
+r.big <- raster(ncol=60, nrow=40, bb_hire)
+r.res <- resample(x=rc2, y=r.big, method="bilinear")
 
-
-
-
-
+plot(r.res, col = viridis(100))
+plot(loc_trees, add = T)
