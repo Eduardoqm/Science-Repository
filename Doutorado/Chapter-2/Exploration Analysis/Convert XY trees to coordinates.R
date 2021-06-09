@@ -129,12 +129,8 @@ ggplot(df, aes(x=x, y=y))+
   theme_light()+
   coord_fixed()
 
-
-ggplot(df, aes(x=x, y=y))+
-  geom_bin2d()
-
-ggplot(df, aes(x=x, y=y))+
-  geom_hex()
+#ggplot(df, aes(x=x, y=y))+
+#  geom_hex()
 
 
 
