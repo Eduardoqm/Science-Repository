@@ -101,8 +101,8 @@ for (z in 1:length(df$x)) {
 #A coordenada do ponto A0 = -52.37642001, -13.07375168
 #Coordenada do shape Area-1 = -52.37688, -13.07417
 
-df$x = -((df$x*0.000009)+-52.37688)
-df$y = -((df$y*0.000009)+-13.07417)
+df$x = -((df$x*0.000009)+52.37688)
+df$y = -((df$y*0.000009)+13.07417)
 
 
 
@@ -189,7 +189,7 @@ leaflet() %>%
 
 #Do interpolate raster from points
 #bb_hire = as(extent(loc_trees), "SpatialPolygons")
-bb_hire = as(extent(loc_trees), "SpatialPolygons")
+bb_hire = as(extent(area1), "SpatialPolygons")
 r = raster(bb_hire, ncol = 15, nrow = 10)
 rc = rasterize(loc_trees@coords, r, fun = "count")
 plot(rc, col = viridis(100))
@@ -201,16 +201,18 @@ plot(rc2, col = viridis(100))
 r.big <- raster(ncol=60, nrow=40, bb_hire)
 rc3 <- resample(x=rc2, y=r.big, method="bilinear")
 
+proj4string(rc3) <- CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+
 plot(rc3, col = viridis(100))
 plot(loc_trees, add = T)
 
 
-
-
-eqm2 <- colorFactor(c("#003024","#fee08b","#d73027","#00ff00","#228c22"), domain = values(rc3),
-                    na.color = "transparent")
-
 leaflet() %>% 
   addTiles() %>% 
   addProviderTiles("Esri.WorldImagery") %>% 
-  addRasterImage(rc3, colors = eqm2, opacity = 0.8) 
+  addPolygons(data = area1, color = "white", weight = 1, fillOpacity = 0) %>% 
+  addRasterImage(rc3, colors = viridis(10), opacity = 0.7)
+
+
+
+
