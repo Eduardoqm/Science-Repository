@@ -79,17 +79,22 @@ df$y = (df$trasc_m+(df$nsdist))
 df$x = df$metragem #Just no work for trees bigger 40cm
 
 
+#Convert lines in meters
 lmeter = seq(0,1500, by = 50)#Sequence and for to convert lines in meters
 for (x in 1:31) {
   df$linha_m[df$linha_bl == x] <- lmeter[[x]]
 }
 
-df$x <- replace(df$x,is.na(df$x),0)
-df$linha_m <- replace(df$linha_m,is.na(df$linha_m),0)
+#Convert X=NA to line distance in meters
+for (z in 1:length(df$x)) {
+  df$x[[z]] <- replace(df$x[[z]],is.na(df$x[[z]]),df$linha_m[[z]])
+}
 
-df$x = (df$x + (df$linha_m))
-df$x[df$x > 1500] <- NA #Limit error (if have line and metragem)
-
+#Adjust with lodist values
+for (z in 1:length(df$x)) {
+  df$x[[z]][df$lo[[z]] == "O"] <- (df$x[[z]] + df$lodist[[z]]) #West difference
+  df$x[[z]][df$lo[[z]] == "L"] <- (df$x[[z]] - df$lodist[[z]]) #East difference
+}
 
 #Transformation in UTM from Point A0 =======================================================
 #Um metro em UTM = 0.000009
