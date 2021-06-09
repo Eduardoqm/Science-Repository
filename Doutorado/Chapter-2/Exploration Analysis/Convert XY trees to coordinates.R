@@ -99,9 +99,10 @@ for (z in 1:length(df$x)) {
 #Transformation in UTM from Point A0 =======================================================
 #Um metro em UTM = 0.000009
 #A coordenada do ponto A0 = -52.37642001, -13.07375168
+#Coordenada do shape Area-1 = -52.37688, -13.07417
 
-df$x = -((df$x*0.000009)+52.37642001)
-df$y = -((df$y*0.000009)+13.07375168)
+df$x = -((df$x*0.000009)+-52.37688)
+df$y = -((df$y*0.000009)+-13.07417)
 
 
 
