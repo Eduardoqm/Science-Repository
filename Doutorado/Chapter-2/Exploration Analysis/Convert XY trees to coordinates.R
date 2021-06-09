@@ -101,7 +101,7 @@ df$y = -((df$y*0.000009)+13.07375168)
 
 
 #Tests ggplot
-x11()
+#x11()
 eqm = c("red","orange", "blue")
 ggplot(df, aes(x=x, y=y))+
   #stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
