@@ -150,7 +150,7 @@ a = ggplot(df, aes(x=x, y=y))+
   coord_fixed()
 
 
-library(rayshader)
+#library(rayshader)
 #plot_gg(a, multicore = TRUE, raytrace = TRUE, width = 7, height = 7,
 #        scale = 300, windowsize = c(900, 600), zoom = 0.6, phi = 30, theta = 30)
 
@@ -206,12 +206,16 @@ proj4string(rc3) <- CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
 plot(rc3, col = viridis(100))
 plot(loc_trees, add = T)
 
+eqm <- colorNumeric(viridis(10), values(rc3),
+                    na.color = "transparent")
 
 leaflet() %>% 
-  addTiles() %>% 
+  addMiniMap(position = "bottomleft") %>%
   addProviderTiles("Esri.WorldImagery") %>% 
   addPolygons(data = area1, color = "white", weight = 1, fillOpacity = 0) %>% 
-  addRasterImage(rc3, colors = viridis(10), opacity = 0.7)
+  addRasterImage(rc3, colors = eqm, opacity = 0.7) %>% 
+  addLegend(pal = eqm, values = values(rc3),
+            title = "N of damaged trees")
 
 
 
