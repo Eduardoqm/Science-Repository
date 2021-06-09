@@ -42,9 +42,6 @@ df = read.csv("blowdown_full_update_2021_B.csv", sep = ",")
 
 #40 tem linha(X), nsdist(Y) e lodist(X)
 
-#Transformation ===============================================================================
-#Part 1 - Make Y coordenates
-#Transect to meter
 #Transformation in meters from Point A0 =======================================================
 #Part 1 - Make Y coordenates
 #Transect to meter
@@ -78,7 +75,7 @@ df$nsdist <- replace(df$nsdist,is.na(df$nsdist),0)
 df$trasc_m = as.numeric(df$trasc_m)
 df$y = (df$trasc_m+(df$nsdist))
 
-#Part 2 - Make Y coordenates
+#Part 2 - Make X coordenates
 df$x = df$metragem #Just no work for trees bigger 40cm
 
 
