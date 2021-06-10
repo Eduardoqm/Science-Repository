@@ -54,6 +54,11 @@ df5 = df4 %>%
 
 #Inform some species that no match with the list
 df5$succ[df5$codigo == "Tacvul"] <- c("PIO")
+df5$succ[df5$codigo == "Inghet"] <- c("CLI")
+
+#Inform some species that no match with the species names
+df5$especie = as.character(df5$species)
+df5$species[df5$codigo == "Inghet"] <- c("Inga_heterophylla")
 
 df6 = df5 %>% 
   filter(parcela_bl != "NA") #I am surprised...it's work!
