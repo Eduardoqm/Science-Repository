@@ -14,36 +14,41 @@ setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Ta
 df = read.csv("blowdown_full_update_2021_XY.csv", sep = ",")
 
 
-#Tests ggplot =================================================================================
+#Exploration ggplot ===========================================================================
 #x11()
 eqm = c("red","orange", "blue")
+eqm2 = c("red", "blue")
+
+
 ggplot(df, aes(x=x, y=y))+
-  #stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
   geom_point(aes(col = parcela_bl), size = 3, alpha = 0.5)+
-  #geom_vline(xintercept = 0)+
-  #geom_vline(xintercept = 500)+
-  #geom_vline(xintercept = 1000)+
-  #geom_vline(xintercept = 1500)+
   scale_color_manual(values = eqm)+
+  ggtitle("Fall Trees Location")+
+  theme_light()+
+  coord_fixed()
+
+ggplot(df, aes(x=x, y=y))+
+  geom_point(aes(col = succ), size = 3, alpha = 0.5)+
+  scale_color_manual(values = eqm2)+
+  ggtitle("Fall Trees Succecional Condition")+
   theme_light()+
   coord_fixed()
 
 ggplot(df, aes(x=x, y=y))+
   stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
   stat_density_2d(col = "black")+
-  #geom_point(aes(col = parcela_bl), size = 3, alpha = 0.5)+
-  #geom_vline(xintercept = 0)+
-  #geom_vline(xintercept = 500)+
-  #geom_vline(xintercept = 1000)+
-  #geom_vline(xintercept = 1500)+
   scale_fill_viridis_c()+
+  ggtitle("Fall Trees Density")+
   theme_light()+
   coord_fixed()
 
-#ggplot(df, aes(x=x, y=y))+
-#  geom_hex()
-
-
+ggplot(df, aes(x=x, y=y))+
+  stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
+  geom_point(aes(col = (df$succ[df$succ == "PIO"])), size = 3, alpha = 0.5)+
+  scale_fill_viridis_c()+
+  ggtitle("Fall Trees Density")+
+  theme_light()+
+  coord_fixed()
 
 #3D Map ===============================================================================
 a = ggplot(df, aes(x=x, y=y))+
