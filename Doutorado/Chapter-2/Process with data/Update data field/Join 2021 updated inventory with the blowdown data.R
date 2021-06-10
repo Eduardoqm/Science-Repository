@@ -60,6 +60,7 @@ df5$succ[df5$codigo == "Inghet"] <- c("CLI")
 df5$species = as.character(df5$species)
 df5$codigo = as.character(df5$codigo)
 df5$species[df5$codigo == "Inghet"] <- c("Inga_heterophylla")
+df5$species[df5$codigo == "Tacvul"] <- c("Tachigali_vulgaris")
 
 df6 = df5 %>% 
   filter(parcela_bl != "NA") #I am surprised...it's work!
