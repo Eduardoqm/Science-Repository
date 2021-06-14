@@ -41,6 +41,14 @@ ggplot(df, aes(x=x, y=y))+
   theme_light()+
   coord_fixed()
 
+int = ggplot(df, aes(x=x, y=y))+
+  geom_point(aes(col = parcela_bl), size = 3, alpha = 0.5)+
+  scale_color_manual(values = eqm)+
+  ggtitle("Fall Trees Location")+
+  theme_light()+
+  coord_fixed()
+
+ggplotly(int)
 
 #3D Map ===============================================================================
 a = ggplot(df, aes(x=x, y=y))+
