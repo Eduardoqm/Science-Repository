@@ -19,7 +19,6 @@ df = read.csv("blowdown_full_update_2021_XY.csv", sep = ",")
 eqm = c("red","orange", "blue")
 eqm2 = c("red", "blue")
 
-
 ggplot(df, aes(x=x, y=y))+
   geom_point(aes(col = parcela_bl), size = 3, alpha = 0.5)+
   scale_color_manual(values = eqm)+
@@ -42,30 +41,20 @@ ggplot(df, aes(x=x, y=y))+
   theme_light()+
   coord_fixed()
 
-ggplot(df, aes(x=x, y=y))+
-  stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
-  geom_point(aes(col = (df$succ[df$succ == "PIO"])), size = 3, alpha = 0.5)+
-  scale_fill_viridis_c()+
-  ggtitle("Fall Trees Density")+
-  theme_light()+
-  coord_fixed()
 
 #3D Map ===============================================================================
 a = ggplot(df, aes(x=x, y=y))+
   stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
-  #stat_density_2d(col = "black")+
-  #geom_point(aes(col = parcela_bl), size = 3, alpha = 0.5)+
-  #geom_vline(xintercept = 0)+
-  #geom_vline(xintercept = 500)+
-  #geom_vline(xintercept = 1000)+
-  #geom_vline(xintercept = 1500)+
+  stat_density_2d(col = "black")+
   scale_fill_viridis_c()+
+  ggtitle("Fall Trees Density")+
   coord_fixed()
+
 
 
 #library(rayshader)
 #plot_gg(a, multicore = TRUE, raytrace = TRUE, width = 7, height = 7,
-#        scale = 300, windowsize = c(900, 600), zoom = 0.6, phi = 30, theta = 30)
+ #       scale = 300, windowsize = c(900, 600), zoom = 0.6, phi = 30, theta = 30)
 
 
 
@@ -78,7 +67,7 @@ library(raster)
 library(sp)
 library(rgdal)
 
-df2 = df[,c(33, 32, 14)] %>% na.omit()
+df2 = df[,c(32, 31, 29)] %>% na.omit()
 xy = df2[,c(1, 2)]
 
 loc_trees = SpatialPointsDataFrame(coords = xy, data = df2,
@@ -95,8 +84,8 @@ leaflet() %>%
   addCircles(data = loc_trees, color = "yellow", opacity = 0.9,
              highlightOptions = highlightOptions(color = "red", weight = 2,
                                                  bringToFront = TRUE),
-             popup = loc_trees@data$tipo_de_dano,
-             label = loc_trees@data$tipo_de_dano)
+             popup = loc_trees@data$species,
+             label = loc_trees@data$species)
   
   
 
