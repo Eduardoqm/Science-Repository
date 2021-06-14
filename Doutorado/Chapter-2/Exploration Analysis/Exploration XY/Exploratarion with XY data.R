@@ -75,7 +75,7 @@ library(raster)
 library(sp)
 library(rgdal)
 
-df2 = df[,c(32, 31, 29)] %>% na.omit()
+df2 = df[,c(32, 31, 29, 1, 10, 14, 17, 30)] %>% na.omit()
 xy = df2[,c(1, 2)]
 
 loc_trees = SpatialPointsDataFrame(coords = xy, data = df2,
@@ -90,10 +90,10 @@ leaflet() %>%
   addProviderTiles("Esri.WorldImagery") %>% 
   addPolygons(data = area1, color = "white", weight = 1, fillOpacity = 0) %>% 
   addCircles(data = loc_trees, color = "yellow", opacity = 0.9,
-             highlightOptions = highlightOptions(color = "red", weight = 2,
-                                                 bringToFront = TRUE),
-             popup = loc_trees@data$species,
-             label = loc_trees@data$species)
+             popup = paste("Specie:", loc_trees@data$species, "<br>",
+                           "Kind of damage:", loc_trees@data$tipo_de_dano, "<br>",
+                           "Succesional stage:", loc_trees@data$succ, "<br>",
+                           "Density:", loc_trees@data$densidade))
   
   
 
