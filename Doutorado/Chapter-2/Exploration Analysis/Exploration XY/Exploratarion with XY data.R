@@ -8,6 +8,7 @@ library(ggplot2)
 library(viridis)
 library(fmsb)
 
+
 #Load data
 setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
@@ -58,7 +59,16 @@ succ2 = succ %>%
   na.omit() %>% 
   group_by(succ) %>% 
   summarise(unit = sum(unit)) %>% 
-  mutate(perc = (unit/sum(succ2$unit))*100)
+  mutate(percent = (unit/sum(succ2$unit))*100)
+
+ggplot(aes(x="", y=percent, fill=succ))+
+  geom_bar(width = 1, stat = "identity")+
+  coord_polar("y", start=0)+
+  theme(axis.text.x=element_blank())+
+  geom_text(aes(label = paste0(substr(succ2$percent, 1,2), "%")))+
+  theme_minimal()
+
+
 
 
 #Interactive Map ===============================================================================
