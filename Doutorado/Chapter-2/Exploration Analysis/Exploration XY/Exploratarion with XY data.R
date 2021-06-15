@@ -57,8 +57,8 @@ succ$unit = as.numeric(1)
 succ2 = succ %>%
   na.omit() %>% 
   group_by(succ) %>% 
-  summarise(unit = sum(unit))
-
+  summarise(unit = sum(unit)) %>% 
+  mutate(perc = (unit/sum(succ2$unit))*100)
 
 
 #Interactive Map ===============================================================================
