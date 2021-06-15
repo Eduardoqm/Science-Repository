@@ -12,12 +12,25 @@ library(ggplot2)
 library(plotly)
 library(viridis)
 library(fmsb)
+library(leaflet)
+library(raster)
+library(sp)
+library(rgdal)
 
 #Load data
 setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
 df = read.csv("blowdown_full_update_2021_XY.csv", sep = ",")
 
+df2 = df[,c(32, 31, 29, 1, 10, 14, 17, 30)] %>% na.omit()
+xy = df2[,c(1, 2)]
+
+loc_trees = SpatialPointsDataFrame(coords = xy, data = df2,
+                                   proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+
+
+
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
 
 #Exploration ggplot ===========================================================================
 #x11()
@@ -25,20 +38,28 @@ eqm = c("red","orange", "blue")
 eqm2 = c("red", "blue")
 ```
 
-## GGPLOTs:
+## Interactive MAP:
+Click the point to popup information
 
-```{r ggplots}
+```{r interac_map}
+leaflet() %>% 
+  #  addMiniMap(position = "bottomleft") %>%
+  addProviderTiles("Esri.WorldImagery") %>% 
+  addPolygons(data = area1, color = "white", weight = 1, fillOpacity = 0) %>% 
+  addCircles(data = loc_trees, color = "yellow", opacity = 0.9,
+             popup = paste("Specie:", loc_trees@data$species, "<br>",
+                           "Kind of damage:", loc_trees@data$tipo_de_dano, "<br>",
+                           "Succesional stage:", loc_trees@data$succ, "<br>",
+                           "Density:", loc_trees@data$densidade))
+```
+
+## Position and Density:
+
+```{r position}
 ggplot(df, aes(x=x, y=y))+
   geom_point(aes(col = parcela_bl), size = 3, alpha = 0.5)+
   scale_color_manual(values = eqm)+
   ggtitle("Fall Trees Location")+
-  theme_light()+
-  coord_fixed()
-
-ggplot(df, aes(x=x, y=y))+
-  geom_point(aes(col = succ), size = 3, alpha = 0.5)+
-  scale_color_manual(values = eqm2)+
-  ggtitle("Fall Trees Succecional Condition")+
   theme_light()+
   coord_fixed()
 
@@ -51,17 +72,15 @@ ggplot(df, aes(x=x, y=y))+
   coord_fixed()
 ```
 
-## Interactive Plots:
+## Climax and Pionner trees:
 
-```{r interactive}
-int = ggplot(df, aes(x=x, y=y))+
+```{r succ}
+ggplotly(ggplot(df, aes(x=x, y=y))+
   geom_point(aes(col = succ), size = 3, alpha = 0.5)+
   scale_color_manual(values = eqm2)+
   ggtitle("Fall Trees Succecional Condition")+
   theme_light()+
-  coord_fixed()
-
-ggplotly(int)
+  coord_fixed())
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
