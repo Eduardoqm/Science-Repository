@@ -36,6 +36,7 @@ area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/B
 #x11()
 eqm = c("red","orange", "blue")
 eqm2 = c("red", "blue")
+
 ```
 
 ## Interactive MAP:
@@ -75,12 +76,14 @@ ggplot(df, aes(x=x, y=y))+
 ## Climax and Pionner trees:
 
 ```{r succ}
-ggplotly(ggplot(df, aes(x=x, y=y))+
+ggplot(df, aes(x=x, y=y))+
   geom_point(aes(col = succ), size = 3, alpha = 0.5)+
   scale_color_manual(values = eqm2)+
   ggtitle("Fall Trees Succecional Condition")+
   theme_light()+
-  coord_fixed())
+  coord_fixed()
+
+#ggplotly(int)
 ```
 
 

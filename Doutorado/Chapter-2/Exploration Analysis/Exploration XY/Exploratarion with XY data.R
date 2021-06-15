@@ -50,26 +50,18 @@ int = ggplot(df, aes(x=x, y=y))+
 
 ggplotly(int)
 
-#3D Map ===============================================================================
-a = ggplot(df, aes(x=x, y=y))+
-  stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
-  stat_density_2d(col = "black")+
-  scale_fill_viridis_c()+
-  ggtitle("Fall Trees Density")+
-  coord_fixed()
+#Succecional condition =========================================================================
+succ = df[,c(7,14,30)]
+succ$unit = as.numeric(1)
+
+succ2 = succ %>%
+  na.omit() %>% 
+  group_by(succ) %>% 
+  summarise(unit = sum(unit))
 
 
 
-#library(rayshader)
-#plot_gg(a, multicore = TRUE, raytrace = TRUE, width = 7, height = 7,
- #       scale = 300, windowsize = c(900, 600), zoom = 0.6, phi = 30, theta = 30)
-
-
-
-
-
-
-
+#Interactive Map ===============================================================================
 library(leaflet)
 library(raster)
 library(sp)
