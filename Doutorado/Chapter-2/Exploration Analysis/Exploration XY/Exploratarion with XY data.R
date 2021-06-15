@@ -54,14 +54,15 @@ ggplotly(int)
 #Succecional condition =========================================================================
 succ = df[,c(7,14,30)]
 succ$unit = as.numeric(1)
+total = (sum(succ$unit)-1)
 
 succ2 = succ %>%
   na.omit() %>% 
   group_by(succ) %>% 
   summarise(unit = sum(unit)) %>% 
-  mutate(percent = (unit/sum(succ2$unit))*100)
+  mutate(percent = (unit/total)*100)
 
-ggplot(aes(x="", y=percent, fill=succ))+
+ggplot(succ2, aes(x="", y=percent, fill=succ))+
   geom_bar(width = 1, stat = "identity")+
   coord_polar("y", start=0)+
   theme(axis.text.x=element_blank())+
@@ -69,6 +70,15 @@ ggplot(aes(x="", y=percent, fill=succ))+
   theme_minimal()
 
 
+succ3 = succ %>%
+  na.omit() %>% 
+  group_by(parcela_bl, succ) %>% 
+  summarise(unit = sum(unit)) %>% 
+  mutate(percent = (unit/total)*100)
+
+ggplot(succ3, aes(x = parcela_bl, y=percent, fill=succ))+
+  geom_bar(stat = "identity")+
+  theme_minimal()
 
 
 #Interactive Map ===============================================================================
