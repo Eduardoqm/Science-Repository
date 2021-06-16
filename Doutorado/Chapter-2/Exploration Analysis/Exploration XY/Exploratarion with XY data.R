@@ -30,7 +30,7 @@ ggplot(df, aes(x=x, y=y))+
 ggplot(df, aes(x=x, y=y))+
   geom_point(aes(col = succ), size = 3, alpha = 0.5)+
   scale_color_manual(values = eqm2)+
-  ggtitle("Fall Trees Succecional Condition")+
+  ggtitle("Fall Trees Successional Condition")+
   theme_light()+
   coord_fixed()
 
@@ -63,11 +63,17 @@ succ2 = succ %>%
   mutate(percent = (unit/total)*100)
 
 ggplot(succ2, aes(x="", y=percent, fill=succ))+
-  geom_bar(width = 1, stat = "identity")+
+  geom_bar(width = 1, stat = "identity", alpha = 0.8)+
   coord_polar("y", start=0)+
-  theme(axis.text.x=element_blank())+
-  geom_text(aes(label = paste0(substr(succ2$percent, 1,2), "%")))+
-  theme_minimal()
+  geom_text(aes(label = paste0(substr(succ2$percent, 1,2), "%")),
+            vjust = -2, size = 5, col = "white")+
+  xlab("")+ ylab("")+ labs(fill='Successional
+  Condition')+
+  ggtitle("Percentage of fallen trees")+
+  scale_fill_manual(values = eqm2)+
+  theme_minimal()+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
 
 
 succ3 = succ %>%
@@ -77,9 +83,36 @@ succ3 = succ %>%
   mutate(percent = (unit/total)*100)
 
 ggplot(succ3, aes(x = parcela_bl, y=percent, fill=succ))+
-  geom_bar(stat = "identity")+
-  theme_minimal()
+  geom_bar(position="stack", stat = "identity", alpha = 0.8)+
+  ggtitle("Percentage of fallen trees by treatment")+
+  xlab("")+ ylab("")+ labs(fill='Successional
+  Condition')+
+  scale_fill_manual(values = eqm2)+
+  theme_bw()
 
+
+succ4 = succ %>%
+  na.omit() %>% 
+  group_by(parcela_bl, succ) %>% 
+  summarise(unit = sum(unit))
+succ4$percent = as.numeric(0)
+
+ttl_crt = succ4[5,3]+succ4[6,3]
+succ4[5,4] = (succ4[5,3]/ttl_crt)*100; succ4[6,4] = (succ4[6,3]/ttl_crt)*100
+
+ttl_b3 = succ4[3,3]+succ4[4,3]
+succ4[3,4] = (succ4[3,3]/ttl_b3)*100; succ4[4,4] = (succ4[4,3]/ttl_b3)*100
+
+ttl_b1 = succ4[1,3]+succ4[2,3]
+succ4[1,4] = (succ4[1,3]/ttl_b1)*100; succ4[2,4] = (succ4[2,3]/ttl_b1)*100
+
+ggplot(succ4, aes(x = parcela_bl, y=percent, fill=succ))+
+  geom_bar(position="stack", stat = "identity", alpha = 0.8)+
+  ggtitle("Percentage of fallen trees by treatment - V2")+
+  xlab("")+ ylab("")+ labs(fill='Successional
+  Condition')+
+  scale_fill_manual(values = eqm2)+
+  theme_bw()
 
 #Interactive Map ===============================================================================
 library(leaflet)

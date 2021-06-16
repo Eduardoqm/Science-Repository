@@ -1,6 +1,6 @@
 ---
 title: "Blowdown Exploration (XY)"
-author: 'Por: Eduardo Q Marques'
+author: 'Eduardo Q Marques'
 output: html_document
 ---
 
@@ -37,12 +37,43 @@ area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/B
 eqm = c("red","orange", "blue")
 eqm2 = c("red", "blue")
 
+succ = df[,c(7,14,30)]
+succ$unit = as.numeric(1)
+total = (sum(succ$unit)-1)
+
+succ2 = succ %>%
+  na.omit() %>% 
+  group_by(succ) %>% 
+  summarise(unit = sum(unit)) %>% 
+  mutate(percent = (unit/total)*100)
+
+succ3 = succ %>%
+  na.omit() %>% 
+  group_by(parcela_bl, succ) %>% 
+  summarise(unit = sum(unit)) %>% 
+  mutate(percent = (unit/total)*100)
+
+succ4 = succ %>%
+  na.omit() %>% 
+  group_by(parcela_bl, succ) %>% 
+  summarise(unit = sum(unit))
+succ4$percent = as.numeric(0)
+
+ttl_crt = succ4[5,3]+succ4[6,3]
+succ4[5,4] = (succ4[5,3]/ttl_crt)*100; succ4[6,4] = (succ4[6,3]/ttl_crt)*100
+
+ttl_b3 = succ4[3,3]+succ4[4,3]
+succ4[3,4] = (succ4[3,3]/ttl_b3)*100; succ4[4,4] = (succ4[4,3]/ttl_b3)*100
+
+ttl_b1 = succ4[1,3]+succ4[2,3]
+succ4[1,4] = (succ4[1,3]/ttl_b1)*100; succ4[2,4] = (succ4[2,3]/ttl_b1)*100
+
 ```
 
-## Interactive MAP:
+## Interactive Map:
 Click the point to popup information
 
-```{r interac_map}
+```{r interac_map, echo=F}
 leaflet() %>% 
   #  addMiniMap(position = "bottomleft") %>%
   addProviderTiles("Esri.WorldImagery") %>% 
@@ -76,14 +107,47 @@ ggplot(df, aes(x=x, y=y))+
 ## Climax and Pionner trees:
 
 ```{r succ}
-ggplot(df, aes(x=x, y=y))+
+int = ggplot(df, aes(x=x, y=y))+
   geom_point(aes(col = succ), size = 3, alpha = 0.5)+
   scale_color_manual(values = eqm2)+
-  ggtitle("Fall Trees Succecional Condition")+
+  ggtitle("Fall Trees Successional Condition")+
   theme_light()+
   coord_fixed()
+ggplotly(int)
 
-#ggplotly(int)
+
+ggplot(succ2, aes(x="", y=percent, fill=succ))+
+  geom_bar(width = 1, stat = "identity", alpha = 0.8)+
+  coord_polar("y", start=0)+
+  geom_text(aes(label = paste0(substr(succ2$percent, 1,2), "%")),
+            vjust = -2, size = 5, col = "white")+
+  xlab("")+ ylab("")+ labs(fill='Successional
+  Condition')+
+  ggtitle("Percentage of fallen trees")+
+  scale_fill_manual(values = eqm2)+
+  theme_minimal()+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+
+
+
+ggplot(succ3, aes(x = parcela_bl, y=percent, fill=succ))+
+  geom_bar(position="stack", stat = "identity", alpha = 0.8)+
+  ggtitle("Percentage of fallen trees by treatment")+
+  xlab("")+ ylab("")+ labs(fill='Successional
+  Condition')+
+  scale_fill_manual(values = eqm2)+
+  theme_bw()
+
+
+
+ggplot(succ4, aes(x = parcela_bl, y=percent, fill=succ))+
+  geom_bar(position="stack", stat = "identity", alpha = 0.8)+
+  ggtitle("Percentage of fallen trees by treatment - V2")+
+  xlab("")+ ylab("")+ labs(fill='Successional
+  Condition')+
+  scale_fill_manual(values = eqm2)+
+  theme_bw()
 ```
 
 
