@@ -73,6 +73,8 @@ ndii = df2 %>% filter(index == "ndii")
 
 ndwi = df2 %>% filter(index == "ndwi")
 
+nbr = df2 %>% filter(index == "nbr")
+
 
 tile_plot = function(x){
   ggplot(x, aes(year, y, fill = value))+ 
@@ -85,4 +87,5 @@ tile_plot(pssr)
 tile_plot(wbi)
 tile_plot(ndii)
 tile_plot(ndwi)
+tile_plot(nbr)
 

@@ -48,15 +48,19 @@ wbi = transp("wbi");colnames(wbi) = c("WBI")
 pri = transp("pri");colnames(pri) = c("PRI")
 rendvi = transp("rendvi");colnames(rendvi) = c("RENDVI")
 nirv = transp("nirv"); colnames(nirv) = c("NIRv")
+nbr = transp("nbr"); colnames(nbr) = c("NBR")
+nbr2 = transp("nbr2"); colnames(nbr2) = c("NBR2")
+
 
 #Stract treatmant name
-treat = df[c(1:11781),]#; treat = treat[,c(6,7,8)]
+#treat = df[c(1:11781),]#; treat = treat[,c(6,7,8)]
+treat = df[c(1:12019),]
 treat = treat %>% 
-  select(year, parcela)
+  select(year, treat)
 
 
 #Join everything
-df3 = cbind(treat$year, treat$parcela,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
+df3 = cbind(treat$year, treat$treat,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv, lwvi2, nbr, nbr2)
 colnames(df3)[1:2] = c("Ano", "Parcela")
 
 #Change names
@@ -78,7 +82,8 @@ df3$cond[df3$Ano == 2012] <- "Post-Fire"
 #Tutorial video
 #Select numeric data
 df3 = na.omit(df3)
-df4 = df3[,c(-1, -2, -17)]
+#df4 = df3[,c(-1, -2, -17)]
+df4 = df3[,c(-1, -2, -20)]
 
 #Running PCA
 df4_pca = PCA(df4, graph = T)
@@ -101,7 +106,7 @@ fviz_pca_biplot(df4_pca, habillage = grp,
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Momentum
-grp = as.factor(df3[,c(17)])
+grp = as.factor(df3[,c(20)])
 fviz_pca_biplot(df4_pca, habillage = grp,
                 #addEllipses=TRUE,
                 #ellipse.level=0.99,
@@ -126,30 +131,31 @@ fire = getcond("Fire")
 post = getcond("Post-Fire")
 
 #Plot Pre Fire
-pre_pca = PCA(pre[,c(-1,-2,-17)], graph = F)
+pre_pca = PCA(pre[,c(-1,-2,-20)], graph = F)
 grp = as.factor(pre[,c(2)])
 fviz_pca_biplot(pre_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
                 geom.ind = c("point"),
                 col.var = "black", alpha = 0.4,
                 title = NULL, legend.title = "Parcela")+
+  xlim(-15, 10) + ylim (-3, 5)+
   scale_color_manual(values=c( "orange", "red", "blue"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Plot During Fire
-fire_pca = PCA(fire[,c(-1,-2,-17)], graph = F)
+fire_pca = PCA(fire[,c(-1,-2,-20)], graph = F)
 grp = as.factor(fire[,c(2)])
 fviz_pca_biplot(fire_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
                 geom.ind = c("point"),
                 col.var = "black", alpha = 0.4,
                 title = NULL, legend.title = "Parcela")+
-  ylim (-12.5, 10)+
+  #ylim (-12.5, 10)+
   scale_color_manual(values=c( "orange", "red", "blue"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Plot Post Fire
-post_pca = PCA(post[,c(-1,-2,-17)], graph = F)
+post_pca = PCA(post[,c(-1,-2,-20)], graph = F)
 grp = as.factor(post[,c(2)])
 fviz_pca_biplot(post_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
@@ -171,7 +177,7 @@ fire1 = getcond("Fire1")
 fire2 = getcond("Fire2")
 
 #Plot During Fire1 (2005 and 2006)
-fire1_pca = PCA(fire1[,c(-1,-2,-17)], graph = F)
+fire1_pca = PCA(fire1[,c(-1,-2,-20)], graph = F)
 grp = as.factor(fire1[,c(2)])
 fviz_pca_biplot(fire1_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
@@ -183,7 +189,7 @@ fviz_pca_biplot(fire1_pca, habillage = grp,
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Plot During Fire2 (2008, 2010 and 2011)
-fire2_pca = PCA(fire2[,c(-1,-2,-17)], graph = F)
+fire2_pca = PCA(fire2[,c(-1,-2,-20)], graph = F)
 grp = as.factor(fire2[,c(2)])
 fviz_pca_biplot(fire2_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,

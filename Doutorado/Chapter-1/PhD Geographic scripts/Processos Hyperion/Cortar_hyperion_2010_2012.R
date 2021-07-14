@@ -6,7 +6,7 @@ library(raster)
 library(rgdal)
 
 #Rasters stacks
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyper corte 2010-2012")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyper sem corte 2010-2012")
 s2010 = stack(files1 <- list.files(pattern="2010.tif$")) 
 s2012 = stack(files2 <-list.files(pattern = "2012.tif$"))
 
@@ -22,7 +22,7 @@ s2012b = crop(s2012, corte)
 s2012b = mask(s2012b, corte)
 
 #Export images
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyper corte 2010-2012/After_cut")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyper sem corte 2010-2012/After_cut")
 
 for (i in 1:length(s2010b)) {
   writeRaster(s2010b[[i]], paste(names(s2010b[[i]]), 2010, sep = "-", collapse = NULL), format = "GTiff", bylayer = FALSE)
