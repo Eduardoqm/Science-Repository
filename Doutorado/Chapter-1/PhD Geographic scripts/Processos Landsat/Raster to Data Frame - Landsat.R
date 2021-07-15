@@ -70,7 +70,11 @@ ndvi = df2 %>% filter(index == "ndvi")
 
 ndii = df2 %>% filter(index == "ndii")
 
-vig = df2 %>% filter(index == "vig")
+vig = df2 %>% filter(index == "grnd")
+
+nbr = df2 %>% filter(index == "nbr")
+
+nbr2 = df2 %>% filter(index == "nbr2")
 
 tile_plot = function(x){
   ggplot(x, aes(year, y, fill = value))+ 
@@ -85,6 +89,8 @@ tile_plot(evi2)
 tile_plot(ndvi)
 tile_plot(ndii)
 tile_plot(vig)
+tile_plot(nbr)
+tile_plot(nbr2)
 
 mod = function(x){
   ggplot(x, aes(year, value, fill = treat))+ 
@@ -102,6 +108,8 @@ mod(evi2)
 mod(ndvi)
 mod(ndii)
 mod(vig)
+mod(nbr)
+mod(nbr2)
 
 
 mapx = function(k){
@@ -115,4 +123,11 @@ mapx = function(k){
 mapx("evi2")
 mapx("ndvi")
 mapx("ndii")
-mapx("vig")
+mapx("grnd")
+mapx("nbr")
+mapx("nbr2")
+
+
+
+
+

@@ -1,7 +1,7 @@
 ########################################################
 # Landsat Time series for mean and relative difference #
 #                                                      #
-# Eduardo Q Marques 20-01-2021                         #
+# Eduardo Q Marques 20-01-2021  update: 15-07-2021     #
 ########################################################
 
 library(tidyverse)
@@ -27,7 +27,9 @@ df$treat = as.character(df$treat)
 df$index[df$index == "evi2"] <- c("EVI")
 df$index[df$index == "ndvi"] <- c("NDVI")
 df$index[df$index == "ndii"] <- c("NDII")
-df$index[df$index == "vig"] <- c("VIG")
+df$index[df$index == "grnd"] <- c("GRND")
+df$index[df$index == "nbr"] <- c("NBR")
+df$index[df$index == "nbr2"] <- c("NBR2")
 
 df$treat[df$treat == "control"] <- c("Controle")
 df$treat[df$treat == "b3yr"] <- c("B3yr")
