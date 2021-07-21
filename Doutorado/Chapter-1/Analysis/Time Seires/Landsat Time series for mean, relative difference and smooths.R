@@ -65,11 +65,21 @@ ggplot(df_m2, aes(x=Ano, y=Valor, color = Tratamento))+
             fill = "blue", color = NA, alpha = 0.003)+
   #annotate("text", x = 2007.5, y = 0.3, size = 4, label = "Fire period")+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
+  geom_point(alpha = 0.3)+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
+ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_jitter(alpha = 0.03)+
+  geom_vline(xintercept = "2004", linetype = "dashed")+
+  geom_vline(xintercept = "2011", linetype = "dashed")+
+  stat_summary(geom="line", fun.y="mean", size = 1.5, aes(group= Tratamento))+
+  facet_grid(rows = vars(Indice), scales = "free")+
+  theme_bw()+
+  scale_color_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
 
 #Diference by sbtraction ===========================================
