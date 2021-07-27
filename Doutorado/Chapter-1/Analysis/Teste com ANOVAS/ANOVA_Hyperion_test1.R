@@ -14,16 +14,19 @@ library(car)
 library(coin)
 
 #Data ======================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
-df$year = as.character(df$year)
+df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
+
+df$year = as.factor(df$year)
+df$index = as.character(df$index)
+df$treat = as.factor(df$treat)
 
 
 #First ask, hidric strees on control plot
 #PSSR
 pssr = df %>% 
-  filter(index == "pssr" & parcela == "control")
+  filter(index == "pssr" & treat == "control")
 
 #Test normality and homogenity
 shapiro.test(pssr$value)

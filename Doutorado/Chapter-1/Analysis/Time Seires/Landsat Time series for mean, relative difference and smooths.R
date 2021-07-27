@@ -75,7 +75,7 @@ ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_jitter(alpha = 0.03)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
-  stat_summary(geom="line", fun.y="mean", size = 1.5, aes(group= Tratamento))+
+  stat_summary(geom="line", fun.y="mean", size = 1.5, aes(group=Tratamento))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   scale_color_manual(values = eqm)+
