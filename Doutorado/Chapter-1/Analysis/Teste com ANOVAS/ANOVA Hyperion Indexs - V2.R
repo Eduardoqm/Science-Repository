@@ -1,4 +1,4 @@
-#ANOVA of Hyperion Indexs
+#ANOVA of Hyperion Indexs - V2
 
 #Eduardo Q Marques 27-07-2021
 
@@ -21,7 +21,7 @@ df2 = df %>%
   na.omit()
 
 ggboxplot(df2, x = "year", y = "value",
-  color = "treat", palette = "jco")
+          color = "treat", palette = "jco")
 
 #Test normality and homogenity -----------------------------------------------------------
 shapiro.test(df2$value)
@@ -72,6 +72,17 @@ ggplot(posth3, aes(x=year, y=pvalue, color = treat, shape = treat))+
   geom_hline(yintercept = 0.05, linetype = "dashed")+
   scale_color_manual(values = c("darkorange", "red"))+
   theme_bw()
+
+
+
+
+
+#Include results of significance in full data frame -------------------------------------
+df$diff = c("ns") #ns = Not significant
+
+df$diff[df$index == "ndvi", df$year = ]
+
+
 
 
 
