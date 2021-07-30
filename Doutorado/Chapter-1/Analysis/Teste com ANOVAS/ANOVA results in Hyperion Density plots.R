@@ -151,9 +151,9 @@ ggdens = function(z){
   ggplot(x, aes(x = value, y = year, fill=Parcela))+
     geom_density_ridges(alpha = 0.30)+
     geom_text(aes(color=Parcela, label = pvalueb1),
-              x = min(x$value, na.rm=T), hjust = -1, size = 7)+
+              x = min(x$value, na.rm=T), hjust = +2, size = 7)+
     geom_text(aes(color=Parcela, label = pvalueb3),
-              x = min(x$value, na.rm=T), size = 7)+
+              x = min(x$value, na.rm=T), hjust = +1, size = 7)+
     ggtitle(z)+
     theme_minimal()+
     scale_fill_manual(values = eqm)+
@@ -210,7 +210,7 @@ phy = ggarrange(pri+rremove("xlab")+rremove("ylab"),
                 rendvi+rremove("xlab")+rremove("ylab"),
                 common.legend = TRUE,
                 legend="right",
-                ncol = 1, nrow = 2)
+                ncol = 2, nrow = 1)
 phy
 
 #Fire ------------------------------------------------------------------------------------
@@ -218,7 +218,7 @@ fire = ggarrange(nbr+rremove("xlab")+rremove("ylab"),
                 nbr2+rremove("xlab")+rremove("ylab"),
                 common.legend = TRUE,
                 legend="right",
-                ncol = 1, nrow = 2)
+                ncol = 2, nrow = 1)
 fire
 
 
