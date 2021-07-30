@@ -155,15 +155,23 @@ ggdens = function(z){
     theme_minimal()+
     scale_fill_manual(values = eqm)+
     scale_color_manual(values = eqm)+
-    theme(text = element_text(family = "Times New Roman", size = 14))+
-    labs(x = "", y = "")
+    theme(text = element_text(family = "Times New Roman", size = 14))
 }
 
 evi = ggdens("EVI")
-ggdens("NDVI")
-ggdens("VARI")
-ggdens("VIG")
+ndvi = ggdens("NDVI")
+vari = ggdens("VARI")
+vig = ggdens("VIG")
 
+struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
+                  ndvi+rremove("xlab")+rremove("ylab"),
+                  vari+rremove("xlab")+rremove("ylab"),
+                  vig+rremove("xlab")+rremove("ylab"),
+                  common.legend = TRUE,
+                  legend="right",
+                  ncol = 2, nrow = 2)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
+struc
 
 
 
