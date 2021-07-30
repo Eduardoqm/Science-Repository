@@ -145,8 +145,7 @@ df$pvalueb3[df$Parcela == "B3yr" & df$pvalue <= 0.05] = c("*")
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 #eqm = c("orange", "red", "blue")
 
-#Trying ggarrange
-#Structural ------------------------------------------------------------------------------
+#Trying ggarrange ------------------------------------------------------------------------
 ggdens = function(z){
   x = df %>% filter(index %in% c(z))
   ggplot(x, aes(x = value, y = year, fill=Parcela))+
@@ -167,7 +166,21 @@ evi = ggdens("EVI")
 ndvi = ggdens("NDVI")
 vari = ggdens("VARI")
 vig = ggdens("VIG")
+ndii = ggdens("NDII")
+nirv = ggdens("NIRv")
+lwvi2 = ggdens("LWVI2")
+msi = ggdens("MSI")
+ndwi = ggdens("NDWI")
+pssr = ggdens("PSSR")
+psri = ggdens("PSRI")
+sipi = ggdens("SIPI")
+wbi = ggdens("WBI")
+pri = ggdens("PRI")
+rendvi = ggdens("RENDVI")
+nbr = ggdens("NBR")
+nbr2 = ggdens("NBR2")
 
+#Structural ------------------------------------------------------------------------------
 struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
                   ndvi+rremove("xlab")+rremove("ylab"),
                   vari+rremove("xlab")+rremove("ylab"),
@@ -176,6 +189,55 @@ struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
                   legend="right",
                   ncol = 2, nrow = 2)
 struc
+
+#Biochemistry ----------------------------------------------------------------------------
+bioc = ggarrange(lwvi2+rremove("xlab")+rremove("ylab"),
+                 msi+rremove("xlab")+rremove("ylab"),
+                 ndii+rremove("xlab")+rremove("ylab"),
+                 ndwi+rremove("xlab")+rremove("ylab"),
+                 pssr+rremove("xlab")+rremove("ylab"),
+                 psri+rremove("xlab")+rremove("ylab"),
+                 sipi+rremove("xlab")+rremove("ylab"),
+                 wbi+rremove("xlab")+rremove("ylab"),
+                 nirv+rremove("xlab")+rremove("ylab"),
+                 common.legend = TRUE,
+                 legend="right",
+                 ncol = 3, nrow = 3)
+bioc
+
+#Physiologic -----------------------------------------------------------------------------
+phy = ggarrange(pri+rremove("xlab")+rremove("ylab"),
+                rendvi+rremove("xlab")+rremove("ylab"),
+                common.legend = TRUE,
+                legend="right",
+                ncol = 1, nrow = 2)
+phy
+
+#Fire ------------------------------------------------------------------------------------
+fire = ggarrange(nbr+rremove("xlab")+rremove("ylab"),
+                nbr2+rremove("xlab")+rremove("ylab"),
+                common.legend = TRUE,
+                legend="right",
+                ncol = 1, nrow = 2)
+fire
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
