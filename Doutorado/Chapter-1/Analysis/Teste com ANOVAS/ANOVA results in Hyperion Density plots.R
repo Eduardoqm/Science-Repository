@@ -152,13 +152,15 @@ ggdens = function(z){
   ggplot(x, aes(x = value, y = year, fill=Parcela))+
     geom_density_ridges(alpha = 0.30)+
     geom_text(aes(color=Parcela, label = pvalueb1),
-              x = min(x$value, na.rm=T), hjust = -1, size = 10, check_overlap = F)+
+              x = min(x$value, na.rm=T), hjust = -1, size = 7)+
     geom_text(aes(color=Parcela, label = pvalueb3),
-              x = min(x$value, na.rm=T), size = 10, check_overlap = F)+
+              x = min(x$value, na.rm=T), size = 7)+
+    ggtitle(z)+
     theme_minimal()+
     scale_fill_manual(values = eqm)+
     scale_color_manual(values = eqm)+
-    theme(text = element_text(family = "Times New Roman", size = 14))
+    theme(text = element_text(family = "Times New Roman", size = 14),
+          plot.title = element_text(size = 12, hjust = 0.5))
 }
 
 evi = ggdens("EVI")
