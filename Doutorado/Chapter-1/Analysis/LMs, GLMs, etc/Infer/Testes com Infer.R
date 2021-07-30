@@ -23,12 +23,12 @@ ndvi04 = ndvi %>% filter(year == 2004)
 
 hist(ndvi04$value)
 
-ggplot(ndvi04, aes(x = value, y = treat, fill = treat)) +
-  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, scale = 3, color = "white") + 
-  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE) + 
-  #scale_x_continuous(labels = percent_format(accuracy = 1)) +
-  labs(x = "NDVI", y = NULL) +
-  theme_minimal() +
+ggplot(ndvi04, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
   theme(panel.grid.minor = element_blank())
 
 diff <- ndvi04 %>% 
@@ -54,6 +54,14 @@ ndvi05 = ndvi %>% filter(year == 2005)
 
 hist(ndvi05$value)
 
+ggplot(ndvi05, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
+  theme(panel.grid.minor = element_blank())
+
 diff <- ndvi05 %>% 
   specify(value ~ treat) %>% 
   calculate(stat = "F")
@@ -76,6 +84,14 @@ null_distn %>%
 ndvi06 = ndvi %>% filter(year == 2006)
 
 hist(ndvi06$value)
+
+ggplot(ndvi06, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
+  theme(panel.grid.minor = element_blank())
 
 diff <- ndvi06 %>% 
   specify(value ~ treat) %>% 
@@ -100,6 +116,14 @@ ndvi08 = ndvi %>% filter(year == 2008)
 
 hist(ndvi08$value)
 
+ggplot(ndvi08, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
+  theme(panel.grid.minor = element_blank())
+
 diff <- ndvi08 %>% 
   specify(value ~ treat) %>% 
   calculate(stat = "F")
@@ -122,6 +146,14 @@ null_distn %>%
 ndvi10 = ndvi %>% filter(year == 2010)
 
 hist(ndvi10$value)
+
+ggplot(ndvi10, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
+  theme(panel.grid.minor = element_blank())
 
 diff <- ndvi10 %>% 
   specify(value ~ treat) %>% 
@@ -146,6 +178,14 @@ ndvi11 = ndvi %>% filter(year == 2011)
 
 hist(ndvi11$value)
 
+ggplot(ndvi11, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
+  theme(panel.grid.minor = element_blank())
+
 diff <- ndvi11 %>% 
   specify(value ~ treat) %>% 
   calculate(stat = "F")
@@ -168,6 +208,14 @@ null_distn %>%
 ndvi12 = ndvi %>% filter(year == 2012)
 
 hist(ndvi12$value)
+
+ggplot(ndvi12, aes(x = value, y = treat, fill = treat))+
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2,
+                      alpha = 0.7, scale = 3, color = "white")+ 
+  scale_fill_manual(values = c("orange", "red", "blue"), guide = FALSE)+
+  labs(x = "NDVI", y = NULL)+
+  theme_minimal()+
+  theme(panel.grid.minor = element_blank())
 
 diff <- ndvi12 %>% 
   specify(value ~ treat) %>% 
