@@ -9,6 +9,9 @@ library(ggpubr)
 library(ggridges)
 library(rstatix)
 library(car)
+library(extrafont)
+font_import()
+loadfonts(device = "win", quiet = TRUE)
 
 #Data preparation ------------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -169,8 +172,7 @@ struc = ggarrange(evi+rremove("xlab")+rremove("ylab"),
                   vig+rremove("xlab")+rremove("ylab"),
                   common.legend = TRUE,
                   legend="right",
-                  ncol = 2, nrow = 2)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+                  ncol = 2, nrow = 2)
 struc
 
 
