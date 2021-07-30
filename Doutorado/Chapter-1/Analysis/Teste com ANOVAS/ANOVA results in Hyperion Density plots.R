@@ -142,41 +142,27 @@ df$pvalueb3[df$Parcela == "B3yr" & df$pvalue <= 0.05] = c("*")
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 #eqm = c("orange", "red", "blue")
 
-#Structural
-struc = df %>% 
-  filter(index %in% c('EVI','NDVI','VARI','VIG'))
+#Trying ggarrange
+#Structural ------------------------------------------------------------------------------
+ggdens = function(z){
+  x = df %>% filter(index %in% c(z))
+  ggplot(x, aes(x = value, y = year, fill=Parcela))+
+    geom_density_ridges(alpha = 0.30)+
+    geom_text(aes(color=Parcela, label = pvalueb1),
+              x = min(x$value, na.rm=T), hjust = -1, size = 10, check_overlap = F)+
+    geom_text(aes(color=Parcela, label = pvalueb3),
+              x = min(x$value, na.rm=T), size = 10, check_overlap = F)+
+    theme_minimal()+
+    scale_fill_manual(values = eqm)+
+    scale_color_manual(values = eqm)+
+    theme(text = element_text(family = "Times New Roman", size = 14))+
+    labs(x = "", y = "")
+}
 
-ggplot(struc, aes(x = value, y = year, fill=Parcela))+
-  geom_density_ridges(alpha = 0.30)+
-  geom_text(aes(color=Parcela, label = pvalue2),
-            x = min(struc$value, na.rm=T), size = 10, check_overlap = F)+
-  facet_wrap(~index, scales="free")+
-  theme_minimal()+
-  scale_fill_manual(values = eqm)+
-  scale_color_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))+
-  labs(x = "", y = "")
-
-
-
-#Trying ggarrange ------------------------------------------------------------------------
-x = df %>% filter(index %in% c('EVI'))
-ggplot(x, aes(x = value, y = year, fill=Parcela))+
-  geom_density_ridges(alpha = 0.30)+
-  geom_text(aes(color=Parcela, label = pvalue2),
-            x = min(x$value, na.rm=T), size = 10, check_overlap = F)+
-  theme_minimal()+
-  scale_fill_manual(values = eqm)+
-  scale_color_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))+
-  labs(x = "", y = "")
-
-
-
-
-
-
-
+evi = ggdens("EVI")
+ggdens("NDVI")
+ggdens("VARI")
+ggdens("VIG")
 
 
 
