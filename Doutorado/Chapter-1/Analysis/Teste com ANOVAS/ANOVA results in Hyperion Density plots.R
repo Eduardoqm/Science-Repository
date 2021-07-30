@@ -1,11 +1,12 @@
-#ANOVA of Hyperion Indexs - V2
+#ANOVA results in Hyperion Density plots
 
-#Eduardo Q Marques 27-07-2021
+#Eduardo Q Marques 28-07-2021
 
 library(tidyverse)
 library(reshape2)
 library(ggplot2)
 library(ggpubr)
+library(ggridges)
 library(rstatix)
 library(car)
 
@@ -41,7 +42,6 @@ tuk = function(x){
   posth3 = posth3[,c(6,7,8,4)]
 }
 
-
 #Structural Indices ----------------------------------------------------------------------
 a = df %>% filter(index == "evi2") %>% na.omit()
 evi = tuk(aov(value~year:treat, data = a, paried = F))
@@ -53,15 +53,6 @@ a = df %>% filter(index == "vari") %>% na.omit()
 vari = tuk(aov(value~year:treat, data = a, paried = F))
 
 struc = rbind(evi, ndvi, vari, vig)
-
-x11()
-ggplot(struc, aes(x=year, y=pvalue, color = treat, shape = treat))+
-  geom_point(size = 10, alpha = 0.7)+
-  geom_hline(yintercept = 0.05, linetype = "dashed")+
-  facet_wrap(~index, scales="free")+
-  scale_color_manual(values = c("darkorange", "red"))+
-  theme_bw()
-
 
 #Biochemistry Indices --------------------------------------------------------------------
 a = df %>% filter(index == "lwvi2") %>% na.omit()
@@ -85,15 +76,6 @@ wbi = tuk(aov(value~year:treat, data = a, paried = F))
 
 bioc = rbind(lwvi2, msi, ndii, ndwi, nirv, psri, pssr, sipi, wbi)
 
-x11()
-ggplot(bioc, aes(x=year, y=pvalue, color = treat, shape = treat))+
-  geom_point(size = 10, alpha = 0.7)+
-  geom_hline(yintercept = 0.05, linetype = "dashed")+
-  facet_wrap(~index, scales="free")+
-  scale_color_manual(values = c("darkorange", "red"))+
-  theme_bw()
-
-
 #Physiologic Indices ---------------------------------------------------------------------
 a = df %>% filter(index == "pri") %>% na.omit()
 pri = tuk(aov(value~year:treat, data = a, paried = F))
@@ -101,15 +83,6 @@ a = df %>% filter(index == "rendvi") %>% na.omit()
 rendvi = tuk(aov(value~year:treat, data = a, paried = F))
 
 phy = rbind(pri, rendvi)
-
-x11()
-ggplot(phy, aes(x=year, y=pvalue, color = treat, shape = treat))+
-  geom_point(size = 10, alpha = 0.7)+
-  geom_hline(yintercept = 0.05, linetype = "dashed")+
-  facet_wrap(~index, scales="free")+
-  scale_color_manual(values = c("darkorange", "red"))+
-  theme_bw()
-
 
 #Fire Indices ----------------------------------------------------------------------------
 a = df %>% filter(index == "nbr") %>% na.omit()
@@ -119,31 +92,92 @@ nbr2 = tuk(aov(value~year:treat, data = a, paried = F))
 
 fire = rbind(nbr, nbr2)
 
-x11()
-ggplot(fire, aes(x=year, y=pvalue, color = treat, shape = treat))+
-  geom_point(size = 10, alpha = 0.7)+
-  geom_hline(yintercept = 0.05, linetype = "dashed")+
-  facet_wrap(~index, scales="free")+
-  scale_color_manual(values = c("darkorange", "red"))+
-  theme_bw()
-
-
 #Join every comparisons and join with indexs data ----------------------------------------
 comp = rbind(struc, bioc, phy, fire)
-
 comp2 = comp %>% 
   unite(id, treat, year, index, sep = "_")
-  
+
 df2 = df %>% 
   unite(id, treat, year, index, sep = "_")
 
 df3 = full_join(df2, comp2, by = "id")
-
 df3 = df3 %>%
   separate(id, c("treat", "year", "index"), sep = "_")
-  
-  
-  
+
+#Density plots ---------------------------------------------------------------------------
+df = df3
+df$year = as.character(df$year)
+df$index = as.character(df$index)
+df$treat = as.character(df$treat)
+
+#Change names format
+df$index[df$index == "evi2"] <- c("EVI")
+df$index[df$index == "ndvi"] <- c("NDVI")
+df$index[df$index == "ndii"] <- c("NDII")
+df$index[df$index == "vig"] <- c("VIG")
+df$index[df$index == "vari"] <- c("VARI")
+df$index[df$index == "nirv"] <- c("NIRv")
+df$index[df$index == "lwvi2"] <- c("LWVI2")
+df$index[df$index == "msi"] <- c("MSI")
+df$index[df$index == "ndwi"] <- c("NDWI")
+df$index[df$index == "pssr"] <- c("PSSR")
+df$index[df$index == "psri"] <- c("PSRI")
+df$index[df$index == "sipi"] <- c("SIPI")
+df$index[df$index == "wbi"] <- c("WBI")
+df$index[df$index == "pri"] <- c("PRI")
+df$index[df$index == "rendvi"] <- c("RENDVI")
+df$index[df$index == "nbr"] <- c("NBR")
+df$index[df$index == "nbr2"] <- c("NBR2")
+
+
+df$treat[df$treat == "control"] <- c("Controle")
+df$treat[df$treat == "b3yr"] <- c("B3yr")
+df$treat[df$treat == "b1yr"] <- c("B1yr")
+
+colnames(df)[6] = c("Parcela")
+
+df$pvalueb1[df$Parcela == "B1yr" & df$pvalue <= 0.05] = c("*")
+df$pvalueb3[df$Parcela == "B3yr" & df$pvalue <= 0.05] = c("*")
+
+eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
+#eqm = c("orange", "red", "blue")
+
+#Structural
+struc = df %>% 
+  filter(index %in% c('EVI','NDVI','VARI','VIG'))
+
+ggplot(struc, aes(x = value, y = year, fill=Parcela))+
+  geom_density_ridges(alpha = 0.30)+
+  geom_text(aes(color=Parcela, label = pvalue2),
+            x = min(struc$value, na.rm=T), size = 10, check_overlap = F)+
+  facet_wrap(~index, scales="free")+
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  scale_color_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))+
+  labs(x = "", y = "")
+
+
+
+#Trying ggarrange ------------------------------------------------------------------------
+x = df %>% filter(index %in% c('EVI'))
+ggplot(x, aes(x = value, y = year, fill=Parcela))+
+  geom_density_ridges(alpha = 0.30)+
+  geom_text(aes(color=Parcela, label = pvalue2),
+            x = min(x$value, na.rm=T), size = 10, check_overlap = F)+
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  scale_color_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))+
+  labs(x = "", y = "")
+
+
+
+
+
+
+
+
 
 
 
