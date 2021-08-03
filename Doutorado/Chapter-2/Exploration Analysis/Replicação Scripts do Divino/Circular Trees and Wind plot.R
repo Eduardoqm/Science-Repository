@@ -62,10 +62,11 @@ ggplot(wind, aes(x=Direction, y=Number_of_Trees, col=Number_of_Trees))+
 library(circular)
 df2 = df[,8] %>% 
   na.omit()
-circ <- circular(df2, units = "degrees", template = "geographics") 
+tree_fall <- circular(df2, units = "degrees", template = "none",
+                      rotation = "clock", zero = -55) 
 
-
-
+plot.circular(tree_fall, stack = T, col = "blue")
+arrows.circular(mean(tree_fall))
 
 
 
