@@ -2,7 +2,7 @@
 
 #Eduardo Q Marques 02-08-2021
 
-#First Part =========================================================================================
+#First Part ========================================================================================
 #Join 2021 updated inventory with the blowdown data - EQM 06-07-2021
 library(tidyverse)
 library(reshape2)
@@ -111,6 +111,23 @@ ggplot(prc2, aes(tipod2, fr,fill=par,color=par)) +
    #     axis.title.x=element_text(size=16),
     #    legend.position=c(.75,.75),
      #   legend.key.width = unit(2, "cm"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

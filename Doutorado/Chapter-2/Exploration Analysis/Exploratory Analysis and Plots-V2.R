@@ -10,10 +10,13 @@ library(fmsb)
 #Load data
 setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
-df = read.csv("blowdown_full_update_2021.csv", sep = ",")
+#df = read.csv("blowdown_full_update_2021.csv", sep = ",")
+df = read.csv("blowdown_full_update_2021_B.csv", sep = ",")
 
 #Resume data
-df = df[,c(2,7,8,9,10,11,12,13,14,15,22,23)]
+#df = df[,c(2,7,8,9,10,11,12,13,14,15,22,23)]
+df = df[,c(3,7,8,9,10,11,12,13,14,15,25,18)]
+
 df$nt = 1
 colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Alt_tree", "DAP", "Number_of_Trees")
 
