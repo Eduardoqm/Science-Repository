@@ -55,16 +55,12 @@ eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 
 #Structural
 struc = df %>% 
-  filter(index %in% c('EVI','NDVI','VARI','VIG','biomass','lai','litter','fuel'))
+  filter(index %in% c('EVI','NDVI','VARI','VIG'))# %>% 
+  #group_by(index, year) %>% 
+  #mutate(value = value - mean(value, na.rm = T))
 
 
-struc2 = df %>% 
-  filter(index %in% c('EVI','NDVI','VARI','VIG','biomass','lai','litter','fuel')) %>% 
-  group_by(index, year) %>% 
-  mutate(value = value - mean(value, na.rm = T))
-
-
-ggplot(struc2, aes(x = value, y = year, fill=Parcela)) +
+ggplot(struc, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.30) +
   facet_wrap(~index, scales="free") +
   theme_minimal()+
@@ -74,9 +70,9 @@ ggplot(struc2, aes(x = value, y = year, fill=Parcela)) +
 
 #Biochemistry
 bioc = df %>% 
-  filter(index %in% c('NIRv','LWVI2','MSI','NDII','NDWI','PSSR','PSRI','SIPI','WBI','biomass','lai','litter','fuel')) %>% 
-  group_by(index, year) %>% 
-  mutate(value = value - mean(value, na.rm = T))
+  filter(index %in% c('NIRv','LWVI2','MSI','NDII','NDWI','PSSR','PSRI','SIPI','WBI'))# %>% 
+  #group_by(index, year) %>% 
+  #mutate(value = value - mean(value, na.rm = T))
 
 ggplot(bioc, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
@@ -86,13 +82,13 @@ ggplot(bioc, aes(x = value, y = year, fill=Parcela)) +
   theme(text = element_text(family = "Times New Roman", size = 14))+
   labs(x = "", y = "")
 
-#Physiologic
-phy = df %>% 
-  filter(index %in% c('PRI','RENDVI','biomass','lai','litter','fuel')) %>% 
-  group_by(index, year) %>% 
-  mutate(value = value - mean(value, na.rm = T))
+#Physiologic and Fire
+phy_fire = df %>% 
+  filter(index %in% c('PRI','RENDVI', 'NBR','NBR2'))# %>% 
+  #group_by(index, year) %>% 
+  #mutate(value = value - mean(value, na.rm = T))
 
-ggplot(phy, aes(x = value, y = year, fill=Parcela)) +
+ggplot(phy_fire, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()+
@@ -100,49 +96,4 @@ ggplot(phy, aes(x = value, y = year, fill=Parcela)) +
   theme(text = element_text(family = "Times New Roman", size = 14))+
   labs(x = "", y = "")
 
-#Fire Indices
-fire = df %>% 
-  filter(index %in% c('NBR','NBR2','biomass','lai','litter','fuel'))
 
-ggplot(fire, aes(x = value, y = year, fill=Parcela)) +
-  geom_density_ridges(alpha = 0.35) +
-  facet_wrap(~index, scales="free") +
-  theme_minimal()+
-  scale_fill_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))+
-  labs(x = "", y = "")
-
-#Result
-#Controle
-res = df %>% 
-  filter(index %in% c('PSSR', 'Red-Edge NDVI')) %>% 
-  filter(Parcela != "controle")
-
-ggplot(res, aes(x = value, y = year)) +
-  geom_density_ridges(alpha = 0.75, fill = "#00AFBB") +
-  facet_wrap(~index, scales="free") +
-  theme_minimal()
-
-#Burned
-burn = df %>% 
-  filter(index %in% c('PSSR')) %>% 
-  filter(Parcela != "controle")
-
-ggplot(burn, aes(x = value, y = year, fill = Parcela)) +
-  geom_density_ridges(alpha = 0.35) +
-  facet_wrap(~index, scales="free") +
-  theme_minimal()+
-  scale_fill_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-#Others
-burn2 = df %>% 
-  filter(index %in% c('NIRv','LWVI2','Red-Edge NDVI','VARI')) %>% 
-  filter(Parcela != "controle")
-
-ggplot(burn2, aes(x = value, y = year, fill = Parcela)) +
-  geom_density_ridges(alpha = 0.35) +
-  facet_wrap(~index, scales="free") +
-  theme_minimal()+
-  scale_fill_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
