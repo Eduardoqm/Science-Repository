@@ -51,6 +51,7 @@ ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_smooth(aes(group=Tratamento),size = 1.2, level = 0.9999999999999)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
+  #stat_summary(geom="point", fun.y="mean", size = 2, aes(group=Tratamento))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   theme(axis.text.x = element_text(angle = 90))+
@@ -58,29 +59,12 @@ ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Mean time series =================================================
-df_m = df2 %>% 
-  group_by(year, treat, index) %>% 
-  summarise(value = mean(value))
-
-df_m2 = df_m #To not have problem in diff...I dont know why!
-colnames(df_m2) = c("Ano", "Tratamento", "Indice", "Valor")
-
-ggplot(df_m2, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            fill = "blue", color = NA, alpha = 0.003)+
-  #annotate("text", x = 2007.5, y = 0.3, size = 4, label = "Fire period")+
-  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
-  geom_point(alpha = 0.3)+
-  facet_grid(rows = vars(Indice), scales = "free")+
-  theme_bw()+
-  scale_color_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
 ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_jitter(alpha = 0.03)+
+  #geom_jitter(alpha = 0.03)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
   stat_summary(geom="line", fun.y="mean", size = 1.5, aes(group=Tratamento))+
+  #stat_summary(geom="point", fun.y="mean", size = 2, aes(group=Tratamento))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   scale_color_manual(values = eqm)+
@@ -88,6 +72,13 @@ ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
 
 
 #Diference by sbtraction ===========================================
+df_m = df2 %>% 
+  group_by(year, treat, index) %>% 
+  summarise(value = mean(value))
+
+df_m2 = df_m #To not have problem in diff...I dont know why!
+colnames(df_m2) = c("Ano", "Tratamento", "Indice", "Valor")
+
 #Calculate difference in relation of control
 df_crt = filter(df_m, treat == "Controle")
 df_b3yr = filter(df_m, treat == "B3yr")
@@ -96,16 +87,7 @@ df_b1yr = filter(df_m, treat == "B1yr")
 df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
 df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
-#df_diff2 = df_diff
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
-#df_diff2$Valor2 = 100 - (df_diff2$Valor)
-
-#df_b3yr$value = df_b3yr$value - df_crt$value
-#df_b1yr$value = df_b1yr$value - df_crt$value
-#df_diff = rbind(df_b3yr, df_b1yr)
-#df_diff2 = df_diff
-#colnames(df_diff2) = c("Ano", "Tratamento", "Indice", "Valor")
-#df_diff2$Valor2 = df_diff2$Valor*100 #To be percentege
 
 
 ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
@@ -119,29 +101,38 @@ ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
-#Abstract difference
-#All
-summary(df_diff)
 
-report = function(x,y){
-  summary(df_diff %>% filter(Tratamento == y) %>% filter(Indice == x))
-}
+ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
+            fill = "blue", color = NA, alpha = 0.009)+
+  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
+  facet_grid(rows = vars(Indice))+
+  labs(y = "Diferença em relação o Controle (%)")+
+  theme_bw()+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  scale_color_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-#NDVI
-report("NDVI", "B3yr")
-report("NDVI", "B1yr")
 
-#EVI
-report("EVI", "B3yr")
-report("EVI", "B1yr")
+ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
+  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
+            fill = "red", color = NA, alpha = 0.005883)+
+  #geom_vline(xintercept = 2004, linetype = "dashed")+
+  #geom_vline(xintercept = 2011, linetype = "dashed")+
+  geom_line(aes(group = Indice), size = 1.5, alpha = 0.95)+
+  facet_grid(rows = vars(Tratamento))+
+  labs(y = "Diferença em relação o Controle (%)")+
+  theme_bw()+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-#NDII
-report("NDII", "B3yr")
-report("NDII", "B1yr")
 
-#VIG
-report("VIG", "B3yr")
-report("VIG", "B1yr")
+
+
+
+
+
 
 
 
