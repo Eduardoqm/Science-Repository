@@ -37,13 +37,18 @@ df$treat[df$treat == "b1yr"] <- c("B1yr")
 
 eqm = c("orange", "red", "blue") #My color palette
 
+#Resume repeat years with mean ====================================
+df2 = df %>% 
+  group_by(x, y, index, year, treat) %>% 
+  summarise(value = mean(value))
+
 #Smooth time series ===============================================
-df_smt = df[,c(6,8,5,7)]
+df_smt = df2[,c(4,5,3,6)]
 df_smt$year = as.character(df_smt$year)
 colnames(df_smt) = c("Ano", "Tratamento", "Indice", "Valor")
 
 ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_smooth(aes(group=Tratamento),size = 1.2, level = 0.9999)+
+  geom_smooth(aes(group=Tratamento),size = 1.2, level = 0.9999999999999)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
   facet_grid(rows = vars(Indice), scales = "free")+
@@ -53,7 +58,7 @@ ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Mean time series =================================================
-df_m = df %>% 
+df_m = df2 %>% 
   group_by(year, treat, index) %>% 
   summarise(value = mean(value))
 
