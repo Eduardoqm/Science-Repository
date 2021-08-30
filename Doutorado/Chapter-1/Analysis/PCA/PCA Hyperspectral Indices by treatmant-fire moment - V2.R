@@ -91,6 +91,7 @@ df4_pca = PCA(df4, graph = T)
 #Extract variance values
 get_eigenvalue(df4_pca)
 fviz_eig(df4_pca, addlabels = T, ylim = c(0,90))
+df4_pca[["var"]][["cor"]] #Eigen Vectors
 
 #Plot PCAs by momentum ---------------------------------------------------------------------
 #Separate data by momentum
@@ -106,6 +107,11 @@ post = getcond("Post-Fire")
 
 #Plot Pre Fire
 pre_pca = PCA(pre[,c(-1,-2,-20)], graph = F)
+
+eigpre = as.data.frame(pre_pca[["var"]][["cor"]])
+corrplot::corrplot(pre_pca[["var"]][["cor"]])
+#write.table(eigpre, "PCAeig_pre_fire.csv", sep = ",", row.names = T)
+
 grp = as.factor(pre[,c(2)])
 fviz_pca_biplot(pre_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
@@ -118,6 +124,11 @@ fviz_pca_biplot(pre_pca, habillage = grp,
 
 #Plot During Fire
 fire_pca = PCA(fire[,c(-1,-2,-20)], graph = F)
+
+eigfire = as.data.frame(fire_pca[["var"]][["cor"]])
+corrplot::corrplot(fire_pca[["var"]][["cor"]])
+#write.table(eigfire, "PCAeig_during_fire.csv", sep = ",", row.names = T)
+
 grp = as.factor(fire[,c(2)])
 fviz_pca_biplot(fire_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
@@ -130,6 +141,11 @@ fviz_pca_biplot(fire_pca, habillage = grp,
 
 #Plot Post Fire
 post_pca = PCA(post[,c(-1,-2,-20)], graph = F)
+
+eigpost = as.data.frame(post_pca[["var"]][["cor"]])
+corrplot::corrplot(post_pca[["var"]][["cor"]])
+#write.table(eigpost, "PCAeig_post_fire.csv", sep = ",", row.names = T)
+
 grp = as.factor(post[,c(2)])
 fviz_pca_biplot(post_pca, habillage = grp,
                 pointshape = 19, pointsize = 2,
@@ -171,4 +187,5 @@ fviz_pca_biplot(fire2_pca, habillage = grp,
                 col.var = "black", alpha = 0.4,
                 title = NULL, legend.title = "Parcela")+
   scale_color_manual(values=c( "orange", "red", "blue"))+
+  ylim (-10, 10)+
   theme(text = element_text(family = "Times New Roman", size = 14))
