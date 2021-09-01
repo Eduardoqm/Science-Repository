@@ -33,11 +33,13 @@ transp = function(x){
 
 evi = transp("evi2");colnames(evi) = c("EVI")
 ndvi = transp("ndvi");colnames(ndvi) = c("NDVI")
-vig = transp("vig");colnames(vig) = c("VIG")
+grnd = transp("grnd");colnames(grnd) = c("GRND")
 ndii = transp("ndii");colnames(ndii) = c("NDII")
+nbr = transp("nbr");colnames(nbr) = c("NBR")
+nbr2 = transp("nbr2");colnames(nbr2) = c("NBR2")
 
 #Join everything
-df3 = cbind(df$treat,evi,ndvi,vig,ndii)
+df3 = cbind(df$treat,evi,ndvi,grnd,ndii,nbr,nbr2)
 colnames(df3)[1] = c("Parcela")
 
 #Change names

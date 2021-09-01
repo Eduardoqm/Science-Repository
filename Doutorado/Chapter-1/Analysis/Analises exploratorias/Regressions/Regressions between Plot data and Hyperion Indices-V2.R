@@ -1,6 +1,6 @@
-#Regression between Plot data and Hyperion Indices
+#Regression between Plot data and Hyperion Indices - V2
 
-#Eduardo Q Marques 30-03-2021
+#Eduardo Q Marques 01-09-2021
 
 library(tidyverse)
 library(reshape2)
@@ -79,45 +79,13 @@ df_bmas = full_join(df2, bmas2, by = "id")
 df_bmas = na.omit(df_bmas)
 
 #Plot correlation --------------------------------------------------
-a = ggplot(df_lai, aes(x=value, y=lai))+
-  geom_point(size = 3, col = "red")+
-  geom_smooth(method="lm", col = "red")+ 
-  facet_grid(cols = vars(index), scales = "free")+
-  #facet_wrap(~index, scales = "free")+
-  stat_cor(show.legend = F)+
-  theme_bw()+
-  theme(axis.text.y = element_blank(), axis.ticks = element_blank())+
-  labs(x = "", y = "LAI")+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+lai_cor = function(x){
+  z = df_lai %>% 
+    filter(index == x) 
+    cor(z$value, z$lai)
+}
 
-b = ggplot(df_litt, aes(x=value, y=lit_ton_hec))+
-  geom_point(size = 3, col = "orange")+
-  geom_smooth(method="lm", col = "orange")+ 
-  facet_grid(cols = vars(index), scales = "free")+
-  #facet_wrap(~index, scales = "free")+
-  stat_cor(show.legend = F)+
-  theme_bw()+
-  theme(axis.text.y = element_blank(), axis.ticks = element_blank())+
-  labs(x = "", y = "Liteira (T/ha)")+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-c = ggplot(df_bmas, aes(x=value, y=biomass))+
-  geom_point(size = 3, col = "darkgreen")+
-  geom_smooth(method="lm", col = "darkgreen")+ 
-  facet_grid(cols = vars(index), scales = "free")+
-  #facet_wrap(~index, scales = "free")+
-  stat_cor(show.legend = F)+
-  theme_bw()+
-  theme(axis.text.y = element_blank(), axis.ticks = element_blank())+
-  labs(x = "", y = "Biomassa (T/tratamento)")+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-
-ggarrange(a, b, c,
-          common.legend = TRUE,
-          legend="bottom",
-          ncol = 1, nrow = 3)
-
+lai_cor("PSRI")
 
 
 

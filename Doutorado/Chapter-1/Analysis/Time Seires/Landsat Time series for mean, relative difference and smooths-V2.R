@@ -133,7 +133,18 @@ ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
 
 
 
-
+#Test ZONE =============================================================
+ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_smooth(aes(group=Tratamento), alpha = 0.5, size = 1.2, level = 0.9999999999999)+
+  geom_vline(xintercept = "2004", linetype = "dashed")+
+  geom_vline(xintercept = "2011", linetype = "dashed")+
+  #stat_summary(geom="line", fun.y="mean", size = 0.5, linetype = "dashed", aes(group=Tratamento))+
+  stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.5, aes(group=Tratamento))+
+  facet_grid(rows = vars(Indice), scales = "free")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90))+
+  scale_color_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
 
 #Apresentations tests ==================================================
