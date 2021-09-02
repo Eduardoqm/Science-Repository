@@ -7,6 +7,15 @@
 library(tidyverse)
 library(reshape2)
 
+#Process to using Silverio's Script: Figure.generaxdamaged by plots
+
+#Eduardo Q Marques 02-09-2021
+
+#First Part ========================================================================================
+#Join 2021 updated inventory with the blowdown data - EQM 06-07-2021
+library(tidyverse)
+library(reshape2)
+
 #Open data -----------------------------------------------------------------------------------------
 #Blowdown field data
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento")
@@ -39,20 +48,16 @@ master = full_join(master, m40)
 blowdown$placa = as.character(blowdown$placa)
 df = full_join(blowdown, master, by = "placa")
 
+df2 = df %>% 
+  filter(is.na(data_morta))
+
 #Filter Blowdown trees only and data of interest ---------------------------------------------------
-
-#df2 = df %>% 
- # filter(parcela_bl != "NA") #I am surprised...it's work!
-
-#df3 = df2[,c(1,13,16,14,15,17,3,4,5,6,7,8,9,10,11,12,19,20,22,23,24,25,26,27,30,72)]
-#df3 = df[,c(1,13,16,14,15,17,3,4,5,6,7,8,9,10,11,12,19,20,22,23,24,25,26,27,30,72,128,129)]
-df3 = df[,c(1,13,16,14,15,17,3,4,5,6,7,8,9,10,11,12,19,20,22,23,24,25,26,27,30,72,127,128,129)]
+df3 = df2[,c(1,13,16,14,15,17,3,4,5,6,7,8,9,10,11,12,19,20,22,23,24,25,26,27,30,72,127,128,129)]
 
 #Join with Sucessional data ------------------------------------------------------------------------
 df4 = full_join(df3, suce)
 df5 = df4 %>% 
   filter(placa != "NA")
-#df5 = df5[,c(-24)]
 
 #Inform some species that no match with the list
 df5$succ[df5$codigo == "Tacvul"] <- c("PIO")
@@ -63,9 +68,6 @@ df5$species = as.character(df5$species)
 df5$codigo = as.character(df5$codigo)
 df5$species[df5$codigo == "Inghet"] <- c("Inga_heterophylla")
 df5$species[df5$codigo == "Tacvul"] <- c("Tachigali_vulgaris")
-
-#df6 = df5 %>% 
-#  filter(parcela_bl != "NA") #I am surprised...it's work!
 
 #Export data ---------------------------------------------------------------------------------------
 #setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento")
