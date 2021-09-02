@@ -61,41 +61,51 @@ df5$species[df5$codigo == "Inghet"] <- c("Inga_heterophylla")
 df5$species[df5$codigo == "Tacvul"] <- c("Tachigali_vulgaris")
 
 #Calc percentege
-df2 = df %>% 
+df5$cont = 1
+df5$tipo_de_dano = as.character(df5$tipo_de_dano)
+df5$tipo_de_dano <- replace(df5$tipo_de_dano,is.na(df5$tipo_de_dano), "Intact")
+
+df6 = df5 %>% 
   #na.omit() %>% 
   group_by(genero, tipo_de_dano) %>% 
   summarise(cont = sum(cont))
 
-df2$prc = (df2$cont*100/sum(df2$cont))
-
-maxtree = df %>%  
+maxtree = df5 %>%  
   group_by(genero) %>% 
   summarise(maxcont = sum(cont))
 
-mdens = df %>% 
+mdens = df5 %>% 
+  group_by(genero) %>%
+  #na.omit() %>% 
+  summarise(densidade = mean(densidade))
+
+df7 = full_join(df6, maxtree, by = "genero")
+#df7 = full_join(df7, mdens, by = "genero")
+
+df7$prc = ((df7$cont*100)/df7$maxcont)
+
+df8 = df7 %>%
   na.omit() %>% 
+  filter(tipo_de_dano != "Intact") 
+  
+abund = df8 %>% 
   group_by(genero) %>% 
-  summarise(mean_dens = mean(densidade))
-
-df3 = full_join(df2, maxtree, by = "genero")
-df3 = full_join(df3, mdens, by = "genero")
-df4 = df3 %>%
-  na.omit() %>% 
-  filter(maxcont >= 8)
-
+  summarise(abund = sum(cont))
+df8 = full_join(df8, abund, by = "genero")
+df8 = df8 %>% 
+  filter(abund >= 5)
 
 library(ggplot2)
 library(ggthemes)
 library(doBy)
 
-ggplot(df4, aes(x = reorder(genero, -maxcont), y = prc)) +
+ggplot(df8, aes(x = reorder(genero, -maxcont), y = prc)) +
   coord_flip()+
   geom_bar(aes(fill = tipo_de_dano),stat = 'identity') +
   ylim(c(-0.02, 10.5))+
   xlab("") +
   ylab("Damage frequency") +
-    geom_text(aes(x = reorder(genero, -maxcont), y = -0.02,
-                label = maxcont),size=3)+
+  geom_text(aes(x = reorder(genero, -maxcont), y = -0.02, label = maxcont),size=3)+
   #geom_text(aes(x = reorder(genero, -maxcont), y = maxcont + 0.013,
   #             label = mean_dens),size=3)+
   theme_grey(base_size = 13)+
