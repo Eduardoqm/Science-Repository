@@ -87,11 +87,19 @@ df7$prc = ((df7$cont*100)/df7$maxcont)
 df8 = df7 %>%
   na.omit() %>% 
   filter(tipo_de_dano != "Intact") 
-  
+df8$tipo_de_dano[df8$tipo_de_dano == "Broken"] <- c("Snapped")
+
 abund = df8 %>% 
   group_by(genero) %>% 
   summarise(abund = sum(cont))
+
+frec = df8 %>% 
+  group_by(genero) %>% 
+  summarise(frec = sum(prc))
+
 df8 = full_join(df8, abund, by = "genero")
+df8 = full_join(df8, frec, by = "genero")
+
 df8 = df8 %>% 
   filter(abund >= 5)
 
@@ -99,13 +107,13 @@ library(ggplot2)
 library(ggthemes)
 library(doBy)
 
-ggplot(df8, aes(x = reorder(genero, -maxcont), y = prc)) +
+ggplot(df8, aes(x = reorder(genero, -frec), y = prc)) +
   coord_flip()+
   geom_bar(aes(fill = tipo_de_dano),stat = 'identity') +
-  ylim(c(-0.02, 10.5))+
+  ylim(c(-0.35, 10.5))+
   xlab("") +
   ylab("Damage frequency") +
-  geom_text(aes(x = reorder(genero, -maxcont), y = -0.02, label = maxcont),size=3)+
+  geom_text(aes(x = reorder(genero, frec), y = -0.35, label = maxcont),size=3)+
   #geom_text(aes(x = reorder(genero, -maxcont), y = maxcont + 0.013,
   #             label = mean_dens),size=3)+
   theme_grey(base_size = 13)+
