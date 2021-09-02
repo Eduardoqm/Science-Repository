@@ -39,8 +39,11 @@ master = full_join(master, m40)
 blowdown$placa = as.character(blowdown$placa)
 df = full_join(blowdown, master, by = "placa")
 
+df2 = df %>% 
+  filter(is.na(data_morta))
+
 #Filter Blowdown trees only and data of interest ---------------------------------------------------
-df3 = df[,c(1,13,16,14,15,17,3,4,5,6,7,8,9,10,11,12,19,20,22,23,24,25,26,27,30,72,127,128,129)]
+df3 = df2[,c(1,13,16,14,15,17,3,4,5,6,7,8,9,10,11,12,19,20,22,23,24,25,26,27,30,72,127,128,129)]
 
 #Join with Sucessional data ------------------------------------------------------------------------
 df4 = full_join(df3, suce)
@@ -76,7 +79,8 @@ prc = df6 %>%
   #na.omit() %>% 
   group_by(parcela, tipo_de_dano) %>% 
   summarise(cont = sum(cont))
-prc = prc[c(-1,-10),]
+#prc = prc[c(-1,-10),]
+prc = prc[c(-9),] #Always verify this operation!!!
 prc$cont[7] = prc$cont[7]+8
 
 total_a = sum(prc[c(1:4),3])
@@ -92,6 +96,8 @@ colnames(prc) = c("par", "tipod2", "cont","fr")
 prc$par[prc$par == "A"] <-c("Control")
 prc$par[prc$par == "B"] <-c("B3yr")
 prc$par[prc$par == "C"] <-c("B1yr")
+prc$tipod2[prc$tipod2 == "Broken"] <- c("Snapped")
+prc$tipod2[prc$tipod2 == "Crown"] <- c("Canopy")
 
 
 #Plotting ------------------------------------------------------------------------------------------
@@ -106,11 +112,11 @@ ggplot(prc2, aes(tipod2, fr,fill=par,color=par)) +
   scale_fill_manual(values = c("orange","brown", "darkgreen"))+
   theme_bw(base_size = 16)+
   labs(x = "", y = "Trees >10 cm DBH (%)")+
-  theme(legend.title=element_blank())
-  #theme(legend.title=element_blank(),
-   #     axis.title.x=element_text(size=16),
-    #    legend.position=c(.75,.75),
-     #   legend.key.width = unit(2, "cm"))
+  #theme(legend.title=element_blank())
+  theme(legend.title=element_blank(),
+        axis.title.x=element_text(size=16),
+        legend.position=c(.25,.75),
+        legend.key.width = unit(2, "cm"))
 
 
 
