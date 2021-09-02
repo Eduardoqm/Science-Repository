@@ -103,7 +103,7 @@ prc$tipod2[prc$tipod2 == "Crown"] <- c("Canopy")
 #Plotting ------------------------------------------------------------------------------------------
 prc2 = prc %>% filter(tipod2 != "Intact")
 
-ggplot(prc2, aes(tipod2, fr,fill=par,color=par)) + 
+fig3 = ggplot(prc2, aes(tipod2, fr,fill=par,color=par)) + 
   geom_bar(position = "dodge", width = 0.5, stat = "identity",alpha=0.7)+
   #geom_errorbar(aes(ymin = fr-(fr_se*100), ymax = fr+(fr_se*100)),
    #             width=.2,
@@ -118,8 +118,11 @@ ggplot(prc2, aes(tipod2, fr,fill=par,color=par)) +
         legend.position=c(.25,.75),
         legend.key.width = unit(2, "cm"))
 
+fig3
 
-
+#ggsave(filename = "Figure.damaged trees by plots_eqm.png", plot = fig3,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Clone plots of Silverio", 
+  #   width = 15, height = 10, units =  "cm", dpi = 300)
 
 
 
