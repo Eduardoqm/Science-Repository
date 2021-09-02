@@ -43,21 +43,27 @@ df2 = df %>%
   summarise(value = mean(value))
 
 #Smooth time series ===============================================
-df_smt = df2[,c(4,5,3,6)]
-df_smt$year = as.character(df_smt$year)
-colnames(df_smt) = c("Ano", "Tratamento", "Indice", "Valor")
-
-ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_smooth(aes(group=Tratamento), alpha = 0.5, size = 1.2, level = 0.9999999999999)+
+smtplot = ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_smooth(aes(group=Tratamento), alpha = 0.5, size = 1, level = 0.9999999999999)+
   geom_vline(xintercept = "2004", linetype = "dashed")+
   geom_vline(xintercept = "2011", linetype = "dashed")+
-  #stat_summary(geom="line", fun.y="mean", size = 0.5, linetype = "dashed", aes(group=Tratamento))+
-  stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.5, aes(group=Tratamento))+
+  #stat_summary(geom="line", fun.data="mean_cl_boot", size = 0.5, linetype = "dashed", aes(group=Tratamento))+
+  stat_summary(geom="point", fun.data="mean_cl_boot",
+               size = 2, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
+  #stat_summary(geom="pointrange", fun.data="mean_cl_boot", alpha = 0.5, aes(group=Tratamento))+
+  #stat_summary(fun.data = "mean_cl_boot", geom = "errorbar")+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   theme(axis.text.x = element_text(angle = 90))+
   scale_color_manual(values = eqm)+
+  scale_fill_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
+
+smtplot
+
+#ggsave(filename = "Smooth_Landsat.png", plot = smtplot,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+#       width = 20, height = 16, units =  "cm", dpi = 300)
 
 #Mean time series =================================================
 df_m = df2 %>% 
@@ -93,57 +99,37 @@ df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
 
-
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            fill = "black", color = NA, alpha = 0.002)+
-  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
-  facet_grid(rows = vars(Indice), scales = "free")+
-  labs(y = "Diferença em relação o Controle (%)")+
-  theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed")+
-  scale_color_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            fill = "blue", color = NA, alpha = 0.009)+
-  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
-  facet_grid(rows = vars(Indice))+
-  labs(y = "Diferença em relação o Controle (%)")+
-  theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed")+
-  scale_color_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
-  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            fill = "red", color = NA, alpha = 0.005883)+
-  #geom_vline(xintercept = 2004, linetype = "dashed")+
-  #geom_vline(xintercept = 2011, linetype = "dashed")+
-  geom_line(aes(group = Indice), size = 1.5, alpha = 0.95)+
+difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
+  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
+  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
+  geom_point(size = 1.5, alpha = 0.8)+
   facet_grid(rows = vars(Tratamento))+
   labs(y = "Diferença em relação o Controle (%)")+
   theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed")+
+  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14))
+
+difplot
+
+#ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+  #     width = 20, height = 10, units =  "cm", dpi = 300)
 
 
 
 #Test ZONE =============================================================
-ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_smooth(aes(group=Tratamento), alpha = 0.5, size = 1.2, level = 0.9999999999999)+
-  geom_vline(xintercept = "2004", linetype = "dashed")+
-  geom_vline(xintercept = "2011", linetype = "dashed")+
-  #stat_summary(geom="line", fun.y="mean", size = 0.5, linetype = "dashed", aes(group=Tratamento))+
-  stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.5, aes(group=Tratamento))+
-  facet_grid(rows = vars(Indice), scales = "free")+
+ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
+  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
+  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
+  geom_point(size = 1.5, alpha = 0.8)+
+  facet_grid(rows = vars(Tratamento))+
+  labs(y = "Diferença em relação o Controle (%)")+
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90))+
-  scale_color_manual(values = eqm)+
+  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
+  scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 
