@@ -120,7 +120,7 @@ library(raster)
 library(sp)
 library(rgdal)
 
-df2 = df[,c(32, 31, 29, 1, 10, 14, 17, 25, 26, 30)] #%>% na.omit()
+df2 = df[,c(32, 31, 7, 29, 1, 10, 14, 17, 25, 26, 30)] #%>% na.omit()
 df2 = df2 %>% filter(x != is.na(x))
 
 xy = df2[,c(1, 2)]
@@ -129,7 +129,7 @@ loc_trees = SpatialPointsDataFrame(coords = xy, data = df2,
                                    proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 
 
-#writeOGR(loc_trees, dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes", layer = "Blowdown_trees_XY", driver="ESRI Shapefile")
+#writeOGR(loc_trees, dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes/Blowdown", layer = "Blowdown_trees_XY", driver="ESRI Shapefile")
 
 area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
 
