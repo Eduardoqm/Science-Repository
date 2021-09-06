@@ -1,4 +1,4 @@
-#Extract Fraction info by XY Blowdown
+#Extract Landsat Bands info by XY Blowdown
 
 #Eduardo Q Marques 03-09-2021
 
@@ -11,23 +11,51 @@ library(tidyverse)
 library(reshape2)
 
 #Load data =======================================
-#Fractional Images
-setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Fraction_Landsat/Mistura Espectral')
-files1 <- list.files(pattern="_frac$") 
-files2 <- list.files(pattern = "_frac.tif$")
-files = c(files1, files2)
+#Landsat
+land18 = stack(list.files("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Fraction_Landsat/Landsat puro/2018", pattern = ".tif$", full.names=TRUE, recursive=TRUE))
+
+land19 = stack(list.files("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Fraction_Landsat/Landsat puro/2019", pattern = ".tif$", full.names=TRUE, recursive=TRUE))
 
 #Vectors
 tree_loc <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes/Blowdown",layer="Blowdown_trees_XY")
 
 area1 = readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes", layer = 'Polygon_A_B_C')
 
-#Make Bare Substrate, PV and NPV stacks ======================================================
-#Crop Tanguro limits
-frac = brick(files[[1]]) #To get the crs
-area1 = spTransform(area1, crs(frac))
-tree_loc = spTransform(tree_loc, crs(frac))
-frac_tang = crop(frac, area1)
+#Crop Area-1 limits ============================================
+area1 = spTransform(area1, crs(land18[[1]]))
+tree_loc = spTransform(tree_loc, crs(land18[[1]]))
+land18b = crop(land18, area1)
+land19b = crop(land19, area1)
+
+#Calculate difference by band =======================================================
+diff = land18b - land19b
+plot(diff)
+
+#Difference in percent if 2018 is 100%
+prc = (land19b*100)/land18b
+plot(prc)
+
+#Plots ==============================================================================
+plot(diff[[4]])
+plot(tree_loc, add=T)
+
+plot(prc[[4]])
+plot(tree_loc, add=T)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Bare Substrate
 bs = frac_tang[[1:3]] #Sequence is the number of files

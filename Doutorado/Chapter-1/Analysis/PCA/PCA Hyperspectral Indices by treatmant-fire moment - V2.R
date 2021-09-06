@@ -78,6 +78,32 @@ df3$cond[df3$Ano == 2010] <- "Fire"
 df3$cond[df3$Ano == 2011] <- "Fire"
 df3$cond[df3$Ano == 2012] <- "Post-Fire"
 
+#Removing Outliers =========================================================================
+boxplot(df3$PRI) #Looking for outliers
+
+outliers <- boxplot(df3$PRI, plot=FALSE)$out #Storing outliers into a vector
+print(outliers) #Check the results
+
+df3$PRI[which(df3$PRI %in% outliers),] #Find in which rows the outliers are
+
+df3b <- df3[-which(df3$PRI %in% outliers),] #Remove the rows with the outliers
+#df3[which(df3$PRI %in% outliers),] <- NA
+#df3$PRI[df3$PRI == outliers] <- NA
+boxplot(df3$PRI)
+
+
+df3b = df3
+
+outrem = function(x){
+  outliers <- boxplot(x, plot=FALSE)$out #Storing outliers into a vector
+  
+  z = df3b[-which(x %in% outliers),] #Remove the rows with the outliers
+}
+
+df3b = outrem(df3b$PRI)
+
+
+
 #PCA Analysis ==============================================================================
 #Tutorial video
 #Select numeric data
