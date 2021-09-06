@@ -79,31 +79,37 @@ df3$cond[df3$Ano == 2011] <- "Fire"
 df3$cond[df3$Ano == 2012] <- "Post-Fire"
 
 #Removing Outliers =========================================================================
-boxplot(df3$PRI) #Looking for outliers
-
-outliers <- boxplot(df3$PRI, plot=FALSE)$out #Storing outliers into a vector
-print(outliers) #Check the results
-
-df3$PRI[which(df3$PRI %in% outliers),] #Find in which rows the outliers are
-
-df3b <- df3[-which(df3$PRI %in% outliers),] #Remove the rows with the outliers
+#boxplot(df3$PRI) #Looking for outliers
+#outliers <- boxplot(df3$PRI, plot=FALSE)$out #Storing outliers into a vector
+#print(outliers) #Check the results
+#df3$PRI[which(df3$PRI %in% outliers),] #Find in which rows the outliers are
+#df3b <- df3[-which(df3$PRI %in% outliers),] #Remove the rows with the outliers
 #df3[which(df3$PRI %in% outliers),] <- NA
 #df3$PRI[df3$PRI == outliers] <- NA
-boxplot(df3$PRI)
+#boxplot(df3$PRI)
 
 
-df3b = df3
+df3b = df3 #Copy from original
+df3b$cont = 1
 
+#Function to find, store and remove rows with outliers
 outrem = function(x){
   outliers <- boxplot(x, plot=FALSE)$out #Storing outliers into a vector
-  
   z = df3b[-which(x %in% outliers),] #Remove the rows with the outliers
 }
 
-df3b = outrem(df3b$PRI)
+#Looping process
+for (w in 3:19) {
+  boxplot(df3b[,c(-1,-2,-20,-21)])
+  df3b = outrem(df3b[,w])
+  print(sum(df3b$cont))
+}
 
+#Comparison
+boxplot(df3[,c(-1,-2,-20)])
+boxplot(df3b[,c(-1,-2,-20,-21)])
 
-
+df3 = df3b[,-21]
 #PCA Analysis ==============================================================================
 #Tutorial video
 #Select numeric data
@@ -120,6 +126,19 @@ fviz_eig(df4_pca, addlabels = T, ylim = c(0,90))
 df4_pca[["var"]][["cor"]] #Eigen Vectors
 
 #Plot PCAs by momentum ---------------------------------------------------------------------
+#Treatment
+grp = as.factor(df3[,c(2)])
+fviz_pca_biplot(df4_pca, habillage = grp,
+                #addEllipses=TRUE,
+                #ellipse.level=0.99,
+                pointshape = 19,
+                geom.ind = c("point"),
+                col.var = "black", alpha = 0.3,
+                title = NULL, legend.title = "Parcela")+
+  #xlim(-20, 20) + ylim (-20, 20)+
+  scale_color_manual(values=c("orange", "red", "blue"))+
+  theme(text = element_text(family = "Times New Roman", size = 14))
+
 #Separate data by momentum
 getcond = function(x){
   df3 %>% 
