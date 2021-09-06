@@ -119,11 +119,23 @@ df4 = df3[,c(-1, -2, -20)]
 
 #Running PCA
 df4_pca = PCA(df4, graph = T)
+fviz_pca_var(df4_pca, col.var = "coord",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07", "#FF0000"), 
+             repel = TRUE # Avoid text overlapping
+)
 
 #Extract variance values
 get_eigenvalue(df4_pca)
-fviz_eig(df4_pca, addlabels = T, ylim = c(0,90))
-df4_pca[["var"]][["cor"]] #Eigen Vectors
+
+eigvect = as.data.frame(df4_pca[["var"]][["cor"]])
+corrplot::corrplot(df4_pca[["var"]][["cor"]])
+
+library(ggstar)
+ggplot(eigvect, aes(x = rownames(eigvect), y = Dim.1, fill = Dim.1, col = Dim.1))+
+  geom_star(starshape=1, size=2.5)+
+  geom_hline(yintercept = 0, linetype = "dashed")
+
+#write.table(eigvect, "PCAeig_all_years.csv", sep = ",", row.names = T)
 
 #Plot PCAs by momentum ---------------------------------------------------------------------
 #Treatment

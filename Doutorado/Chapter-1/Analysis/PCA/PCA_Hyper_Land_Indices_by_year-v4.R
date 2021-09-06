@@ -14,16 +14,18 @@ library(FactoMineR)
 library(factoextra)
 
 #Data =============================================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-hy = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+hy = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 
 land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
 
 #For Hyperpectral data ============================================================================
 #Transform data for analysis
-hy2 = hy[c(5,7)]
+#hy2 = hy[c(5,7)]
 #hy2$value = log(hy2$value)
+hy2 = hy %>% 
+  select(index, value)
 
 #Transpor variables in columns
 transp = function(x){
@@ -32,35 +34,68 @@ transp = function(x){
   z = as.data.frame(z[,c(2)])
 }
 
-ari = transp("ari");colnames(ari) = c("ari")
-evi = transp("evi2");colnames(evi) = c("evi")
-ndvi = transp("ndvi");colnames(ndvi) = c("ndvi")
-vari = transp("vari");colnames(vari) = c("vari")
-vig = transp("vig");colnames(vig) = c("vig")
-lwvi2 = transp("lwvi2");colnames(lwvi2) = c("lwvi2")
-msi = transp("msi");colnames(msi) = c("msi")
-ndii = transp("ndii");colnames(ndii) = c("ndii")
-ndwi = transp("ndwi");colnames(ndwi) = c("ndwi")
-pssr = transp("pssr");colnames(pssr) = c("pssr")
-psri = transp("psri");colnames(psri) = c("psri")
-sipi = transp("sipi");colnames(sipi) = c("sipi")
-wbi = transp("wbi");colnames(wbi) = c("wbi")
-pri = transp("pri");colnames(pri) = c("pri")
-rendvi = transp("rendvi");colnames(rendvi) = c("rendvi")
-nirv = transp("nirv"); colnames(nirv) = c("nirv")
+ari = transp("ari");colnames(ari) = c("ARI")
+evi = transp("evi2");colnames(evi) = c("EVI")
+ndvi = transp("ndvi");colnames(ndvi) = c("NDVI")
+vari = transp("vari");colnames(vari) = c("VARI")
+vig = transp("vig");colnames(vig) = c("VIG")
+lwvi2 = transp("lwvi2");colnames(lwvi2) = c("LWVI2")
+msi = transp("msi");colnames(msi) = c("MSI")
+ndii = transp("ndii");colnames(ndii) = c("NDII")
+ndwi = transp("ndwi");colnames(ndwi) = c("NDWI")
+pssr = transp("pssr");colnames(pssr) = c("PSSR")
+psri = transp("psri");colnames(psri) = c("PSRI")
+sipi = transp("sipi");colnames(sipi) = c("SIPI")
+wbi = transp("wbi");colnames(wbi) = c("WBI")
+pri = transp("pri");colnames(pri) = c("PRI")
+rendvi = transp("rendvi");colnames(rendvi) = c("RENDVI")
+nirv = transp("nirv"); colnames(nirv) = c("NIRv")
+nbr = transp("nbr"); colnames(nbr) = c("NBR")
+nbr2 = transp("nbr2"); colnames(nbr2) = c("NBR2")
 
 #Stract treatmant name
-treat = hy[c(1:11781),]; treat = treat[,c(6,7,8)]
+treat = hy[c(1:12019),] #; treat = treat[,c(6,7,8)]
+treat = treat %>% 
+  select(year, treat)
 
 #Join everything
-hy3 = cbind(treat$parcela,treat$year,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
-colnames(hy3)[1] = "Parcela"; colnames(hy3)[2] = "year"
+hy3 = cbind(treat$year, treat$treat,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv, lwvi2, nbr, nbr2)
+colnames(hy3)[1:2] = c("Ano", "Parcela")
 
-#Make data frame by year
+#Change names
+hy3$Parcela = as.character(hy3$Parcela)
+hy3$Parcela[hy3$Parcela == "b1yr"] <- "B1yr"
+hy3$Parcela[hy3$Parcela == "b3yr"] <- "B3yr"
+hy3$Parcela[hy3$Parcela == "control"] <- "Controle"
+
+#Removing Outliers =========================================================================
+hy3b = hy3 #Copy from original
+hy3b$cont = 1
+
+#Function to find, store and remove rows with outliers
+outrem = function(x){
+  outliers <- boxplot(x, plot=FALSE)$out #Storing outliers into a vector
+  z = hy3b[-which(x %in% outliers),] #Remove the rows with the outliers
+}
+
+#Looping process
+for (w in 3:19) {
+  boxplot(hy3b[,c(-1,-2,-20,-21)])
+  hy3b = outrem(hy3b[,w])
+  print(sum(hy3b$cont))
+}
+
+#Comparison
+boxplot(hy3[,c(-1,-2,-20)])
+boxplot(hy3b[,c(-1,-2,-20,-21)])
+
+hy3 = hy3b[,-20]
+
+#Make data frame by year ===================================================================
 getyear = function(x){
   hy3 %>% 
   na.omit() %>% 
-  filter(year == x)
+  filter(Ano == x)
 }
 
 p2004 = getyear(2004)
@@ -73,16 +108,18 @@ p2012 = getyear(2012)
 
 #PCA Analysis
 pcax = function(x){
-  y1 = c(x[2,2])
+  y1 = c(x[2,1])
   y2 = c("Hyperspectral Indices")
   name = paste(y2, y1, sep = " ", collapse = NULL)
-  z = x[,c(-1,-2)]
+  z = x[,c(-1,-2,-20)]
   pcaz = PCA(z, graph = F)
-  grp = as.factor(x[,c(1)])
-  fviz_pca_biplot(pcaz, habillage = grp,
-                  col.var = "black",
+  grp = as.factor(x[,c(2)])
+  fviz_pca_biplot(pcaz, habillage = grp,pointshape = 19, pointsize = 2,
                   geom.ind = c("point"),
-                  title = name)
+                  col.var = "black", alpha = 0.25,
+                  title = name, legend.title = "Parcela")+
+    scale_color_manual(values=c( "orange", "red", "blue"))+
+    theme(text = element_text(family = "Times New Roman", size = 14))
   
 }
 
@@ -107,6 +144,28 @@ fviz_pca_biplot(pcaz, habillage = grp,
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#It is garbage!
 #For Landsat data ============================================================================
 #Transform data for analysis
 land2 = land[c(6,8)]
@@ -159,8 +218,8 @@ df2 = df %>%
 
 #PCA for all Sensors
 
-df3 = df2[,c(-1,-2)]
-pcaz = PCA(df3, graph = F)
+hy3 = df2[,c(-1,-2)]
+pcaz = PCA(hy3, graph = F)
 grp = as.factor(df2[,c(1)])
 fviz_pca_biplot(pcaz, habillage = grp,
                 col.var = "black",
