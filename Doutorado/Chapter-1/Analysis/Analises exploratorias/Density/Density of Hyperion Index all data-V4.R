@@ -60,7 +60,7 @@ struc = df %>%
   #mutate(value = value - mean(value, na.rm = T))
 
 
-ggplot(struc, aes(x = value, y = year, fill=Parcela)) +
+a = ggplot(struc, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.30) +
   facet_wrap(~index, scales="free") +
   theme_minimal()+
@@ -68,19 +68,29 @@ ggplot(struc, aes(x = value, y = year, fill=Parcela)) +
   theme(text = element_text(family = "Times New Roman", size = 14))+
   labs(x = "", y = "")
 
+a
+#ggsave(filename = "Structural.png", plot = a,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Densidade dos indices", 
+#       width = 30, height = 15, units =  "cm", dpi = 300)
+
 #Biochemistry
 bioc = df %>% 
   filter(index %in% c('NIRv','LWVI2','MSI','NDII','NDWI','PSSR','PSRI','SIPI','WBI'))# %>% 
   #group_by(index, year) %>% 
   #mutate(value = value - mean(value, na.rm = T))
 
-ggplot(bioc, aes(x = value, y = year, fill=Parcela)) +
+a = ggplot(bioc, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()+
   scale_fill_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))+
   labs(x = "", y = "")
+
+a
+#ggsave(filename = "Biochemistry.png", plot = a,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Densidade dos indices", 
+#       width = 30, height = 15, units =  "cm", dpi = 300)
 
 #Physiologic and Fire
 phy_fire = df %>% 
@@ -88,12 +98,17 @@ phy_fire = df %>%
   #group_by(index, year) %>% 
   #mutate(value = value - mean(value, na.rm = T))
 
-ggplot(phy_fire, aes(x = value, y = year, fill=Parcela)) +
+a = ggplot(phy_fire, aes(x = value, y = year, fill=Parcela)) +
   geom_density_ridges(alpha = 0.35) +
   facet_wrap(~index, scales="free") +
   theme_minimal()+
   scale_fill_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))+
   labs(x = "", y = "")
+
+a
+#ggsave(filename = "Physiologic_Fire.png", plot = a,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Densidade dos indices", 
+#       width = 30, height = 15, units =  "cm", dpi = 300)
 
 
