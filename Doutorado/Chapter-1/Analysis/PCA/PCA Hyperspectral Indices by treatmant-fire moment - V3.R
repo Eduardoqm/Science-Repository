@@ -135,7 +135,7 @@ df4_gg$Parcela = df3$Parcela
 df4_gg$Dist = df3$dist2
 
 ggplot(df4_gg, aes(x=Dim.1, y=Dim.2, col = Parcela))+
-  geom_point(aes(shape = Dist), alpha = 0.3, size = 2)+
+  geom_point(aes(shape = rev(Dist)), alpha = 0.4, size = 2)+
   theme_minimal()+
   scale_color_manual(values=c("orange", "red", "blue"))+
   theme(text = element_text(family = "Times New Roman", size = 14))
