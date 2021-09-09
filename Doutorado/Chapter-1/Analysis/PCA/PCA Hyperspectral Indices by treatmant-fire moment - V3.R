@@ -1,7 +1,7 @@
 #====================================================#
 #PCA Hyperspectral Indices by treatmant and Edge-Core#
 #                                                    #
-#Eduardo Q Marques 04-03-2020                        #
+#Eduardo Q Marques 08-09-2021                        #
 #====================================================#
 
 library(stats)
@@ -10,6 +10,7 @@ library(reshape2)
 library(FactoMineR)
 library(factoextra)
 library(extrafont)
+library(ggplot2)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
 
@@ -112,7 +113,6 @@ df3$dist2[df3$dist > 250] = c("Interior")
 #Tutorial video
 #Select numeric data
 df3 = na.omit(df3)
-#df4 = df3[,c(-1, -2, -17)]
 df4 = df3[,c(-1, -2, -3, -21, -22, -23)]
 
 #Running PCA
@@ -130,36 +130,35 @@ corrplot::corrplot(df4_pca[["var"]][["cor"]])
 #write.table(eigvect, "PCAeig_all_years.csv", sep = ",", row.names = T)
 
 #Plot PCAs by momentum ---------------------------------------------------------------------
-df4_gg = as.data.frame(df4_pca$ind$coord)
-df4_gg$Parcela = df3$Parcela
-df4_gg$Dist = df3$dist2
-
-ggplot(df4_gg, aes(x=Dim.1, y=Dim.2, col = Parcela))+
-  geom_point(aes(shape = rev(Dist)), alpha = 0.4, size = 2)+
-  theme_minimal()+
-  scale_color_manual(values=c("orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-
-
-
-
+ggpca = function(w,z){
+  w_gg = as.data.frame(w$ind$coord)
+  w_gg$Parcela = z$Parcela
+  w_gg$Dist = z$dist2
+  
+  coord = as.data.frame(w$var$coord)
+  coord$Dim.1 = coord$Dim.1*10
+  coord$Dim.2 = coord$Dim.2*10
+  
+  ggplot()+
+    geom_point(data=w_gg, aes(x=Dim.1, y=Dim.2, shape = Dist, col = Parcela),
+               alpha = 0.3, size = 2)+
+    geom_segment(data=coord, aes(xend=Dim.1, yend=Dim.2),x=0,y=0,
+                 arrow = arrow(length = unit(0.2, "cm")), col = "#525252")+
+    geom_text(data=coord, aes(x=Dim.1, y=Dim.2,label=row.names(coord)),vjust=-0.5,size=4)+
+    geom_vline(xintercept = 0, linetype = "dashed")+
+    geom_hline(yintercept = 0, linetype = "dashed")+
+    theme_minimal()+
+    xlab(paste0("PC1 ", format(round(w$eig[1,2], 1), nsmall = 1), "%"))+
+    ylab(paste0("PC2 ", format(round(w$eig[2,2], 1), nsmall = 1), "%"))+
+    scale_color_manual(values=c("orange", "red", "blue"))+
+    scale_shape_manual(values = c(17, 19))+
+    theme(text = element_text(family = "Times New Roman", size = 14))
+}
 
 
 #Treatment
-grp = as.factor(df3[,c(2)])
-grp2 = as.factor(df3[,c(23)])
-fviz_pca_biplot(df4_pca, habillage = grp,
-                #addEllipses=TRUE,
-                #ellipse.level=0.99,
-                pointshape = 19,
-                geom.ind = c("point"),
-                col.var = "black", alpha = 0.3,
-                title = NULL, legend.title = "Parcela")+
-  #xlim(-20, 20) + ylim (-20, 20)+
-  scale_color_manual(values=c("orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
+all_plot =  ggpca(df4_pca, df3)
+all_plot
 
 #Separate data by momentum
 getcond = function(x){
@@ -179,51 +178,25 @@ eigpre = as.data.frame(pre_pca[["var"]][["cor"]])
 corrplot::corrplot(pre_pca[["var"]][["cor"]])
 #write.table(eigpre, "PCAeig_pre_fire.csv", sep = ",", row.names = T)
 
-grp = as.factor(pre[,c(2)])
-grp2 = as.factor(pre[,c(23)])
-fviz_pca_biplot(pre_pca, habillage = grp,
-                pointshape = 19, pointsize = 2,
-                geom.ind = c("point"),
-                col.var = "black", alpha = 0.4,
-                title = NULL, legend.title = "Parcela")+
-  xlim(-15, 10) + ylim (-3, 5)+
-  scale_color_manual(values=c( "orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+ggpca(pre_pca, pre)#+xlim(-15, 10) + ylim (-3, 5)
 
 #Plot During Fire
-fire_pca = PCA(fire[,c(-1,-2,-20)], graph = F)
+fire_pca = PCA(fire[,c(-1, -2, -3, -21, -22, -23)], graph = F)
 
 eigfire = as.data.frame(fire_pca[["var"]][["cor"]])
 corrplot::corrplot(fire_pca[["var"]][["cor"]])
 #write.table(eigfire, "PCAeig_during_fire.csv", sep = ",", row.names = T)
 
-grp = as.factor(fire[,c(2)])
-fviz_pca_biplot(fire_pca, habillage = grp,
-                pointshape = 19, pointsize = 2,
-                geom.ind = c("point"),
-                col.var = "black", alpha = 0.4,
-                title = NULL, legend.title = "Parcela")+
-  #ylim (-12.5, 10)+
-  scale_color_manual(values=c( "orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+ggpca(fire_pca, fire)
 
 #Plot Post Fire
-post_pca = PCA(post[,c(-1,-2,-20)], graph = F)
+post_pca = PCA(post[,c(-1, -2, -3, -21, -22, -23)], graph = F)
 
 eigpost = as.data.frame(post_pca[["var"]][["cor"]])
 corrplot::corrplot(post_pca[["var"]][["cor"]])
 #write.table(eigpost, "PCAeig_post_fire.csv", sep = ",", row.names = T)
 
-grp = as.factor(post[,c(2)])
-fviz_pca_biplot(post_pca, habillage = grp,
-                pointshape = 19, pointsize = 2,
-                geom.ind = c("point"),
-                col.var = "black", alpha = 0.4,
-                title = NULL, legend.title = "Parcela")+
-  scale_color_manual(values=c( "orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))+
-  ylim (-3, 5)
-
+ggpca(post_pca, post)
 
 #During Fire in two plots
 df3$cond[df3$Ano == 2005] <- "Fire1"
@@ -235,25 +208,20 @@ fire1 = getcond("Fire1")
 fire2 = getcond("Fire2")
 
 #Plot During Fire1 (2005 and 2006)
-fire1_pca = PCA(fire1[,c(-1,-2,-20)], graph = F)
-grp = as.factor(fire1[,c(2)])
-fviz_pca_biplot(fire1_pca, habillage = grp,
-                pointshape = 19, pointsize = 2,
-                geom.ind = c("point"),
-                col.var = "black", alpha = 0.4,
-                title = NULL, legend.title = "Parcela")+
-  ylim (-7, 5)+
-  scale_color_manual(values=c( "orange", "red", "blue"))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+fire1_pca = PCA(fire1[,c(-1, -2, -3, -21, -22, -23)], graph = F)
+ggpca(fire1_pca, fire1)
 
 #Plot During Fire2 (2008, 2010 and 2011)
-fire2_pca = PCA(fire2[,c(-1,-2,-20)], graph = F)
-grp = as.factor(fire2[,c(2)])
-fviz_pca_biplot(fire2_pca, habillage = grp,
-                pointshape = 19, pointsize = 2,
-                geom.ind = c("point"),
-                col.var = "black", alpha = 0.4,
-                title = NULL, legend.title = "Parcela")+
-  scale_color_manual(values=c( "orange", "red", "blue"))+
-  ylim (-10, 10)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+fire2_pca = PCA(fire2[,c(-1, -2, -3, -21, -22, -23)], graph = F)
+ggpca(fire2_pca, fire2)+ylim (-10, 10)
+
+
+#Save plots ==============================================================
+ggsave(filename = "Hyperspectral Indices (Treatment)2.png", plot = all_plot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", 
+     width = 15, height = 15, units = "cm", dpi = 300)
+
+
+
+
+
