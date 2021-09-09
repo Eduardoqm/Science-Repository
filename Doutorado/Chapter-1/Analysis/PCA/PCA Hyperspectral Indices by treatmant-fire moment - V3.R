@@ -178,7 +178,8 @@ eigpre = as.data.frame(pre_pca[["var"]][["cor"]])
 corrplot::corrplot(pre_pca[["var"]][["cor"]])
 #write.table(eigpre, "PCAeig_pre_fire.csv", sep = ",", row.names = T)
 
-ggpca(pre_pca, pre)#+xlim(-15, 10) + ylim (-3, 5)
+pre_plot = ggpca(pre_pca, pre)#+xlim(-15, 10) + ylim (-3, 5)
+pre_plot
 
 #Plot During Fire
 fire_pca = PCA(fire[,c(-1, -2, -3, -21, -22, -23)], graph = F)
@@ -187,7 +188,8 @@ eigfire = as.data.frame(fire_pca[["var"]][["cor"]])
 corrplot::corrplot(fire_pca[["var"]][["cor"]])
 #write.table(eigfire, "PCAeig_during_fire.csv", sep = ",", row.names = T)
 
-ggpca(fire_pca, fire)
+fire_plot = ggpca(fire_pca, fire)
+fire_plot
 
 #Plot Post Fire
 post_pca = PCA(post[,c(-1, -2, -3, -21, -22, -23)], graph = F)
@@ -196,7 +198,8 @@ eigpost = as.data.frame(post_pca[["var"]][["cor"]])
 corrplot::corrplot(post_pca[["var"]][["cor"]])
 #write.table(eigpost, "PCAeig_post_fire.csv", sep = ",", row.names = T)
 
-ggpca(post_pca, post)
+post_plot = ggpca(post_pca, post)
+post_plot
 
 #During Fire in two plots
 df3$cond[df3$Ano == 2005] <- "Fire1"
@@ -209,12 +212,13 @@ fire2 = getcond("Fire2")
 
 #Plot During Fire1 (2005 and 2006)
 fire1_pca = PCA(fire1[,c(-1, -2, -3, -21, -22, -23)], graph = F)
-ggpca(fire1_pca, fire1)
+fire1_plot = ggpca(fire1_pca, fire1)
+fire1_plot
 
 #Plot During Fire2 (2008, 2010 and 2011)
 fire2_pca = PCA(fire2[,c(-1, -2, -3, -21, -22, -23)], graph = F)
-ggpca(fire2_pca, fire2)+ylim (-10, 10)
-
+fire2_plot = ggpca(fire2_pca, fire2)+ylim (-10, 10)
+fire2_plot
 
 #Save plots ==============================================================
 ggsave(filename = "Hyperspectral Indices (Treatment)2.png", plot = all_plot,
