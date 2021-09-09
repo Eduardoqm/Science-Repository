@@ -224,9 +224,20 @@ fire2_plot
 #ggsave(filename = "Hyperspectral Indices (Treatment).png", plot = all_plot,
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
 
-ggsave(filename = "Hyperspectral Pre Fire.png", plot = pre_plot,
+#ggsave(filename = "Hyperspectral Pre Fire.png", plot = pre_plot,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
+
+ggsave(filename = "Hyperspectral During Fire.png", plot = fire_plot,
        path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
 
+ggsave(filename = "Hyperspectral Post Fire.png", plot = post_plot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
+
+ggsave(filename = "Hyperspectral Fire (2005-2006).png", plot = fire1_plot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
+
+ggsave(filename = "Hyperspectral Fire (2008-2010-2011).png", plot = fire2_plot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
 
 
 
