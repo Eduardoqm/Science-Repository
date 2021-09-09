@@ -221,9 +221,11 @@ fire2_plot = ggpca(fire2_pca, fire2)+ylim (-10, 10)
 fire2_plot
 
 #Save plots ==============================================================
-ggsave(filename = "Hyperspectral Indices (Treatment)2.png", plot = all_plot,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", 
-     width = 15, height = 15, units = "cm", dpi = 300)
+#ggsave(filename = "Hyperspectral Indices (Treatment).png", plot = all_plot,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
+
+ggsave(filename = "Hyperspectral Pre Fire.png", plot = pre_plot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
 
 
 
