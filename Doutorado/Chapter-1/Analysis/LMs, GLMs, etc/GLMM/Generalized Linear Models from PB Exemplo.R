@@ -41,16 +41,20 @@ mod_EVI_norm1 <- lmer(value_norm ~ Treat*dist + (dist|year),
 mod_EVI1 <- lmer(value ~ Treat*dist + (1|year), 
                  data = subset(rs_norm, index == "PSSR"))
 
-summary(mod_EVI1)
+summary(mod_EVI_norm0)
 plot(ggpredict(mod_EVI_norm0, terms = c("dist", "Treat")))
 
-sjPlot::plot_model(mod_EVI1)
-sjPlot:: tab_model(mod_EVI1)
+sjPlot::plot_model(mod_EVI_norm0)
+sjPlot:: tab_model(mod_EVI_norm0)
 
-dotplot(ranef(mod_EVI_norm1,condVar=TRUE))
+dotplot(ranef(mod_EVI_norm0,condVar=TRUE))
 
 
 
+
+
+#Models ANOVA (AIC) ======================================================================== 
+anova(mod_EVI_norm0, mod_EVI_norm1)
 
 
 
