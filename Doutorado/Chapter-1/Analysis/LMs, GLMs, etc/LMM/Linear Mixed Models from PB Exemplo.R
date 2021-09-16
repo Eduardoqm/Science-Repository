@@ -1,4 +1,4 @@
-#Generalized Linear Models from PB Exemplo
+#Linear Mixed Models from PB Exemplo
 
 #Eduardo Q Marques 10-09-2021
 

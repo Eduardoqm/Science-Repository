@@ -1,8 +1,6 @@
-#Generalized Linear Models from PB Exemplo
+#Linear Mixed Models from Models Test
 
 #Eduardo Q Marques 14-09-2021
-
-
 
 library(tidyverse)
 library(reshape2)
@@ -56,13 +54,13 @@ summary(mod_NDVI4)
 mod_NDVI5 <- lmer(value_norm ~ treat*dist*year + (dist|year), data = subset(rs_norm, index == "ndvi"))
 summary(mod_NDVI5)
 
-mod_NDVI5 <- lmer(value_norm ~ treat*dist*year + (dist|year), data = subset(rs_norm, index == "ndvi"))
-summary(mod_NDVI5)
+mod_NDVI6 <- lmer(value_norm ~ treat*dist2*year + (dist2|year), data = subset(rs_norm, index == "ndvi"))
+summary(mod_NDVI6)
 
 #Find the best model ===============================================
-anova(mod_NDVI, mod_NDVI2, mod_NDVI3, mod_NDVI4, mod_NDVI5)
+anova(mod_NDVI, mod_NDVI2, mod_NDVI3, mod_NDVI4, mod_NDVI5, mod_NDVI6)
 
-
+#Plot results ======================================================
 plot(ggpredict(mod_NDVI, terms = c("dist", "treat")))
 plot(ggpredict(mod_NDVI2, terms = c("dist", "treat")))
 plot(ggpredict(mod_NDVI3, terms = c("dist", "treat")))
@@ -74,6 +72,11 @@ plot(ggpredict(mod_NDVI5, terms = c("year", "treat")))
 plot(ggpredict(mod_NDVI5, terms = c("year", "treat", "dist")))
 plot(ggpredict(mod_NDVI5, terms = c("dist", "treat", "year")))
 
+#Model-6
+plot(ggpredict(mod_NDVI6, terms = c("dist2", "treat")))
+plot(ggpredict(mod_NDVI6, terms = c("year", "treat")))
+plot(ggpredict(mod_NDVI6, terms = c("year", "treat", "dist2")))
+plot(ggpredict(mod_NDVI6, terms = c("dist2", "treat", "year")))
 
 
 sjPlot::plot_model(mod_NDVI)
@@ -91,13 +94,16 @@ sjPlot:: tab_model(mod_NDVI4)
 sjPlot::plot_model(mod_NDVI5)
 sjPlot:: tab_model(mod_NDVI5)
 
+sjPlot::plot_model(mod_NDVI6)
+sjPlot:: tab_model(mod_NDVI6)
+
 
 dotplot(ranef(mod_NDVI,condVar=TRUE))
 dotplot(ranef(mod_NDVI2,condVar=TRUE))
 dotplot(ranef(mod_NDVI3,condVar=TRUE))
 dotplot(ranef(mod_NDVI4,condVar=TRUE))
 dotplot(ranef(mod_NDVI5,condVar=TRUE))
-
+dotplot(ranef(mod_NDVI6,condVar=TRUE))
 
 #MSI ============================================================
 
