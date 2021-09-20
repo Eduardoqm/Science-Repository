@@ -129,6 +129,20 @@ eigvect = as.data.frame(df4_pca[["var"]][["cor"]])
 corrplot::corrplot(df4_pca[["var"]][["cor"]])
 #write.table(eigvect, "PCAeig_all_years.csv", sep = ",", row.names = T)
 
+eig_gg = eigvect %>% 
+  mutate(name = fct_reorder(rownames(eigvect), desc(Dim.1))) %>% 
+  ggplot(aes(x = name, y = Dim.1))+
+  geom_bar(stat = "identity")+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  xlab(NULL)+ylab("Loadings (Autovectores)")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  theme(text = element_text(family = "Times New Roman", size = 14))
+
+#ggsave(filename = "Eigenvectors_full_hyper.png", plot = eig_gg,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 10, units = "cm", dpi = 300)
+         
+
 #Plot PCAs by momentum ---------------------------------------------------------------------
 ggpca = function(w,z){
   w_gg = as.data.frame(w$ind$coord)
@@ -240,5 +254,18 @@ fire2_plot
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 15, units = "cm", dpi = 300)
 
 
+#All Results Panel ======================================================
+library(ggpubr)
+a = all_plot + ggtitle("A")+ylim(-6, 10)+xlim(-25,11)
+b = pre_plot+ ggtitle("B")+ylim(-3.5, 8)+xlim(-40,11)
+c = fire_plot + ggtitle("C")+ylim(-6, 10)+xlim(-25,11)
+d = post_plot + ggtitle("D")+ylim(-3, 10)+xlim(-20,11)
 
 
+pca_panel = ggarrange(a,b,c,d,
+          common.legend = TRUE,
+          legend="right",
+          ncol = 2, nrow = 2)
+
+#ggsave(filename = "PCA_panel.png", plot = pca_panel,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 30, height = 20, units = "cm", dpi = 300)

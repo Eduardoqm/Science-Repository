@@ -156,7 +156,7 @@ difplot
 
 
 #Edge and Interior facet ===============================================
-#Mean time series =================================================
+#Mean time series ======================================================
 df_edge = df %>% 
   filter(dist2 == "Borda") %>% 
   group_by(year, treat, index) %>% 
@@ -181,6 +181,7 @@ ggplot(df_edge2, aes(x=Ano, y=Valor, color = Tratamento))+
   stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.5, aes(group=Tratamento))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
+  ggtitle("Edge")+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
@@ -191,6 +192,7 @@ ggplot(df_core2, aes(x=Ano, y=Valor, color = Tratamento))+
   stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.5, aes(group=Tratamento))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
+  ggtitle("Core")+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
@@ -225,6 +227,7 @@ ggplot(df_dif_ed, aes(x=Ano, y=Valor, color = Indice))+
   facet_grid(rows = vars(Tratamento))+
   labs(y = "Diferença em relação o Controle (%)")+
   theme_bw()+
+  ggtitle("Edge")+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14))
@@ -238,9 +241,20 @@ ggplot(df_dif_co, aes(x=Ano, y=Valor, color = Indice))+
   facet_grid(rows = vars(Tratamento))+
   labs(y = "Diferença em relação o Controle (%)")+
   theme_bw()+
+  ggtitle("Core")+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14))
+
+
+
+
+
+
+
+
+
+
 
 
 
