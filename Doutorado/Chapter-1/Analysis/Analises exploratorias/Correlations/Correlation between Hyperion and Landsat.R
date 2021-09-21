@@ -145,6 +145,7 @@ colnames(indexs)[1] = c("id")
 
 #Calculate correlation ===========================================================
 library(GGally)
+library(viridis)
 
 ggcorr(indexs, label = TRUE)
 
@@ -168,8 +169,13 @@ df$x[df$x == "NBR2_landsat"] <- c("NBR2")
 
 
 ggplot(df, aes(x, y))+
-  geom_point(aes(colour = coefficient, size = coefficient))+
-  scale_color_continuous(low = "blue", high = "red", breaks = c(-1:1) )+
+  #geom_point(aes(colour = coefficient, size = coefficient), alpha = 0.7)+
+  geom_point(aes(colour = coefficient), size = 7, alpha = 0.7)+
+  #geom_raster(aes(fill = coefficient))+
+  scale_color_continuous(low = "red", high = "RoyalBlue",
+                         breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+  #scale_size(breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9), range = c(2,7))+
+  #scale_colour_viridis_c(breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
   xlab("Landsat")+ylab("Hyperion")+
   theme_bw()
 
