@@ -172,19 +172,25 @@ df$x[df$x == "NBR2_landsat"] <- c("NBR2")
 ggplot(df, aes(x, y, label = label))+
   geom_text()+
   xlab("Landsat")+ylab("Hyperion")+
-  theme_bw()
+  theme_classic()
 
 
 ggplot(df, aes(x, y, label = label))+
-  #geom_point(aes(colour = coefficient, size = coefficient), alpha = 0.7)+
-  #geom_point(aes(colour = coefficient), size = 10, alpha = 0.7)+
-  geom_raster(aes(fill = coefficient))+
+  geom_raster(aes(fill = coefficient), alpha = 0.7)+
   geom_text()+
-  scale_fill_continuous(low = "red", high = "RoyalBlue",
-                         breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+  scale_fill_gradientn(colours = c("red","white","blue"),
+                       breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+  xlab("Landsat")+ylab("Hyperion")+
+  theme_classic()
+
+
+ggplot(df, aes(x, y, label = label))+
+  geom_point(aes(colour = coefficient), size = 10, alpha = 0.9)+
+  geom_text()+
+  scale_color_gradientn(colours = c("red","white","blue"),
+                       breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
   xlab("Landsat")+ylab("Hyperion")+
   theme_bw()
-
 
 
 #Ver: https://www.biostars.org/p/412100/
