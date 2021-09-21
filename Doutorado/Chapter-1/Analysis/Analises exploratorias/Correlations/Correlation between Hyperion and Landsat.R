@@ -148,15 +148,19 @@ library(GGally)
 
 ggcorr(indexs, label = TRUE)
 
-ggpairs(indexs)+
+#ggpairs(indexs[,-1])+theme_bw()
+
+res = ggcorr(indexs, label = TRUE)
+df = res[["data"]]
+
+df = df %>% 
+  filter(x %in% c("EVI_landsat","NDVI_landsat","NDII_landsat","NBR_landsat","NBR2_landsat","grnd_landsat")) %>% 
+  filter(y %in% c("EVI","NDVI","VARI","VIG","MSI","NDII","NDWI","PSSR","PSRI","SIPI","WBI","PRI","RENDVI","NIRv","LWVI2","NBR","NBR2"))
+
+
+ggplot(df, aes(x, y, size = coefficient))+
+  geom_point(aes(col = coefficient))+
   theme_bw()
-
-
-
-
-
-
-
 
 
 
