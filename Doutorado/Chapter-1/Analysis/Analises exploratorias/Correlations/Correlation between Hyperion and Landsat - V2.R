@@ -1,8 +1,8 @@
-###################################
-#Correlation Hyperion and Landsat #
-#                                 #
-#Eduardo Q Marques 20-09-2021     #
-###################################
+########################################
+#Correlation Hyperion and Landsat - V2 #
+#                                      #
+#Eduardo Q Marques 21-09-2021          #
+########################################
 
 
 library(tidyverse)
@@ -19,12 +19,13 @@ setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Ta
 hy = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
 
-
 #Modify and Filter Landsat data ==========================================
 land$year = substr(land$year, 1,4)
 land$year = as.numeric(land$year)
 land$index = as.character(land$index)
 land$treat = as.character(land$treat)
+land$x = substr(land$x, 1,6)
+land$y = substr(land$y, 1,6)
 
 #Modify elements of dataframe
 land$index[land$index == "evi2"] <- c("EVI_landsat")
@@ -48,6 +49,8 @@ land = land %>%
 hy$year = as.numeric(hy$year)
 hy$index = as.character(hy$index)
 hy$treat = as.character(hy$treat)
+hy$x = substr(hy$x, 1,6)
+hy$y = substr(hy$y, 1,6)
 
 #Remove 2012 becouse Landsat dons't have
 hy = hy %>%
@@ -85,25 +88,26 @@ land_evi = land %>%
   filter(index == "EVI_landsat") %>% 
   filter(year == 2004)
 
-
 ggplot()+
-  geom_point(data = hy_evi, aes(x = x, y = y), col = "red", alpha = 0.3, size = 5)+
-  geom_point(data = land_evi, aes(x = x, y = y), col = "blue", alpha = 0.3, size = 5)+
+  geom_point(data = hy_evi, aes(x = x, y = y), col = "blue", alpha = 0.1, size = 5)+
+  geom_point(data = land_evi, aes(x = x, y = y), col = "red", alpha = 0.1, size = 5)+
   coord_fixed()+
   theme_bw()
 
-#Summarize information ===========================================================
+#Summarize information to matching treatment and y distance ======================
 land = land %>%
-  na.omit() %>%
-  unite("id", c("treat", "year"), sep = "_") %>% 
+  na.omit() %>% 
+  #unite("id", c("year", "x", "y"), sep = "_") %>% 
+  unite("id", c("treat", "year", "y"), sep = "_") %>% 
   group_by(id, index) %>% 
-  summarise(value = mean(value)) 
+  summarise(value = median(value)) 
 
 hy = hy %>%
-  na.omit() %>%
-  unite("id", c("treat", "year"), sep = "_") %>% 
+  na.omit() %>% 
+  #unite("id", c("year", "x", "y"), sep = "_") %>% 
+  unite("id", c("treat", "year", "y"), sep = "_") %>% 
   group_by(id, index) %>% 
-  summarise(value = mean(value)) 
+  summarise(value = median(value)) 
 
 #Transform inddices in columns ===================================================
 getix = function(x){
@@ -142,25 +146,29 @@ nbr_landsat = getix2("NBR_landsat"); colnames(nbr_landsat) = c("id","NBR_landsat
 nbr2_landsat = getix2("NBR2_landsat"); colnames(nbr2_landsat) = c("id","NBR2_landsat")
 grnd_landsat = getix2("GRND_landsat"); colnames(grnd_landsat) = c("id","GRND_landsat")
 
-indexs = cbind(evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv,lwvi2,nbr,nbr2,evi_landsat,ndvi_landsat,ndii_landsat,nbr_landsat,nbr2_landsat,grnd_landsat)
+#Join Every Indice ================================================================
+index = full_join(evi, ndvi, by = "id")
 
-indexs = indexs[,c(1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46)]
-colnames(indexs)[1] = c("id")
+lista = list(vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv,lwvi2,nbr,nbr2,evi_landsat,ndvi_landsat,ndii_landsat,nbr_landsat,nbr2_landsat,grnd_landsat)
+
+for (x in 1:21) {
+  index = full_join(index, lista[[x]], by = "id")
+}
 
 #Calculate correlation ===========================================================
-
-
-ggcorr(indexs, label = TRUE)
+ggcorr(index, label = TRUE)
 
 #ggpairs(indexs[,-1])+theme_bw()
 
-res = ggcorr(indexs, label = TRUE)
+#Convert results of correlations in a data frame =================================
+res = ggcorr(index, label = TRUE)
 df = res[["data"]]
+df$y = as.character(df$y)
 
+#Cleaning correlations
 df = df %>% 
   filter(x %in% c("EVI_landsat","NDVI_landsat","NDII_landsat","NBR_landsat","NBR2_landsat","GRND_landsat")) %>% 
   filter(y %in% c("EVI","NDVI","VARI","VIG","MSI","NDII","NDWI","PSSR","PSRI","SIPI","WBI","PRI","RENDVI","NIRv","LWVI2","NBR","NBR2"))
-
 
 #Modify elements of dataframe
 df$x[df$x == "EVI_landsat"] <- c("EVI")
@@ -171,14 +179,17 @@ df$x[df$x == "NBR_landsat"] <- c("NBR")
 df$x[df$x == "NBR2_landsat"] <- c("NBR2")
 colnames(df)[3] = c("Coeficiente")
 
-ggplot(df, aes(x, y, label = label))+
+df$Coeficiente2 = format(round(df$Coeficiente, 2), nsmall = 2)#Get two numbers after point
+
+#Plot results =====================================================================
+ggplot(df, aes(x, y, label = Coeficiente2))+
   geom_text()+
   xlab("Landsat")+ylab("Hyperion")+
   theme_classic()+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 
-ggplot(df, aes(x, y, label = label))+
+ggplot(df, aes(x, y, label = Coeficiente2))+
   geom_raster(aes(fill = Coeficiente), alpha = 0.7)+
   geom_text()+
   scale_fill_gradientn(colours = c("red","white","blue"),
@@ -188,21 +199,29 @@ ggplot(df, aes(x, y, label = label))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 
-ggplot(df, aes(x, y, label = label))+
+ggplot(df, aes(x, y, label = Coeficiente2))+
   geom_point(aes(colour = Coeficiente), size = 10, alpha = 0.9)+
   geom_text()+
   scale_color_gradientn(colours = c("red","white","blue"),
-                       breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+                        breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
   xlab("Landsat")+ylab("Hyperion")+
   theme_bw()+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
+#Save graphics ======================================================================
+gg_cor = ggplot(df, aes(x, y, label = Coeficiente2))+
+  geom_raster(aes(fill = Coeficiente), alpha = 0.7)+
+  geom_text()+
+  scale_fill_gradientn(colours = c("red","white","blue"),
+                       breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+  xlab("Landsat")+ylab("Hyperion")+
+  theme_classic()+
+  theme(legend.position="none")+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
 
-
-
-
-
+#ggsave(filename = "Hyperion_vs_Landsat.png", plot = gg_cor,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Correlations", width = 13, height = 15, units =  "cm", dpi = 300)
 
 
 
