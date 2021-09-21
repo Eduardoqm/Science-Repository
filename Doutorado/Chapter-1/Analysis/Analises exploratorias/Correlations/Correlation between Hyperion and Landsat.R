@@ -156,7 +156,7 @@ res = ggcorr(indexs, label = TRUE)
 df = res[["data"]]
 
 df = df %>% 
-  filter(x %in% c("EVI_landsat","NDVI_landsat","NDII_landsat","NBR_landsat","NBR2_landsat","grnd_landsat")) %>% 
+  filter(x %in% c("EVI_landsat","NDVI_landsat","NDII_landsat","NBR_landsat","NBR2_landsat","GRND_landsat")) %>% 
   filter(y %in% c("EVI","NDVI","VARI","VIG","MSI","NDII","NDWI","PSSR","PSRI","SIPI","WBI","PRI","RENDVI","NIRv","LWVI2","NBR","NBR2"))
 
 
@@ -169,19 +169,21 @@ df$x[df$x == "NBR_landsat"] <- c("NBR")
 df$x[df$x == "NBR2_landsat"] <- c("NBR2")
 
 
-ggplot(df, aes(x, y))+
-  #geom_point(aes(colour = coefficient, size = coefficient), alpha = 0.7)+
-  geom_point(aes(colour = coefficient), size = 7, alpha = 0.7)+
-  #geom_raster(aes(fill = coefficient))+
-  scale_color_continuous(low = "red", high = "RoyalBlue",
-                         breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
-  #scale_size(breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9), range = c(2,7))+
-  #scale_colour_viridis_c(breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+ggplot(df, aes(x, y, label = label))+
+  geom_text()+
   xlab("Landsat")+ylab("Hyperion")+
   theme_bw()
 
 
-corrplot::corrplot(df4_pca[["var"]][["cor"]])
+ggplot(df, aes(x, y, label = label))+
+  #geom_point(aes(colour = coefficient, size = coefficient), alpha = 0.7)+
+  #geom_point(aes(colour = coefficient), size = 10, alpha = 0.7)+
+  geom_raster(aes(fill = coefficient))+
+  geom_text()+
+  scale_fill_continuous(low = "red", high = "RoyalBlue",
+                         breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
+  xlab("Landsat")+ylab("Hyperion")+
+  theme_bw()
 
 
 
