@@ -158,10 +158,19 @@ df = df %>%
   filter(y %in% c("EVI","NDVI","VARI","VIG","MSI","NDII","NDWI","PSSR","PSRI","SIPI","WBI","PRI","RENDVI","NIRv","LWVI2","NBR","NBR2"))
 
 
+#Modify elements of dataframe
+df$x[df$x == "EVI_landsat"] <- c("EVI")
+df$x[df$x == "NDVI_landsat"] <- c("NDVI")
+df$x[df$x == "NDII_landsat"] <- c("NDII")
+df$x[df$x == "GRND_landsat"] <- c("GRND")
+df$x[df$x == "NBR_landsat"] <- c("NBR")
+df$x[df$x == "NBR2_landsat"] <- c("NBR2")
+
+
 ggplot(df, aes(x, y))+
   geom_point(aes(colour = coefficient, size = coefficient))+
-  scale_color_continuous(low = "blue", high = "red", breaks = c(-1:1) ) +
-  scale_size(breaks = c(-1:1), range = c(1,7))+ 
+  scale_color_continuous(low = "blue", high = "red", breaks = c(-1:1) )+
+  xlab("Landsat")+ylab("Hyperion")+
   theme_bw()
 
 
