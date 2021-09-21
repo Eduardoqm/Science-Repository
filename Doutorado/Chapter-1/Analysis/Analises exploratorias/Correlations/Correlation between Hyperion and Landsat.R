@@ -145,6 +145,7 @@ colnames(indexs)[1] = c("id")
 
 #Calculate correlation ===========================================================
 library(GGally)
+library(corrplot)
 library(viridis)
 
 ggcorr(indexs, label = TRUE)
@@ -180,7 +181,7 @@ ggplot(df, aes(x, y))+
   theme_bw()
 
 
-
+corrplot::corrplot(df4_pca[["var"]][["cor"]])
 
 
 
