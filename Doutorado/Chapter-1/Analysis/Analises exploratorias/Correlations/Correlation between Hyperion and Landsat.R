@@ -8,6 +8,10 @@
 library(tidyverse)
 library(reshape2)
 library(ggplot2)
+library(GGally)
+library(extrafont)
+font_import()
+loadfonts(device = "win", quiet = TRUE)
 
 #Load data ===============================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -144,9 +148,7 @@ indexs = indexs[,c(1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,
 colnames(indexs)[1] = c("id")
 
 #Calculate correlation ===========================================================
-library(GGally)
-library(corrplot)
-library(viridis)
+
 
 ggcorr(indexs, label = TRUE)
 
@@ -172,7 +174,8 @@ df$x[df$x == "NBR2_landsat"] <- c("NBR2")
 ggplot(df, aes(x, y, label = label))+
   geom_text()+
   xlab("Landsat")+ylab("Hyperion")+
-  theme_classic()
+  theme_classic()+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
 
 ggplot(df, aes(x, y, label = label))+
@@ -181,7 +184,8 @@ ggplot(df, aes(x, y, label = label))+
   scale_fill_gradientn(colours = c("red","white","blue"),
                        breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
   xlab("Landsat")+ylab("Hyperion")+
-  theme_classic()
+  theme_classic()+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
 
 ggplot(df, aes(x, y, label = label))+
@@ -190,10 +194,9 @@ ggplot(df, aes(x, y, label = label))+
   scale_color_gradientn(colours = c("red","white","blue"),
                        breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
   xlab("Landsat")+ylab("Hyperion")+
-  theme_bw()
+  theme_bw()+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
-
-#Ver: https://www.biostars.org/p/412100/
 
 
 
