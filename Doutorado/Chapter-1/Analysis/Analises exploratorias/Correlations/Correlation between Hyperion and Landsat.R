@@ -102,24 +102,54 @@ hy = hy %>%
   summarise(value = mean(value)) 
 
 #Transform inddices in columns ===================================================
-
-
-
-
-#Calculate correlation ===========================================================
-getcor = function(x,w){
+getix = function(x){
   z = hy %>% 
-    na.omit() %>% 
     filter(index == x)
-    
-  k = land %>%
-    na.omit() %>% 
-    filter(index == w)
-  
-  print(cor(z$value, k$value), method = "pearson")
+  z = z[,-2]
 }
 
-getcor("VARI","GRND")
+evi = getix("EVI");colnames(evi) = c("id","EVI")
+ndvi = getix("NDVI");colnames(ndvi) = c("id","NDVI")
+vari = getix("VARI");colnames(vari) = c("id","VARI")
+vig = getix("VIG");colnames(vig) = c("id","VIG")
+lwvi2 = getix("LWVI2");colnames(lwvi2) = c("id","LWVI2")
+msi = getix("MSI");colnames(msi) = c("id","MSI")
+ndii = getix("NDII");colnames(ndii) = c("id","NDII")
+ndwi = getix("NDWI");colnames(ndwi) = c("id","NDWI")
+pssr = getix("PSSR");colnames(pssr) = c("id","PSSR")
+psri = getix("PSRI");colnames(psri) = c("id","PSRI")
+sipi = getix("SIPI");colnames(sipi) = c("id","SIPI")
+wbi = getix("WBI");colnames(wbi) = c("id","WBI")
+pri = getix("PRI");colnames(pri) = c("id","PRI")
+rendvi = getix("RENDVI");colnames(rendvi) = c("id","RENDVI")
+nirv = getix("NIRv"); colnames(nirv) = c("id","NIRv")
+nbr = getix("NBR"); colnames(nbr) = c("id","NBR")
+nbr2 = getix("NBR2"); colnames(nbr2) = c("id","NBR2")
+
+getix2 = function(x){
+  z = land %>% 
+    filter(index == x)
+  z = z[,-2]
+}
+evi_landsat = getix2("EVI_landsat");colnames(evi_landsat) = c("id","EVI_landsat")
+ndvi_landsat = getix2("NDVI_landsat");colnames(ndvi_landsat) = c("id","NDVI_landsat")
+ndii_landsat = getix2("NDII_landsat");colnames(ndii_landsat) = c("id","NDII_landsat")
+nbr_landsat = getix2("NBR_landsat"); colnames(nbr_landsat) = c("id","NBR_landsat")
+nbr2_landsat = getix2("NBR2_landsat"); colnames(nbr2_landsat) = c("id","NBR2_landsat")
+grnd_landsat = getix2("GRND_landsat"); colnames(grnd_landsat) = c("id","GRND_landsat")
+
+indexs = cbind(evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv,lwvi2,nbr,nbr2,evi_landsat,ndvi_landsat,ndii_landsat,nbr_landsat,nbr2_landsat,grnd_landsat)
+
+indexs = indexs[,c(1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46)]
+colnames(indexs)[1] = c("id")
+
+#Calculate correlation ===========================================================
+library(GGally)
+
+ggcorr(indexs, label = TRUE)
+
+ggpairs(indexs)+
+  theme_bw()
 
 
 
