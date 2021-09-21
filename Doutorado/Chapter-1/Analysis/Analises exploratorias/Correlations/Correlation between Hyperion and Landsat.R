@@ -158,8 +158,10 @@ df = df %>%
   filter(y %in% c("EVI","NDVI","VARI","VIG","MSI","NDII","NDWI","PSSR","PSRI","SIPI","WBI","PRI","RENDVI","NIRv","LWVI2","NBR","NBR2"))
 
 
-ggplot(df, aes(x, y, size = coefficient))+
-  geom_point(aes(col = coefficient))+
+ggplot(df, aes(x, y))+
+  geom_point(aes(colour = coefficient, size = coefficient))+
+  scale_color_continuous(low = "blue", high = "red", breaks = c(-1:1) ) +
+  scale_size(breaks = c(-1:1), range = c(1,7))+ 
   theme_bw()
 
 
