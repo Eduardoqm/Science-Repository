@@ -169,7 +169,7 @@ df$x[df$x == "NDII_landsat"] <- c("NDII")
 df$x[df$x == "GRND_landsat"] <- c("GRND")
 df$x[df$x == "NBR_landsat"] <- c("NBR")
 df$x[df$x == "NBR2_landsat"] <- c("NBR2")
-
+colnames(df)[3] = c("Coeficiente")
 
 ggplot(df, aes(x, y, label = label))+
   geom_text()+
@@ -179,7 +179,7 @@ ggplot(df, aes(x, y, label = label))+
 
 
 ggplot(df, aes(x, y, label = label))+
-  geom_raster(aes(fill = coefficient), alpha = 0.7)+
+  geom_raster(aes(fill = Coeficiente), alpha = 0.7)+
   geom_text()+
   scale_fill_gradientn(colours = c("red","white","blue"),
                        breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
@@ -189,7 +189,7 @@ ggplot(df, aes(x, y, label = label))+
 
 
 ggplot(df, aes(x, y, label = label))+
-  geom_point(aes(colour = coefficient), size = 10, alpha = 0.9)+
+  geom_point(aes(colour = Coeficiente), size = 10, alpha = 0.9)+
   geom_text()+
   scale_color_gradientn(colours = c("red","white","blue"),
                        breaks = c(-0.9,-0.6,-0.3,0,0.3,0.6,0.9))+
