@@ -82,7 +82,7 @@ hy_evi = hy %>%
   filter(index == "EVI") %>% 
   filter(year == 2004)
 land_evi = land %>% 
-  filter(index == "EVI") %>% 
+  filter(index == "EVI_landsat") %>% 
   filter(year == 2004)
 
 
@@ -95,13 +95,15 @@ ggplot()+
 #Summarize information ===========================================================
 land = land %>%
   na.omit() %>% 
-  unite("id", c("treat", "year"), sep = "_") %>% 
+  unite("id", c("treat", "year", "x", "y"), sep = "_") %>% 
+  #unite("id", c("treat", "year"), sep = "_") %>% 
   group_by(id, index) %>% 
   summarise(value = mean(value)) 
 
 hy = hy %>%
   na.omit() %>% 
-  unite("id", c("treat", "year"), sep = "_") %>% 
+  unite("id", c("treat", "year", "x", "y"), sep = "_") %>% 
+  #unite("id", c("treat", "year"), sep = "_") %>% 
   group_by(id, index) %>% 
   summarise(value = mean(value)) 
 
