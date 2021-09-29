@@ -1,8 +1,8 @@
-########################################################
-# Landsat Time series for mean and relative difference #
-#                                                      #
-# Eduardo Q Marques 20-01-2021  update: 15-07-2021     #
-########################################################
+#########################################################
+# Hyperion Time series for mean and relative difference #
+#                                                       #
+# Eduardo Q Marques 29-09-2021                          #
+#########################################################
 
 library(tidyverse)
 library(reshape2)

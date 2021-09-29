@@ -271,38 +271,3 @@ ggplot(df_dif_co, aes(x=Ano, y=Valor, color = Indice))+
 
 
 
-#Apresentations tests ==================================================
-library(gganimate)
-
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
-  geom_line(aes(group = Indice), size = 1.5, alpha = 0.95)+
-  geom_text(x=2007.5, y=85, label="Período
-            do fogo", col = "red", fontface="bold")+
-  geom_vline(xintercept = 2004,linetype = "dashed", col = "red")+
-  geom_vline(xintercept = 2011,linetype = "dashed", col = "red")+
-  facet_grid(rows = vars(Tratamento))+
-  labs(y = "Diferença em relação o Controle (%)")+
-  theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed")+
-  scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
-  theme(text = element_text(family = "Times New Roman", size = 14))+
-  transition_reveal(Ano)
-
-#anim_save("Landsat_relative_diff.gif")
-
-library(plotly)
-
-gg = ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            fill = "black", color = NA, alpha = 0.002)+
-  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.7)+
-  geom_point()+
-  facet_grid(rows = vars(Indice), scales = "free")+
-  labs(y = "Diferença em relação o Controle (%)")+
-  theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed")+
-  scale_color_manual(values = eqm)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
-ggplotly(gg)
-

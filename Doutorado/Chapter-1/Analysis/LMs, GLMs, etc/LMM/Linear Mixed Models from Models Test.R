@@ -57,8 +57,11 @@ summary(mod_NDVI5)
 mod_NDVI6 <- lmer(value_norm ~ treat*dist2*year + (dist2|year), data = subset(rs_norm, index == "ndvi"))
 summary(mod_NDVI6)
 
+mod_NDVI7 <- lmer(value_norm ~ treat*dist2*year + (treat|year), data = subset(rs_norm, index == "ndvi"))
+summary(mod_NDVI7)
+
 #Find the best model ===============================================
-anova(mod_NDVI, mod_NDVI2, mod_NDVI3, mod_NDVI4, mod_NDVI5, mod_NDVI6)
+anova(mod_NDVI, mod_NDVI2, mod_NDVI3, mod_NDVI4, mod_NDVI5, mod_NDVI6, mod_NDVI7)
 
 #Plot results ======================================================
 plot(ggpredict(mod_NDVI, terms = c("dist", "treat")))
@@ -78,6 +81,11 @@ plot(ggpredict(mod_NDVI6, terms = c("year", "treat")))
 plot(ggpredict(mod_NDVI6, terms = c("year", "treat", "dist2")))
 plot(ggpredict(mod_NDVI6, terms = c("dist2", "treat", "year")))
 
+#Model-7
+plot(ggpredict(mod_NDVI7, terms = c("dist2", "treat")))
+plot(ggpredict(mod_NDVI7, terms = c("year", "treat")))
+plot(ggpredict(mod_NDVI7, terms = c("year", "treat", "dist2")))
+plot(ggpredict(mod_NDVI7, terms = c("dist2", "treat", "year")))
 
 sjPlot::plot_model(mod_NDVI)
 sjPlot:: tab_model(mod_NDVI)
