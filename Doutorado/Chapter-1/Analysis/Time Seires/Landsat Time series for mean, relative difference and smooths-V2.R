@@ -120,9 +120,9 @@ difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
 
 difplot
 
-ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-       width = 20, height = 10, units =  "cm", dpi = 300)
+#ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+  #     width = 20, height = 10, units =  "cm", dpi = 300)
 
 
 
