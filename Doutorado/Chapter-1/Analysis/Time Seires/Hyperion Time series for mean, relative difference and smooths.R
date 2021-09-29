@@ -77,8 +77,8 @@ df_crt = filter(df_m, treat == "Controle")
 df_b3yr = filter(df_m, treat == "B3yr")
 df_b1yr = filter(df_m, treat == "B1yr")
 
-df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
-df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
+df_b3yr$value = ((df_b3yr$value*100)/df_crt$value)
+df_b1yr$value = ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
 
