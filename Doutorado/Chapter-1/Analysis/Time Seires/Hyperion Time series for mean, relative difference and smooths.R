@@ -82,6 +82,8 @@ df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
 
+df_diff$Valor = abs(df_diff$Valor)
+
 ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
@@ -102,16 +104,10 @@ ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   #     width = 20, height = 10, units =  "cm", dpi = 300)
 
 
-df_crt = filter(df_m, treat == "Controle")
-df_b3yr = filter(df_m, treat == "B3yr")
-df_b1yr = filter(df_m, treat == "B1yr")
+df_diff2 = df_diff
+df_diff2$Valor = abs(df_diff2$Valor)
 
-df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
-df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
-df_diff = rbind(df_b3yr, df_b1yr)
-colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
-
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
+ggplot(df_diff2, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+

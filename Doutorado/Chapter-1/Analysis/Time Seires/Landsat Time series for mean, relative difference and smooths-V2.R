@@ -51,8 +51,8 @@ eqm = c("orange", "red", "blue") #My color palette
 
 smtplot = ggplot(df_smt, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_smooth(aes(group=Tratamento), alpha = 0.5, size = 1, level = 0.9999999999999)+
-  geom_vline(xintercept = "2004", linetype = "dashed")+
-  geom_vline(xintercept = "2011", linetype = "dashed")+
+  geom_vline(xintercept = 2004, linetype = "dashed")+
+  geom_vline(xintercept = 2011, linetype = "dashed")+
   #stat_summary(geom="line", fun.data="mean_cl_boot", size = 0.5, linetype = "dashed", aes(group=Tratamento))+
   stat_summary(geom="point", fun.data="mean_cl_boot",
                size = 2, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
@@ -104,6 +104,7 @@ df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
 df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
+df_diff$Valor = abs(df_diff$Valor)
 
 difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
@@ -119,9 +120,9 @@ difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
 
 difplot
 
-#ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
- #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-  #     width = 20, height = 10, units =  "cm", dpi = 300)
+ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+       width = 20, height = 10, units =  "cm", dpi = 300)
 
 
 
