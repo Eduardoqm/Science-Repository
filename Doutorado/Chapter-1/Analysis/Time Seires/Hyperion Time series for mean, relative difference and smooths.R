@@ -82,13 +82,14 @@ df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
 
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
+ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
-  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
+  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
   geom_point(size = 1.5, alpha = 0.8)+
   facet_wrap(vars(Indice), scales = "free")+
-  labs(y = "Diferença em relação o Controle (%)")+
+  xlab(NULL)+ylab(NULL)+
+  scale_color_manual(values=c( "orange", "red"))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
@@ -99,6 +100,32 @@ ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
 #ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
   #     width = 20, height = 10, units =  "cm", dpi = 300)
+
+
+df_crt = filter(df_m, treat == "Controle")
+df_b3yr = filter(df_m, treat == "B3yr")
+df_b1yr = filter(df_m, treat == "B1yr")
+
+df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
+df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
+df_diff = rbind(df_b3yr, df_b1yr)
+colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
+
+ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
+  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
+  geom_point(size = 1.5, alpha = 0.8)+
+  facet_wrap(vars(Indice), scales = "free")+
+  xlab(NULL)+ylab(NULL)+
+  theme_bw()+
+  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
+
+
+
+
+
 
 
 
