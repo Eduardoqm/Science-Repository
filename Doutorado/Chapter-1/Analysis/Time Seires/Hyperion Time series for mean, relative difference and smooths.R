@@ -52,6 +52,8 @@ df$treat[df$treat == "b1yr"] <- c("B1yr")
 eqm = c("orange", "red", "blue") #My color palette
 
 #Mean time series =================================================
+df$value[df$index == "NDWI"] <- (df$value)*10
+
 df_m = df %>% 
   na.omit() %>% 
   group_by(year, treat, index) %>% 
@@ -112,6 +114,7 @@ ggplot(struc, aes(x=Ano, y=Valor, color = Tratamento))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
+
 
 bioc = df_diff %>% 
   filter(Indice %in% c("LWVI2","MSI","NDII","NDWI","NIRv","PSRI","PSSR","SIPI","WBI"))
