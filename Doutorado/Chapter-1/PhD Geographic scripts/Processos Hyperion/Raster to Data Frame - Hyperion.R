@@ -55,7 +55,8 @@ df = as.data.frame(cbind(id = 1:ncell(r6),
            dist = -13.07458 - y) %>%
     drop_na(treat))
 
-
+dfT$value = as.numeric(dfT$value)
+dfT$value[dfT$index == "ndwi"] <- ((dfT$value)*10)/10
 #setwd("~/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 #write.csv(dfT, "Hyperion_indexs_all_xy-B.csv")
 
