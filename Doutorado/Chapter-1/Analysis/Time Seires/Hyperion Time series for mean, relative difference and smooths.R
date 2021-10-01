@@ -52,13 +52,13 @@ df$treat[df$treat == "b1yr"] <- c("B1yr")
 eqm = c("orange", "red", "blue") #My color palette
 
 #Mean time series =================================================
-df$value[df$index == "NDWI"] <- (df$value)*10
-
+df$value[df$index == "NDWI"] <- ((df$value)*10)/10
 df_m = df %>% 
   na.omit() %>% 
   group_by(year, treat, index) %>% 
   summarise(value = mean(value))
 
+#df_m$value[df_m$index == "NDWI"] <- (df_m$value)/10
 df_m2 = df_m #To not have problem in diff...I dont know why!
 colnames(df_m2) = c("Ano", "Tratamento", "Indice", "Valor")
 
