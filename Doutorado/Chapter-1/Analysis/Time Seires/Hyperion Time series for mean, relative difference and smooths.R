@@ -22,10 +22,6 @@ df$year = as.numeric(df$year)
 df$index = as.character(df$index)
 df$treat = as.character(df$treat)
 
-df = df %>% 
-  filter(index != "ari") %>% 
-  filter(index != "evi")
-
 #Change names format
 df$index[df$index == "evi2"] <- c("EVI")
 df$index[df$index == "ndvi"] <- c("NDVI")
@@ -52,7 +48,6 @@ df$treat[df$treat == "b1yr"] <- c("B1yr")
 eqm = c("orange", "red", "blue") #My color palette
 
 #Mean time series =================================================
-df$value[df$index == "NDWI"] <- ((df$value)*10)/10
 df_m = df %>% 
   na.omit() %>% 
   group_by(year, treat, index) %>% 
