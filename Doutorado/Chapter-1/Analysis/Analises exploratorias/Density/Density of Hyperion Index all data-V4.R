@@ -89,8 +89,8 @@ a = ggplot(bioc, aes(x = value, y = year, fill=Parcela)) +
 
 a
 #ggsave(filename = "Biochemistry.png", plot = a,
-#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Densidade dos indices", 
-#       width = 30, height = 15, units =  "cm", dpi = 300)
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Densidade dos indices", 
+  #     width = 30, height = 15, units =  "cm", dpi = 300)
 
 #Physiologic and Fire
 phy_fire = df %>% 

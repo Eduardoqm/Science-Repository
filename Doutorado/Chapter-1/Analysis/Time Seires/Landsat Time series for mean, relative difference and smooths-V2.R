@@ -104,7 +104,7 @@ df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
 df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
-df_diff$Valor = abs(df_diff$Valor)
+#df_diff$Valor = abs(df_diff$Valor)
 
 difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
@@ -120,9 +120,9 @@ difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
 
 difplot
 
-#ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
- #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-  #     width = 20, height = 10, units =  "cm", dpi = 300)
+ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+       width = 20, height = 10, units =  "cm", dpi = 300)
 
 
 

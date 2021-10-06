@@ -79,7 +79,7 @@ df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
 
-df_diff$Valor = abs(df_diff$Valor) #Turn percentege to positive
+#df_diff$Valor = abs(df_diff$Valor) #Turn percentege to positive
 
 ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
@@ -98,51 +98,58 @@ ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
 struc = df_diff %>% 
   filter(Indice %in% c("EVI","NDVI","VARI","VIG"))
 
-ggplot(struc, aes(x=Ano, y=Valor, color = Tratamento))+
+a = ggplot(struc, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
   geom_point(size = 2, alpha = 0.8)+
   facet_wrap(vars(Indice), scales = "free")+
-  xlab(NULL)+ylab(NULL)+
+  xlab(NULL)+ylab("Diferença em relação o Controle (%)")+
   scale_color_manual(values=c( "orange", "red"))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
+
+#ggsave(filename = "Structural_diff.png", plot = a,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
 
 
 bioc = df_diff %>% 
   filter(Indice %in% c("LWVI2","MSI","NDII","NDWI","NIRv","PSRI","PSSR","SIPI","WBI"))
 
-ggplot(bioc, aes(x=Ano, y=Valor, color = Tratamento))+
+b = ggplot(bioc, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
   geom_point(size = 2, alpha = 0.8)+
   facet_wrap(vars(Indice), scales = "free")+
-  xlab(NULL)+ylab(NULL)+
+  xlab(NULL)+ylab("Diferença em relação o Controle (%)")+
   scale_color_manual(values=c( "orange", "red"))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
+#ggsave(filename = "Biochemistry_diff.png", plot = b,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
 
 phy_fire = df_diff %>% 
   filter(Indice %in% c("NBR","NBR2","PRI","RENDVI"))
 
-ggplot(phy_fire, aes(x=Ano, y=Valor, color = Tratamento))+
+c = ggplot(phy_fire, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
   geom_point(size = 2, alpha = 0.8)+
   facet_wrap(vars(Indice), scales = "free")+
-  xlab(NULL)+ylab(NULL)+
+  xlab(NULL)+ylab("Diferença em relação o Controle (%)")+
   scale_color_manual(values=c( "orange", "red"))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 
+#ggsave(filename = "Physiologic_Fire_diff.png", plot = c,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
 
 
 
@@ -159,14 +166,6 @@ ggplot(bioc, aes(x=Ano, y=Valor, color = Indice))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
-
-
-#ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
-#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-#     width = 20, height = 10, units =  "cm", dpi = 300)
-
-
-
 
 
 

@@ -256,10 +256,10 @@ fire2_plot
 
 #All Results Panel ======================================================
 library(ggpubr)
-a = all_plot + ggtitle("A")+ylim(-6, 10)+xlim(-25,11)
-b = pre_plot+ ggtitle("B")+ylim(-3.5, 8)+xlim(-40,11)
-c = fire_plot + ggtitle("C")+ylim(-6, 10)+xlim(-25,11)
-d = post_plot + ggtitle("D")+ylim(-3, 10)+xlim(-20,11)
+a = all_plot + ggtitle("A")+ylim(-5.5, 10)+xlim(-22,11)
+b = pre_plot+ ggtitle("B")+ylim(-3.5, 8)+xlim(-36,11)
+c = fire_plot + ggtitle("C")+ylim(-5.5, 10)+xlim(-21,11)
+d = post_plot + ggtitle("D")+ylim(-3, 10)+xlim(-18,11)
 
 
 pca_panel = ggarrange(a,b,c,d,

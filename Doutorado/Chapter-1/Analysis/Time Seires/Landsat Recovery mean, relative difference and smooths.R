@@ -1,8 +1,8 @@
-########################################################
-# Landsat Time series for mean and relative difference #
-# (Teste without edge pixels and edge/interior)        #
-# Eduardo Q Marques 11-09-2021                         #
-########################################################
+#################################################
+# Landsat Recovery mean and relative difference #
+#                                               #
+# Eduardo Q Marques 04-10-2021                  #
+#################################################
 
 library(tidyverse)
 library(reshape2)
@@ -38,15 +38,10 @@ df$treat[df$treat == "b1yr"] <- c("B1yr")
 #Resume repeat years with mean ====================================
 df = df %>% 
   group_by(x, y, index, year, treat) %>% 
-  summarise(value = mean(value))
+  summarise(value = mean(value)) %>% 
+  filter(year >= 2004)
 
 #Edge - Core separation ====================================================================
-evi = df %>% filter(index == "EVI")
-
-ggplot(evi, aes(x=value, y=y, col=treat))+
-  geom_point(alpha = 0.35, size = 3)+
-  scale_color_manual(values = c("orange","red","blue"))
-
 summary(df$y)
 min(df$y) #-13.08343 = 1000 meters
 max(df$y) #-13.07422 = 0 meters
@@ -56,20 +51,10 @@ df$dist = ((max(df$y) - df$y)/diffy)*1000
 df$dist = abs(df$dist)
 
 summary(df$dist)
-evi = df %>% filter(index == "EVI")
-ggplot(evi, aes(x=value, y=dist, col=treat))+
-  geom_point(alpha = 0.35, size = 3)+
-  scale_color_manual(values = c("orange","red","blue"))
-
 
 df$dist2 = c("a")
 df$dist2[df$dist <= 250] = c("Borda")
 df$dist2[df$dist > 250] = c("Interior")
-
-evi = df %>% filter(index == "EVI")
-ggplot(evi, aes(x=value, y=dist, col=treat))+
-  geom_point(aes(shape = dist2), alpha = 0.35, size = 3)+
-  scale_color_manual(values = c("orange","red","blue"))
 
 #Smooth time series ===============================================
 df_smt = df #%>% select(x, y, index, year, treat, value)
@@ -110,14 +95,10 @@ df_m2 = df_m #To not have problem in diff...I dont know why!
 colnames(df_m2) = c("Ano", "Tratamento", "Indice", "Valor")
 
 ggplot(df_m2, aes(x=Ano, y=Valor, color = Tratamento))+
-  geom_rect(aes(xmin = 2004, xmax = 2011, ymin = -Inf, ymax = Inf),
-            fill = "black", color = NA, alpha = 0.002)+
   geom_line(aes(group=Tratamento), size = 1.5, alpha = 0.7)+
   stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.5, aes(group=Tratamento))+
-  #geom_vline(xintercept = "2004", linetype = "dashed")+
-  #geom_vline(xintercept = "2011", linetype = "dashed")+
-  #stat_summary(geom="line", fun.y="mean", size = 1.5, aes(group=Tratamento))+
-  #stat_summary(geom="point", fun.y="mean", size = 2, aes(group=Tratamento))+
+  geom_vline(xintercept = 2004, linetype = "dashed")+
+  geom_vline(xintercept = 2011, linetype = "dashed")+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   scale_color_manual(values = eqm)+
@@ -134,6 +115,7 @@ df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
 df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice","Valor")
+#df_diff$Valor = abs(df_diff$Valor)
 
 difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
@@ -208,7 +190,7 @@ df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice","Valor")
 df_dif_ed = df_diff
-#df_dif_ed$Valor = abs(df_dif_ed$Valor)
+df_dif_ed$Valor = abs(df_dif_ed$Valor)
 
 df_crt = filter(df_core, treat == "Controle")
 df_b3yr = filter(df_core, treat == "B3yr")
@@ -219,7 +201,7 @@ df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
 df_diff = rbind(df_b3yr, df_b1yr)
 colnames(df_diff) = c("Ano", "Tratamento", "Indice","Valor")
 df_dif_co = df_diff
-#df_dif_co$Valor = abs(df_dif_co$Valor)
+df_dif_co$Valor = abs(df_dif_co$Valor)
 
 a = ggplot(df_dif_ed, aes(x=Ano, y=Valor, color = Indice))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
@@ -234,6 +216,7 @@ a = ggplot(df_dif_ed, aes(x=Ano, y=Valor, color = Indice))+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
+a
 
 b = ggplot(df_dif_co, aes(x=Ano, y=Valor, color = Indice))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
@@ -248,6 +231,7 @@ b = ggplot(df_dif_co, aes(x=Ano, y=Valor, color = Indice))+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
+b
 
 #ggsave(filename = "Diff_Edge.png", plot = a,
  #    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", width = 20, height = 10, units = "cm", dpi = 300)
