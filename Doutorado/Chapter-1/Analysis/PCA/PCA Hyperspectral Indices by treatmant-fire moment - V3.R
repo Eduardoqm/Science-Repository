@@ -171,7 +171,7 @@ ggpca = function(w,z){
 
 
 #Treatment
-all_plot =  ggpca(df4_pca, df3)
+all_plot =  (ggpca(df4_pca, df3))+ylim(-5.5, 10)+xlim(-22,11)
 all_plot
 
 #Separate data by momentum
@@ -192,7 +192,7 @@ eigpre = as.data.frame(pre_pca[["var"]][["cor"]])
 corrplot::corrplot(pre_pca[["var"]][["cor"]])
 #write.table(eigpre, "PCAeig_pre_fire.csv", sep = ",", row.names = T)
 
-pre_plot = ggpca(pre_pca, pre)#+xlim(-15, 10) + ylim (-3, 5)
+pre_plot = (ggpca(pre_pca, pre))+ylim(-3.5, 8)+xlim(-36,11)
 pre_plot
 
 #Plot During Fire
@@ -202,7 +202,7 @@ eigfire = as.data.frame(fire_pca[["var"]][["cor"]])
 corrplot::corrplot(fire_pca[["var"]][["cor"]])
 #write.table(eigfire, "PCAeig_during_fire.csv", sep = ",", row.names = T)
 
-fire_plot = ggpca(fire_pca, fire)
+fire_plot = (ggpca(fire_pca, fire))+ylim(-5.5, 10)+xlim(-21,11)
 fire_plot
 
 #Plot Post Fire
@@ -212,7 +212,7 @@ eigpost = as.data.frame(post_pca[["var"]][["cor"]])
 corrplot::corrplot(post_pca[["var"]][["cor"]])
 #write.table(eigpost, "PCAeig_post_fire.csv", sep = ",", row.names = T)
 
-post_plot = ggpca(post_pca, post)
+post_plot = (ggpca(post_pca, post))+ylim(-3, 10)+xlim(-18,11)
 post_plot
 
 #During Fire in two plots

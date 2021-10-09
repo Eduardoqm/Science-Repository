@@ -48,7 +48,7 @@ nirv = transp("nirv"); colnames(nirv) = c("NIRv")
 #Stract treatmant name
 treat = df[c(1:11781),]#; treat = treat[,c(4,7)]
 treat = treat %>% 
-  select(year, parcela)
+  select(year, treat)
 
 #Join everything
 df3 = cbind(treat$parcela,treat$year,evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv)
