@@ -129,22 +129,22 @@ ggpca = function(w){
 }
 
 
-a = ggpca(p2004)+ggtitle("2004")
+a = ggpca(p2004)+ggtitle("2004")+ylim(-5, 8)
 b = ggpca(p2005)+ggtitle("2005")
-c = ggpca(p2006)+ggtitle("2006")
-d = ggpca(p2008)+ggtitle("2008")
-e = ggpca(p2010)+ggtitle("2010")
+c = ggpca(p2006)+ggtitle("2006")+ylim(-5, 8)
+d = ggpca(p2008)+ggtitle("2008")+ylim(-7.5, 6)
+e = ggpca(p2010)+ggtitle("2010")+ylim(-5, 8)
 f = ggpca(p2011)+ggtitle("2011")
-g = ggpca(p2012)+ggtitle("2012")
+g = ggpca(p2012)+ggtitle("2012")+ylim(-5, 9.5)
 
 library(ggpubr)
 pca_panel = ggarrange(a,b,c,d,e,f,g,
                       common.legend = TRUE,
                       legend="right",
-                      ncol = 2, nrow = 2)
+                      ncol = 4, nrow = 2)
 
-#ggsave(filename = "PCA_panel.png", plot = pca_panel,
-#     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 30, height = 20, units = "cm", dpi = 300)
+ggsave(filename = "PCA_panel_years.png", plot = pca_panel,
+     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 40, height = 20, units = "cm", dpi = 300)
 
 
 
