@@ -1,7 +1,7 @@
 #===================================================#
 # PCA Hyperspectral Indices  by Years and Edge-Core #
 #                                                   #
-# Eduardo Q Marques 08-09-2021                      #
+# Eduardo Q Marques 09-10-2021                      #
 #===================================================#
 
 library(stats)
@@ -129,14 +129,22 @@ ggpca = function(w){
 }
 
 
-ggpca(p2004)
-ggpca(p2005)
-ggpca(p2006)
-ggpca(p2008)
-ggpca(p2010)
-ggpca(p2011)
-ggpca(p2012)
+a = ggpca(p2004)+ggtitle("2004")
+b = ggpca(p2005)+ggtitle("2005")
+c = ggpca(p2006)+ggtitle("2006")
+d = ggpca(p2008)+ggtitle("2008")
+e = ggpca(p2010)+ggtitle("2010")
+f = ggpca(p2011)+ggtitle("2011")
+g = ggpca(p2012)+ggtitle("2012")
 
+library(ggpubr)
+pca_panel = ggarrange(a,b,c,d,e,f,g,
+                      common.legend = TRUE,
+                      legend="right",
+                      ncol = 2, nrow = 2)
+
+#ggsave(filename = "PCA_panel.png", plot = pca_panel,
+#     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 30, height = 20, units = "cm", dpi = 300)
 
 
 
