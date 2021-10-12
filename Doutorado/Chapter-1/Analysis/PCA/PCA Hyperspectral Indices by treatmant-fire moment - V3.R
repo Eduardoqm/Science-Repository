@@ -276,13 +276,20 @@ a = all_plot + ggtitle("A")+theme(legend.position="none")
 b = pre_plot+ ggtitle("B")+theme(legend.position="none")
 c = post_plot + ggtitle("C")+theme(legend.position="none")
 
+pca_panel2 = ggarrange(a,b,c,
+                      common.legend = F,
+                      legend=NULL,
+                      ncol = 2, nrow = 2)
 
-ggsave(filename = "Hyperspectral Indices (Treatment).png", plot = a,
-      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
+ggsave(filename = "PCA_panel2.png", plot = pca_panel2,
+     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 25, height = 20, units = "cm", dpi = 300)
 
-ggsave(filename = "Hyperspectral Pre Fire.png", plot = b,
-      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
+#ggsave(filename = "Hyperspectral Indices (Treatment).png", plot = a,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
 
-ggsave(filename = "Hyperspectral Post Fire.png", plot = c,
-      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
+#ggsave(filename = "Hyperspectral Pre Fire.png", plot = b,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
+
+#ggsave(filename = "Hyperspectral Post Fire.png", plot = c,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
 
