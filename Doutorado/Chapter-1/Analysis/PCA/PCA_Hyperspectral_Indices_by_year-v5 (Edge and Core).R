@@ -143,8 +143,8 @@ pca_panel = ggarrange(a,b,c,d,e,f,g,
                       legend="right",
                       ncol = 4, nrow = 2)
 
-ggsave(filename = "PCA_panel_years.png", plot = pca_panel,
-     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 40, height = 20, units = "cm", dpi = 300)
+#ggsave(filename = "PCA_panel_years.png", plot = pca_panel,
+ #    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 40, height = 20, units = "cm", dpi = 300)
 
 
 
