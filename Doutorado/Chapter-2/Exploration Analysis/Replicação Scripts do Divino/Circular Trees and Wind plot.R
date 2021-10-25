@@ -136,11 +136,11 @@ colnames(blowd) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
 
 stations = rbind(blow, blowd)
 
-ggplot(stations, aes(x=Date, y=Wind_Speed, col = Station))+
+ggplot(stations, aes(x=Date, y=(Wind_Speed*3.6), col = Station))+
   geom_line(aes(group = Station), size = 1)+
   theme_bw()+
   xlab(NULL)+
-  ylab("Max Wind Speed")+
+  ylab("Wind Speed (km/h)")+
   theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position=c(.20,.75))
 
 
