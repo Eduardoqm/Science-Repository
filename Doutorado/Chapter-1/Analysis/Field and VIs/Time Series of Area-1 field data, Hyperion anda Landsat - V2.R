@@ -163,7 +163,7 @@ a = df %>%
   scale_color_manual(values = eqm)+
   xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = "LAI (m² m-²)", x = NULL)+
+  labs(y = NULL, x = NULL)+ #"LAI (m² m-²)"
   theme(text = element_text(family = "Times New Roman", size = 14),
         axis.text.x = element_blank(), legend.position = "none")
 
@@ -179,7 +179,7 @@ b = df %>%
   scale_color_manual(values = eqm)+
   xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = "Mg Ano-¹", x = NULL)+
+  labs(y = NULL, x = NULL)+ #"Mg Ano-¹"
   theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
         axis.text.x = element_blank(), strip.text = element_blank())
 
