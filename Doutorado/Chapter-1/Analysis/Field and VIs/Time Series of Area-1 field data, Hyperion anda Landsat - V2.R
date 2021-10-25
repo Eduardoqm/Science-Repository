@@ -165,7 +165,7 @@ a = df %>%
   theme_minimal()+
   labs(y = NULL, x = NULL)+
   theme(text = element_text(family = "Times New Roman", size = 14),
-        axis.text.x = element_blank())
+        axis.text.x = element_blank(), legend.position = "none")
 
 b = df %>% 
   filter(Variavel == "Liteira") %>% 
@@ -180,7 +180,7 @@ b = df %>%
   xlim(2004, 2019)+
   theme_minimal()+
   labs(y = NULL, x = NULL)+
-  theme(text = element_text(family = "Times New Roman", size = 14),
+  theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
         axis.text.x = element_blank(), strip.text = element_blank())
 
 c = df %>% 
@@ -196,7 +196,7 @@ c = df %>%
   xlim(2004, 2019)+
   theme_minimal()+
   labs(y = NULL, x = NULL)+
-  theme(text = element_text(family = "Times New Roman", size = 14),
+  theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
         axis.text.x = element_blank(), strip.text = element_blank())
 
 d = df %>% 
@@ -215,11 +215,20 @@ d = df %>%
   theme_minimal()+
   labs(y = NULL, x = "Ano")+
   theme(text = element_text(family = "Times New Roman", size = 14),
-        strip.text = element_blank())
+        strip.text = element_blank(), legend.position = "none")
 
 
 ggsave(filename = "LAI.png", plot = a,
     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+
+ggsave(filename = "Liteira.png", plot = b,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+
+ggsave(filename = "GRND.png", plot = c,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+
+ggsave(filename = "PSRI.png", plot = d,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
 
 
 
