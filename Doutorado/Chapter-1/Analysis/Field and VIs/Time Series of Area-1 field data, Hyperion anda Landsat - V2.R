@@ -218,6 +218,12 @@ d = df %>%
         strip.text = element_blank())
 
 
+ggsave(filename = "LAI.png", plot = a,
+    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+
+
+
+
 #Join plots
 ggarrange(a,b,c,d,
           common.legend = TRUE,
