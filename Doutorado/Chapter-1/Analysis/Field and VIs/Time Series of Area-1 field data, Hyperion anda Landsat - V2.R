@@ -222,10 +222,10 @@ ggsave(filename = "LAI.png", plot = a,
     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
 
 ggsave(filename = "Liteira.png", plot = b,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 6.5, units =  "cm", dpi = 300)
 
 ggsave(filename = "GRND.png", plot = c,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 6.5, units =  "cm", dpi = 300)
 
 ggsave(filename = "PSRI.png", plot = d,
        path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
