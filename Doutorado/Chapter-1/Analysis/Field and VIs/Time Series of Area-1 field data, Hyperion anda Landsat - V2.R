@@ -161,9 +161,9 @@ a = df %>%
                size = 2, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
   facet_wrap(~Dist)+
   scale_color_manual(values = eqm)+
-  xlim(2004, 2019)+
+  xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = NULL, x = NULL)+
+  labs(y = "LAI (m² m-²)", x = NULL)+
   theme(text = element_text(family = "Times New Roman", size = 14),
         axis.text.x = element_blank(), legend.position = "none")
 
@@ -177,9 +177,9 @@ b = df %>%
                size = 2, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
   facet_wrap(~Dist)+
   scale_color_manual(values = eqm)+
-  xlim(2004, 2019)+
+  xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = NULL, x = NULL)+
+  labs(y = "Mg Ano-¹", x = NULL)+
   theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
         axis.text.x = element_blank(), strip.text = element_blank())
 
@@ -193,7 +193,7 @@ c = df %>%
                size = 2, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
   facet_wrap(~Dist)+
   scale_color_manual(values = eqm)+
-  xlim(2004, 2019)+
+  xlim(2004, 2020)+
   theme_minimal()+
   labs(y = NULL, x = NULL)+
   theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
@@ -211,35 +211,32 @@ d = df %>%
                size = 1, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
   facet_wrap(~Dist, drop = F)+
   scale_color_manual(values = eqm)+
-  xlim(2004, 2019)+
+  xlim(2004, 2020)+
   theme_minimal()+
   labs(y = NULL, x = "Ano")+
   theme(text = element_text(family = "Times New Roman", size = 14),
         strip.text = element_blank(), legend.position = "none")
 
 
-ggsave(filename = "LAI.png", plot = a,
-    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
+#ggsave(filename = "LAI.png", plot = a,
+ #   path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
 
-ggsave(filename = "Liteira.png", plot = b,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 6.5, units =  "cm", dpi = 300)
+#ggsave(filename = "Liteira.png", plot = b,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 6.5, units =  "cm", dpi = 300)
 
-ggsave(filename = "GRND.png", plot = c,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 6.5, units =  "cm", dpi = 300)
+#ggsave(filename = "GRND.png", plot = c,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 6.5, units =  "cm", dpi = 300)
 
-ggsave(filename = "PSRI.png", plot = d,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
-
-
-
+#ggsave(filename = "PSRI.png", plot = d,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
 
 #Join plots
-ggarrange(a,b,c,d,
+smt = ggarrange(a,b,c,d,
           common.legend = TRUE,
-          legend="right",
+          legend="left",
           ncol = 1, nrow = 4,
           widths = 50)
 
 
-#ggsave(filename = "Smooth_Field and VIs.png", plot = smt,
- #    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 15, height = 20, units =  "cm", dpi = 300)
+ggsave(filename = "Smooth_Field and VIs.png", plot = smt,
+     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 15, height = 15, units =  "cm", dpi = 300)
