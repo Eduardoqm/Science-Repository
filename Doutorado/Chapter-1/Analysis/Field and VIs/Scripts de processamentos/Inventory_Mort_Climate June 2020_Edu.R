@@ -62,7 +62,7 @@ conv_20 <- function(x, y, z){
 
 
 ###Importing weather data ==================================================================
-path_climate <- "C:/Users/Eduardo Q Marques/Downloads/Biomassa Tang"
+path_climate <- "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Biomassa"
 
 load(file.path(path_climate, "Climate_Engine_Tanguro.RData"))
 load(file.path(path_climate, "Master_pos_processed_Brando_March_27_2020.Rdata"))
@@ -88,18 +88,19 @@ master_inv_cor <- master_inv_cor %>%
 
 bio_edge <- master_inv_cor %>%
   mutate(Biomass = chavesGCB4(densidade, dap_inter, altura),
-         Dist = if_else(nsdist < 250, "Edge", "Interior"),
+         Dist = if_else(nsdist < 250, "Borda", "Interior"),
          recruit2 = if_else(recruit %in% c("i8", "r7", "r8"), 
                             "r8", as.character(recruit))) %>%
   group_by(parcela, dbh.class, Dist, yr) %>%
   summarise(Bio = sum(Biomass*mort_cor, na.rm=T)) %>%
-  mutate(Bio_ha = case_when(dbh.class == "C20" & Dist == "Edge" ~ Bio/3.5,
+  mutate(Bio_ha = case_when(dbh.class == "C20" & Dist == "Borda" ~ Bio/3.5,
                             dbh.class == "C20" & Dist == "Interior"~ Bio/2.0,
-                            dbh.class == "C40" & Dist == "Edge" ~ Bio/12.5,
+                            dbh.class == "C40" & Dist == "Borda" ~ Bio/12.5,
                             dbh.class == "C40" & Dist == "Interior" ~ Bio/37.5, 
                             TRUE ~ NA_real_)) %>%
   group_by(parcela, Dist, yr) %>%
   summarise(Bio = sum(Bio_ha, na.rm=T)) %>%
+  mutate(parcela = ifelse(parcela=='A','Controle',ifelse(parcela=='B','B3yr','B1yr'))) %>% 
   ungroup() %>%
   filter(!is.na(Dist)) %>%
   na.omit()
@@ -112,7 +113,7 @@ bio_edge %>%
              shape = parcela)) +
   geom_point() +
   #scale_fill_manual(values = c("blue","red","orange")) +
-  scale_color_manual(values = c("blue","red","orange")) +
+  scale_color_manual(values = c("orange","red","blue")) +
   #geom_smooth(method = "lm", se = FALSE) +
   geom_smooth(se = TRUE, alpha = .5) +
   ylab("Biomass (Mg/ha)") +
