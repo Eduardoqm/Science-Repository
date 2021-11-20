@@ -1,0 +1,634 @@
+---
+title: "Tanguro Inventory GWC"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+
+#library(brms)
+#library(emmeans)
+library(knitr)
+library(dplyr)
+library(shiny)
+library(tidyverse)
+#library(tidybayes)
+#library(lme4)
+#library(sjPlot)
+#library(ggeffects)
+#library('effects')
+library(hablar)
+
+```
+
+```{r}
+####Functions
+
+mortFun = function(DEAD, Ni, T){
+  T = T/365.5
+  (1-(1-DEAD/Ni)^(1/T))}
+
+###
+###Function to calculate the change in size classes
+###
+
+recruitFun = function(X, Ni, T){
+  ((1+X/Ni)^(1/T)-1)
+}
+
+###
+###Function to calculate anoveground biomass - Mg
+###
+
+chavesGCB4 = function(g,d,h){
+  bio = 0.0673*(g*d^2*h)^0.976
+  return(bio/1000)
+}
+
+cons2 <- function(x) {
+  x.temp = rle(x)
+  unlist(sapply(x.temp$lengths, function(x) {return(1:x)}))}
+###
+
+mcwd_d = function(Value, cwd){
+  cwd =  (Value-c(5*3.3)) + cwd
+  cwd = ifelse(cwd>0, 0, cwd)
+  return(cwd)}
+
+mcwd_m = function(Value, cwd){
+  cwd =  (Value-100) + cwd
+  cwd = ifelse(cwd>0, 0, cwd)
+  return(cwd)}
+
+
+conv <- function(x, y,z){
+  ifelse(x == "Edge" & y == "C10", z*(1/1.35),
+  ifelse(x == "Edge" & y == 'C20',  z*(1/2.7),
+  ifelse(x == "Edge" & y == 'C40', z*(1/10.0),
+  
+  ifelse(x == "Forest" & y == 'C10', z*(1/1.35),
+  ifelse(x == "Forest" & y == 'C20', z*(1/(1.35*2.0)),
+  ifelse(x == "Forest" & y == 'C40', z/40.0, NA))))))
+}
+
+###
+
+conv_40 <- function(x, z){
+  ifelse(x == "Edge", z/10, z/40.0)}
+
+###
+
+conv_20 <- function(x, y, z){
+  z.temp = z+0.0001
+  ifelse(x == "Edge" & y == "C10",    z.temp/0.48, 
+         ifelse(x == "Edge" & y == 'C20',    z.temp/0.95,
+                ifelse(x == "Forest" & y == 'C10',  z.temp/0.48,
+                       ifelse(x == "Forest" & y == 'C20',  z.temp/0.95, NA))))
+}
+
+```
+
+```{r}
+###Importing weather data
+path_climate <- "C:/Users/Eduardo Q Marques/Downloads/Biomassa Tang"
+path_inv = "~/Dropbox/Projects/Projetos_Darro/Savanizacao/Censo_mortalidade/area1/"
+
+load(file.path(path_climate, "Climate_Engine_Tanguro.RData"))
+load(file.path(path_climate, "Master_pos_processed_Brando_March_27_2020.Rdata"))
+
+```
+
+```{r}
+###
+master_inv_cor <- master_inv_cor %>%
+                    ungroup() %>%
+                    convert(num(dap, dap_cor)) %>%
+                    group_by(placa) %>%
+                    mutate(dap_avg = mean(dap_inter, na.rm=T)) %>%
+                    ungroup() %>%
+                    mutate(dap_scale = dap_avg - mean(dap_avg, na.rm=T),
+                           year_scale = scale(as.numeric(yr)),
+                           year_fact = as.factor(yr),
+                           yr_f = yr + 2000,
+                           dap_class_f = ifelse(dap_inter >= 10, "C10", NA),
+                           dap_class_f = ifelse(dap_inter >= 20, "C20", dap_class_f),
+                           dap_class_f = ifelse(dap_inter >= 40, "C40", dap_class_f)) %>%
+  left_join(clima)
+
+#kable(glimpse(master_inv_cor))
+  
+```
+
+```{r}
+#Create file with max size per species
+max_size <- master_inv_cor %>%
+  group_by(codigo) %>%
+  summarise(max_tree = quantile(dap_avg, .975, na.rm = TRUE))
+
+#kable(glimpse(max_size))
+
+#calculate growth per species
+growth_tree <-
+  master_inv_cor %>%
+  #  filter(yr %in% c(8, 10:12, 14, 16, 18)) %>%
+  #  filter(yr %in% c(8, 10:12, 14, 16, 18),parcela == "A") %>%
+  group_by(placa) %>%
+  mutate(dap_num = as.numeric(as.character(dap)),
+         dap_lag = lag(dap_num, 1),
+         Period = as.numeric(Date -lag(Date, 1)),
+         growth = ((dap_num - dap_lag)/Period)*365,
+         rel_growth = growth/dap_num) %>%
+  ungroup() %>%
+  select(placa, Period, Date, dap_num, dap_lag, growth, codigo) %>%
+  group_by(codigo) %>%
+  summarise(growth = quantile(growth, .5, na.rm=T),
+            growth_75 = quantile(growth, .75, na.rm=T),
+            growth_25 = quantile(growth, .25, na.rm=T),
+            NN = n()) %>%
+  filter(growth > -1)
+
+growth_size_sav <- max_size %>% left_join(growth_tree)
+
+kable(growth_size_sav)
+#save(growth_size_sav, file = "~/Dropbox/Scripts/Savanizacao/Inventario/Species_Size_Growth_Tang.RData")
+
+```
+
+
+```{r pressure, echo=T}
+#checking the spatial distribution  
+p1 <- master_inv_cor %>%
+  filter(x_axis < 1501) %>%
+  ggplot( 
+    aes(x = x_axis,
+        y = nsdist,
+        size = (dap_inter)^2,
+        color = parcela)) +
+  geom_point(shape = 16, alpha = .15) +
+  scale_color_manual(values = c("darkgreen", "orange", "darkred")) +
+  theme_light(base_size = 12) +
+  theme(legend.position = "none") 
+
+print(p1)
+#ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Inventory.pdf",
+#       width = 15,
+#       height = 10)
+
+```
+
+```{r}
+
+mort_all <- master_inv_cor %>%
+  group_by(parcela, Edge_forest, dbh.class, yr) %>%
+  count(mort_cor) %>%
+  spread(mort_cor, n) %>%
+  mutate(Period = ifelse(yr < 14, 365, 
+                         ifelse(yr  == 14, 850,
+                                ifelse(yr %in% c(16, 18), 365*2, NA))),
+         mortality_rates = mortFun(`0`, `0` + `1`, Period)) %>%
+  ungroup() %>%
+   filter( !is.na(Edge_forest ))
+
+kable(mort_all)
+
+```
+
+```{r}
+
+#Ploting mortality rates  
+mort_all %>%
+  filter(!is.na(Edge_forest),
+         !is.na(dbh.class)) %>%
+  ggplot(aes(x= yr,
+             y = mortality_rates*100, 
+             #color = Edge_forest,
+             color = parcela,
+             fill = parcela)) +
+  geom_point(size = 2) +
+  #  geom_smooth() +
+  geom_line(alpha = .3) +
+  geom_smooth(alpha = .25) +
+  ylab("Annualized mortality rates (%)") +
+  scale_color_manual(values = c("darkgreen", "orange", "brown")) +
+  scale_fill_manual(values = c("darkgreen", "orange", "brown")) +
+  scale_x_continuous(breaks=c(4:18)) +
+  theme_minimal() +
+  facet_grid(dbh.class~Edge_forest, scale = "free_y")
+
+############################################
+#ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Mortality_Rates.pdf",
+#       width = 8,
+#       height = 6)
+#############################################
+
+```
+
+```{r}
+
+mort_all %>%
+  filter(!is.na(Edge_forest),
+         !is.na(dbh.class)) %>%
+  filter(parcela == "A") %>%
+  ggplot(aes(x= yr,
+             y = mortality_rates, 
+             color = Edge_forest,
+             shape = dbh.class,
+             fill = parcela)) +
+  geom_point() +
+  geom_smooth(se = T, alpha = .3) +
+  #geom_line() +
+  scale_color_manual(values = c("darkgreen", "orange", "brown")) +
+  scale_fill_manual(values = c("darkgreen", "orange", "brown")) +
+  scale_x_continuous(breaks=c(4:18)) +
+  theme_light() +
+  #facet_grid(dbh_class3~Edge_forest)
+  facet_grid(~dbh.class)
+
+```
+
+```{r}
+#####################################################################
+bio <- master_inv_cor %>%
+  mutate(Biomass = chavesGCB4(densidade, dap_inter, altura),
+         treat2 = if_else(parcela == "A", "Control", "XBurned"),
+         recruit2 = if_else(recruit %in% c("i8", "r7", "r8"), 
+                            "r8", as.character(recruit))) %>%
+  group_by(parcela, treat2, dbh.class, yr) %>%
+  summarise(Bio = sum(Biomass*mort_cor, na.rm=T)) %>%
+  mutate(Bio_ha = if_else(dbh.class == "C20", Bio/6, Bio/50)) %>%
+  group_by(parcela, treat2, yr) %>%
+  summarise(Bio = sum(Bio_ha, na.rm=T), .groups = "drop")
+
+```
+
+```{r}
+
+ggplot(bio, aes(x = yr, 
+                y = Bio, 
+                linetype = treat2,
+                color = parcela,
+                fill  = parcela,
+                shape = parcela)) +
+  geom_point(size = 1.5) +
+  labs(fill = "Treat", 
+       color = "Treat", 
+       shape = "Treat", 
+       linetype = "Treat") +
+  scale_fill_manual(values = c('darkgreen', 'orange', 'darkred')) +
+  scale_color_manual(values = c('darkgreen', 'orange', 'darkred')) +
+  #geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth(se = TRUE, alpha = .3) +
+  theme_light() 
+  
+```
+
+```{r}
+bio_edge <- master_inv_cor %>%
+  mutate(Biomass = chavesGCB4(densidade, dap_inter, altura),
+         Dist = if_else(nsdist < 250, "Edge", "Interior"),
+         recruit2 = if_else(recruit %in% c("i8", "r7", "r8"), 
+                            "r8", as.character(recruit))) %>%
+  group_by(parcela, dbh.class, Dist, yr) %>%
+  summarise(Bio = sum(Biomass*mort_cor, na.rm=T)) %>%
+  mutate(Bio_ha = case_when(dbh.class == "C20" & Dist == "Edge" ~ Bio/3.5,
+                            dbh.class == "C20" & Dist == "Interior"~ Bio/2.0,
+                            dbh.class == "C40" & Dist == "Edge" ~ Bio/12.5,
+                            dbh.class == "C40" & Dist == "Interior" ~ Bio/37.5, 
+                            TRUE ~ NA_real_)) %>%
+  group_by(parcela, Dist, yr) %>%
+  summarise(Bio = sum(Bio_ha, na.rm=T)) %>%
+  ungroup() %>%
+  filter(!is.na(Dist)) %>%
+  na.omit()
+
+```
+
+```{r}
+
+bio_edge %>%
+ggplot(aes(x = yr,
+           y = Bio,
+           color = parcela,
+           fill = parcela,
+           shape = parcela)) +
+  geom_point() +
+  scale_fill_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  scale_color_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  #geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth(se = TRUE, alpha = .5) +
+  ylab("Biomass (Mg/ha)") +
+  facet_wrap(~Dist) +
+  theme_minimal() 
+
+#####################################################################
+
+```
+
+```{r}
+
+bio_sp <- master_inv_cor %>%
+  mutate(Biomass = chavesGCB4(densidade, dap_inter, altura),
+         treat2 = if_else(parcela == "A", "Control", "XBurned"),
+         recruit2 = if_else(recruit %in% c("i8", "r7", "r8"), 
+                            "r8", as.character(recruit)),
+         Biomass2 = if_else(dbh.class == "C40", Biomass/10, Biomass)) %>%
+  group_by(parcela, treat2, codigo, dbh.class, yr) %>%
+  summarise(Bio = sum(Biomass*mort_cor, na.rm=T),
+            Bio2 = sum(Biomass2*mort_cor, na.rm=T)) %>%
+  group_by(codigo, dbh.class) %>%
+  mutate(Bio_rel = Bio2/max(Bio2, na.rm = T),
+         N = n()) %>%
+  ungroup() 
+
+bio_sp_raw <- bio_sp %>%
+  mutate(Bio_ha = if_else(dbh.class == "C20", Bio/6, Bio/50)) %>%
+  group_by(parcela, treat2, codigo, yr) %>%
+  summarise(Bio = sum(Bio_ha, na.rm=T))
+
+bio_sp_rel <- bio_sp %>%
+  group_by(parcela, treat2, codigo, yr) %>%
+  summarise(Bio_rel = mean(Bio_rel, na.rm=T),
+            N_max = max(N),
+            N_min = min(N)) %>%
+  filter(!is.na(Bio_rel))
+
+#save(bio_sp_raw, file ="~/Dropbox/Scripts/Savanizacao/Inventario/Species_Bio_ha_Tang.RData")
+#save(bio_sp_rel, file ="~/Dropbox/Scripts/Savanizacao/Inventario/Species_Bio_rel_Tang.RData")
+
+```
+
+```{r}
+
+bio_sp_rel %>%
+ggplot(aes(x = yr,
+           y = Bio_rel,
+           color = parcela,
+           fill = parcela,
+           shape = parcela)) +
+  geom_point(size = 0.5) +
+  scale_fill_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  scale_color_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, lwd = .5) +
+  #geom_smooth(se = FALSE, alpha = .5) +
+  theme(legend.position = "none") +
+  theme_light() +
+  facet_wrap(~codigo)
+
+```
+
+```{r}
+
+mort_res_SP = master_inv_cor %>% 
+    group_by(parcela, codigo, yr) %>%
+  count(mort_cor) %>%
+  spread(mort_cor, n) %>%
+  mutate(mort = ifelse(is.na(`0`), 0, `0`),
+         Period = ifelse(yr < 14, 365, 
+                         ifelse(yr  == 14, 850,
+                                ifelse(yr %in% c(16, 18), 365*2, NA))),
+         mortality_rates = mortFun(mort, mort + `1`, Period)) %>%
+  group_by(codigo) %>%
+  mutate(max_ind = max(`0`, na.rm=T)) %>%
+  ungroup() 
+
+```
+
+```{r}
+
+mort_res_SP %>%
+  filter(max_ind >= 5) %>%
+  ggplot(aes(x= yr ,
+             y = mortality_rates, 
+             color = parcela,
+             fill = parcela)) +
+  geom_point() +
+  geom_line() +
+  scale_fill_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  scale_color_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  scale_x_continuous(breaks=c(4:18)) +
+  theme_minimal() +
+  facet_wrap(~codigo)
+
+#ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Mortality_Rates_Sp.pdf",
+#       width = 16,
+#       height = 12)
+#####
+#####
+```
+
+```{r}
+
+mort_res_SP %>%
+  filter(max_ind >= 5) %>%
+  ggplot(aes(x= yr ,
+             y = mortality_rates, 
+             color = parcela,
+             fill = parcela)) +
+  geom_point() +
+  geom_line() +
+  scale_fill_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  scale_color_manual(values = c('darkgreen', 'orange', "#FC4E07")) +
+  scale_x_continuous(breaks=c(4:18)) +
+  theme_minimal() +
+  facet_wrap(~codigo)
+
+#ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Mortality_Rates_Sp.pdf",
+#       width = 16,
+#       height = 12)
+#####
+#####
+```
+
+```{r}
+
+mort_SP_drought = master_inv_cor %>% 
+  group_by(parcela, codigo, yr) %>%
+  count(mort_cor) %>%
+  spread(mort_cor, n) %>%
+  mutate(mort = ifelse(is.na(`0`), 0, `0`),
+         Period = ifelse(yr < 14, 365, 
+                         ifelse(yr  == 14, 850,
+                                ifelse(yr %in% c(16, 18), 365*2, NA))),
+         mortality_rates = mortFun(mort, mort + `1`, Period),
+         drought = ifelse(yr %in% c(4:6, 9, 14), "Normal", "Drought")) %>%
+  group_by(codigo, drought) %>%
+  mutate(max_ind = max(`0`, na.rm=T)) %>%
+  filter(!is.na(`0`), `0` > 5 ) %>%
+  group_by(codigo, parcela, drought)  %>%
+  summarise(mortality_rates = mean(mortality_rates, na.rm=TRUE), .groups = "drop") # %>%
+  #pivot_wider(names_from = drought, values_from = mortality_rates)
+
+```
+
+
+```{r}
+
+mort_SP_drought %>%
+  ggplot(aes(x = reorder(codigo, mortality_rates),
+             y = mortality_rates,
+             color = drought)) +
+  geom_point() +
+  facet_wrap(~parcela) +
+  coord_flip()
+
+```
+
+
+
+```{r}
+
+ # master_inv_cor %>% 
+ #  #filter(codigo == "Mabfis") %>%
+ #  group_by(parcela, codigo, yr) %>%
+ #  count(mort_cor) %>%
+ #  spread(mort_cor, n) %>%
+ #  mutate(mort = ifelse(is.na(`0`), 0, `0`),
+ #         Period = ifelse(yr < 14, 365, 
+ #                         ifelse(yr  == 14, 850,
+ #                                ifelse(yr %in% c(16, 18), 365*2, NA))),
+ #         mortality_rates = mortFun(mort, mort + `1`, Period)) %>%
+ #  group_by(codigo) %>%
+ #  mutate(max_ind = max(`0`, na.rm=T)) %>%
+ #  ungroup() 
+
+# 
+#   filter(max_ind > 10) %>%
+#   mutate(Period = ifelse(yr %in% 4:11, "Fire", "Post-Fire")) %>%
+#   group_by(codigo, Period, parcela) %>% 
+#   summarise(mortality_rates = mean(mortality_rates, na.rm = TRUE)) %>%
+#   spread(parcela, mortality_rates) %>%
+#   mutate(Prop_mort_AB = (B-A)/A,
+#          Prop_mort_AC = (C-A)/A) %>%
+#   gather(var, values, Prop_mort_AB:Prop_mort_AC) %>%
+#   ungroup() %>%
+#   ggplot(aes(x= reorder(codigo, values) ,
+#              y = values, 
+#              color = var,
+#              fill = var)) +
+#   geom_col(position = "dodge") +
+#   scale_color_manual(values = c("black", "grey")) +
+#   scale_fill_manual(values = c("black", "grey")) +
+#   #scale_x_continuous(breaks=c(4:18)) +
+#   theme_minimal() +
+#   facet_wrap(~Period) +
+#   theme(legend.position = c(0.25, .5)) +
+#   coord_flip()
+# ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Mortality_Rates_Control_Burned.pdf",
+#        width = 16,
+#        height = 12)
+
+```
+
+
+```{r}
+master_inv_cor %>% 
+  mutate(Burned = ifelse(parcela == "A", "Control", "Burned")) %>%
+  #filter(codigo == "Mabfis") %>%
+  group_by(Burned, codigo, yr) %>%
+  count(mort_cor) %>%
+  spread(mort_cor, n) %>%
+  mutate(mort = ifelse(is.na(`0`), 0, `0`),
+         Period = ifelse(yr < 14, 365, 
+                         ifelse(yr  == 14, 850,
+                                ifelse(yr %in% c(16, 18), 365*2, NA))),
+         mortality_rates = mortFun(mort, mort + `1`, Period)) %>%
+  group_by(codigo) %>%
+  mutate(max_ind = max(`0`, na.rm=T)) %>%
+  ungroup() %>%
+  filter(max_ind > 10) %>%
+  mutate(Period = ifelse(yr %in% 4:11, "Fire", "Post-Fire")) %>%
+  group_by(codigo, Period, Burned) %>% 
+  summarise(mortality_rates = mean(mortality_rates, na.rm = TRUE)) %>%
+  spread(Burned, mortality_rates) %>%
+  mutate(Control_Burned = Burned/Control) %>%
+  ungroup() %>%
+  ggplot(aes(x= reorder(codigo, Control_Burned) ,
+             y = Control_Burned, 
+             color = Period,
+             fill = Period)) +
+  geom_col(position = "dodge") +
+  scale_color_manual(values = c("black", "grey")) +
+  scale_fill_manual(values = c("black", "grey")) +
+  #scale_x_continuous(breaks=c(4:18)) +
+  theme_minimal(base_size = 16) +
+  ylab("") +
+  xlab("")+
+  #facet_wrap(~Period) +
+  theme(legend.position = c(0.75, .5)) +
+  coord_flip()
+
+# ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Mortality_Rates_Control_Burned_SP_Two.pdf",
+#        width = 9,
+#        height = 12)
+#####################################################################
+##########################################
+```
+
+```{r}
+
+bio_plot <- master_inv_cor%>%
+  #filter(dap_class_f == "C40") %>%
+  group_by(placa) %>%
+  #filter(!is.na(dap_class_f)) %>%
+  #mutate(dap_inter = zoo::na.approx(dap, na.rm=F) * mort_fill) %>%
+  mutate(Edge_forest = ifelse(nsdist < 200, "Edge", "Forest"),
+         altura_cor = ifelse(is.na(altura), 16, altura),
+         altura_cor = ifelse(altura_cor > 40, 40, altura_cor)) %>%
+  mutate(Bio = chavesGCB4(densidade, dap_inter, altura_cor)) %>%
+  group_by(parcela, Edge_forest, dap_class_f, yr) %>%
+  summarise(Bio = sum(Bio,na.rm=T))%>%
+  ungroup() %>%
+  mutate(Bio_ha = conv(Edge_forest, dap_class_f, Bio)) %>%
+  group_by(parcela, Edge_forest, yr) %>%
+  summarise(Bio_ha = sum(Bio_ha, na.rm=T))
+
+```
+
+```{r}
+
+bio_plot%>%
+  filter(!is.na(Edge_forest)) %>%
+  ggplot(aes(x = yr, 
+             y = Bio_ha,
+             color = parcela,
+             fill = parcela)) +
+  scale_color_manual(values = c("darkgreen", "orange", "brown")) +
+  scale_fill_manual(values = c("darkgreen", "orange", "brown")) +
+  geom_point() +
+  geom_smooth() +
+  facet_wrap(~Edge_forest, scale= "free_y")+
+  theme_minimal(base_size = 16)
+#
+
+# ggsave("~/Dropbox/Scripts/Savanizacao/Inventario/Figures/Tree_Mortality_Rates_Control_Burned_SP_Two.pdf",
+#        width = 12,
+#        height = 6)
+#############################
+
+
+```
+
+```{r}
+
+bio_plot_sp <- master_inv_cor%>%
+  group_by(placa) %>%
+  filter(!is.na(dbh_class3)) %>%
+  mutate(dap_inter = zoo::na.approx(dap, na.rm=F) * mort_fill) %>%
+  ungroup() %>%
+  mutate(Edge_forest = ifelse(nsdist < 250, "Edge", "Forest"),
+         altura_cor = ifelse(is.na(altura), 16, altura)) %>%
+  mutate(Bio = chavesGCB4(densidade, dap_inter, altura_cor),
+         BA = (pi*(dap_inter/2)^2)/(1e4)) %>%
+  group_by(parcela, codigo, yr) %>%
+  summarise(Bio = sum(Bio,na.rm=T),
+            BA = sum(BA,na.rm=T),
+            Nind = n())%>%
+  ungroup() 
+#mutate(Bio_ha = conv(Edge_forest, dbh_class3, Bio),
+#       BA_ha  = conv(Edge_forest, dbh_class3, BA)) %>%
+
+#
+```
+

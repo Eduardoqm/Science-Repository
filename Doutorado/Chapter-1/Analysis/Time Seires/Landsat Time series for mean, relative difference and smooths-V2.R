@@ -120,9 +120,8 @@ difplot = ggplot(df_diff, aes(x=Ano, y=Valor, color = Indice))+
 
 difplot
 
-ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-       width = 20, height = 10, units =  "cm", dpi = 300)
+#ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", width = 20, height = 10, units =  "cm", dpi = 300)
 
 
 
@@ -173,7 +172,7 @@ gg = ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   scale_color_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
-ggplotly(gg)
+ggplotly(difplot)
 
 #Test with ggarrange
 library(ggpubr)

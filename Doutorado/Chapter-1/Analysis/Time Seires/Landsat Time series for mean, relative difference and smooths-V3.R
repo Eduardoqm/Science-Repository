@@ -272,6 +272,3 @@ b = ggplot(df_dif_co, aes(x=Ano, y=Valor, color = Indice))+
 
 
 
-
-
-
