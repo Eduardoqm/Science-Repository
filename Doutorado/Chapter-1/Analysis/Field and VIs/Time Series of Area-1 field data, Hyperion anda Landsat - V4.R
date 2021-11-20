@@ -48,8 +48,13 @@ colnames(litter.sub2) = c("Tratamento","Dist","Ano","Valor")
 litter.sub2$Ano = as.numeric(litter.sub2$Ano)
 litter.sub2 = litter.sub2 %>% filter(Ano < 2020)
 
+#Biomass =================================================================================
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Biomassa")
 
-#LAI -----------------------------------------------------------------------------------
+bms = read.csv("Biomass_mgha.csv", sep = ",")
+colnames(bms) = c("Tratamento", "Dist", "Ano", "Biomass")
+
+#LAI =====================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 lai = read.csv( "LAI_full_tang.csv", sep = ",")
@@ -65,6 +70,7 @@ lai$dist[lai$dist == "nucleo"] <- c("Interior")
 lai = na.omit(lai)
 lai$year = as.character(lai$year)
 colnames(lai)[3:5] = c("LAI", "Ano", "Tratamento")
+
 #Vegetation Indices ======================================================================
 hy = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 land = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
@@ -142,15 +148,20 @@ litter.sub2$Ano = as.numeric(litter.sub2$Ano)
 litter = litter.sub2 %>% 
   select("Indice","Ano","Tratamento","Valor","Dist")
 
+bms$Indice = c("Biomass")
+bms = bms[,c(5,3,1,4,2)]
+
 colnames(land) = c("Variavel","Ano","Tratamento","Valor","Dist")
 colnames(hy) = c("Variavel","Ano","Tratamento","Valor","Dist")
 colnames(lai) = c("Variavel","Ano","Tratamento","Valor","Dist")
 colnames(litter) = c("Variavel","Ano","Tratamento","Valor","Dist")
+colnames(bms) = c("Variavel","Ano","Tratamento","Valor","Dist")
 
 
 df = full_join(land, hy)
 df = full_join(df, lai)
 df = full_join(df, litter)
+df = full_join(df, bms)
 df$Ano2 = as.character(df$Ano)
 
 #Plot data =================================================================================
@@ -168,7 +179,8 @@ ggplot(df, aes(x=Ano2, y=Valor, color = Tratamento))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90))+
   labs(y = NULL, x = "Ano")+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+  theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
+        axis.text.x = element_blank(), strip.text = element_blank())
   
 
 #Smooth per Variable
@@ -186,7 +198,8 @@ a = df %>%
   theme_minimal()+
   labs(y = NULL, x = NULL)+ #"LAI (m² m-²)"
   theme(text = element_text(family = "Times New Roman", size = 14),
-        axis.text.x = element_blank(), legend.position = "none")
+        axis.text.x = element_blank(), legend.position = "none",
+        strip.text = element_blank())
 
 b = df %>% 
   filter(Variavel == "Liteira") %>% 
@@ -239,6 +252,21 @@ d = df %>%
   theme(text = element_text(family = "Times New Roman", size = 14),
         strip.text = element_blank(), legend.position = "none")
 
+e = df %>% 
+  filter(Variavel == "Biomass") %>% 
+  ggplot(aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_smooth(aes(group=Tratamento), alpha = 0.3, size = 1)+
+  geom_vline(xintercept = 2004, linetype = "dashed")+
+  geom_vline(xintercept = 2011, linetype = "dashed")+
+  stat_summary(geom="point", fun.data="mean_cl_boot",
+               size = 2, alpha = 0.7, aes(group=Tratamento, shape = Tratamento))+
+  facet_wrap(~Dist)+
+  scale_color_manual(values = eqm)+
+  xlim(2004, 2020)+
+  theme_minimal()+
+  labs(y = NULL, x = NULL)+ #"Mg Ano-¹"
+  theme(text = element_text(family = "Times New Roman", size = 14),
+        axis.text.x = element_blank())
 
 #ggsave(filename = "LAI.png", plot = a,
  #   path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
@@ -253,15 +281,15 @@ d = df %>%
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 20, height = 7, units =  "cm", dpi = 300)
 
 #Join plots
-smt = ggarrange(a,b,c,d,
+smt = ggarrange(e,a,b,c,d,
           common.legend = TRUE,
           legend="left",
-          ncol = 1, nrow = 4,
+          ncol = 1, nrow = 5,
           widths = 50)
-
+smt
 
 ggsave(filename = "Smooth_Field and VIs.png", plot = smt,
-     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 15, height = 15, units =  "cm", dpi = 300)
+     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 14, height = 15, units =  "cm", dpi = 300)
 
 
 

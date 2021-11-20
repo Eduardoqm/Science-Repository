@@ -105,6 +105,11 @@ bio_edge <- master_inv_cor %>%
   filter(!is.na(Dist)) %>%
   na.omit()
 
+bio_edge$yr[bio_edge$yr %in% c(4,5,6,7,8,9,10,11,12,14,16,18)] <- c(2004,2005,2006,2007,2008,2009,2010,2011,2012,2014,2016, 2018)
+
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Biomassa")
+#write.table(bio_edge, "Biomass_mgha.csv", sep = ",", row.names = F)
+
 ###Plot ====================================================================================
 bio_edge %>%
   ggplot(aes(x = yr,
@@ -116,7 +121,7 @@ bio_edge %>%
   scale_color_manual(values = c("orange","red","blue")) +
   #geom_smooth(method = "lm", se = FALSE) +
   geom_smooth(se = TRUE, alpha = .5) +
-  ylab("Biomass (Mg/ha)") +
+  labs(x = "Biomassa (Mg/ha)", y = "Ano") +
   facet_wrap(~Dist) +
   theme_minimal() 
 
