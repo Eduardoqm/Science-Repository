@@ -81,7 +81,7 @@ colnames(df_diff) = c("Ano", "Tratamento", "Indice", "Valor")
 
 #df_diff$Valor = abs(df_diff$Valor) #Turn percentege to positive
 
-ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
+all_vis = ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
   geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
@@ -93,6 +93,8 @@ ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
+#ggsave(filename = "all_diff.png", plot = all_vis,
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
 
 #Plot by kind of Indice ---------------------------------------------------
 struc = df_diff %>% 
@@ -151,8 +153,40 @@ c = ggplot(phy_fire, aes(x=Ano, y=Valor, color = Tratamento))+
 #ggsave(filename = "Physiologic_Fire_diff.png", plot = c,
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
 
+#Biggest differences
+top_vis = df_diff %>% 
+  filter(Indice %in% c("PSRI","VIG","VARI","MSI","PSSR","NDII"))
 
+topvis = ggplot(top_vis, aes(x=Ano, y=Valor, color = Tratamento))+
+  #geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
+  #geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
+  geom_point(size = 2, alpha = 0.8)+
+  facet_wrap(vars(Indice), scales = "free")+
+  xlab(NULL)+ylab("Diferença em relação o Controle (%)")+
+  scale_color_manual(values=c("orange", "red"))+
+  theme_bw()+
+  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
+#ggsave(filename = "Top_diff.png", plot = topvis,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
+
+#Carotenoides VIs
+pigm = df_diff %>% 
+  filter(Indice %in% c("PSRI","PSSR"))
+
+ggplot(pigm, aes(x=Ano, y=Valor, color = Tratamento))+
+  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
+  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+  geom_line(aes(group = Tratamento), size = 1.5, alpha = 0.8)+
+  geom_point(size = 2, alpha = 0.8)+
+  facet_grid(rows = vars(Indice), scales = "free")+
+  xlab(NULL)+ylab("Diferença em relação o Controle (%)")+
+  scale_color_manual(values=c("orange", "red"))+
+  theme_bw()+
+  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
+  theme(text = element_text(family = "Times New Roman", size = 14))
 
 #Another model
 ggplot(bioc, aes(x=Ano, y=Valor, color = Indice))+

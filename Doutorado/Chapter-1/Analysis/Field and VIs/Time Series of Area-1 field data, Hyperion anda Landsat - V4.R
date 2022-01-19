@@ -288,8 +288,8 @@ smt = ggarrange(e,a,b,c,d,
           widths = 50)
 smt
 
-ggsave(filename = "Smooth_Field and VIs.png", plot = smt,
-     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 14, height = 15, units =  "cm", dpi = 300)
+#ggsave(filename = "Smooth_Field and VIs.png", plot = smt,
+ #    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 14, height = 15, units =  "cm", dpi = 300)
 
 
 
