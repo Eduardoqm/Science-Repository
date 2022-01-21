@@ -49,7 +49,7 @@ treat = treat %>%
 
 
 #Join everything
-df3 = cbind(treat$year, treat$treat, treat$y, evi,ndvi,ndii,nbr, nbr2, grnd)
+df3 = cbind(treat$year, treat$treat, treat$y, evi, ndvi, ndii, nbr, nbr2, grnd)
 colnames(df3)[1:3] = c("Ano", "Parcela", "y")
 
 #Change names
@@ -178,7 +178,7 @@ eigpre = as.data.frame(pre_pca[["var"]][["cor"]])
 corrplot::corrplot(pre_pca[["var"]][["cor"]])
 #write.table(eigpre, "PCAeig_pre_fire.csv", sep = ",", row.names = T)
 
-pre_plot = (ggpca(pre_pca, pre))+ylim(-3.5, 8)+xlim(-36,11)
+pre_plot = (ggpca(pre_pca, pre))#+ylim(-3.5, 8)+xlim(-36,11)
 pre_plot
 
 #Plot During Fire
