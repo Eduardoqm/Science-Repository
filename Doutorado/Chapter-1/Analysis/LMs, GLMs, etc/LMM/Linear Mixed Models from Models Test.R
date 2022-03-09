@@ -113,17 +113,6 @@ dotplot(ranef(mod_NDVI4,condVar=TRUE))
 dotplot(ranef(mod_NDVI5,condVar=TRUE))
 dotplot(ranef(mod_NDVI6,condVar=TRUE))
 
-#MSI ============================================================
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -19,7 +19,7 @@ library(reshape2)
 library(ggplot2)
 
 #Load data
-setwd('C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Deposito/Banco de Dados Tanguro/Area1-plot/Campo vento')
+setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
 df = read.csv("storm_data_full_C.csv", sep = ",")
 

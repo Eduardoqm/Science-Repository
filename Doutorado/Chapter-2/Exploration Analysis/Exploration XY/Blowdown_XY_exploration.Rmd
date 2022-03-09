@@ -75,7 +75,7 @@ Click the point to popup information
 
 ```{r interac_map, echo=F}
 leaflet() %>% 
-  #  addMiniMap(position = "bottomleft") %>%
+    addMiniMap(position = "bottomleft") %>%
   addProviderTiles("Esri.WorldImagery") %>% 
   addPolygons(data = area1, color = "white", weight = 1, fillOpacity = 0) %>% 
   addCircles(data = loc_trees, color = "yellow", opacity = 0.9,
