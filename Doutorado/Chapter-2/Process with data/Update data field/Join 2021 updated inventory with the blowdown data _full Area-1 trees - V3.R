@@ -48,7 +48,8 @@ master = full_join(master, m40)
 blowdown$placa = as.character(blowdown$placa)
 df = full_join(blowdown, master, by = "placa")
 
-df2 = df %>% 
+a04 = df %>%
+  filter()
   filter(is.na(data_morta))
 
 #Filter Blowdown trees only and data of interest ---------------------------------------------------
