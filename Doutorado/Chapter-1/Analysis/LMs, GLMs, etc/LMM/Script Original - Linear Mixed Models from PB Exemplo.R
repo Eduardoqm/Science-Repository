@@ -4,6 +4,8 @@ library(tidyverse)
 
 dir_input <- "/Volumes/GoogleDrive/My Drive/Document/Manuscript/Tanguro_RemoteSensingDudu/Dados"
 
+dir_input <- "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1/Old data"
+
 list.files(path = dir_input)
 
 rs <- read_csv(file.path(dir_input, "Hyperion_indexs_all_xy-B_cent.csv"))
