@@ -14,27 +14,51 @@ library(viridis)
 
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
-df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
+df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
 df$year = as.character(df$year)
 
 df2 = df%>%
-  group_by(index,parcela,year,y) %>%
+  group_by(index,treat,year,dist) %>%
   summarise(value = mean(value,na.rm=TRUE))
 
-pssr = df2 %>% 
-  filter(index == "pssr")
+psri = df2 %>% 
+  filter(index == "psri")
 
 
-ggplot(pssr, aes(year, y, fill = value))+ 
+ggplot(psri, aes(year, dist, fill = value))+ 
   geom_tile()+
-  facet_wrap(~parcela,scales="free")+
+  facet_wrap(~treat)+
+  scale_fill_viridis(discrete=FALSE)
+
+ggplot(psri, aes(x=year,y=value, fill=treat))+
+  geom_boxplot()
+
+evi = df2 %>% 
+  filter(index == "psri") #%>% 
+  #filter(treat == "b1yr")
+
+evigg = ggplot(evi, aes((dist*100000), year, fill = value))+ 
+  geom_tile()+
+  facet_wrap(~treat)+
   scale_fill_viridis(discrete=FALSE)
 
 
-df3 = df %>% 
-  filter(index == "wbi")
+library(rayshader)
+evigg
+plot_gg(evigg, width = 6, preview = TRUE)
 
-ggplot(df3, aes(x=year,y=value, col=parcela))+
-  geom_boxplot()
+plot_gg(evigg, multicore = TRUE, raytrace = TRUE, scale = 50, windowsize = c(900, 600), zoom = 0.6, phi = 30, theta = 30, width = 6)
 
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
