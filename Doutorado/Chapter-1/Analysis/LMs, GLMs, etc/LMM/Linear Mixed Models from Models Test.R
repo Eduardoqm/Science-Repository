@@ -74,6 +74,7 @@ plot(ggpredict(mod_NDVI5, terms = c("dist", "treat")))
 plot(ggpredict(mod_NDVI5, terms = c("year", "treat")))
 plot(ggpredict(mod_NDVI5, terms = c("year", "treat", "dist")))
 plot(ggpredict(mod_NDVI5, terms = c("dist", "treat", "year")))
+plot(ggpredict(mod_NDVI5, terms = c("dist", "year", "treat")))
 
 #Model-6
 plot(ggpredict(mod_NDVI6, terms = c("dist2", "treat")))
