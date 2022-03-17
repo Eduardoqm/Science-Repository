@@ -154,7 +154,7 @@ ggplot(blow2, aes(x=datetime, y=(max_speed*3.6)))+
   ylab("Wind Speed (km/h)")+
   theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position=c(.20,.75))
 
-
+#===========================================================================================
 #Wind Speed (Tower)
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres")
 
