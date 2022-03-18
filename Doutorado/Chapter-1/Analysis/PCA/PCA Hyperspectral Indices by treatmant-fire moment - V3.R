@@ -119,8 +119,7 @@ df4 = df3[,c(-1, -2, -3, -21, -22, -23)]
 df4_pca = PCA(df4, graph = T)
 fviz_pca_var(df4_pca, col.var = "coord",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07", "#FF0000"), 
-             repel = TRUE # Avoid text overlapping
-)
+             repel = TRUE) # Avoid text overlapping
 
 #Extract variance values
 get_eigenvalue(df4_pca)
