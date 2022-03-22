@@ -60,8 +60,11 @@ summary(mod_NDVI6)
 mod_NDVI7 <- lmer(value_norm ~ treat*dist2*year + (treat|year), data = subset(rs_norm, index == "ndvi"))
 summary(mod_NDVI7)
 
+mod_NDVI8 <- lmer(value_norm ~ treat*dist*year + I(dist^2) + (1|year), data = subset(rs_norm, index == "ndvi"))
+summary(mod_NDVI8) #Model suggested by Divino after see model 5 (I adc this *year)
+
 #Find the best model ===============================================
-anova(mod_NDVI, mod_NDVI2, mod_NDVI3, mod_NDVI4, mod_NDVI5, mod_NDVI6, mod_NDVI7)
+anova(mod_NDVI, mod_NDVI2, mod_NDVI3, mod_NDVI4, mod_NDVI5, mod_NDVI6, mod_NDVI7, mod_NDVI8)
 
 #Plot results ======================================================
 plot(ggpredict(mod_NDVI, terms = c("dist", "treat")))
@@ -75,6 +78,13 @@ plot(ggpredict(mod_NDVI5, terms = c("year", "treat")))
 plot(ggpredict(mod_NDVI5, terms = c("year", "treat", "dist")))
 plot(ggpredict(mod_NDVI5, terms = c("dist", "treat", "year")))
 plot(ggpredict(mod_NDVI5, terms = c("dist", "year", "treat")))
+
+#Model-8
+plot(ggpredict(mod_NDVI8, terms = c("dist", "treat")))
+plot(ggpredict(mod_NDVI8, terms = c("year", "treat")))
+plot(ggpredict(mod_NDVI8, terms = c("year", "treat", "dist")))
+plot(ggpredict(mod_NDVI8, terms = c("dist", "treat", "year")))
+plot(ggpredict(mod_NDVI8, terms = c("dist", "year", "treat")))
 
 #Model-6
 plot(ggpredict(mod_NDVI6, terms = c("dist2", "treat")))
