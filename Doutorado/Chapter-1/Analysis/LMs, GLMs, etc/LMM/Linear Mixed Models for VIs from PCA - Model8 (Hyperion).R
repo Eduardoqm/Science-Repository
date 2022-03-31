@@ -101,5 +101,5 @@ preds = ggarrange(a, b, c, d, e, f,
                   ncol = 2, nrow = 3)
 
 
-ggsave(filename = "LMM_Model8_panel.png", plot = preds,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Models", width = 30, height = 20, units = "cm", dpi = 300)
+#ggsave(filename = "LMM_Model8_panel.png", plot = preds,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Models", width = 30, height = 20, units = "cm", dpi = 300)
