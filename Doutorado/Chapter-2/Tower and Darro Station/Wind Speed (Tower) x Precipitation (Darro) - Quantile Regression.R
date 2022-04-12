@@ -83,7 +83,7 @@ ggplot(df, aes(x=ppt, y=wind))+
   geom_point(aes(col = date), alpha = 0.7, size = 2)+
   geom_smooth(method = "lm", col = "royalblue")+
   #geom_quantile()+
-  stat_quantile(quantiles = c(.05,.1,.25,.75,.90,.95), show.legend = TRUE, col = "red", size = 1, aplha = 0.3)+
+  stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", size = 1, aplha = 0.3)+
   #stat_cor(show.legend = F)+
   labs( x = "Daily accumulated precipitation (mm)", y = "Maximum Wind Speed per day (m/s)",
         title = "Precipitation (Darro Station) vs Wind Speed (Tower)")+
