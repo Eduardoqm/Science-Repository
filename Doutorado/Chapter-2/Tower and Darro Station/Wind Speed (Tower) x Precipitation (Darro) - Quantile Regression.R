@@ -55,6 +55,7 @@ wd1420 = ggplot(df, aes(x=ppt, y=wind))+
   geom_point(aes(col = date), alpha = 0.7, size = 2)+
   geom_smooth(method = "lm", col = "royalblue")+
   stat_cor(show.legend = F)+
+  stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
   labs( x = "Daily accumulated precipitation (mm)", y = "Maximum Wind Speed per day (m/s)",
         title = "Precipitation (Darro Station) vs Wind Speed (Tower)")+
   scale_color_viridis()+
@@ -64,6 +65,7 @@ wd1420f = ggplot(df, aes(x=ppt, y=wind))+
   geom_point(alpha = 0.7, size = 2, col = "royalblue")+
   geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
+  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", aplha = 0.3)+
   labs( x = "Daily accumulated precipitation (mm)", y = "Maximum Wind Speed per day (m/s)")+
   facet_wrap(~date)+
   scale_color_viridis()+
@@ -76,54 +78,28 @@ wd1420f = ggplot(df, aes(x=ppt, y=wind))+
 #ggsave(filename = "WD_tower-Prec_darro_facet.png", plot = wd1420f,
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 20, height = 12, units = "cm", dpi = 300)
 
-#Quantile Regression ============================================================
+#Quantile values ================================================================
 library(quantreg)
 
-ggplot(df, aes(x=ppt, y=wind))+
-  geom_point(aes(col = date), alpha = 0.7, size = 2)+
-  geom_smooth(method = "lm", col = "royalblue")+
-  #geom_quantile()+
-  stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", size = 1, aplha = 0.3)+
-  #stat_cor(show.legend = F)+
-  labs( x = "Daily accumulated precipitation (mm)", y = "Maximum Wind Speed per day (m/s)",
-        title = "Precipitation (Darro Station) vs Wind Speed (Tower)")+
-  scale_color_viridis()+
+fit = rq(ppt ~ wind, tau = c(.05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9,.95), data = df)
+
+df2 = fit$coefficients
+
+df2 = melt(df2)
+wind = df2 %>% 
+  filter(Var1 == "wind")
+inter = df2 %>% 
+  filter(Var1 == "(Intercept)")
+
+df3 = cbind(wind, inter)
+df3 = df3[,c(2,3,6)]
+colnames(df3) = c("Quantile", "Wind", "Intercept")
+df3$Quantile = as.numeric(substr(df3$Quantile, 6, 9))
+
+ggplot(df3)+
+  geom_line(aes(x = Quantile, y = Wind), col = "blue", size = 1.5, alpha = 0.5)+
+  #geom_line(aes(x = Quantile, y = Intercept), col = "red", size = 1.5, alpha = 0.5)+
   theme_bw()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
