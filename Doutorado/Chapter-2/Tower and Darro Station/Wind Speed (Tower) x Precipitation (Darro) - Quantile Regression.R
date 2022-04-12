@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------
-#Wind Speed (Tower) X Precipitation (Darro) - Log and Quantile Regression
+#Wind Speed (Tower) X Precipitation (Darro) - Quantile Regression
 #-------------------------------------------------------------------------
 #Eduardo Q Marques 12-04-2022
 #eduardobio2009@gmail.com
@@ -77,6 +77,7 @@ wd1420f = ggplot(df, aes(x=ppt, y=wind))+
  #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 20, height = 12, units = "cm", dpi = 300)
 
 #Quantile Regression ============================================================
+library(quantreg)
 
 
 
