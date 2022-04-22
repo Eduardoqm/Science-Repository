@@ -1,31 +1,31 @@
-#Circular Trees and Wind
-#Blowdown Data (AREA-1)
-#Eduardo Q Marques 03-08-2021
+#-------------------------------------------------------------
+# Circular Trees and Wind Direction from all plot level data
+# Blowdown Data (AREA-1)
+#
+# Eduardo Q Marques 22-04-2022
+#-------------------------------------------------------------
 
 library(tidyverse)
 library(reshape2)
 library(ggplot2)
 library(fmsb)
+library(circular)
 
-#Load data ------------------------------------------------------------------------------------------
+#Fall Trees Direction ----------------------------------------------------------------------------------------
 setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
 
-#df = read.csv("blowdown_full_update_2021.csv", sep = ",")
-df = read.csv("blowdown_full_update_2021_B.csv", sep = ",")
+df = read.csv("blowdown_full_update_2021.csv", sep = ",")
 
 #Resume data
-#df = df[,c(2,7,8,9,10,11,12,13,14,15,22,23)]
-df = df[,c(3,7,8,9,10,11,12,13,14,15,25,18)]
+df = df %>% 
+  filter(caiu._com_vento == "s") %>% 
+  select(direction)
 
 df$nt = 1
-colnames(df) = c("Specie","Treatment","Line","Transect","Condition","Alt_Scar","Wind?","Direction","Damage","Alt_Broken","Alt_tree", "DAP", "Number_of_Trees")
+colnames(df) = c("Direction", "Number_of_Trees")
 
 
-#Summary information
-summary(df)
-
-#Plot data ------------------------------------------------------------------------------------------
-#Fall direction
+#Plot fall direction
 ggplot(df, aes(x=Direction))+
   geom_density(col = "black", fill = "darkblue", alpha = 0.5)+
   theme_minimal()+
@@ -47,10 +47,7 @@ ggplot(wind, aes(x=Direction, y = Number_of_Trees, fill = Number_of_Trees))+
   ggtitle("Direction the trees fell (Degrees)")
 
 
-
-
-library(circular)
-df2 = df[,8] %>% 
+df2 = df[,1] %>% 
   na.omit()
 tree_fall <- circular(df2, units = "degrees", template = "none",
                       rotation = "clock", zero = -55) 
@@ -61,21 +58,11 @@ plot.circular(tree_fall, stack=T, bg="RoyalBlue", pch=21, cex=1.3,
 arrows.circular(mean(tree_fall), col = "RoyalBlue")
 
 
-library(sharpshootR)
+#Wind Diretion Towers -------------------------------------------------------------------------------------------
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres/Raw data")
 
-aspect.plot(df2, q=0.5, stack = T,
-            p.bw=30,p.axis = seq(0, 350, by = 30),
-            pch=21, col='black', bg='RoyalBlue',cex=1.3,
-            arrow.lwd=2, main = "Trees falling direction")
-
-
-
-
-
-#Wind Diretion (Tower)
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres")
-
-torre = read.csv("Dados_Vento_Torre_Controle.csv", sep = ",")
+#Control Tower
+control = read.csv("control20152020_gapfilled_jan2022.csv", sep = ",")
 
 blow = torre %>% 
   filter(y == 2019 & m == 2 & d == 3) %>% 
