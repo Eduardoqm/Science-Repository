@@ -96,13 +96,16 @@ df3 = df3[,c(2,3,6)]
 colnames(df3) = c("Quantile", "Wind", "Intercept")
 df3$Quantile = as.numeric(substr(df3$Quantile, 6, 9))
 
-ggplot(df3)+
+quant = ggplot(df3)+
   geom_line(aes(x = Quantile, y = Wind), col = "blue", size = 1.5, alpha = 0.5)+
+  geom_point(aes(x = Quantile, y = Wind), col = "blue", size = 2, alpha = 0.5)+
   #geom_line(aes(x = Quantile, y = Intercept), col = "red", size = 1.5, alpha = 0.5)+
-  theme_bw()
+  labs( x = "Precipitation quantiles", y = "Maximum Wind Speed per day (m/s)")+
+  theme_bw(); quant
 
 
-
+#ggsave(filename = "WS_tower-Prec_darro_quant.png", plot = quant,
+ #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 13, height = 10, units = "cm", dpi = 300)
 
 
 
