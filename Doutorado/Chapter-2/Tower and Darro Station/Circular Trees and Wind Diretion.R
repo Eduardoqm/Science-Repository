@@ -59,35 +59,56 @@ arrows.circular(mean(tree_fall), col = "RoyalBlue")
 
 
 #Wind Diretion Towers -------------------------------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres/Raw data")
-
 #Control Tower
-control = read.csv("control20152020_gapfilled_jan2022.csv", sep = ",")
+control = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres/Raw data/control20152020_gapfilled_jan2022.csv", sep = ",")
 
-blow = torre %>% 
+control$y = control$Year
+control$m =as.numeric(substr(control$DateTime, 6, 7))
+control$d = as.numeric(substr(control$DateTime, 9, 10))
+
+crt = control %>%
   filter(y == 2019 & m == 2 & d == 3) %>% 
-  select(datetime, max_speed, wind_dir)
+  select(DateTime, wind_speed, wind_dir)
   
-blow2 = blow[,3] %>% 
+crt2 = crt[,3] %>% 
   na.omit()
 
-windr <- circular(blow2, units = "degrees", template = "none",
+crt3 <- circular(crt2, units = "degrees", template = "none",
                       rotation = "clock", zero = -55) 
 
-plot.circular(windr, stack=T, bg="RoyalBlue", pch=21, cex=1.3,
-              main = "Wind direction (Tower)", shrink = 1.5)
+plot.circular(crt3, stack=T, bg="darkgreen", pch=21, cex=1.3,
+              main = "Wind direction (Tower Control)", shrink = 1.5)
 
-arrows.circular(mean(windr), col = "RoyalBlue")
-  
+arrows.circular(mean(crt3), col = "darkgreen")
+
+#Fire Tower
+fire = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres/Raw data/fire20152020_gapfilled_jan2022.csv", sep = ",")
+
+fire$y = fire$Year
+fire$m =as.numeric(substr(fire$DateTime, 6, 7))
+fire$d = as.numeric(substr(fire$DateTime, 9, 10))
+
+fr = fire %>% 
+  filter(y == 2019 & m == 2 & d == 3) %>% 
+  select(DateTime, wind_speed, wind_dir)
+
+fr2 = fr[,3] %>% 
+  na.omit()
+
+fr3 <- circular(fr2, units = "degrees", template = "none",
+                 rotation = "clock", zero = -55) 
+
+plot.circular(fr3, stack=T, bg="red", pch=21, cex=1.3,
+              main = "Wind direction (Tower Fire)", shrink = 1.5)
+
+arrows.circular(mean(fr3), col = "red")
   
 #Wind Diretion (Darro)
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres")
-
-darro = read.csv("Master_Estacao_Darro_2020.csv", sep = ",")
+darro = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres/Raw data/Master_Estacao_Darro_2021.csv", sep = ",")
 
 blowd = darro %>% 
   filter(Year == 2019 & Month == 2 & Day == 3) %>% 
-  select(Date2, vel_vento_Max, windDir)
+  select(Date2, windSpd, windDir)
 
 blowd2 = blowd[,3] %>% 
   na.omit()
@@ -95,25 +116,29 @@ blowd2 = blowd[,3] %>%
 windrd <- circular(blowd2, units = "degrees", template = "none",
                   rotation = "clock", zero = -55) 
 
-plot.circular(windrd, stack=T, bg="RoyalBlue", pch=21, cex=1.3,
+plot.circular(windrd, stack=T, bg="purple", pch=21, cex=1.3,
               main = "Wind direction (Darro)", shrink = 1.5)
 
-arrows.circular(mean(windrd), col = "RoyalBlue")  
+arrows.circular(mean(windrd), col = "purple")  
 
 
 #All
-par(mfrow=c(1,3))
+par(mfrow=c(1,4))
 plot.circular(tree_fall, stack=T, bg="RoyalBlue", pch=21, cex=1.5,
               main = "Trees falling direction", shrink = 1)
 arrows.circular(mean(tree_fall), col = "RoyalBlue")
   
-plot.circular(windr, stack=T, bg="RoyalBlue", pch=21, cex=1.5,
-              main = "Wind direction (Tower)", shrink = 1)
-arrows.circular(mean(windr), col = "RoyalBlue") 
+plot.circular(crt3, stack=T, bg="darkgreen", pch=21, cex=1.5,
+              main = "Wind direction (Tower Control)", shrink = 1)
+arrows.circular(mean(crt3), col = "darkgreen")
+
+plot.circular(fr3, stack=T, bg="red", pch=21, cex=1.3,
+              main = "Wind direction (Tower Fire)", shrink = 1.5)
+arrows.circular(mean(fr3), col = "red")
   
-plot.circular(windrd, stack=T, bg="RoyalBlue", pch=21, cex=1.5,
+plot.circular(windrd, stack=T, bg="purple", pch=21, cex=1.5,
               main = "Wind direction (Darro)", shrink = 1)
-arrows.circular(mean(windrd), col = "RoyalBlue")  
+arrows.circular(mean(windrd), col = "purple")  
 
 #Compare Tower and Darro stations ----------------------------------------------------------------------
 blow$Station = c("Tower")
