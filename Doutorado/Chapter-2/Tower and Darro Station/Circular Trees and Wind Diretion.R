@@ -10,6 +10,7 @@ library(reshape2)
 library(ggplot2)
 library(fmsb)
 library(circular)
+library(metan)
 
 #Fall Trees Direction ----------------------------------------------------------------------------------------
 setwd('C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Campo vento')
@@ -121,86 +122,78 @@ plot.circular(windrd, stack=T, bg="purple", pch=21, cex=1.3,
 
 arrows.circular(mean(windrd), col = "purple")  
 
+#Compare Tower and Darro stations ----------------------------------------------------------------------------
+crt$Station = c("Control")
+colnames(crt) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
+crt$Time = substr(crt$Date, 12, 16)
 
-#All
-par(mfrow=c(1,4))
-plot.circular(tree_fall, stack=T, bg="RoyalBlue", pch=21, cex=1.5,
-              main = "Trees falling direction", shrink = 1)
-arrows.circular(mean(tree_fall), col = "RoyalBlue")
-  
-plot.circular(crt3, stack=T, bg="darkgreen", pch=21, cex=1.5,
-              main = "Wind direction (Tower Control)", shrink = 1)
-arrows.circular(mean(crt3), col = "darkgreen")
+fr$Station = c("Fire")
+colnames(fr) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
+fr$Time = substr(fr$Date, 12, 16)
 
-plot.circular(fr3, stack=T, bg="red", pch=21, cex=1.3,
-              main = "Wind direction (Tower Fire)", shrink = 1.5)
-arrows.circular(mean(fr3), col = "red")
-  
-plot.circular(windrd, stack=T, bg="purple", pch=21, cex=1.5,
-              main = "Wind direction (Darro)", shrink = 1)
-arrows.circular(mean(windrd), col = "purple")  
-
-#Compare Tower and Darro stations ----------------------------------------------------------------------
-blow$Station = c("Tower")
-colnames(blow) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
 blowd$Station = c("Darro")
 colnames(blowd) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
+blowd$Time = substr(blowd$Date, 12, 16)
 
-stations = rbind(blow, blowd)
+#Wind Direction
+wdir = cbind(crt[,c(5,3)], fr[,3], blowd[,3])
+colnames(wdir) = c("Time", "Control", "Fire", "Darro")
 
-ggplot(stations, aes(x=Date, y=(Wind_Speed*3.6), col = Station))+
-  geom_line(aes(group = Station), size = 1)+
+corr_plot(wdir,
+          shape.point = 21,
+          col.point = "black",
+          fill.point = "orange",
+          size.point = 5,
+          alpha.point = 0.6,
+          maxsize = 4,
+          minsize = 2,
+          smooth = TRUE,
+          col.smooth = "black",
+          col.sign = "cyan",
+          upper = "scatter",
+          lower = "corr",
+          diag.type = "density",
+          col.diag = "cyan",
+          pan.spacing = 0,
+          lab.position = "bl")+
+  labs(title = "Wind Directiom (degrees)")
+
+
+#Wind Speed
+stations = rbind(crt, fr, blowd)
+
+ggplot(stations, aes(x=Time, y=Wind_Speed, col = Station))+
+  geom_line(aes(group = Station), size = 1.5)+
   theme_bw()+
   xlab(NULL)+
-  ylab("Wind Speed (km/h)")+
+  ylab("Mean Wind Speed (m/s)")+
   theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position=c(.20,.75))
 
 
-blow2 = torre %>% 
-  select(datetime, max_speed)
+ws = cbind(crt[,c(5,2)], fr[,2], blowd[,2])
+colnames(ws) = c("Time", "Control", "Fire", "Darro")
 
-ggplot(blow2, aes(x=datetime, y=(max_speed*3.6)))+
-  geom_line(aes(group = datetime), size = 1)+
-  theme_bw()+
-  xlab(NULL)+
-  ylab("Wind Speed (km/h)")+
-  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position=c(.20,.75))
+corr_plot(ws,
+          shape.point = 21,
+          col.point = "black",
+          fill.point = "orange",
+          size.point = 5,
+          alpha.point = 0.6,
+          maxsize = 4,
+          minsize = 2,
+          smooth = TRUE,
+          col.smooth = "black",
+          col.sign = "cyan",
+          upper = "scatter",
+          lower = "corr",
+          diag.type = "density",
+          col.diag = "cyan",
+          pan.spacing = 0,
+          lab.position = "bl")+
+  labs(title = "Wind Speed (m/s)")
 
-#===========================================================================================
-#Wind Speed (Tower)
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres")
 
-torre = read.csv("Dados_Vento_Torre_Controle.csv", sep = ",")
 
-blow = torre
 
-blow$datetime = substr(blow$datetime, 1, 7)
 
-blow = blow %>%
-  group_by(datetime) %>%
-  #filter(y == 2019 & m < 3 & d < 32) %>% 
-  summarise(max_speed = max(max_speed))
-#select(datetime, max_speed)
 
-blow$grp = "grp"
-blow$datetime = as.Date(blow$datetime)
-
-ggplot(blow, aes(x=datetime, y=(max_speed*3.6)))+
-  geom_line(aes(group = grp), size = 1, col = "darkgreen")+
-  #geom_point(col = "darkblue", alpha = 0.35)+
-  #geom_col(fill = "darkgreen", alpha = 0.7)+
-  theme_minimal()+
-  xlab(NULL)+
-  ylab("Wind Speed (km/h)")+
-  theme(axis.text.x = element_text(angle = 90, hjust=1), legend.position=c(.20,.75))
-
-ggplot(blow, aes(x=datetime, y=(max_speed*3.6)))+
-  geom_line(aes(group = grp), size = 1)+
-  geom_point(col = "darkblue", alpha = 0.35)+
-  #geom_smooth(col = "black", formula = "mean")+
-  geom_col(fill = "darkgreen", alpha = 0.7)+
-  theme_minimal()+
-  xlab(NULL)+
-  ylab("Wind Speed (km/h)")+
-  theme(axis.text.x = element_text(angle = 0, hjust=1), legend.position=c(.20,.75))
-#scale_x_date(date_breaks = "months" , date_labels = "%b-%y")
