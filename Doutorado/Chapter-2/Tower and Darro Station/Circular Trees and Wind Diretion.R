@@ -149,14 +149,15 @@ colnames(blowd) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
 blowd$Time = substr(blowd$Date, 12, 16)
 
 era$Station = c("ERA5_Land")
-colnames(era) = c("Date", "Wind_Direction", "Station")
+era = era[,c(1,3,2,4)]
+colnames(era) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
 era$Time = substr(era$Date, 12, 16)
 
 #Wind Direction
 wdir = cbind(crt[,c(5,3)], fr[,3], blowd[,3])
 
 wdir = full_join(wdir, era, by = "Time")
-wdir = wdir[,c(-5, -7)]
+wdir = wdir[,c(-5, -6, -8)]
 
 colnames(wdir) = c("Time", "Control", "Fire", "Darro", "ERA5_Land")
 
@@ -181,18 +182,22 @@ corr_plot(wdir,
 
 
 #Wind Speed
-stations = rbind(crt, fr, blowd)
+stations = rbind(crt, fr, blowd, era)
 
 ggplot(stations, aes(x=Time, y=Wind_Speed, col = Station))+
   geom_line(aes(group = Station), size = 1.5)+
   theme_bw()+
   xlab(NULL)+
   ylab("Mean Wind Speed (m/s)")+
+  scale_color_manual(values = c("darkgreen", "purple", "orange", "red"))+
   theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position=c(.20,.75))
 
 
 ws = cbind(crt[,c(5,2)], fr[,2], blowd[,2])
-colnames(ws) = c("Time", "Control", "Fire", "Darro")
+ws = full_join(ws, era, by = "Time")
+ws = ws[,c(-5, -7, -8)]
+
+colnames(ws) = c("Time", "Control", "Fire", "Darro", "ERA5_Land")
 
 corr_plot(ws,
           shape.point = 21,
