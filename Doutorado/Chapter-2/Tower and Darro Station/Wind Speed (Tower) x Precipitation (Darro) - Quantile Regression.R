@@ -96,7 +96,7 @@ quant = ggplot(df3)+
   geom_line(aes(x = Quantile, y = Precipitation), col = "blue", size = 1.5, alpha = 0.5)+
   geom_point(aes(x = Quantile, y = Precipitation), col = "blue", size = 2, alpha = 0.5)+
   #geom_line(aes(x = Quantile, y = Intercept), col = "red", size = 1.5, alpha = 0.5)+
-  labs( x = "Maximum Wind Speed", y = "Precipitation Slope (mm/day)")+
+  labs( x = "Wind Speed Quantiles (Max/day)", y = "Precipitation Slope (mm/day)")+
   theme_bw(); quant
 
 

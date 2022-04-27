@@ -58,7 +58,6 @@ plot.circular(tree_fall, stack=T, bg="RoyalBlue", pch=21, cex=1.3,
 
 arrows.circular(mean(tree_fall), col = "RoyalBlue")
 
-
 #Wind Diretion Towers -------------------------------------------------------------------------------------------
 #Control Tower
 control = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres/Raw data/control20152020_gapfilled_jan2022.csv", sep = ",")
@@ -122,6 +121,20 @@ plot.circular(windrd, stack=T, bg="purple", pch=21, cex=1.3,
 
 arrows.circular(mean(windrd), col = "purple")  
 
+#Wind Diretion (ERA5 Land)
+era = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/ERA5_Land/Wind_Direction_ERA5_Land_03-02-2019.csv", sep = ",")
+
+era2 = era[,2] %>% 
+  na.omit()
+
+era3 <- circular(era2, units = "degrees", template = "none",
+                 rotation = "clock", zero = -55) 
+
+plot.circular(era3, stack=T, bg="orange", pch=21, cex=1.3,
+              main = "Wind direction (ERA5 Land)", shrink = 1.5)
+
+arrows.circular(mean(windrd), col = "orange")
+
 #Compare Tower and Darro stations ----------------------------------------------------------------------------
 crt$Station = c("Control")
 colnames(crt) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
@@ -135,9 +148,17 @@ blowd$Station = c("Darro")
 colnames(blowd) = c("Date", "Wind_Speed", "Wind_Direction", "Station")
 blowd$Time = substr(blowd$Date, 12, 16)
 
+era$Station = c("ERA5_Land")
+colnames(era) = c("Date", "Wind_Direction", "Station")
+era$Time = substr(era$Date, 12, 16)
+
 #Wind Direction
 wdir = cbind(crt[,c(5,3)], fr[,3], blowd[,3])
-colnames(wdir) = c("Time", "Control", "Fire", "Darro")
+
+wdir = full_join(wdir, era, by = "Time")
+wdir = wdir[,c(-5, -7)]
+
+colnames(wdir) = c("Time", "Control", "Fire", "Darro", "ERA5_Land")
 
 corr_plot(wdir,
           shape.point = 21,
