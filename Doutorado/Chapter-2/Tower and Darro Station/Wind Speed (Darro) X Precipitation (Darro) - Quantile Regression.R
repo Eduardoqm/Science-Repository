@@ -22,12 +22,12 @@ darro = darro %>%
   select(Date, windSpd, ppt)
 colnames(darro) = c("date", "ws", "ppt")
 
-#df = darro %>% 
-#  na.omit() %>% 
-#  group_by(date) %>% 
-#  summarise(ws = max(ws), ppt = sum(ppt))
+df = darro %>% 
+  na.omit() %>% 
+  group_by(date) %>% 
+  summarise(ws = max(ws), ppt = sum(ppt))
 
-df = darro
+#df = darro
 df$date = as.Date(df$date)
 
 #Testing Normalize and transformation of data =====================================================================
