@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------
-#Wind Speed (Darro) X Precipitation (Darro) - Tail Dependence nad block maxima approach
+#Wind Speed (Darro) X Precipitation (Darro) - Tail Dependence and block maxima approach
 #-------------------------------------------------------------------------
 #Eduardo Q Marques 06-05-2022
 #eduardobio2009@gmail.com
