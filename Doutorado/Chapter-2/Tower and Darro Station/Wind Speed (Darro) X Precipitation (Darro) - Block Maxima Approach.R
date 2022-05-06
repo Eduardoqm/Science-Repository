@@ -64,14 +64,14 @@ df$ppt2 = log(df$ppt)
 
 
 
-ggplot(df, aes(x=ppt, y=ws, col = date2))+
-  geom_point(alpha = 0.7, size = 2)+
-  geom_smooth(method = "gam", col = "royalblue")+
+ggplot(df, aes(x=ppt, y=ws))+
+  geom_point(alpha = 0.5, size = 3, col = "royalblue")+
+  geom_smooth(method = "gam", col = "black")+
   stat_cor(show.legend = F)+
   #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
   #geom_abline(data = df3, aes(intercept = Intercept, slope = Precipitation), col = "red", aplha = 0.3)+
-  labs( x = "Daily accumulated precipitation", y = "Wind Speed per day",
-        title = "Precipitation (Darro Station) vs Wind Speed (Tower)")+
+  labs( x = "Maximum Precipitation (mm/day)", y = "Maximun Wind Speed (m/s) - day",
+        title = "Precipitation vs Wind Speed (Darro Station)")+
   scale_color_viridis()+
   theme_bw()
 
