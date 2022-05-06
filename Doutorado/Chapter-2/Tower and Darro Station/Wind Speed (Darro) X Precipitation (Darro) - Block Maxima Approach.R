@@ -41,6 +41,10 @@ quantile(df$ppt, 0.95)
 quantile(df$ws, 0.95)
 df = df %>% filter(ppt >= quantile(ppt, 0.95))
 
+
+bmFort <- blockmaxxer(Fort, blocks = Fort$year, which="Prec")
+
+
 library(extRemes)
 
 cor(df$ppt, df$ws)
