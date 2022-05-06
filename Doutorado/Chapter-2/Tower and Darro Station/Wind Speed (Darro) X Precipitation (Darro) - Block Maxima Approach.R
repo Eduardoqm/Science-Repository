@@ -36,16 +36,18 @@ df$month = as.character(substr(df$date, 6, 7))
 
 df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020))
 df = df %>% filter(month %in% c("10","11","12","01","02","03","04"))
-df = df %>% filter(ppt <100)
+
+df = df %>% filter(ppt <100) #Outlier maybe a error in registration
 quantile(df$ppt, 0.95)
 quantile(df$ws, 0.95)
-df = df %>% filter(ppt >= quantile(ppt, 0.95))
+#df = df %>% filter(ppt >= quantile(ppt, 0.95))
 
-
-bmFort <- blockmaxxer(Fort, blocks = Fort$year, which="Prec")
 
 
 library(extRemes)
+
+df <- blockmaxxer(df, blocks = df$date, which="ppt")
+
 
 cor(df$ppt, df$ws)
 
@@ -59,15 +61,6 @@ taildep.test(df$ppt, df$ws) # Recall that the null hypothesis is tail dependence
 
 df$ws2 = log(df$ws)
 df$ppt2 = log(df$ppt)
-
-cor(df$ppt2, df$ws2)
-
-plot(df$ppt2, df$ws2)
-
-taildep(df$ppt2, df$ws2, 0.95)
-
-taildep.test(df$ppt2, df$ws2) # Recall that the null hypothesis is tail dependence!
-
 
 
 
