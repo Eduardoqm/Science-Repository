@@ -46,6 +46,15 @@ quantile(df$ws, 0.95)
 
 library(extRemes)
 
+cor(df$ppt, df$ws)
+
+plot(df$ppt, df$ws)
+
+taildep(df$ppt, df$ws, 0.95)
+
+taildep.test(df$ppt, df$ws) # Recall that the null hypothesis is tail dependence!
+
+
 df <- blockmaxxer(df, blocks = df$date, which="ppt")
 
 
