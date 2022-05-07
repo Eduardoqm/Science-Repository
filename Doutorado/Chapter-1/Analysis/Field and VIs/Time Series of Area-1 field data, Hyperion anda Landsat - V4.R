@@ -285,8 +285,7 @@ smt = ggarrange(e,a,b,c,d,
           common.legend = TRUE,
           legend="left",
           ncol = 1, nrow = 5,
-          widths = 50)
-smt
+          widths = 50); smt
 
 #ggsave(filename = "Smooth_Field and VIs.png", plot = smt,
  #    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Dados de campo", width = 14, height = 15, units =  "cm", dpi = 300)
