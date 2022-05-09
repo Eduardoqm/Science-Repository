@@ -18,9 +18,23 @@ setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Ta
 
 darro = read.csv("Master_Estacao_Darro_2020.csv", sep = ",")
 
-darro = darro %>% 
+#Select variables and filter data to rainy season to 2010-2020 -----------------
+df = darro %>% 
   select(Date, windSpd, ppt)
-colnames(darro) = c("date", "ws", "ppt")
+colnames(df) = c("date", "ws", "ppt")
+
+df$date = as.Date(df$date)
+
+df$date2 = as.numeric(substr(df$date, 1, 4))
+df$month = as.character(substr(df$date, 6, 7))
+
+df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020)) #Consistent data time series
+df = df %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rainy months to AW climate
+df = df %>% filter(ppt <100) #Outlier maybe a error in registration
+
+
+
+
 
 #Block Maxima by 5 days windows ------------------------------------------------
 #Filter by diary maximun
