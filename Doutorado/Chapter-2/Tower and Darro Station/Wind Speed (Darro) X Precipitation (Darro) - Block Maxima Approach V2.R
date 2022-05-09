@@ -32,9 +32,11 @@ df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,201
 df = df %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rainy months to AW climate
 df = df %>% filter(ppt <100) #Outlier maybe a error in registration
 
-r0 = ggplot(df, aes(x=ppt, y=ws))+ #Verify first result
-  geom_point()+geom_smooth(method = "lm", col = "royalblue")+
-  stat_cor(show.legend = F)+labs(title = "Raw data 2010-2020"); r0
+r0 = ggplot(df, aes(x=ppt, y=ws))+ #Verify raw data result
+  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
+  geom_smooth(method = "lm", col = "black")+
+  stat_cor(show.legend = F)+labs(title = "Raw data 2010-2020")+
+  theme_bw()
 
 
 #Block Maxima by 5 days windows ------------------------------------------------
@@ -45,13 +47,16 @@ r0 = ggplot(df, aes(x=ppt, y=ws))+ #Verify first result
   #summarise(ws = max(ws), ppt = max(ppt))
 
 #The Maximun filter can be substitute by blockmaxxer (doing exact the same)
+library(extRemes)
 df2 <- blockmaxxer(df, blocks = df$date, which = "ppt")
 df2b <- blockmaxxer(df, blocks = df$date, which = "ws")
 df2$ws = df2b$ws
 
 r1 = ggplot(df2, aes(x=ppt, y=ws))+ #Verify first result
-  geom_point()+geom_smooth(method = "lm", col = "royalblue")+
-  stat_cor(show.legend = F)+labs(title = "Maximum per day"); r1
+  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
+  geom_smooth(method = "lm", col = "black")+
+  stat_cor(show.legend = F)+labs(title = "Maximum per day")+
+  theme_bw()
 
 #Block Maxima Approach (5 days)
 df3 = df2 #df3 will receive the modifications
@@ -78,8 +83,25 @@ for (x in 3:length(df3$date)) {
 df3 = df3[c(-1,-2, -2211, -2212),] #First and second are not maximum
 
 r2 = ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
-  geom_point()+geom_smooth(method = "lm", col = "royalblue")+
-  stat_cor(show.legend = F)+labs(title = "Block Maxima Approach (5 days)"); r2
+  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
+  geom_smooth(method = "lm", col = "black")+
+  stat_cor(show.legend = F)+labs(title = "Block Maxima Approach (5 days)")+
+  theme_bw()
+
+
+
+ggarrange(r0, r1, r2, ncol = 3)
+
+
+
+
+
+
+
+
+
+
+
 
 ggplot()+
   geom_point(data = df, aes(date, ppt), size = 2)+
@@ -142,7 +164,7 @@ df$ppt2 = log(df$ppt)
 
 ggplot(df3, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.5, size = 3, col = "royalblue")+
-  geom_smooth(method = "gam", col = "black")+
+  geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
   #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
   #geom_abline(data = df3, aes(intercept = Intercept, slope = Precipitation), col = "red", aplha = 0.3)+
@@ -154,7 +176,7 @@ ggplot(df3, aes(x=ppt, y=ws))+
 df3$date2 = as.numeric(substr(df3$date, 1, 4))
 ggplot(df3, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "gam", col = "black")+
+  geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
   #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", aplha = 0.3)+
   labs( x = "Daily accumulated precipitation", y = "Wind Speed per day")+
