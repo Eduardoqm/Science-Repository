@@ -47,15 +47,24 @@ r1 = ggplot(df2, aes(x=ppt, y=ws))+ #Verify first result
 
 #df2$ppt[3] -> 0.254, the final must be 0.504
 #df2$ws[3] -> 0.202, the final must be 0.424
+df3 = df2
 
-mw5d = function(z) {
+ppt5d = function(z) {
   w = z-2
   k = z+2
-  df2$ppt[z] = max(df2$ppt[w:k])
+  max(df2$ppt[w:k])
 }
 
+ws5d = function(z) {
+  w = z-2
+  k = z+2
+  max(df2$ws[w:k])
+}
 
-
+for (x in 1:length(df3$date)) {
+  df3$ppt[x] = ppt5d(x)
+  df3$ws[x] = ws5d(x)
+}
 
 
 
