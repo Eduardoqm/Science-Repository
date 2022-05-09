@@ -22,11 +22,12 @@ darro = darro %>%
   select(Date, windSpd, ppt)
 colnames(darro) = c("date", "ws", "ppt")
 
-
-#df = darro %>% 
-#  na.omit() %>% 
-#  group_by(date) %>% 
-#  summarise(ws = max(ws), ppt = sum(ppt))
+#Block Maxima by 5 days windows ------------------------------------------------
+#Filter by diary maximun
+df = darro %>% 
+  na.omit() %>% 
+  group_by(date) %>% 
+  summarise(ws = max(ws), ppt = max(ppt))
 
 df = darro
 df$date = as.Date(df$date)
