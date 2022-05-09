@@ -32,30 +32,35 @@ df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,201
 df = df %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rainy months to AW climate
 df = df %>% filter(ppt <100) #Outlier maybe a error in registration
 
-
-
-
-
 #Block Maxima by 5 days windows ------------------------------------------------
 #Filter by diary maximun
-df = darro %>% 
+df2 = df %>% 
   na.omit() %>% 
   group_by(date) %>% 
   summarise(ws = max(ws), ppt = max(ppt))
 
-df = darro
-df$date = as.Date(df$date)
+r1 = ggplot(df2, aes(x=ppt, y=ws))+ #Verify first result
+  geom_point()+geom_smooth(method = "gam", col = "black")+
+  stat_cor(show.legend = F)+labs(title = "Maximum per day"); r1
 
-df$date2 = as.numeric(substr(df$date, 1, 4))
-df$month = as.character(substr(df$date, 6, 7))
+#Block Maxima Approach (5 days)
 
-df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020))
-df = df %>% filter(month %in% c("10","11","12","01","02","03","04"))
+#df2$ppt[3] -> 0.254, the final must be 0.504
+#df2$ws[3] -> 0.202, the final must be 0.424
 
-df = df %>% filter(ppt <100) #Outlier maybe a error in registration
-quantile(df$ppt, 0.95)
-quantile(df$ws, 0.95)
-#df = df %>% filter(ppt >= quantile(ppt, 0.95))
+mw5d = function(z) {
+  w = z-2
+  k = z+2
+  df2$ppt[z] = max(df2$ppt[w:k])
+}
+
+
+
+
+
+
+
+
 
 
 
