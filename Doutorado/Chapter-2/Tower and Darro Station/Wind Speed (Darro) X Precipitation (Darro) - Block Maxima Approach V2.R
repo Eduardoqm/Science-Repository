@@ -32,6 +32,11 @@ df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,201
 df = df %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rainy months to AW climate
 df = df %>% filter(ppt <100) #Outlier maybe a error in registration
 
+r0 = ggplot(df, aes(x=ppt, y=ws))+ #Verify first result
+  geom_point()+geom_smooth(method = "lm", col = "royalblue")+
+  stat_cor(show.legend = F)+labs(title = "Raw data 2010-2020"); r0
+
+
 #Block Maxima by 5 days windows ------------------------------------------------
 #Filter by diary maximun
 df2 = df %>% 
@@ -40,15 +45,13 @@ df2 = df %>%
   summarise(ws = max(ws), ppt = max(ppt))
 
 r1 = ggplot(df2, aes(x=ppt, y=ws))+ #Verify first result
-  geom_point()+geom_smooth(method = "gam", col = "black")+
+  geom_point()+geom_smooth(method = "lm", col = "royalblue")+
   stat_cor(show.legend = F)+labs(title = "Maximum per day"); r1
 
 #Block Maxima Approach (5 days)
+df3 = df2 #df3 will receive the modifications
 
-#df2$ppt[3] -> 0.254, the final must be 0.504
-#df2$ws[3] -> 0.202, the final must be 0.424
-df3 = df2
-
+#Functions to moving 5 days
 ppt5d = function(z) {
   w = z-2
   k = z+2
@@ -61,10 +64,32 @@ ws5d = function(z) {
   max(df2$ws[w:k])
 }
 
-for (x in 1:length(df3$date)) {
+#Loop to modify all dataframe
+for (x in 3:length(df3$date)) {
   df3$ppt[x] = ppt5d(x)
   df3$ws[x] = ws5d(x)
 }
+
+df3 = df3[c(-1,-2, -2211, -2212),] #First and second are not maximum
+
+r2 = ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
+  geom_point()+geom_smooth(method = "lm", col = "royalblue")+
+  stat_cor(show.legend = F)+labs(title = "Block Maxima Approach (5 days)"); r2
+
+
+
+
+ggplot()+
+  geom_point(data = df, aes(date, ppt), size = 1)+
+  geom_point(data = df2, aes(date, ppt), col = "red", alpha = 0.35, size = 1.5)+
+  geom_point(data = df3, aes(date, ppt), col = "blue", alpha = 0.35, size = 2)
+
+
+
+
+
+
+
 
 
 
@@ -75,16 +100,16 @@ for (x in 1:length(df3$date)) {
 
 library(extRemes)
 
-cor(df$ppt, df$ws)
+cor(df3$ppt, df3$ws)
 
-plot(df$ppt, df$ws)
+plot(df3$ppt, df3$ws)
 
-taildep(df$ppt, df$ws, 0.95)
+taildep(df3$ppt, df3$ws, 0.95)
 
 taildep.test(df$ppt, df$ws) # Recall that the null hypothesis is tail dependence!
 
 
-df <- blockmaxxer(df, blocks = df$date, which="ppt")
+df <- blockmaxxer(df, blocks = df$date, which = "ppt")
 
 
 cor(df$ppt, df$ws)
@@ -102,7 +127,7 @@ df$ppt2 = log(df$ppt)
 
 
 
-ggplot(df, aes(x=ppt, y=ws))+
+ggplot(df3, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.5, size = 3, col = "royalblue")+
   geom_smooth(method = "gam", col = "black")+
   stat_cor(show.legend = F)+
@@ -113,7 +138,8 @@ ggplot(df, aes(x=ppt, y=ws))+
   scale_color_viridis()+
   theme_bw()
 
-ggplot(df, aes(x=ppt, y=ws))+
+df3$date2 = as.numeric(substr(df3$date, 1, 4))
+ggplot(df3, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.7, size = 2, col = "royalblue")+
   geom_smooth(method = "gam", col = "black")+
   stat_cor(show.legend = F)+
