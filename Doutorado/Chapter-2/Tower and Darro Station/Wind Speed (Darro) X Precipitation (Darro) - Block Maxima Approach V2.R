@@ -39,10 +39,15 @@ r0 = ggplot(df, aes(x=ppt, y=ws))+ #Verify first result
 
 #Block Maxima by 5 days windows ------------------------------------------------
 #Filter by diary maximun
-df2 = df %>% 
-  na.omit() %>% 
-  group_by(date) %>% 
-  summarise(ws = max(ws), ppt = max(ppt))
+#df2 = df %>% 
+  #na.omit() %>% 
+  #group_by(date) %>% 
+  #summarise(ws = max(ws), ppt = max(ppt))
+
+#The Maximun filter can be substitute by blockmaxxer (doing exact the same)
+df2 <- blockmaxxer(df, blocks = df$date, which = "ppt")
+df2b <- blockmaxxer(df, blocks = df$date, which = "ws")
+df2$ws = df2b$ws
 
 r1 = ggplot(df2, aes(x=ppt, y=ws))+ #Verify first result
   geom_point()+geom_smooth(method = "lm", col = "royalblue")+
@@ -76,19 +81,27 @@ r2 = ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
   geom_point()+geom_smooth(method = "lm", col = "royalblue")+
   stat_cor(show.legend = F)+labs(title = "Block Maxima Approach (5 days)"); r2
 
+ggplot()+
+  geom_point(data = df, aes(date, ppt), size = 2)+
+  geom_point(data = df2, aes(date, ppt), col = "yellow", size = 1.5)+
+  geom_point(data = df3, aes(date, ppt), col = "red", size = 1)
 
+ggplot()+
+  geom_density(data = df, aes(ppt), fill = "blue", alpha = 0.35)+
+  geom_density(data = df2, aes(ppt), fill = "yellow", alpha = 0.35)+
+  geom_density(data = df3, aes(ppt), fill = "red", alpha = 0.35)
 
 
 ggplot()+
-  geom_point(data = df, aes(date, ppt), size = 1)+
-  geom_point(data = df2, aes(date, ppt), col = "red", alpha = 0.35, size = 1.5)+
-  geom_point(data = df3, aes(date, ppt), col = "blue", alpha = 0.35, size = 2)
+  geom_point(data = df, aes(date, ws), size = 2)+
+  geom_point(data = df2, aes(date, ws), col = "yellow", size = 1.5)+
+  geom_point(data = df3, aes(date, ws), col = "red", size = 1)
 
 
-
-
-
-
+ggplot()+
+  geom_density(data = df, aes(ws), fill = "blue", alpha = 0.35)+
+  geom_density(data = df2, aes(ws), fill = "yellow", alpha = 0.35)+
+  geom_density(data = df3, aes(ws), fill = "red", alpha = 0.35)
 
 
 
