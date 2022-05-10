@@ -153,80 +153,16 @@ img3 = ggarrange(r0, r1, r2, ncol = 3)
 
 
 #Extract tail dependence values from Block Maxima Approach data --------------------
-cor(df3$ppt, df3$ws)
+tq = c(.05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9, .95, 1)
 
-plot(df3$ppt, df3$ws)
+t1 = taildep(df3$ppt, df3$ws, 0.05)
+taild = data.frame(tq[[1]], t1[[1]], t1[[2]])
+colnames(taild) = c("quant", "chi", "chibar")
 
-taildep(df3$ppt, df3$ws, 0.95)
-
-taildep.test(df$ppt, df$ws) # Recall that the null hypothesis is tail dependence!
-
-
-df <- blockmaxxer(df, blocks = df$date, which = "ppt")
-
-
-cor(df$ppt, df$ws)
-
-plot(df$ppt, df$ws)
-
-taildep(df$ppt, df$ws, 0.95)
-
-taildep.test(df$ppt, df$ws) # Recall that the null hypothesis is tail dependence!
-
-
-
-df$ws2 = log(df$ws)
-df$ppt2 = log(df$ppt)
-
-
-
-ggplot(df3, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.5, size = 3, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
-  #geom_abline(data = df3, aes(intercept = Intercept, slope = Precipitation), col = "red", aplha = 0.3)+
-  labs( x = "Maximum Precipitation (mm/day)", y = "Maximun Wind Speed (m/s) - day",
-        title = "Precipitation vs Wind Speed (Darro Station)")+
-  scale_color_viridis()+
-  theme_bw()
-
-df3$date2 = as.numeric(substr(df3$date, 1, 4))
-ggplot(df3, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", aplha = 0.3)+
-  labs( x = "Daily accumulated precipitation", y = "Wind Speed per day")+
-  facet_wrap(~date2)+
-  scale_color_viridis()+
-  theme_bw()
-
-ggplot(df, aes(x=ppt2, y=ws2, col = date2))+
-  geom_point(alpha = 0.7, size = 2)+
-  geom_smooth(method = "gam", col = "royalblue")+
-  stat_cor(show.legend = F)+
-  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
-  #geom_abline(data = df3, aes(intercept = Intercept, slope = Precipitation), col = "red", aplha = 0.3)+
-  labs( x = "Daily accumulated precipitation", y = "Wind Speed per day",
-        title = "Precipitation (Darro Station) vs Wind Speed (Tower)")+
-  scale_color_viridis()+
-  theme_bw()
-
-ggplot(df, aes(x=ppt2, y=ws2))+
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "gam", col = "black")+
-  stat_cor(show.legend = F)+
-  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", aplha = 0.3)+
-  labs( x = "Daily accumulated precipitation", y = "Wind Speed per day")+
-  facet_wrap(~date2)+
-  scale_color_viridis()+
-  theme_bw()
-
-
-
-
-
-
-
+for (z in 2:20) {
+  t = taildep(df3$ppt, df3$ws, (tq[[z]]))
+  t2 = data.frame(tq[[z]], t[[1]], t[[2]])
+  colnames(t2) = c("quant", "chi", "chibar")
+  taild = rbind(taild, t2)
+}
 
