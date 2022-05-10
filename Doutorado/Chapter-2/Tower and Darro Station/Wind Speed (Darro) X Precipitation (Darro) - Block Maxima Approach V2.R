@@ -146,10 +146,9 @@ r2 = ggplot(df3)+
 
 img3 = ggarrange(r0, r1, r2, ncol = 3)
 
-img4 = ggarrange(img, img2, img3, ncol = 1)
-
-ggsave(filename = "WS-Prec_darro.png", plot = img4,
-       path = "C:/Users/Eduardo Q Marques/Desktop", width = 35, height = 35, units = "cm", dpi = 300)
+#img4 = ggarrange(img, img2, img3, ncol = 1)
+#ggsave(filename = "WS-Prec_darro.png", plot = img4,
+#       path = "C:/Users/Eduardo Q Marques/Desktop", width = 35, height = 30, units = "cm", dpi = 300)
 
 
 
