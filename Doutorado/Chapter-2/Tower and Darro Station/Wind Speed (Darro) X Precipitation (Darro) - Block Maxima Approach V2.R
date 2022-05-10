@@ -152,11 +152,7 @@ img3 = ggarrange(r0, r1, r2, ncol = 3)
 
 
 
-
-
-
-library(extRemes)
-
+#Extract tail dependence values from Block Maxima Approach data --------------------
 cor(df3$ppt, df3$ws)
 
 plot(df3$ppt, df3$ws)

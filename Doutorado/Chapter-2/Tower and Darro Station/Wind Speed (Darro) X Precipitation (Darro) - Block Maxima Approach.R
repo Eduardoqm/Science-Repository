@@ -73,16 +73,46 @@ df$ppt2 = log(df$ppt)
 
 
 
-ggplot(df, aes(x=ppt, y=ws))+
+img = ggplot(df, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.5, size = 3, col = "royalblue")+
-  geom_smooth(method = "gam", col = "black")+
+  geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
   #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
   #geom_abline(data = df3, aes(intercept = Intercept, slope = Precipitation), col = "red", aplha = 0.3)+
-  labs( x = "Maximum Precipitation (mm/day)", y = "Maximun Wind Speed (m/s) - day",
-        title = "Precipitation vs Wind Speed (Darro Station)")+
+  labs( x = "Maximum Precipitation (max mm/day)", y = "Wind Speed (m/s)",
+        title = "Only Maximum Precipitation per day")+
   scale_color_viridis()+
   theme_bw()
+
+img2 = ggplot(df)+
+  geom_density(aes(ws), fill = "red", alpha = 0.35)+
+  labs(x = "Wind Speed (m/s)")+
+  theme_bw()
+
+img3 = ggplot(df)+
+  geom_density(aes(ppt), fill = "blue", alpha = 0.35)+
+  labs(x = "Precipitation (max mm/d)")+
+  theme_bw()
+
+
+img4 = ggarrange(img, img2, img3, ncol = 1); img4
+
+
+ggsave(filename = "WS-Prec_darro.png", plot = img4,
+              path = "C:/Users/Eduardo Q Marques/Desktop", width = 12, height = 30, units = "cm", dpi = 300)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ggplot(df, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.7, size = 2, col = "royalblue")+
