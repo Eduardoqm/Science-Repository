@@ -155,44 +155,6 @@ img3 = ggarrange(r0, r1, r2, ncol = 3)
 
 
 
-
-
-
-
-
-
-
-
-ggplot()+
-  geom_point(data = df, aes(date, ppt), size = 2)+
-  geom_point(data = df2, aes(date, ppt), col = "yellow", size = 1.5)+
-  geom_point(data = df3, aes(date, ppt), col = "red", size = 1)
-
-ggplot()+
-  geom_density(data = df, aes(ppt), fill = "blue", alpha = 0.35)+
-  geom_density(data = df2, aes(ppt), fill = "yellow", alpha = 0.35)+
-  geom_density(data = df3, aes(ppt), fill = "red", alpha = 0.35)
-
-
-ggplot()+
-  geom_point(data = df, aes(date, ws), size = 2)+
-  geom_point(data = df2, aes(date, ws), col = "yellow", size = 1.5)+
-  geom_point(data = df3, aes(date, ws), col = "red", size = 1)
-
-
-ggplot()+
-  geom_density(data = df, aes(ws), fill = "blue", alpha = 0.35)+
-  geom_density(data = df2, aes(ws), fill = "yellow", alpha = 0.35)+
-  geom_density(data = df3, aes(ws), fill = "red", alpha = 0.35)
-
-
-
-
-
-
-
-
-
 library(extRemes)
 
 cor(df3$ppt, df3$ws)
