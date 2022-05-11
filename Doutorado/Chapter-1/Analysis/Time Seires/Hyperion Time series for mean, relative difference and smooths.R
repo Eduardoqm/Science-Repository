@@ -91,10 +91,13 @@ all_vis = ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   scale_color_manual(values=c( "orange", "red"))+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+  theme(text = element_text(family = "Times New Roman", size = 14))+
+  theme(legend.position = c(0.5, 0.1))
+all_vis
 
-#ggsave(filename = "all_diff.png", plot = all_vis,
-#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series", width = 30, height = 15, units =  "cm", dpi = 300)
+ggsave(filename = "all_diff.png", plot = all_vis,
+      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series",
+      width = 30, height = 20, units =  "cm", dpi = 300)
 
 #Plot by kind of Indice ---------------------------------------------------
 struc = df_diff %>% 

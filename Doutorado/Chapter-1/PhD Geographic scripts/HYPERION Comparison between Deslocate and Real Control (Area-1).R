@@ -14,11 +14,11 @@ library(ggpubr)
 library(GGally)
 library(rasterVis)
 
-area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
+area1 <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes/Hyperion",layer="Polygon_A_B_C_Hyperion")
 
-area1b <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/My Jobs/Doutorado/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
+area1b <-readOGR(dsn = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/shapes",layer="Polygon_A_B_C")
 
-setwd("~/My Jobs/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyperion")
+setwd("~/Research/Doutorado/Banco de Dados Tanguro/Tanguro Indices/Hyperion")
 (r1 = list.files())
 r2 = lapply(r1,raster)
 
@@ -35,13 +35,13 @@ r5b = stack(r4b)
 #Select 2004 and 2005
 #False control
 hyc2004f = r5[[c(seq(1,119,7))]]
-hyc2005f = r5[[c(seq(2,119,7))]]
+hyc2005f = r5[[c(seq(13,119,7))]]
 levelplot(hyc2004f)
 levelplot(hyc2005f)
 
 #Real control
 hyc2004r = r5b[[c(seq(1,119,7))]]
-hyc2005r = r5b[[c(seq(2,119,7))]]
+hyc2005r = r5b[[c(seq(13,119,7))]]
 levelplot(hyc2004r)
 levelplot(hyc2005r)
 
@@ -70,8 +70,8 @@ hy04 = filter(hy04, variable != "evi.2004")
 hy04 = filter(hy04, variable != "ari.2004")
 
 hy05 = rbind(hy05f, hy05r)
-hy05 = filter(hy05, variable != "evi.2005")
-hy05 = filter(hy05, variable != "ari.2005")
+hy05 = filter(hy05, variable != "evi.2011")
+hy05 = filter(hy05, variable != "ari.2011")
 
 hyfull = rbind(hy04, hy05)
 hyfull = hyfull %>% 
@@ -153,19 +153,46 @@ corr("rendvi")
 
 
 
+ndvi04 = hy04 %>% 
+  filter(variable == "ndvi.2004")
+
+ndvi04$treat[ndvi04$treat == "Deslocated"] = c("New Control")
+ndvi04$treat[ndvi04$treat == "Real"] = c("Control")
+colnames(ndvi04) = c("year", "value", "Treatment")
+
+a = ggplot(ndvi04, aes(value, fill = Treatment))+
+  geom_density(alpha = 0.7)+
+  labs(y = NULL, x = "Values of NDVI")+
+  scale_fill_manual(values = c("yellow", "red"))+
+  theme_bw()+
+  theme(legend.position = c(0.2, 0.5))
+  
+ndvi11 = hy05 %>% 
+  filter(variable == "ndvi.2011")
+
+ndvi11$treat[ndvi11$treat == "Deslocated"] = c("New Control")
+ndvi11$treat[ndvi11$treat == "Real"] = c("Control")
+colnames(ndvi11) = c("year", "value", "Treatment")
+
+b = ggplot(ndvi11, aes(value, fill = Treatment))+
+  geom_density(alpha = 0.7)+
+  labs(y = NULL, x = "Values of NDVI")+
+  scale_fill_manual(values = c("yellow", "red"))+
+  theme_bw()+
+  theme(legend.position = c(0.2, 0.5))
+
+ggarrange(a, b, ncol = 1)
 
 
 
+ggsave(filename = "NDVI_comparison2004.png", plot = a,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Diferença entre os controles (Hyperion)",
+       width = 10, height = 10, units = "cm", dpi = 300)
 
 
-
-
-
-
-
-
-
-
+ggsave(filename = "NDVI_comparison2011.png", plot = b,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Diferença entre os controles (Hyperion)",
+       width = 10, height = 10, units = "cm", dpi = 300)
 
 
 

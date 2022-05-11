@@ -48,10 +48,24 @@ df$treat[df$treat == "control"] <- c("Controle")
 df$treat[df$treat == "b3yr"] <- c("B3yr")
 df$treat[df$treat == "b1yr"] <- c("B1yr")
 
-colnames(df)[9] = c("Parcela")
+colnames(df)[9] = c("Tratamento")
 
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 #eqm = c("orange", "red", "blue")
+
+a = ggplot(df, aes(x = value, y = year, fill=Tratamento)) +
+  geom_density_ridges(alpha = 0.30) +
+  facet_wrap(~index, scales="free") +
+  theme_minimal()+
+  scale_fill_manual(values = eqm)+
+  theme(text = element_text(family = "Times New Roman", size = 14))+
+  theme(legend.position = c(0.5, 0.1))+
+  labs(x = "", y = ""); a
+
+
+ggsave(filename = "all_density.png", plot = a,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Densidade dos indices",
+       width = 30, height = 20, units =  "cm", dpi = 300)
 
 #Structural
 struc = df %>% 

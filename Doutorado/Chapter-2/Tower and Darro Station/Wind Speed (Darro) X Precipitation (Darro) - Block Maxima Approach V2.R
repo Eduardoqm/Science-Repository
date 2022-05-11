@@ -166,3 +166,8 @@ for (z in 2:20) {
   taild = rbind(taild, t2)
 }
 
+ggplot(taild, aes(quant, chi))+
+  geom_line()
+
+ggplot(taild, aes(quant, chibar))+
+  geom_line()
