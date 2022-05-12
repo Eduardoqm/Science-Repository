@@ -179,7 +179,8 @@ ggplot(taild, aes(quant, chibar))+
 #Bootstraping --------------------------------------------------------------------
 library(boot)
 
-tailfun = function(formula, data, indices) {
+#Chi
+chifun = function(formula, data, indices) {
   df <- data[indices,] # selecting sample with boot 
   fit <- taildep(df$ppt, df$ws, 0.05)
   return(fit[[1]])
@@ -187,26 +188,92 @@ tailfun = function(formula, data, indices) {
 
 f1 =c(df$ppt, df$ws, 0.05)
 
-tailfun(formula = f1, data = df3)
+chifun(formula = f1, data = df3)
 # Performing 1500 replications with boot 
-output <- boot(data=df3, statistic=tailfun, 
+output <- boot(data=df3, statistic=chifun, 
                R=1000, formula=f1)
 
 # Plotting the output
-output 
 plot(output)
 
 # Obtaining a confidence interval of 95%
-boot.ci(output, type="bca")
+inter = boot.ci(output, type="perc")
+
+chi = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+colnames(chi) = c("quant", "value", "low", "upp")
+
+#Loop to do all Chi quantiles
+for (z in 2:20) {
+  chifun = function(formula, data, indices) {
+    df <- data[indices,]
+    fit <- taildep(df$ppt, df$ws, (tq[[z]]))
+    return(fit[[1]])
+  }
+  
+  f1 =c(df$ppt, df$ws, (tq[[z]]))
+  
+  output <- boot(data=df3, statistic=chifun, 
+                 R=1000, formula=f1)
+  inter = boot.ci(output, type="perc")
+  t2 = data.frame(tq[[z]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+  colnames(t2) = c("quant", "value", "low", "upp")
+  chi = rbind(chi, t2)
+}
 
 
+#Chibar
+chibarfun = function(formula, data, indices) {
+  df <- data[indices,] # selecting sample with boot 
+  fit <- taildep(df$ppt, df$ws, 0.05)
+  return(fit[[2]])
+} 
 
+f1 =c(df$ppt, df$ws, 0.05)
 
+chibarfun(formula = f1, data = df3)
+# Performing 1500 replications with boot 
+output <- boot(data=df3, statistic=chibarfun, 
+               R=1000, formula=f1)
 
+# Plotting the output
+plot(output)
 
+# Obtaining a confidence interval of 95%
+inter = boot.ci(output, type="perc")
 
+chibar = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+colnames(chibar) = c("quant", "value", "low", "upp")
 
+#Loop to do all Chi quantiles
+for (z in 2:20) {
+  chibarfun = function(formula, data, indices) {
+    df <- data[indices,]
+    fit <- taildep(df$ppt, df$ws, (tq[[z]]))
+    return(fit[[2]])
+  }
+  
+  f1 =c(df$ppt, df$ws, (tq[[z]]))
+  
+  output <- boot(data=df3, statistic=chibarfun, 
+                 R=1000, formula=f1)
+  inter = boot.ci(output, type="perc")
+  t2 = data.frame(tq[[z]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+  colnames(t2) = c("quant", "value", "low", "upp")
+  chibar = rbind(chibar, t2)
+}
 
+#Plot results ------------------------------------------------------------------------------
+ggplot(chi, aes(quant, value))+
+  geom_line(size = 1)+
+  labs(x = "Quantile theshold", y = "Chi")+
+  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "green")+
+  theme_bw()
+
+ggplot(chibar, aes(quant, value))+
+  geom_line(size = 1)+
+  labs(x = "Quantile theshold", y = "Chi")+
+  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "green")+
+  theme_bw()
 
 
 
