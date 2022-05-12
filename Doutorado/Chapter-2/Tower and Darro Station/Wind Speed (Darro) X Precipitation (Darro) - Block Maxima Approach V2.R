@@ -108,7 +108,7 @@ r2 = ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
        y = "Wind Speed (m/s)")+
   theme_bw()
 
-img = ggarrange(r0, r1, r2, ncol = 3)
+img = ggarrange(r0, r1, r2, ncol = 3); #img
 
 
 r0 = ggplot(df)+
@@ -126,7 +126,7 @@ r2 = ggplot(df3)+
   labs(x = "Wind Speed (m/s)")+
   theme_bw()
 
-img2 = ggarrange(r0, r1, r2, ncol = 3)
+img2 = ggarrange(r0, r1, r2, ncol = 3); img2
 
 
 r0 = ggplot(df)+
@@ -144,7 +144,7 @@ r2 = ggplot(df3)+
   labs(x = "Precipitation (max mm/5d)")+
   theme_bw()
 
-img3 = ggarrange(r0, r1, r2, ncol = 3)
+img3 = ggarrange(r0, r1, r2, ncol = 3); img3
 
 #img4 = ggarrange(img, img2, img3, ncol = 1)
 #ggsave(filename = "WS-Prec_darro.png", plot = img4,
@@ -167,7 +167,83 @@ for (z in 2:20) {
 }
 
 ggplot(taild, aes(quant, chi))+
-  geom_line()
+  geom_line(size = 1)+
+  labs(x = "Quantile theshold", y = "Chi")+
+  theme_bw()
 
 ggplot(taild, aes(quant, chibar))+
-  geom_line()
+  geom_line(size = 1)+
+  labs(x = "Quantile theshold", y = "ChiBar")+
+  theme_bw()
+
+#Bootstraping --------------------------------------------------------------------
+library(boot)
+
+tailfun = function(formula, data, indices) {
+  df <- data[indices,] # selecting sample with boot 
+  fit <- taildep(df$ppt, df$ws, 0.05)
+  return(fit[[1]])
+} 
+
+f1 =c(df$ppt, df$ws, 0.05)
+
+tailfun(formula = f1, data = df3)
+# Performing 1500 replications with boot 
+output <- boot(data=df3, statistic=tailfun, 
+               R=1000, formula=f1)
+
+# Plotting the output
+output 
+plot(output)
+
+# Obtaining a confidence interval of 95%
+boot.ci(output, type="bca")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

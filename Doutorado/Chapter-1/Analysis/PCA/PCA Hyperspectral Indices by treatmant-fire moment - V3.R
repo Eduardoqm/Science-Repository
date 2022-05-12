@@ -271,17 +271,19 @@ pca_panel = ggarrange(a,b,c,d,
 
 
 #Without legend ===============================================================
-a = all_plot + ggtitle("A")+theme(legend.position="none")
+a = all_plot + ggtitle("A")+theme(legend.position=c(0.2, 0.8))
 b = pre_plot+ ggtitle("B")+theme(legend.position="none")
 c = post_plot + ggtitle("C")+theme(legend.position="none")
 
-pca_panel2 = ggarrange(a,b,c,
-                      common.legend = F,
-                      legend=NULL,
-                      ncol = 2, nrow = 2)
+pca_panel2 = ggarrange(a,b, ncol = 1); pca_panel2
 
-#ggsave(filename = "PCA_panel2.png", plot = pca_panel2,
- #    path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 25, height = 20, units = "cm", dpi = 300)
+
+
+
+
+ggsave(filename = "PCA_panel2.png", plot = pca_panel2,
+     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion",
+     width = 20, height = 25, units = "cm", dpi = 300)
 
 #ggsave(filename = "Hyperspectral Indices (Treatment).png", plot = a,
  #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion/Panel_ABC", width = 15, height = 15, units = "cm", dpi = 300)
