@@ -108,7 +108,7 @@ r2 = ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
        y = "Wind Speed (m/s)")+
   theme_bw()
 
-img = ggarrange(r0, r1, r2, ncol = 3); #img
+img = ggarrange(r0, r1, r2, ncol = 3)#; img
 
 
 r0 = ggplot(df)+
@@ -126,7 +126,7 @@ r2 = ggplot(df3)+
   labs(x = "Wind Speed (m/s)")+
   theme_bw()
 
-img2 = ggarrange(r0, r1, r2, ncol = 3); img2
+img2 = ggarrange(r0, r1, r2, ncol = 3)#; img2
 
 
 r0 = ggplot(df)+
@@ -144,7 +144,7 @@ r2 = ggplot(df3)+
   labs(x = "Precipitation (max mm/5d)")+
   theme_bw()
 
-img3 = ggarrange(r0, r1, r2, ncol = 3); img3
+img3 = ggarrange(r0, r1, r2, ncol = 3)#; img3
 
 #img4 = ggarrange(img, img2, img3, ncol = 1)
 #ggsave(filename = "WS-Prec_darro.png", plot = img4,
@@ -153,13 +153,15 @@ img3 = ggarrange(r0, r1, r2, ncol = 3); img3
 
 
 #Extract tail dependence values from Block Maxima Approach data --------------------
-tq = c(.05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9, .95, 1)
+#tq = c(.05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9, .95, 1)
+tq = seq(.05, 1, .01)
 
 t1 = taildep(df3$ppt, df3$ws, 0.05)
 taild = data.frame(tq[[1]], t1[[1]], t1[[2]])
 colnames(taild) = c("quant", "chi", "chibar")
 
-for (z in 2:20) {
+#for (z in 2:20) {
+for (z in 2:96) {
   t = taildep(df3$ppt, df3$ws, (tq[[z]]))
   t2 = data.frame(tq[[z]], t[[1]], t[[2]])
   colnames(t2) = c("quant", "chi", "chibar")
@@ -203,7 +205,8 @@ chi = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
 colnames(chi) = c("quant", "value", "low", "upp")
 
 #Loop to do all Chi quantiles
-for (z in 2:20) {
+#for (z in 2:20) {
+for (z in 2:96) {
   chifun = function(formula, data, indices) {
     df <- data[indices,]
     fit <- taildep(df$ppt, df$ws, (tq[[z]]))
@@ -245,7 +248,8 @@ chibar = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
 colnames(chibar) = c("quant", "value", "low", "upp")
 
 #Loop to do all Chi quantiles
-for (z in 2:20) {
+#for (z in 2:20) {
+for (z in 2:96) {
   chibarfun = function(formula, data, indices) {
     df <- data[indices,]
     fit <- taildep(df$ppt, df$ws, (tq[[z]]))
@@ -276,7 +280,8 @@ ggplot(chibar, aes(quant, value))+
   theme_bw()
 
 
-
+#ggsave(filename = "WS-Prec_darro.png", plot = img4,
+#       path = "C:/Users/Eduardo Q Marques/Desktop", width = 35, height = 30, units = "cm", dpi = 300)
 
 
 
