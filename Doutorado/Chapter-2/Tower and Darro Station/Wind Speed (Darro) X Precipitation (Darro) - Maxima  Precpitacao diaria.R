@@ -73,7 +73,7 @@ ggplot(df2, aes(x=ppt, y=ws))+
 #Extract tail dependence values and Bootstrapping ------------------------------------
 tq = seq(.05, 1, .01); length(tq)
 
-t1 = taildep(df$ppt, df$ws, 0.05)
+t1 = taildep(df2$ppt, df2$ws, 0.05)
 taild = data.frame(tq[[1]], t1[[1]], t1[[2]])
 colnames(taild) = c("quant", "chi", "chibar")
 
@@ -100,6 +100,7 @@ colnames(chi) = c("quant", "value", "low", "upp")
 
 #Loop to do all Chi quantiles
 for (z in 2:96) {
+  print(tq[[z]])
   chifun = function(formula, data, indices) {
     df2 <- data[indices,]
     fit <- taildep(df2$ppt, df2$ws, (tq[[z]]))
@@ -139,6 +140,7 @@ colnames(chibar) = c("quant", "value", "low", "upp")
 
 #Loop to do all Chibar quantiles
 for (z in 2:96) {
+  print(tq[[z]])
   chibarfun = function(formula, data, indices) {
     df2 <- data[indices,]
     fit <- taildep(df2$ppt, df2$ws, (tq[[z]]))
@@ -218,6 +220,7 @@ colnames(chi) = c("quant", "value", "low", "upp")
 
 #Loop to do all Chi quantiles
 for (z in 2:96) {
+  print(tq[[z]])
   chifun = function(formula, data, indices) {
     df <- data[indices,]
     fit <- taildep(df$ppt, df$ws, (tq[[z]]))
@@ -257,6 +260,7 @@ colnames(chibar) = c("quant", "value", "low", "upp")
 
 #Loop to do all Chibar quantiles
 for (z in 2:96) {
+  print(tq[[z]])
   chibarfun = function(formula, data, indices) {
     df <- data[indices,]
     fit <- taildep(df$ppt, df$ws, (tq[[z]]))
