@@ -261,9 +261,9 @@ chibar_plot = ggplot(chibar, aes(quant, value))+
   theme_bw(); chibar_plot
 
 
-ggsave(filename = "WS-Prec_darro_chi.png", plot = chi_plot,
-       path = "C:/Users/Eduardo Q Marques/Desktop", width = 20, height = 10, units = "cm", dpi = 300)
+#ggsave(filename = "WS-Prec_darro_chi.png", plot = chi_plot,
+ #      path = "C:/Users/Eduardo Q Marques/Desktop", width = 20, height = 10, units = "cm", dpi = 300)
 
 
-ggsave(filename = "WS-Prec_darro_chibar.png", plot = chibar_plot,
-       path = "C:/Users/Eduardo Q Marques/Desktop", width = 20, height = 10, units = "cm", dpi = 300)
+#ggsave(filename = "WS-Prec_darro_chibar.png", plot = chibar_plot,
+ #      path = "C:/Users/Eduardo Q Marques/Desktop", width = 20, height = 10, units = "cm", dpi = 300)
