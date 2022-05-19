@@ -29,6 +29,7 @@ colnames(df) = c("date", "ws", "ppt")
 df$date = as.Date(df$date)
 df$date2 = as.numeric(substr(df$date, 1, 4))
 df$month = as.character(substr(df$date, 6, 7))
+df$Date = as.factor(df$date2)
 
 #Filters
 df = df %>% filter(date2 %in% c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020)) #Consistent data time series
@@ -36,39 +37,68 @@ df = df %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rainy mont
 df = df %>% filter(ppt <100) #Outlier maybe a error in registration
 
 #Plot data
-ggplot(df, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.5, size = 3, col = "royalblue")+
+eqm = c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#b15928')
+
+rawppt = ggplot(df, aes(x=ppt, y=ws))+
+  geom_point(aes(col = Date), alpha = 0.7, size = 3)+
   geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
-  labs( x = "Maximum Precipitation (max mm/day)", y = "Wind Speed (m/s)", title = "Raw data 2010 - 2020")+
-  theme_bw()
+  labs( x = "Precipitation (mm)", y = "Wind Speed (m/s)", title = "A")+
+  scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30))#; rawppt
 
-ggplot(df, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
+rawppt2 = ggplot(df, aes(x=ppt, y=ws))+
+  geom_point(aes(col = Date), alpha = 0.9, size = 2)+
   geom_smooth(method = "lm", col = "black")+
+  labs( x = "Precipitation (mm)", y = NULL, title = "B")+
   stat_cor(show.legend = F)+
   facet_wrap(~date2)+
-  theme_bw()
+  scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30))#; rawppt2
 
+rawppt3 = ggarrange(rawppt, rawppt2, ncol = 2)
+
+#ggsave(filename = "WS-Prec_darro_RAW_all.png", plot = rawppt3,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 35, height = 15, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS-Prec_darro_RAW.png", plot = rawppt,
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 13, height = 13, units = "cm", dpi = 300)
 
 #Block Maxima diary precipitation -----------------------------------------------
 df2 <- blockmaxxer(df, blocks = df$date, which="ppt") #Function only blocking precipitation
 
 #Plot data
-ggplot(df2, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.5, size = 3, col = "royalblue")+
+maxppt = ggplot(df2, aes(x=ppt, y=ws))+
+  geom_point(alpha = 0.7, size = 3, col = '#fb9a99')+
   geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
-  labs( x = "Maximum Precipitation (mm)", y = "Wind Speed (m/s)", title = "Block by max Pretipition per day and co-current Wind Speed")+
-  theme_bw()
+  labs( x = "Maximum Precipitation (mm)", y = "Wind Speed (m/s)", title = "A")+
+  #scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30)); maxppt
 
-ggplot(df2, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
+maxppt2 = ggplot(df2, aes(x=ppt, y=ws))+
+  geom_point(alpha = 0.7, size = 2, col = '#fb9a99')+
   geom_smooth(method = "lm", col = "black")+
   stat_cor(show.legend = F)+
-  facet_wrap(~date2)+
-  theme_bw()
+  labs( x = "Maximum Precipitation (mm)", y = NULL, title = "B")+
+  facet_wrap(~Date)+
+  #scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30)); maxppt2
 
+maxppt3 = ggarrange(maxppt, maxppt2, ncol = 2); maxppt3
+
+ggsave(filename = "WS-Prec_darro_all.png", plot = maxppt3,
+             path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 30, height = 13, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS-Prec_darro.png", plot = maxppt,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 17, height = 15, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS-Prec_darro_facet.png", plot = maxppt2,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 23, height = 15, units = "cm", dpi = 300)
 
 #Extract tail dependence values and Bootstrapping ------------------------------------
 tq = seq(.05, 1, .01); length(tq)
@@ -158,262 +188,75 @@ for (z in 2:96) {
 }
 
 #Plot results ------------------------------------------------------------------------------
-chi_plot = ggplot(chi, aes(quant, value))+
+ggplot(chi, aes(quant, value))+
   geom_line(size = 1)+
   labs(x = "Quantile theshold q", y = "Chi")+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "green")+
-  theme_bw(); chi_plot
+  ylim(0, 1)+
+  theme_bw()
 
-chibar_plot = ggplot(chibar, aes(quant, value))+
+ggplot(chibar, aes(quant, value))+
   geom_line(size = 1)+
   labs(x = "Quantile theshold q", y = "Chibar")+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "green")+
-  theme_bw(); chibar_plot
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#Chi ---------------------------------------------------------------------------------
-#Function to extract Chi data from tail dependence
-chifun = function(formula, data, indices) {
-  df <- data[indices,] # selecting sample with boot 
-  fit <- taildep(df$ppt, df$ws, 0.05)
-  return(fit[[1]])
-} 
-
-f1 =c(df$ppt, df$ws, 0.05)
-chifun(formula = f1, data = df) #Just a test
-
-#Performing 1000 replications with boot 
-output <- boot(data=df, statistic=chifun, 
-               R=1000, formula=f1)
-
-#Obtaining a confidence interval of 95%
-inter = boot.ci(output, type="perc")
-
-chi = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
-colnames(chi) = c("quant", "value", "low", "upp")
-
-#Loop to do all Chi quantiles
-for (z in 2:96) {
-  print(tq[[z]])
-  chifun = function(formula, data, indices) {
-    df <- data[indices,]
-    fit <- taildep(df$ppt, df$ws, (tq[[z]]))
-    return(fit[[1]])
-  }
-  
-  f1 =c(df$ppt, df$ws, (tq[[z]]))
-  
-  output <- boot(data=df, statistic=chifun, 
-                 R=1000, formula=f1)
-  inter = boot.ci(output, type="perc")
-  t2 = data.frame(tq[[z]], inter$t0, inter$percent[1,4], inter$percent[1,5])
-  colnames(t2) = c("quant", "value", "low", "upp")
-  chi = rbind(chi, t2)
-}
-
-
-#Chibar ---------------------------------------------------------------------------------
-chibarfun = function(formula, data, indices) {
-  df <- data[indices,] # selecting sample with boot 
-  fit <- taildep(df$ppt, df$ws, 0.05)
-  return(fit[[2]])
-} 
-
-f1 =c(df$ppt, df$ws, 0.05)
-chibarfun(formula = f1, data = df) #Just a test
-
-#Performing 1000 replications with boot 
-output <- boot(data=df, statistic=chibarfun, 
-               R=1000, formula=f1)
-
-#Obtaining a confidence interval of 95%
-inter = boot.ci(output, type="perc")
-
-chibar = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
-colnames(chibar) = c("quant", "value", "low", "upp")
-
-#Loop to do all Chibar quantiles
-for (z in 2:96) {
-  print(tq[[z]])
-  chibarfun = function(formula, data, indices) {
-    df <- data[indices,]
-    fit <- taildep(df$ppt, df$ws, (tq[[z]]))
-    return(fit[[2]])
-  }
-  
-  f1 =c(df$ppt, df$ws, (tq[[z]]))
-  
-  output <- boot(data=df, statistic=chibarfun, 
-                 R=1000, formula=f1)
-  inter = boot.ci(output, type="perc")
-  t2 = data.frame(tq[[z]], inter$t0, inter$percent[1,4], inter$percent[1,5])
-  colnames(t2) = c("quant", "value", "low", "upp")
-  chibar = rbind(chibar, t2)
-}
-
-#Plot results ------------------------------------------------------------------------------
-chi_plot = ggplot(chi, aes(quant, value))+
-  geom_line(size = 1)+
-  labs(x = "Quantile theshold q", y = "Chi")+
-  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "green")+
-  theme_bw(); chi_plot
-
-chibar_plot = ggplot(chibar, aes(quant, value))+
-  geom_line(size = 1)+
-  labs(x = "Quantile theshold q", y = "Chibar")+
-  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "green")+
-  theme_bw(); chibar_plot
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-img = ggplot(df, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.5, size = 3, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
-  #geom_abline(data = df3, aes(intercept = Intercept, slope = Precipitation), col = "red", aplha = 0.3)+
-  labs( x = "Maximum Precipitation (max mm/day)", y = "Wind Speed (m/s)",
-        title = "Only Maximum Precipitation per day")+
-  scale_color_viridis()+
-  theme_bw()
-
-img2 = ggplot(df)+
-  geom_density(aes(ws), fill = "red", alpha = 0.35)+
-  labs(x = "Wind Speed (m/s)")+
-  theme_bw()
-
-img3 = ggplot(df)+
-  geom_density(aes(ppt), fill = "blue", alpha = 0.35)+
-  labs(x = "Precipitation (max mm/d)")+
+  ylim(-1, 1)+
   theme_bw()
 
 
-img4 = ggarrange(img, img2, img3, ncol = 1); img4
-
-ggplot(df, aes(x=ppt, y=ws))+
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  #stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), show.legend = TRUE, col = "red", aplha = 0.3)+
-  labs( x = "Daily accumulated precipitation", y = "Wind Speed per day")+
-  facet_wrap(~date2)+
-  scale_color_viridis()+
-  theme_bw()
+#Unite Tail dependence results from Darro and ERA5 ------------------------------------
+chi$data = c("Darro Station")
+chibar$data = c("Darro Station")
 
 
-
-#ggsave(filename = "WS-Prec_darro.png", plot = img4,
-#              path = "C:/Users/Eduardo Q Marques/Desktop", width = 12, height = 30, units = "cm", dpi = 300)
-
+chi_era = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados ERA5/CHI_ERA5.csv", sep = ",")
+chibar_era = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados ERA5/CHIBAR_ERA5.csv", sep = ",")
 
 
-tq = seq(.05, 1, .01)
+chi2 = rbind(chi, chi_era)
+chibar2 = rbind(chibar, chibar_era)
 
-for (z in 1:96) {
-  w = taildep(df2$ppt, df2$ws, (tq[[z]]))
-  print(w)
-}
+
+chi_plot = ggplot(chi2, aes(quant, value, fill = data))+
+  geom_line()+
+  labs(x = NULL, y = "Chi", title = "A")+
+  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3)+
+  scale_fill_manual(values =  c("red", "blue"))+
+  theme_bw()+
+  theme(legend.position = c(30,30)); chi_plot
+
+chibar_plot = ggplot(chibar2, aes(quant, value, fill = data))+
+  geom_line()+
+  labs(x = "Quantile theshold q", y = "Chibar", title = "B")+
+  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3)+
+  scale_fill_manual(values =  c("red", "blue"))+
+  theme_bw()+
+  theme(legend.position = c(.8,.2)); chibar_plot
+
+
+chis = ggarrange(chi_plot, chibar_plot, ncol = 1); chis
+
+
+ggsave(filename = "WS-Prec_darro_era_chi_chibar.png", plot = chis,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 15, height = 20, units = "cm", dpi = 300)
+
+
+#ggsave(filename = "WS-Prec_darro_chi.png", plot = chi_plot,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 20, height = 10, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS-Prec_darro_chibar.png", plot = chibar_plot,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 20, height = 10, units = "cm", dpi = 300)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

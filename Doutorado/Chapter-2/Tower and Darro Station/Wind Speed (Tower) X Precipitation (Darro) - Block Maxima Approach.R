@@ -21,13 +21,11 @@ darro = read.csv("Master_Estacao_Darro_2020.csv", sep = ",")
 torre = read.csv("Dados_Vento_Torre_Controle.csv", sep = ",")
 
 #Select variables and filter data to rainy season to 2010-2020 -----------------
-df = darro %>% 
-  group_by(Date) %>% 
-  summarise(ppt = sum(ppt))
+df = darro[,c(16, 13)]
 
 colnames(df) = c("date", "ppt")
 
-df$date = as.Date(df$date)
+#df$date = as.Date(df$date)
 
 df$date2 = as.numeric(substr(df$date, 1, 4))
 df$month = as.character(substr(df$date, 6, 7))
@@ -37,13 +35,10 @@ df = df %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rainy mont
 df = df %>% filter(ppt <100) #Outlier maybe a error in registration
 
 #Tower -------------------------------------------------------------------------- 
-torre$datetime = substr(torre$datetime, 1, 10)
+#torre$datetime = substr(torre$datetime, 1, 10)
+torre = torre[,c(2,4)]
 
-torre = torre %>%
-  group_by(datetime) %>% 
-  summarise(max_speed = max(max_speed))
-
-torre$datetime = as.Date(torre$datetime)
+#torre$datetime = as.Date(torre$datetime)
 colnames(torre) = c("date", "ws")
 
 torre$date2 = as.numeric(substr(torre$date, 1, 4))
@@ -54,6 +49,108 @@ torre = torre %>% filter(month %in% c("10","11","12","01","02","03","04")) #Rain
 
 #Join data ---------------------------------------------------------------------
 df2 = full_join(torre, df, id = "date")
+df2$Date = as.factor(df2$date2)
+
+#Plot data
+eqm = c('#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#b15928')
+
+rawppt = ggplot(df2, aes(x=ppt, y=ws))+
+  geom_point(aes(col = Date), alpha = 0.7, size = 3)+
+  geom_smooth(method = "lm", col = "black")+
+  stat_cor(show.legend = F)+
+  labs( x = "Precipitation (mm)", y = "Max Wind Speed (m/s)", title = "B")+
+  scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30)); rawppt
+
+rawppt2 = ggplot(df2, aes(x=ppt, y=ws))+
+  geom_point(aes(col = Date), alpha = 0.9, size = 2)+
+  geom_smooth(method = "lm", col = "black")+
+  labs( x = "Precipitation (mm)", y = NULL, title = "B")+
+  stat_cor(show.legend = F)+
+  facet_wrap(~date2)+
+  scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30))#; rawppt2
+
+#rawppt3 = ggarrange(rawppt, rawppt2, ncol = 2)
+
+#ggsave(filename = "WS-Prec_darro_RAW_all.png", plot = rawppt3,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 35, height = 15, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS(Tower)-Prec(darro)_RAW.png", plot = rawppt,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 13, height = 13, units = "cm", dpi = 300)
+
+#Block Maxima diary precipitation -----------------------------------------------
+df3 = df2 %>% na.omit()
+df3$date = substr(df3$date, 1, 10)
+df3 <- blockmaxxer(df3, blocks = df3$date, which="ppt") #Function only blocking precipitation
+
+#Plot data
+maxppt = ggplot(df3, aes(x=ppt, y=ws))+
+  geom_point(alpha = 0.7, size = 3, col = "#33a02c")+
+  geom_smooth(method = "lm", col = "black")+
+  stat_cor(show.legend = F)+
+  labs( x = "Maximum Precipitation (mm)", y = "Max Wind Speed (m/s)", title = "C")+
+  #scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30)); maxppt
+
+maxppt2 = ggplot(df3, aes(x=ppt, y=ws))+
+  geom_point(alpha = 0.7, col = "#33a02c", size = 2)+
+  geom_smooth(method = "lm", col = "black")+
+  stat_cor(show.legend = F)+
+  labs( x = "Maximum Precipitation (mm)", y = NULL, title = "D")+
+  facet_wrap(~Date)+
+  #scale_color_manual(values = eqm)+
+  theme_bw()+
+  theme(legend.position = c(30, 30)); maxppt2
+
+maxppt3 = ggarrange(maxppt, maxppt2, ncol = 2); maxppt3
+
+ggsave(filename = "WS(Tower)-Prec(darro)__all.png", plot = maxppt3,
+             path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 30, height = 13, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS-Prec_darro.png", plot = maxppt,
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 17, height = 15, units = "cm", dpi = 300)
+
+#ggsave(filename = "WS-Prec_darro_facet.png", plot = maxppt2,
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 23, height = 15, units = "cm", dpi = 300)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #Block Maxima by 5 days windows ------------------------------------------------
