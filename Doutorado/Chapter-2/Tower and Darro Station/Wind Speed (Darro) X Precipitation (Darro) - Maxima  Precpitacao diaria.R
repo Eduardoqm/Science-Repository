@@ -211,16 +211,20 @@ chibar$data = c("Darro Station")
 chi_era = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados ERA5/CHI_ERA5.csv", sep = ",")
 chibar_era = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados ERA5/CHIBAR_ERA5.csv", sep = ",")
 
+chi_torre = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados Torre/CHI_Tower.csv", sep = ",")
+chibar_torre = read.csv("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados Torre/CHIBAR_Tower.csv.csv", sep = ",")
 
-chi2 = rbind(chi, chi_era)
-chibar2 = rbind(chibar, chibar_era)
+
+
+chi2 = rbind(chi, chi_era, chi_torre)
+chibar2 = rbind(chibar, chibar_era, chibar_torre)
 
 
 chi_plot = ggplot(chi2, aes(quant, value, fill = data))+
   geom_line()+
   labs(x = NULL, y = "Chi", title = "A")+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3)+
-  scale_fill_manual(values =  c("red", "blue"))+
+  scale_fill_manual(values =  c("red", "blue", "green"))+
   theme_bw()+
   theme(legend.position = c(30,30)); chi_plot
 
@@ -228,7 +232,7 @@ chibar_plot = ggplot(chibar2, aes(quant, value, fill = data))+
   geom_line()+
   labs(x = "Quantile theshold q", y = "Chibar", title = "B")+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3)+
-  scale_fill_manual(values =  c("red", "blue"))+
+  scale_fill_manual(values =  c("red", "blue", "green"))+
   theme_bw()+
   theme(legend.position = c(.8,.2)); chibar_plot
 

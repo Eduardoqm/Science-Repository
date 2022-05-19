@@ -13,6 +13,7 @@ library(viridis)
 library(fmsb)
 library(lubridate)
 library(extRemes)
+library(boot)
 
 #Darro data ====================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Dados das torres")
@@ -61,7 +62,7 @@ rawppt = ggplot(df2, aes(x=ppt, y=ws))+
   labs( x = "Precipitation (mm)", y = "Max Wind Speed (m/s)", title = "B")+
   scale_color_manual(values = eqm)+
   theme_bw()+
-  theme(legend.position = c(30, 30)); rawppt
+  theme(legend.position = c(30, 30))#; rawppt
 
 rawppt2 = ggplot(df2, aes(x=ppt, y=ws))+
   geom_point(aes(col = Date), alpha = 0.9, size = 2)+
@@ -94,7 +95,7 @@ maxppt = ggplot(df3, aes(x=ppt, y=ws))+
   labs( x = "Maximum Precipitation (mm)", y = "Max Wind Speed (m/s)", title = "C")+
   #scale_color_manual(values = eqm)+
   theme_bw()+
-  theme(legend.position = c(30, 30)); maxppt
+  theme(legend.position = c(30, 30))#; maxppt
 
 maxppt2 = ggplot(df3, aes(x=ppt, y=ws))+
   geom_point(alpha = 0.7, col = "#33a02c", size = 2)+
@@ -104,12 +105,12 @@ maxppt2 = ggplot(df3, aes(x=ppt, y=ws))+
   facet_wrap(~Date)+
   #scale_color_manual(values = eqm)+
   theme_bw()+
-  theme(legend.position = c(30, 30)); maxppt2
+  theme(legend.position = c(30, 30))#; maxppt2
 
 maxppt3 = ggarrange(maxppt, maxppt2, ncol = 2); maxppt3
 
-ggsave(filename = "WS(Tower)-Prec(darro)__all.png", plot = maxppt3,
-             path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 30, height = 13, units = "cm", dpi = 300)
+#ggsave(filename = "WS(Tower)-Prec(darro)__all.png", plot = maxppt3,
+#             path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 30, height = 13, units = "cm", dpi = 300)
 
 #ggsave(filename = "WS-Prec_darro.png", plot = maxppt,
 #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 17, height = 15, units = "cm", dpi = 300)
@@ -118,6 +119,115 @@ ggsave(filename = "WS(Tower)-Prec(darro)__all.png", plot = maxppt3,
 #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 23, height = 15, units = "cm", dpi = 300)
 
 
+#Extract tail dependence values and Bootstrapping ------------------------------------
+df2 = df3
+tq = seq(.05, 1, .01); length(tq)
+
+t1 = taildep(df2$ppt, df2$ws, 0.05)
+taild = data.frame(tq[[1]], t1[[1]], t1[[2]])
+colnames(taild) = c("quant", "chi", "chibar")
+
+#Chi ---------------------------------------------------------------------------------
+#Function to extract Chi data from tail dependence
+chifun = function(formula, data, indices) {
+  df2 <- data[indices,] # selecting sample with boot 
+  fit <- taildep(df2$ppt, df2$ws, 0.05)
+  return(fit[[1]])
+} 
+
+f1 =c(df2$ppt, df2$ws, 0.05)
+chifun(formula = f1, data = df2) #Just a test
+
+#Performing 1000 replications with boot 
+output <- boot(data=df2, statistic=chifun, 
+               R=1000, formula=f1)
+
+#Obtaining a confidence interval of 95%
+inter = boot.ci(output, type="perc")
+
+chi = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+colnames(chi) = c("quant", "value", "low", "upp")
+
+#Loop to do all Chi quantiles
+for (z in 2:96) {
+  print(tq[[z]])
+  chifun = function(formula, data, indices) {
+    df2 <- data[indices,]
+    fit <- taildep(df2$ppt, df2$ws, (tq[[z]]))
+    return(fit[[1]])
+  }
+  
+  f1 =c(df2$ppt, df2$ws, (tq[[z]]))
+  
+  output <- boot(data=df2, statistic=chifun, 
+                 R=1000, formula=f1)
+  inter = boot.ci(output, type="perc")
+  t2 = data.frame(tq[[z]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+  colnames(t2) = c("quant", "value", "low", "upp")
+  chi = rbind(chi, t2)
+}
+
+
+#Chibar ---------------------------------------------------------------------------------
+chibarfun = function(formula, data, indices) {
+  df2 <- data[indices,] # selecting sample with boot 
+  fit <- taildep(df2$ppt, df2$ws, 0.05)
+  return(fit[[2]])
+} 
+
+f1 =c(df2$ppt, df2$ws, 0.05)
+chibarfun(formula = f1, data = df2) #Just a test
+
+#Performing 1000 replications with boot 
+output <- boot(data=df2, statistic=chibarfun, 
+               R=1000, formula=f1)
+
+#Obtaining a confidence interval of 95%
+inter = boot.ci(output, type="perc")
+
+chibar = data.frame(tq[[1]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+colnames(chibar) = c("quant", "value", "low", "upp")
+
+#Loop to do all Chibar quantiles
+for (z in 2:96) {
+  print(tq[[z]])
+  chibarfun = function(formula, data, indices) {
+    df2 <- data[indices,]
+    fit <- taildep(df2$ppt, df2$ws, (tq[[z]]))
+    return(fit[[2]])
+  }
+  
+  f1 =c(df2$ppt, df2$ws, (tq[[z]]))
+  
+  output <- boot(data=df2, statistic=chibarfun, 
+                 R=1000, formula=f1)
+  inter = boot.ci(output, type="perc")
+  t2 = data.frame(tq[[z]], inter$t0, inter$percent[1,4], inter$percent[1,5])
+  colnames(t2) = c("quant", "value", "low", "upp")
+  chibar = rbind(chibar, t2)
+}
+
+#Plot results ------------------------------------------------------------------------------
+chi_plot = ggplot(chi, aes(quant, value))+
+  geom_line(size = 1)+
+  labs(x = "Quantile theshold q", y = "Chi")+
+  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "red")+
+  ylim(0, 1)+
+  theme_bw(); chi_plot
+
+chibar_plot = ggplot(chibar, aes(quant, value))+
+  geom_line(size = 1)+
+  labs(x = "Quantile theshold q", y = "Chibar")+
+  geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.3, fill = "red")+
+  ylim(-1, 1)+
+  theme_bw(); chibar_plot
+
+#Export data -----------------------------------------------------------------------------
+chi$data = c("Control Tower")
+chibar$data = c("Control Tower")
+
+write.csv(chi, "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados Torre/CHI_Tower.csv", sep = ",", row.names = F)
+write.csv(chibar, "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Dados Torre/CHIBAR_Tower.csv", sep = ",", row.names = F)
 
 
 
