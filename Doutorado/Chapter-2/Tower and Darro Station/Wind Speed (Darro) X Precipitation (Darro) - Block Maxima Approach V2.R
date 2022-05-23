@@ -48,109 +48,45 @@ df2$ws = df2b$ws
 
 #Block Maxima Approach (5 days)
 df3 = df2 #df3 will receive the modifications
+df3 = df3[c(-2211, -2212),] #last two are not maximum
+df3$idb = rep(seq(1,442), each = 5)
+
+df3a <- blockmaxxer(df3, blocks = df3$idb, which = "ppt")
+df3b <- blockmaxxer(df3, blocks = df3$idb, which = "ws")
+df3a$ws = df3b$ws
 
 #Functions to moving 5 days
-ppt5d = function(z) {
-  w = z-2
-  k = z+2
-  max(df2$ppt[w:k])
-}
+#ppt5d = function(z) {
+#  w = z-2
+#  k = z+2
+#  max(df2$ppt[w:k])
+#}
 
-ws5d = function(z) {
-  w = z-2
-  k = z+2
-  max(df2$ws[w:k])
-}
+#ws5d = function(z) {
+#  w = z-2
+#  k = z+2
+#  max(df2$ws[w:k])
+#}
 
 #Loop to modify all dataframe
-for (x in 3:length(df3$date)) {
-  df3$ppt[x] = ppt5d(x)
-  df3$ws[x] = ws5d(x)
-}
+#for (x in 3:length(df3$date)) {
+#  df3$ppt[x] = ppt5d(x)
+#  df3$ws[x] = ws5d(x)
+#}
 
-df3 = df3[c(-1,-2, -2211, -2212),] #First and second are not maximum
+#df3 = df3[c(-1,-2, -2211, -2212),] #First and second are not maximum
 
-ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
+ggplot(df3a, aes(x=ppt, y=ws))+ #Verify second result
   geom_point(alpha = 0.7, size = 2, col = "royalblue")+
   geom_smooth(method = "lm", col = "black")+
+  stat_quantile(quantiles = c(.05,.1,.25,.5,.75,.90,.95), col = "red", aplha = 0.3)+
   stat_cor(show.legend = F)+
   labs(title = "Block Maxima Approach (5 days)",
        x = "Precipitation (max mm/5d)",
        y = "Wind Speed (m/s)")+
   theme_bw()
 
-
-#Comparison -----------------------------------------------------------------
-r0 = ggplot(df, aes(x=ppt, y=ws))+ #Verify raw data result
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  labs(title = "Raw data 2010-2020",
-       x = "Precipitation (mm)",
-       y = "Wind Speed (m/s)")+
-  theme_bw()
-
-r1 = ggplot(df2, aes(x=ppt, y=ws))+ #Verify first result
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  labs(title = "Maximum per day",
-       x = "Precipitation (max mm/d)",
-       y = "Wind Speed (m/s)")+
-  theme_bw()
-
-r2 = ggplot(df3, aes(x=ppt, y=ws))+ #Verify second result
-  geom_point(alpha = 0.7, size = 2, col = "royalblue")+
-  geom_smooth(method = "lm", col = "black")+
-  stat_cor(show.legend = F)+
-  labs(title = "Block Maxima Approach (5 days)",
-       x = "Precipitation (max mm/5d)",
-       y = "Wind Speed (m/s)")+
-  theme_bw()
-
-img = ggarrange(r0, r1, r2, ncol = 3)#; img
-
-
-r0 = ggplot(df)+
-  geom_density(aes(ws), fill = "red", alpha = 0.35)+
-  labs(x = "Wind Speed (m/s)")+
-  theme_bw()
-
-r1 = ggplot(df2)+
-  geom_density(aes(ws), fill = "red", alpha = 0.35)+
-  labs(x = "Wind Speed (m/s)")+
-  theme_bw()
-
-r2 = ggplot(df3)+
-  geom_density(aes(ws), fill = "red", alpha = 0.35)+
-  labs(x = "Wind Speed (m/s)")+
-  theme_bw()
-
-img2 = ggarrange(r0, r1, r2, ncol = 3)#; img2
-
-
-r0 = ggplot(df)+
-  geom_density(aes(ppt), fill = "blue", alpha = 0.35)+
-  labs(x = "Precipitation (mm)")+
-  theme_bw()
-
-r1 = ggplot(df2)+
-  geom_density(aes(ppt), fill = "blue", alpha = 0.35)+
-  labs(x = "Precipitation (max mm/d)")+
-  theme_bw()
-
-r2 = ggplot(df3)+
-  geom_density(aes(ppt), fill = "blue", alpha = 0.35)+
-  labs(x = "Precipitation (max mm/5d)")+
-  theme_bw()
-
-img3 = ggarrange(r0, r1, r2, ncol = 3)#; img3
-
-#img4 = ggarrange(img, img2, img3, ncol = 1)
-#ggsave(filename = "WS-Prec_darro.png", plot = img4,
-#       path = "C:/Users/Eduardo Q Marques/Desktop", width = 35, height = 30, units = "cm", dpi = 300)
-
-
+df3 = df3a
 
 #Extract tail dependence values from Block Maxima Approach data --------------------
 #tq = c(.05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9, .95, 1)

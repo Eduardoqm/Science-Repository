@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------
 #Wind Speed (Darro) X Precipitation (Darro) - Maxima diary precipitation
 #-------------------------------------------------------------------------
-#Eduardo Q Marques 17-05-2022
+#Eduardo Q Marques 23-05-2022
 #eduardobio2009@gmail.com
 #-------------------------------------------------------------------------
 
@@ -92,13 +92,13 @@ maxppt2 = ggplot(df2, aes(x=ppt, y=ws))+
 maxppt3 = ggarrange(maxppt, maxppt2, ncol = 2); maxppt3
 
 ggsave(filename = "WS-Prec_darro_all.png", plot = maxppt3,
-             path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 30, height = 13, units = "cm", dpi = 300)
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 30, height = 13, units = "cm", dpi = 300)
 
 #ggsave(filename = "WS-Prec_darro.png", plot = maxppt,
- #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 17, height = 15, units = "cm", dpi = 300)
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 17, height = 15, units = "cm", dpi = 300)
 
 #ggsave(filename = "WS-Prec_darro_facet.png", plot = maxppt2,
- #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 23, height = 15, units = "cm", dpi = 300)
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 23, height = 15, units = "cm", dpi = 300)
 
 #Extract tail dependence values and Bootstrapping ------------------------------------
 tq = seq(.05, 1, .01); length(tq)
