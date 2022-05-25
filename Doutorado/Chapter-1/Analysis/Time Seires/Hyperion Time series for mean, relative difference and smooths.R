@@ -95,9 +95,9 @@ all_vis = ggplot(df_diff, aes(x=Ano, y=Valor, color = Tratamento))+
   theme(legend.position = c(0.5, 0.1))
 all_vis
 
-ggsave(filename = "all_diff.png", plot = all_vis,
-      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series",
-      width = 30, height = 20, units =  "cm", dpi = 300)
+#ggsave(filename = "all_diff.png", plot = all_vis,
+#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Hyperion Time Series",
+#      width = 30, height = 20, units =  "cm", dpi = 300)
 
 #Plot by kind of Indice ---------------------------------------------------
 struc = df_diff %>% 
