@@ -241,8 +241,8 @@ chibar_plot = ggplot(chibar2, aes(quant, value, fill = Dataset, linetype = Datas
 chis = ggarrange(chi_plot, chibar_plot, ncol = 1); chis
 
 
-ggsave(filename = "WS-Prec_darro_era_chi_chibar.png", plot = chis,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 15, height = 20, units = "cm", dpi = 300)
+#ggsave(filename = "WS-Prec_darro_era_chi_chibar.png", plot = chis,
+ #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 15, height = 20, units = "cm", dpi = 300)
 
 
 #ggsave(filename = "WS-Prec_darro_chi.png", plot = chi_plot,
