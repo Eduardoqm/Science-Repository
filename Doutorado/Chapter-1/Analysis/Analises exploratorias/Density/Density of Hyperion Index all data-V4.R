@@ -13,6 +13,7 @@ library(ggridges)
 library(extrafont)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
+windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data ======================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -44,7 +45,7 @@ df$index[df$index == "nbr2"] <- c("NBR2")
 
 
 
-df$treat[df$treat == "control"] <- c("Controle")
+df$treat[df$treat == "control"] <- c("Control")
 df$treat[df$treat == "b3yr"] <- c("B3yr")
 df$treat[df$treat == "b1yr"] <- c("B1yr")
 
@@ -53,7 +54,15 @@ colnames(df)[9] = c("Tratamento")
 eqm = c("#F9A602","#CF0E0E","#00AFBB") #Pallete colors(Orange, Red and Blue)
 #eqm = c("orange", "red", "blue")
 
-a = ggplot(df, aes(x = value, y = year, fill=Tratamento)) +
+df2 = df; colnames(df2)[9] = c("Treatment")
+df2$index <- factor(df2$index, levels = c("PSRI","VIG","VARI","MSI","PSSR","LWVI2","NDII","NBR2","NBR","NIRv","NDWI","EVI","NDVI","PRI","RENDVI","SIPI","WBI"))  
+#levels = c("EVI","NDVI","VARI","VIG",
+#          "LWVI2","MSI","NDII","NDWI","NIRv","PSRI","PSSR","SIPI","WBI",
+#         "PRI","RENDVI","NBR","NBR2"))
+
+
+
+a = ggplot(df2, aes(x = value, y = year, fill=Treatment)) +
   geom_density_ridges(alpha = 0.30) +
   facet_wrap(~index, scales="free") +
   theme_minimal()+

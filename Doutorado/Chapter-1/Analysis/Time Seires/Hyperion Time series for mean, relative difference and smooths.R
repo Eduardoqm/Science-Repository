@@ -12,6 +12,7 @@ library(visreg)
 library(extrafont)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
+windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data ============================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")

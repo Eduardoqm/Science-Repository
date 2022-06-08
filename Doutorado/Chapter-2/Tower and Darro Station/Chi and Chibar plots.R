@@ -27,27 +27,27 @@ colnames(chibar2)[6] = c("Dataset")
 
 chi_plot = ggplot(chi2, aes(quant, value, fill = Dataset, linetype = Dataset))+
   geom_line()+
-  labs(x = NULL, y = "Chi", title = "A")+
+  labs(x = NULL, y = "Chi", title = "C")+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.2)+
   scale_fill_manual(values =  c("#33a02c", "red", "#1f78b4"))+
   facet_wrap(~Date)+
   ylim(0, 1)+
   theme_bw()+
-  theme(legend.position = c(.9,.2)); chi_plot
+  theme(legend.position = c(30,30)); chi_plot
 
 chibar_plot = ggplot(chibar2, aes(quant, value, fill = Dataset, linetype = Dataset))+
   geom_line()+
-  labs(x = "Quantile theshold q", y = "Chibar", title = "B")+
+  labs(x = "Quantile theshold q", y = "Chibar", title = "D")+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.2)+
   scale_fill_manual(values =  c("#33a02c", "red", "#1f78b4"))+
   facet_wrap(~Date)+
   ylim(-1, 1)+
   theme_bw()+
-  theme(legend.position = c(.9,.2)); chibar_plot
+  theme(legend.position = c(30,30)); chibar_plot
 
 
 chis = ggarrange(chi_plot, chibar_plot, ncol = 1); chis
 
 
-#ggsave(filename = "WS-Prec_chi_chibar_Facet.png", plot = chis,
-#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 25, height = 30, units = "cm", dpi = 300)
+ggsave(filename = "WS-Prec_chi_chibar_Facet.png", plot = chis,
+      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Wind Speed vs Precipitation", width = 20, height = 25, units = "cm", dpi = 300)
