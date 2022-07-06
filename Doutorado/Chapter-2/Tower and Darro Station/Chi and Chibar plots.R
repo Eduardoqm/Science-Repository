@@ -31,7 +31,7 @@ chi_plot = ggplot(chi2, aes(quant, value, fill = Dataset, linetype = Dataset))+
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.2)+
   scale_fill_manual(values =  c("#33a02c", "red", "#1f78b4"))+
   facet_wrap(~Date)+
-  ylim(0, 1)+
+  ylim(0, 1)+ xlim(0.5, 1)+
   theme_bw()+
   theme(legend.position = c(30,30)); chi_plot
 
@@ -41,7 +41,7 @@ chibar_plot = ggplot(chibar2, aes(quant, value, fill = Dataset, linetype = Datas
   geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.2)+
   scale_fill_manual(values =  c("#33a02c", "red", "#1f78b4"))+
   facet_wrap(~Date)+
-  ylim(-1, 1)+
+  ylim(-1, 1)+ xlim(0.5, 1)+
   theme_bw()+
   theme(legend.position = c(30,30)); chibar_plot
 

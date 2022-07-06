@@ -58,11 +58,11 @@ levelplot(grnd, layout=c(1, 3), par.settings = viridisTheme, labels = F, scales 
 #Export plots
 setwd("~/Research/Doutorado/Capitulo1/Figuras/Esquemas visuais")
 
-png("GRND 2004-2011-2019.png", width=700, height=700) 
+tiff("GRND 2004-2011-2019.tif", width=600, height=1000, compression = "lzw") 
 levelplot(grnd, layout=c(1, 3), par.settings = viridisTheme, labels = F, scales = list(col = "white"), colorkey=list(labels=list(cex=1.3)))
 dev.off()
 
 
-png("Delta GRND.png", width=700, height=700) 
+tiff("Delta GRND.png", width=600, height=1000, compression = "lzw") 
 levelplot(grnd_dff, layout=c(1, 3), par.settings = RdBuTheme, labels = F, scales = list(col = "white"), colorkey=list(labels=list(cex=1.3)))
 dev.off()
