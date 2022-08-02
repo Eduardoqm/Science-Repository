@@ -16,12 +16,12 @@ library(viridis)
 library(extRemes)
 library(boot)
 
-rasterOptions(tmpdir='/net/so4/landclim/equeiroz/tmp/') #Temporary folder on server
+#rasterOptions(tmpdir='/net/so4/landclim/equeiroz/tmp/') #Temporary folder on server
 
 #Load data ---------------------------------------------------------------------
-ws = brick("~/Data/ERA5_Single_Levels/ERA5 Single Levels- Wind Gust  - 2012_2020.nc") #Wind Gust from ERA5 Single Levels
-ppt = brick("~/Data/ERA5_land/Recurrent_Precipitation_ERA5-Land_2012_2020.nc") # Recurrent Precipitation from ERA5 Land
-tp = brick("~/Data/ERA5_land/Total_Precipitation_ERA5-Land_2012_2020.nc") #Total Precipitation from ERA5 Land
+ws = brick("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/UFZ Data/ERA5_Single_Levels/ERA5_SL-Wind_Gust-2012_2020.nc") #Wind Gust from ERA5 Single Levels
+ppt = brick("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/UFZ Data/ERA5_land/Recurrent_Precipitation_ERA5-Land_2012_2020.nc") # Recurrent Precipitation from ERA5 Land
+tp = brick("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/UFZ Data/ERA5_land/Total_Precipitation_ERA5-Land_2012_2020.nc") #Total Precipitation from ERA5 Land
 
 ponto = readOGR(dsn = "~/Data/Shapes", layer = "Area1_ponto") #Area-1 point
 tang = readOGR(dsn = "~/Data/Shapes", layer = "Tanguro_limites") #Area-1 point
