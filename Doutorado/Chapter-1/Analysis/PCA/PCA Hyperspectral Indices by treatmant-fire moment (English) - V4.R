@@ -13,6 +13,7 @@ library(extrafont)
 library(ggplot2)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
+windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data =============================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -133,7 +134,7 @@ eig_gg = eigvect %>%
   ggplot(aes(x = name, y = Dim.1))+
   geom_bar(stat = "identity")+
   geom_hline(yintercept = 0, linetype = "dashed")+
-  xlab(NULL)+ylab("Loadings (Autovectores)")+
+  xlab(NULL)+ylab("Loadings (Autovectors)")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   theme(text = element_text(family = "Times New Roman", size = 14))

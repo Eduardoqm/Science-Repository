@@ -13,6 +13,7 @@ library(extrafont)
 library(ggplot2)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
+windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data =============================================================================================
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -62,13 +63,13 @@ treat = treat %>%
 
 #Join everything
 df3 = cbind(treat$year, treat$treat, treat$y,  evi,ndvi,vari,vig,msi,ndii,ndwi,pssr,psri,sipi,wbi,pri,rendvi,nirv, lwvi2, nbr, nbr2)
-colnames(df3)[1:3] = c("Ano", "Parcela", "y")
+colnames(df3)[1:3] = c("Year", "Treatment", "y")
 
 #Change names
-df3$Parcela = as.character(df3$Parcela)
-df3$Parcela[df3$Parcela == "b1yr"] <- "B1yr"
-df3$Parcela[df3$Parcela == "b3yr"] <- "B3yr"
-df3$Parcela[df3$Parcela == "control"] <- "Controle"
+df3$Treatment = as.character(df3$Treatment)
+df3$Treatment[df3$Treatment == "b1yr"] <- "B1yr"
+df3$Treatment[df3$Treatment == "b3yr"] <- "B3yr"
+df3$Treatment[df3$Treatment == "control"] <- "Control"
 
 #Edge - Core separation ====================================================================
 summary(df3$y)
@@ -81,14 +82,14 @@ df3$dist = abs(df3$dist)
 summary(df3$dist)
 
 df3$dist2 = c("a")
-df3$dist2[df3$dist <= 250] = c("Borda")
+df3$dist2[df3$dist <= 250] = c("Edge")
 df3$dist2[df3$dist > 250] = c("Interior")
 
 #Make data frame by year ======================================
 getyear = function(x){
   df3 %>% 
     na.omit() %>% 
-    filter(Ano == x)
+    filter(Year == x)
 }
 
 p2004 = getyear(2004)
@@ -105,7 +106,7 @@ ggpca = function(w){
   z = w
   w = PCA(w[,c(-1, -2, -3, -21, -22)], graph = F)
   w_gg = as.data.frame(w$ind$coord)
-  w_gg$Parcela = z$Parcela
+  w_gg$Treatment = z$Treatment
   w_gg$Dist = z$dist2
   
   coord = as.data.frame(w$var$coord)
@@ -113,7 +114,7 @@ ggpca = function(w){
   coord$Dim.2 = coord$Dim.2*10
   
   ggplot()+
-    geom_point(data=w_gg, aes(x=Dim.1, y=Dim.2, shape = Dist, col = Parcela),
+    geom_point(data=w_gg, aes(x=Dim.1, y=Dim.2, shape = Dist, col = Treatment),
                alpha = 0.3, size = 2)+
     geom_segment(data=coord, aes(xend=Dim.1, yend=Dim.2),x=0,y=0,
                  arrow = arrow(length = unit(0.2, "cm")), col = "#525252")+
@@ -125,7 +126,7 @@ ggpca = function(w){
     ylab(paste0("PC2 ", format(round(w$eig[2,2], 1), nsmall = 1), "%"))+
     scale_color_manual(values=c("orange", "red", "blue"))+
     scale_shape_manual(values = c(17, 19))+
-    theme(text = element_text(family = "Times New Roman", size = 14))+
+    theme(text = element_text(family = "Times New Roman"))+
     theme(legend.position = c(30, 30))
 }
 
