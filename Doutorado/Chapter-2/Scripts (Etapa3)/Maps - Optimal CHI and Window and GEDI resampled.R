@@ -79,7 +79,7 @@ a = ggplot(opt_chi2)+
   geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
-  labs(x=NULL, y=NULL, title = "Optimal Chi Coefficient")+
+  labs(x=NULL, y=NULL, title = "a) Optimal Chi Coefficient")+
   #scale_fill_viridis(option = "plasma", direction = -1, limits=c(0, 0.27943), name = "Chi q = 0.9")+
   scale_fill_gradient(low = "#f7fcb9", high = "blue",
                       limits=c(0.0, 0.27943), name = "Chi q = 0.9")+
@@ -94,7 +94,7 @@ b = ggplot(opt_chi2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
   scale_fill_manual(values = c('#bdd7e7','#6baed6','#3182bd','#08519c','#bae4b3','#74c476','#238b45','#006d2c','#fcae91','#fb6a4a','#cb181d','#a50f15'))+
-  labs(x=NULL, y=NULL, title = "Optimal Temporal/Spatial Window")+
+  labs(x=NULL, y=NULL, title = "b) Optimal Temporal-Spatial Window")+
   theme_minimal()+
   theme(text = element_text(size = 14)); b
 
