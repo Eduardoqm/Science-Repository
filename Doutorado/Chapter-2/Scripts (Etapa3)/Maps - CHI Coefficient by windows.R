@@ -29,11 +29,17 @@ p7 = read.csv("ERA5_Block_7pixel_1979_2020.csv", sep = ",")
 
 opt_chi = rbind(p1, p3, p5, p7)
 
-#opt_chi$degrees = as.character(opt_chi$degrees)
-#opt_chi$degrees[opt_chi$degrees == "0.25Â°"] = c("0.25°")
-#opt_chi$degrees[opt_chi$degrees == "0.75Â°"] = c("0.75°")
-#opt_chi$degrees[opt_chi$degrees == "1.25Â°"] = c("1.25°")
-#opt_chi$degrees[opt_chi$degrees == "1.75Â°"] = c("1.75°")
+#Optimal Chi Coefficient Map ---------------------------------------------------
+opt_chi = opt_chi %>%
+  group_by(xy, window, degrees) %>%
+  slice(which.max(CHI)) %>%
+  ungroup()
+
+opt_chi$degrees = as.character(opt_chi$degrees)
+opt_chi$degrees[opt_chi$degrees == "0.25Â°"] = c("0.25°")
+opt_chi$degrees[opt_chi$degrees == "0.75Â°"] = c("0.75°")
+opt_chi$degrees[opt_chi$degrees == "1.25Â°"] = c("1.25°")
+opt_chi$degrees[opt_chi$degrees == "1.75Â°"] = c("1.75°")
 
 #Shapes
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup ETH Server/Data")
@@ -45,12 +51,13 @@ bio = readOGR("Shapes/Limit_bioma_xingu.shp")
 bio = st_as_sf(bio)
 
 #Different surronding Chi Coefficient Map ------------------------------------------
-#opt_chi2 = opt_chi %>% 
-#  separate(xy, c("x", "y"), sep = "_")
-
-d1 = opt_chi %>% 
-  filter(window == "1d") %>% 
+opt_chi2 = opt_chi %>% 
   separate(xy, c("x", "y"), sep = "_")
+opt_chi2$x = as.numeric(opt_chi2$x)
+opt_chi2$y = as.numeric(opt_chi2$y)
+
+d1 = opt_chi2 %>% 
+  filter(window == "1d")
 
 d3 = opt_chi2 %>% 
   filter(window == "3d")
@@ -92,10 +99,13 @@ ggsave(filename = "1d_CHIMap_1979_2020.png", plot = a,
        path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
        width = 30, height = 15, units = "cm", dpi = 300)
 
+ggsave(filename = "3d_CHIMap_1979_2020.png", plot = b,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 30, height = 15, units = "cm", dpi = 300)
 
-
-
-
+ggsave(filename = "5d_CHIMap_1979_2020.png", plot = c,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 30, height = 15, units = "cm", dpi = 300)
 
 
 
