@@ -110,8 +110,10 @@ ggsave(filename = "5d_CHIMap_1979_2020.png", plot = c,
 
 
 
+library(plotly)
 
-
+ggplotly(a)
+ggplotly(c)
 
 
 

@@ -20,6 +20,7 @@ library(scales)
 library(viridis)
 library(rgdal)
 library(sf)
+library(plotly)
 
 #Load data ---------------------------------------------------------------------
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
@@ -32,21 +33,26 @@ colnames(fire) = c("id", "Fire", "x", "y")
 
 opt_chi = read.csv("Optimal_ERA5_Block_1979_2020.csv", sep = ",")
 
-opt_chi$Class = as.character(opt_chi$Class)
-opt_chi$Class[opt_chi$Class == "1d, 0.25Â°"] = c("1d, 0.25°")
-opt_chi$Class[opt_chi$Class == "1d, 0.75Â°"] = c("1d, 0.75°")
-opt_chi$Class[opt_chi$Class == "1d, 1.25Â°"] = c("1d, 1.25°")
-opt_chi$Class[opt_chi$Class == "1d, 1.75Â°"] = c("1d, 1.75°")
+opt_chi2 = opt_chi %>%
+  group_by(x, y) %>%
+  slice(which.max(CHI))%>%
+  ungroup()
 
-opt_chi$Class[opt_chi$Class == "3d, 0.25Â°"] = c("3d, 0.25°")
-opt_chi$Class[opt_chi$Class == "3d, 0.75Â°"] = c("3d, 0.75°")
-opt_chi$Class[opt_chi$Class == "3d, 1.25Â°"] = c("3d, 1.25°")
-opt_chi$Class[opt_chi$Class == "3d, 1.75Â°"] = c("3d, 1.75°")
+opt_chi2$Class = as.character(opt_chi2$Class)
+opt_chi2$Class[opt_chi2$Class == "1d, 0.25Â°"] = c("1d, 0.25°")
+opt_chi2$Class[opt_chi2$Class == "1d, 0.75Â°"] = c("1d, 0.75°")
+opt_chi2$Class[opt_chi2$Class == "1d, 1.25Â°"] = c("1d, 1.25°")
+opt_chi2$Class[opt_chi2$Class == "1d, 1.75Â°"] = c("1d, 1.75°")
 
-opt_chi$Class[opt_chi$Class == "5d, 0.25Â°"] = c("5d, 0.25°")
-opt_chi$Class[opt_chi$Class == "5d, 0.75Â°"] = c("5d, 0.75°")
-opt_chi$Class[opt_chi$Class == "5d, 1.25Â°"] = c("5d, 1.25°")
-opt_chi$Class[opt_chi$Class == "5d, 1.75Â°"] = c("5d, 1.75°")
+opt_chi2$Class[opt_chi2$Class == "3d, 0.25Â°"] = c("3d, 0.25°")
+opt_chi2$Class[opt_chi2$Class == "3d, 0.75Â°"] = c("3d, 0.75°")
+opt_chi2$Class[opt_chi2$Class == "3d, 1.25Â°"] = c("3d, 1.25°")
+opt_chi2$Class[opt_chi2$Class == "3d, 1.75Â°"] = c("3d, 1.75°")
+
+opt_chi2$Class[opt_chi2$Class == "5d, 0.25Â°"] = c("5d, 0.25°")
+opt_chi2$Class[opt_chi2$Class == "5d, 0.75Â°"] = c("5d, 0.75°")
+opt_chi2$Class[opt_chi2$Class == "5d, 1.25Â°"] = c("5d, 1.25°")
+opt_chi2$Class[opt_chi2$Class == "5d, 1.75Â°"] = c("5d, 1.75°")
 
 #Shapes
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup ETH Server/Data")
@@ -59,11 +65,6 @@ bio = st_as_sf(bio)
 
 
 #Optimal Chi Coefficient Map ---------------------------------------------------
-opt_chi2 = opt_chi %>%
-  group_by(x, y) %>%
-  slice(which.max(CHI))%>%
-  ungroup()
-
 #Area 1 point
 pont = opt_chi2 %>%
   filter(x == -52.25) %>%
@@ -85,6 +86,8 @@ a = ggplot(opt_chi2)+
                       limits=c(0.0, 0.27943), name = "Chi q = 0.9")+
   theme_minimal()+
   theme(text = element_text(size = 14)); a
+
+#ggplotly(a)
 
 #Optimal Temporal/Spatial Windowns Map -----------------------------------------
 b = ggplot(opt_chi2)+
