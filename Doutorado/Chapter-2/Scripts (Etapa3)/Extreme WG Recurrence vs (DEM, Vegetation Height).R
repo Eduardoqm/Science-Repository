@@ -79,9 +79,47 @@ ggsave(filename = "Forest Height x Extreme Wind (1979-2020).png", plot = b,
 
 
 #Map of Digital Elevation Model ----------------------------------------------------------
+#Shapes
+setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup ETH Server/Data")
+
+xingu <- readOGR("Shapes/Xingu_MT.shp")
+xingu = st_as_sf(xingu)
+
+bio = readOGR("Shapes/Limit_bioma_xingu.shp")
+bio = st_as_sf(bio)
 
 
+#Optimal Chi Coefficient Map ---------------------------------------------------
+#Area 1 point
+df2 = df %>% 
+  separate(xy, c("x","y"), sep = "_")
 
+df2$x = as.numeric(df2$x)
+df2$y = as.numeric(df2$y)
+
+pont = df2 %>% filter(x == -52.25) %>% filter(y == -13)
+#Small adjusts
+pont$x = pont$x + 0.125
+pont$y = pont$y - 0.125
+
+
+#The Mao ------------------------------------------------------------------------
+eqm = c("white","gray","brown","orange","green","darkgreen")
+
+map = ggplot(df2)+
+  geom_raster(aes(x, y, fill = DEM))+
+  geom_point(data = pont, aes(x, y), col = "white", shape = 2, size = 3, stroke = 2)+
+  geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
+  geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
+  coord_sf()+
+  labs(x=NULL, y=NULL, title = "Digital Elevation Model")+
+  scale_fill_gradientn(colours = eqm, limits=c(155, 655), name = "Meters")+
+  theme_minimal()+
+  theme(text = element_text(size = 14)); map
+
+ggsave(filename = "Xingu_Digital Elevation Model.png", plot = map,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 20, height = 16, units = "cm", dpi = 300)
 
 
 
