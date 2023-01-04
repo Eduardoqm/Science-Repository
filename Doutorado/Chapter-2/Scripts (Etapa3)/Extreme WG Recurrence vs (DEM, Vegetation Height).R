@@ -46,6 +46,8 @@ pont = df %>% filter(xy == "-52.25_-13") #Area1 point
 #Correlation plots ------------------------------------------------------------
 a = ggplot(df, aes(x=DEM, y=Recurrence))+
   geom_point(aes(col = Biome), size = 4, alpha = 0.7)+
+  geom_point(data = pont, aes(x=DEM, y=Recurrence), col = "red", alpha = 0.7,
+             shape = 24, size = 3, stroke = 2)+
   stat_cor(show.legend = F)+
   geom_smooth(col = "black")+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
@@ -58,6 +60,8 @@ a = ggplot(df, aes(x=DEM, y=Recurrence))+
 
 b = ggplot(df, aes(x=Recurrence, y=Higth))+
   geom_point(aes(col = Biome), size = 4, alpha = 0.7)+
+  geom_point(data = pont, aes(x=Recurrence, y=Higth), col = "red", alpha = 0.7,
+             shape = 24, size = 3, stroke = 2)+
   stat_cor(show.legend = F, label.y.npc="top", label.x.npc = 0.4)+
   facet_wrap(~Biome)+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
