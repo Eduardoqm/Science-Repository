@@ -1,2 +1,2 @@
 # Science Repository
- Meus scripts utilisados em minhas pesquisas e processamento de dados
+ Meus scripts utilizados em minhas pesquisas e processamento de dados
