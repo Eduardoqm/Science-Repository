@@ -32,14 +32,14 @@ quantile(df$Wind, probs = 0.9)
 
 dens = ggplot(df, aes(x = Wind))+
   geom_density(fill = "red", alpha = 0.5)+
-  geom_vline(xintercept =  10.17, col = "blue")+
-  annotate(geom = "text", x = 12, y = 0.2, col = "blue", label = "0.9 quantile
+  geom_vline(xintercept =  10.17, col = "black")+
+  annotate(geom = "text", x = 12, y = 0.2, col = "black", label = "Quantil 0.9
 (10.17 m/s)")+
-  labs(y = NULL, x = "Wind Gust (m/s)", title = "a) Dialy Maximum Wind Gust")+
+  labs(y = NULL, x = "Rajada de vento (m/s)", title = "a) Máxima Diária de Rajada de Vento")+
   theme_bw();dens
 
-ggsave(filename = "Extreme_WG_minimal_hist_1979_2020.png", plot = dens,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Extreme_WG_minimal_hist_1979_2020_port.png", plot = dens,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
 #Count Wind Gust higher than 10.17 --------------------------------------------
@@ -78,38 +78,20 @@ a = ggplot(df3)+
   geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
-  labs(x=NULL, y=NULL, title = "b) Extreme Wind (1979-2020)")+
+  labs(x=NULL, y=NULL, title = "b) Vento Extremo (1979-2020)")+
   scale_fill_viridis(option = "magma",
                      direction = -1, limits=c(4.9, 21),
-                     name = "Wind > 10 m/s")+
+                     name = "> 10 m/s")+
   theme_minimal()+
   theme(text = element_text(size = 14)); a
 
 
 
-ggsave(filename = "Xingu_Extreme_WG_frequency_1979_2020.png", plot = a,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Xingu_Extreme_WG_frequency_1979_2020_port.png", plot = a,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 12, units = "cm", dpi = 300)
        #width = 20, height = 16, units = "cm", dpi = 300)
 
-#setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
-#write.csv(df3, "Extreme_WG_Recurrence.csv", sep = ",", row.names = F)
-
-#Other atempts --------------------------------------------------------------
-df4 = df2
-df4$date = substr(df4$date, 1, 4)
-
-ggplot(df4, aes(x = date))+
-  geom_bar()
-
-
-df4 = df4 %>% 
-  group_by(date) %>% 
-  summarise(Recurrence = length(Wind))
-df4$grp = c("a")  
-
-ggplot(df4, aes(x = date, y = Recurrence))+
-  geom_line(aes(group = grp))
 
 
 

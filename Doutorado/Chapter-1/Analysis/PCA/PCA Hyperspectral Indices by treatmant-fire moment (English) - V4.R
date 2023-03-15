@@ -134,10 +134,10 @@ eig_gg = eigvect %>%
   ggplot(aes(x = name, y = Dim.1))+
   geom_bar(stat = "identity")+
   geom_hline(yintercept = 0, linetype = "dashed")+
-  xlab(NULL)+ylab("Loadings (Autovectors)")+
+  xlab(NULL)+ylab("Loadings (Eigenvectors)")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+  theme(text = element_text(family = "Times New Roman", size = 14)); eig_gg
 
 #ggsave(filename = "Eigenvectors_full_hyper.png", plot = eig_gg,
 #     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 15, height = 10, units = "cm", dpi = 300)
@@ -265,10 +265,16 @@ d = fire2_plot + ggtitle("D")#+ylim(-3, 10)+xlim(-18,11)
 pca_panel = ggarrange(a,b,c,d,
                       common.legend = TRUE,
                       legend="right",
-                      ncol = 2, nrow = 2); pca_panel
+                      ncol = 1, nrow = 4); pca_panel
 
 ggsave(filename = "PCA_panel3.png", plot = pca_panel,
-     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion", width = 35, height = 35, units = "cm", dpi = 300)
+     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion",limitsize = F, width = 19, height = 46, units = "cm", dpi = 300)
+
+
+
+
+
+
 
 
 #Without legend ===============================================================

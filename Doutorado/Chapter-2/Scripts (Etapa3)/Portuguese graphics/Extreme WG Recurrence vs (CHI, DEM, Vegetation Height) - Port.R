@@ -68,9 +68,9 @@ a = ggplot(df, aes(x=CHI, y=Frequency))+
   stat_cor(show.legend = F)+
   geom_smooth(col = "black", method = "lm")+
   #scale_colour_manual(values = c("darkgreen", "darkorange"))+
-  labs(x="CHI Coefficient",
-       y="Frequency/year of Wind Gust (>10 m/s)",
-       title = "a) Extreme Wind (1979-2020) x Opitmal CHI")+
+  labs(x=" Coeficiente CHI",
+       y="Frequência anual de Rajadas de Vento (>10 m/s)",
+       title = "a)")+
   #theme_minimal()+
   theme(legend.position = c(0.85, 0.8)); a
 
@@ -81,9 +81,9 @@ b = ggplot(df, aes(x=DEM, y=Frequency))+
   stat_cor(show.legend = F)+
   geom_smooth(aes(x=DEM, y=predito), col = "black")+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
-  labs(x="Elevation Above Sea Level (m)",
-       y="Frequency/year of Wind Gust (>10 m/s)",
-       title = "c) Extreme Wind (1979-2020) x Elevation Model")+
+  labs(x="Elecação acima do nível do mar (m)",
+       y="Frequência anual de Rajadas de Vento (>10 m/s)",
+       title = "c)", col = "Bioma")+
   #theme_minimal()+
   theme(legend.position = c(0.85, 0.2)); b
 
@@ -97,23 +97,23 @@ c = ggplot(df, aes(x=Frequency, y=Higth))+
   #facet_wrap(~Biome)+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
   geom_smooth(method = "lm", col = "black")+
-  labs(x="Frequency/year of Wind Gust (>10 m/s)",
-       y="Vegetation Height (m)",
-       title = "e) Forest Height (2019) x Extreme Wind (1979-2020)")+
+  labs(x="Frequência anual de Rajadas de Vento (>10 m/s)",
+       y="Altura da Vegetação Florestal (m)",
+       title = "e)", col = "Bioma")+
   #theme_minimal()+
   theme(legend.position = c(0.09, 0.15)); c
 
 
-ggsave(filename = "Extreme Wind (1979-2020) x CHI.png", plot = a,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Extreme Wind (1979-2020) x CHI_port.png", plot = a,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
-ggsave(filename = "Extreme Wind (1979-2020) x Elevation Model.png", plot = b,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Extreme Wind (1979-2020) x Elevation Model_port.png", plot = b,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
-ggsave(filename = "Forest Height x Extreme Wind (1979-2020).png", plot = c,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Forest Height x Extreme Wind (1979-2020)_port.png", plot = c,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
 

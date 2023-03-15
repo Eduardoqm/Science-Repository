@@ -82,7 +82,7 @@ a = ggplot(opt_chi2)+
   geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
-  labs(x=NULL, y=NULL, title = "a) Optimal Chi Coefficient")+
+  labs(x=NULL, y=NULL, title = "a) Ótimo Coeficiente Chi")+
   #scale_fill_viridis(option = "plasma", direction = -1, limits=c(0, 0.27943), name = "Chi q = 0.9")+
   scale_fill_gradient(low = "#f7fcb9", high = "blue",
                       limits=c(0.0, 0.27943), name = "Chi q = 0.9")+
@@ -99,7 +99,8 @@ b = ggplot(opt_chi2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
   scale_fill_manual(values = c('#bdd7e7','#6baed6','#3182bd','#08519c','#bae4b3','#74c476','#238b45','#006d2c','#fcae91','#fb6a4a','#cb181d','#a50f15'))+
-  labs(x=NULL, y=NULL, title = "b) Optimal Temporal-Spatial Window")+
+  labs(x=NULL, y=NULL, title = "b) Janela Espaço-Temporal Ótima",
+       fill = "Classe")+
   theme_minimal()+
   theme(text = element_text(size = 14)); b
 
@@ -111,10 +112,10 @@ c = ggplot(gedi)+
   geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
-  labs(x=NULL, y=NULL, title = "f) Forest Crown Height")+
+  labs(x=NULL, y=NULL, title = "f) Altura da Floresta")+
   #scale_fill_viridis(option = "mako", direction = -1, limits=c(0, 30), name = "Height (m)")+
   scale_fill_gradient(low = "#f7fcb9", high = "darkgreen",
-                       limits=c(0, 25), name = "Height (m)")+
+                       limits=c(0, 25), name = "Metros")+
   theme_minimal()+
   theme(text = element_text(size = 14)); c
 
@@ -131,8 +132,8 @@ d = ggplot(dem2)+
   geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
-  labs(x=NULL, y=NULL, title = "d) Digital Elevation Model")+
-  scale_fill_gradientn(colours = eqm, limits=c(155, 655), name = "Meters")+
+  labs(x=NULL, y=NULL, title = "d) Modelo de Elevação")+
+  scale_fill_gradientn(colours = eqm, limits=c(155, 655), name = "Metros")+
   theme_minimal()+
   theme(text = element_text(size = 14)); d
 
@@ -151,24 +152,24 @@ e = ggplot(fire)+
   theme(text = element_text(size = 14)); e
 
 
-ggsave(filename = "Xingu_Optimal_CHIMap_1979_2020.png", plot = a,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 20, height = 16, units = "cm", dpi = 300)
-
-ggsave(filename = "Xingu_Optimal_Window_1979_2020.png", plot = b,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 20, height = 16, units = "cm", dpi = 300)
-
-ggsave(filename = "Xingu_Vegetation_Height_2019.png", plot = c,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Xingu_Optimal_CHIMap_1979_2020_port.png", plot = a,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 12, units = "cm", dpi = 300)
 
-ggsave(filename = "Xingu_Digital Elevation Model.png", plot = d,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Xingu_Optimal_Window_1979_2020_port.png", plot = b,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 12, units = "cm", dpi = 300)
 
-ggsave(filename = "Xingu_Fire_freq_1985_2020.png", plot = e,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Xingu_Vegetation_Height_2019_port.png", plot = c,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
+       width = 16, height = 12, units = "cm", dpi = 300)
+
+ggsave(filename = "Xingu_Digital Elevation Model_port.png", plot = d,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
+       width = 16, height = 12, units = "cm", dpi = 300)
+
+ggsave(filename = "Xingu_Fire_freq_1985_2020_port.png", plot = e,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 20, height = 16, units = "cm", dpi = 300)
 
 
@@ -185,8 +186,8 @@ e = ggplot(fire)+
   theme(text = element_text(size = 14)); e
 
 
-ggsave(filename = "Xingu_Limits.png", plot = e,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Xingu_Limits_port.png", plot = e,
+       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 20, height = 16, units = "cm", dpi = 300)
 
 
@@ -199,7 +200,7 @@ library(av)
 d2 = plot_gg(d, width = 5, height = 5, raytrace = T, preview = F)#;d2
 
 render_movie(d2,
-             filename = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures/Xingu_DEM.mp4",
+             filename = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures/Xingu_DEM.mp4",
              type = "orbit", frames = 500, fps = 25, phi = 30, zoom = 0.8, theta = 0)
 
 
@@ -207,7 +208,7 @@ render_movie(d2,
 c2 = plot_gg(c, width = 5, height = 5, raytrace = T, preview = F)#;c2
 
 render_movie(c2,
-             filename = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures/Xingu_GEDI.mp4",
+             filename = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures/Xingu_GEDI.mp4",
              type = "orbit", frames = 500, fps = 25, phi = 30, zoom = 0.8, theta = 0)
 
 
