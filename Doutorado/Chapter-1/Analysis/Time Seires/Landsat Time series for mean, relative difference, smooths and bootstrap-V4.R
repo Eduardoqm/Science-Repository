@@ -64,6 +64,20 @@ df$dist2[df$dist > 250] = c("Interior")
 #  geom_point(aes(shape = dist2), alpha = 0.35, size = 3)+
 #  scale_color_manual(values = c("orange","red","blue"))
 
+resfun = function(){
+  df = dfm %>% 
+    group_by(x, y) %>%
+    filter(year == 2004)
+    filter(index == 'EVI') %>% 
+    filter(treat == 'B3yr') %>% 
+  return(df)
+}
+  
+f1 = c(dfm$value, 0.5)
+
+
+output = boot(data = dfm, statistic = resfun, R = 100, formula = f1)
+
 #Smooth time series ===============================================
 df_smt = df #%>% select(x, y, index, year, treat, value)
 #df_smt$year = as.character(df_smt$year)
