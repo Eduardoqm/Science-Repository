@@ -64,19 +64,54 @@ df$dist2[df$dist > 250] = c("Interior")
 #  geom_point(aes(shape = dist2), alpha = 0.35, size = 3)+
 #  scale_color_manual(values = c("orange","red","blue"))
 
-resfun = function(){
-  df = dfm %>% 
-    group_by(x, y) %>%
-    filter(year == 2004)
-    filter(index == 'EVI') %>% 
-    filter(treat == 'B3yr') %>% 
-  return(df)
-}
+# Confidence intervals ----------------------------------------------------
+grnd_df = df %>% 
+  na.omit() %>% 
+  filter(index == "GRND") %>% 
+  filter(treat == "B1yr") %>% 
+  filter(year == 1985)
+
+model = lm(value ~ 1, grnd_df)
+
+confint(model, level = 0.95)
+
+
+condef = data.frame(grnd_df$year[1], mean(grnd_df$value), confint(model, level = 0.95)[1], confint(model, level = 0.95)[2]) 
+colnames(condef) = c("year", "mean", "low", "upper")
+
+
+grnd_df = df %>% 
+  na.omit() %>% 
+  filter(index == "GRND") %>% 
+  filter(treat == "B1yr")
+
+ylp = c(1986:2011, 2013:2019)
+
+
+for (z in ylp) {
+  data = grnd_df %>%
+    filter(year == z)
   
-f1 = c(dfm$value, 0.5)
+  model = lm(value ~ 1, data)
+  
+  
+  condefx = data.frame(z, mean(data$value), confint(model, level = 0.95)[1], confint(model, level = 0.95)[2])
+  colnames(condefx) = c("year", "mean", "low", "upper")
+
+    condef = rbind(condef, condefx)
+  
+  print(confint(model, level = 0.95))
+  
+}
 
 
-output = boot(data = dfm, statistic = resfun, R = 100, formula = f1)
+ggplot(condef, aes(x=year, y=mean))+
+  geom_line()+
+  geom_ribbon(aes(ymin = low, ymax = upper), alpha = 0.2)
+
+
+
+
 
 #Smooth time series ===============================================
 df_smt = df #%>% select(x, y, index, year, treat, value)
@@ -87,14 +122,15 @@ colnames(df_smt) = c("x","y","Indice","Year","Treatment","Valor","Dist","Dist2")
 eqm = c("orange", "red", "blue") #My color palette
 
 smtplot = ggplot(df_smt, aes(x=Year, y=Valor, color = Treatment))+
-  geom_smooth(aes(group=Treatment), alpha = 0.5, size = 1, level = 0.9999999999999)+
+  geom_smooth(method='gam',aes(group=Treatment), alpha = 0.5, size = 1, level = 0.999, se = T)+
   geom_vline(xintercept = 2004, linetype = "dashed")+
   geom_vline(xintercept = 2011, linetype = "dashed")+
   #stat_summary(geom="line", fun.data="mean_cl_boot", size = 0.5, linetype = "dashed", aes(group=Tratamento))+
-  stat_summary(geom="point", fun.data="mean_cl_boot",
-               size = 2, alpha = 0.6, aes(group=Treatment, shape = Treatment))+
+ # stat_summary(geom="point", fun.data="mean_cl_boot",
+  #             size = 2, alpha = 0.6, aes(group=Treatment, shape = Treatment))+
+  stat_summary(geom="point", fun.y="mean", size = 2, alpha = 0.6, aes(group=Treatment, shape = Treatment))+
   #stat_summary(geom="pointrange", fun.data="mean_cl_boot", alpha = 0.5, aes(group=Tratamento))+
-  #stat_summary(fun.data = "mean_cl_boot", geom = "errorbar")+
+  stat_summary(fun.y="mean", geom = "errorbar", aes(group=Treatment))+
   facet_grid(rows = vars(Indice), scales = "free")+
   theme_bw()+
   #theme(axis.text.x = element_text(angle = 90))+
@@ -157,6 +193,35 @@ difplot = ggplot(df_diff, aes(x=Year, y=Valor, color = Indice))+
 #ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
 #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
 #     width = 20, height = 10, units =  "cm", dpi = 300)
+
+
+# Confidence intervals ----------------------------------------------------
+grnd_diff = df_diff %>% 
+  filter(Indice == "GRND") %>% 
+  filter(Treatment == "B1yr")
+
+m_value = mean(grnd_diff$Valor) #Mean
+n = length(grnd_diff$Valor)    #Number of data
+sdev = sd(grnd_diff$Valor)     #Standard Deviation
+s_error = sdev/sqrt(n)         #Standard Error
+
+
+alpha = 0.05
+d_free = n - 1 #Degrees of freedom
+t_score = qt(p=alpha/2, df=d_free,lower.tail=F)
+m_error <- t_score * s_error #Margin error
+
+
+#Calculating lower bound and upper bound
+lower_bound <- m_value - m_error
+upper_bound <- m_value + m_error
+
+#Print the confidence interval
+print(c(lower_bound,upper_bound))
+
+
+
+
 
 
 
