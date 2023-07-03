@@ -190,6 +190,18 @@ difplot = ggplot(df_diff, aes(x=Year, y=Valor, color = Indice))+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
   theme(text = element_text(family = "Times New Roman", size = 14)); difplot
 
+#ggplot(df_diff, aes(x=Year, y=Valor, color = Indice))+
+#  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
+#  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+#  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
+#  geom_point(size = 1.5, alpha = 0.8)+
+#  facet_grid(cols = vars(Treatment), rows = vars(Indice))+
+#  labs(y = "Burned - Control (% of difference)")+
+#  theme_bw()+
+#  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
+#  scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
+#  theme(text = element_text(family = "Times New Roman", size = 14))
+
 #ggsave(filename = "Landsat_1985-2019_diff.png", plot = difplot,
 #      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
 #     width = 20, height = 10, units =  "cm", dpi = 300)
