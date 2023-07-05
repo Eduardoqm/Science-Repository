@@ -62,45 +62,8 @@ dfm = df %>%
   summarise(value = mean(value)) %>% 
   ungroup()
 
-#Diference by sbtraction ===========================================
-#Calculate difference in relation of control
-df_crt = filter(dfm, treat == "Control")
-df_b3yr = filter(dfm, treat == "B3yr")
-df_b1yr = filter(dfm, treat == "B1yr")
-
-df_b3yr$value = 100 - ((df_b3yr$value*100)/df_crt$value)
-df_b1yr$value = 100 - ((df_b1yr$value*100)/df_crt$value)
-df_diff = rbind(df_b3yr, df_b1yr)
-colnames(df_diff) = c("Year", "Treatment", "Indice","Valor")
-
-difplot = ggplot(df_diff, aes(x=Year, y=Valor, color = Indice))+
-  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
-  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
-  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
-  geom_point(size = 1.5, alpha = 0.8)+
-  facet_grid(rows = vars(Treatment))+
-  labs(y = "Burned - Control (% of difference)")+
-  theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
-  scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
-  theme(text = element_text(family = "Times New Roman", size = 14)); difplot
-
-
-ggplot(df_diff, aes(x=Year, y=Valor, color = Indice))+
-  geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
-  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
-  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
-  geom_point(size = 1.5, alpha = 0.8)+
-  facet_grid(cols = vars(Treatment), rows = vars(Indice))+
-  labs(y = "Burned - Control (% of difference)")+
-  theme_bw()+
-  geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
-  scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
-
 
 # Confidence intervals ----------------------------------------------------
-
 desconfidence = function(ind){
   grnd_df = df %>% 
     na.omit() %>% 
@@ -178,8 +141,46 @@ desconfidence = function(ind){
     print(confint(model, level = 0.95))
   }
   
-  condefC = rbind(condef, condefB)
-  return(condefC)
+  grnd_df = df %>% 
+    na.omit() %>% 
+    filter(index == ind) %>% 
+    filter(treat == "Control") %>% 
+    filter(year == 1985)
+  
+  model = lm(value ~ 1, grnd_df)
+  
+  confint(model, level = 0.95)
+  
+  
+  condefC = data.frame(grnd_df$index[1], grnd_df$treat[1], grnd_df$year[1], mean(grnd_df$value), confint(model, level = 0.95)[1], confint(model, level = 0.95)[2]) 
+  colnames(condefC) = c("index", "treat", "year", "mean", "low", "upper")
+  
+  
+  grnd_df = df %>% 
+    na.omit() %>% 
+    filter(index == ind) %>% 
+    filter(treat == "Control")
+  
+  ylp = c(1986:2011, 2013:2019)
+  
+  
+  for (z in ylp) {
+    data = grnd_df %>%
+      filter(year == z)
+    
+    model = lm(value ~ 1, data)
+    
+    
+    condefxC = data.frame( grnd_df$index[1], grnd_df$treat[1], z, mean(data$value), confint(model, level = 0.95)[1], confint(model, level = 0.95)[2])
+    colnames(condefxC) = c("index", "treat", "year", "mean", "low", "upper")
+    
+    condefC = rbind(condefC, condefxC)
+    
+    print(confint(model, level = 0.95))
+  }
+  
+  condefD = rbind(condef, condefB, condefC)
+  return(condefD)
 }
 
 
@@ -190,9 +191,6 @@ conf_grnd = desconfidence("GRND")
 conf_nbr = desconfidence("NBR")
 conf_nbr2 = desconfidence("NBR2")
 
-
-
-
 confi = rbind(conf_evi, conf_ndvi, conf_ndii, conf_grnd, conf_nbr, conf_nbr2)
 
 
@@ -202,7 +200,7 @@ ggplot(confi, aes(x=year, y=mean, color = treat))+
   #geom_line(aes(group = treat), size = 1.5, alpha = 0.8)+
   #geom_ribbon(aes(ymin = low, ymax = upper, fill = treat, col = NULL), alpha = 0.2)+
   geom_errorbar(aes(ymin=low, ymax=upper), width=0)+
-  geom_line(data = df_crt, aes(x=year, y=value, group = index), size = 1.5, alpha = 0.8)+
+  #geom_line(data = df_crt, aes(x=year, y=value, group = index), size = 1.5, alpha = 0.8)+
   geom_point(size = 1, alpha = 0.8)+
   facet_grid(rows = vars(index), scales = "free")+
   labs(y = " ")+
@@ -213,31 +211,47 @@ ggplot(confi, aes(x=year, y=mean, color = treat))+
   theme(text = element_text(family = "Times New Roman", size = 14))
 
 
-
-
-
-
-
+#Diference by sbtraction ===========================================
+#Calculate difference in relation of control
+confi_crt = filter(confi, treat == "Control")
 confi_b3yr = filter(confi, treat == "B3yr")
 confi_b1yr = filter(confi, treat == "B1yr")
 
-confi_b3yr$value = 100 - ((confi_b3yr$mean*100)/df_crt$value)
-confi_b1yr$value = 100 - ((confi_b1yr$mean*100)/df_crt$value)
+confi_b3yr$value = 100 - ((confi_b3yr$mean*100)/confi_crt$mean)
+confi_b3yr$low = 100 - ((confi_b3yr$low*100)/confi_crt$mean)
+confi_b3yr$upper = 100 - ((confi_b3yr$upper*100)/confi_crt$mean)
+
+confi_b1yr$value = 100 - ((confi_b1yr$mean*100)/confi_crt$mean)
+confi_b1yr$low = 100 - ((confi_b1yr$low*100)/confi_crt$mean)
+confi_b1yr$upper = 100 - ((confi_b1yr$upper*100)/confi_crt$mean)
+
+
 confi_diff = rbind(confi_b3yr, confi_b1yr)
 colnames(confi_diff) = c( "Indice", "Treatment", "Year","mean", "low", "upper", "Valor")
 
 
-ggplot(confi_diff, aes(x=Year, y=Valor, color = Indice))+
+difplot = ggplot(confi_diff, aes(x = Year, y = Valor, color = Indice))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
   geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
-  geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
-  geom_point(size = 1.5, alpha = 0.8)+
-  facet_grid(rows = vars(Treatment))+
+  geom_line(aes(group = Indice), size = 0.5, alpha = 0.8)+
+  #geom_line(aes(group = Indice), size = 1.5, alpha = 0.8)+
+  #geom_point(size = 1.5, alpha = 0.8)+
+  #geom_ribbon(aes(ymin = low, ymax = upper, fill = Indice, color = NULL), alpha = 0.2)+
+  geom_errorbar(aes(ymin = low, ymax = upper), width = 1)+
+  facet_grid(cols = vars(Treatment), rows = vars(Indice))+
   labs(y = "Burned - Control (% of difference)")+
   theme_bw()+
   geom_hline(yintercept = 0, linetype = "dashed", size = 1)+
   scale_color_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
-  theme(text = element_text(family = "Times New Roman", size = 14))
+  scale_fill_manual(values = c('#377eb8','#1b9e77','#e41a1c','darkred','#ff7f00','#4daf4a'))+
+  theme(text = element_text(family = "Times New Roman", size = 14)); difplot
+
+
+
+
+ggsave(filename = "Landsat_1985-2019_diff_Confi_Intervals.png", plot = difplot,
+      path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+     width = 15, height = 20, units =  "cm", dpi = 300)
 
 
 
