@@ -2,7 +2,7 @@
 
 #Bonus: Map of DEM
 
-#Eduardo Q Marques 03-01-2023
+#Eduardo Q Marques 03-01-2023      updated: 31-10-2023
 
 library(tidyverse)
 library(reshape2)
@@ -11,11 +11,12 @@ library(ggpubr)
 library(RColorBrewer)
 library(scales)
 library(viridis)
-library(rgdal)
+#library(rgdal)
+library(terra)
 library(sf)
 
 #Load data --------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
 
 dem = read.csv("DEM_Xingu.csv")
 
@@ -41,10 +42,10 @@ gedi = gedi %>% unite("xy", x:y)
 bioma = bioma %>% unite("xy", x:y)
 chi = chi %>% unite("xy", x:y)
 
-df = full_join(dem, wg, id = "xy")
-df = full_join(df, gedi, id = "xy")
-df = full_join(df, chi, id = "xy")
-df = full_join(df, bioma, id = "xy")
+df = full_join(dem, wg, by = "xy")
+df = full_join(df, gedi, by = "xy")
+df = full_join(df, chi, by = "xy")
+df = full_join(df, bioma, by = "xy")
 
 
 df = df %>% na.omit()
@@ -69,7 +70,7 @@ a = ggplot(df, aes(x=CHI, y=Frequency))+
   geom_smooth(col = "black", method = "lm")+
   #scale_colour_manual(values = c("darkgreen", "darkorange"))+
   labs(x=" Coeficiente CHI",
-       y="FrequÍncia anual de Rajadas de Vento (>10 m/s)",
+       y="Frequ√™ncia anual de Rajadas de Vento (>10 m/s)",
        title = "a)")+
   #theme_minimal()+
   theme(legend.position = c(0.85, 0.8)); a
@@ -81,8 +82,8 @@ b = ggplot(df, aes(x=DEM, y=Frequency))+
   stat_cor(show.legend = F)+
   geom_smooth(aes(x=DEM, y=predito), col = "black")+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
-  labs(x="ElecaÁ„o acima do nÌvel do mar (m)",
-       y="FrequÍncia anual de Rajadas de Vento (>10 m/s)",
+  labs(x="Eleva√ß√£o acima do n√≠vel do mar (m)",
+       y="Frequ√™ncia anual de Rajadas de Vento (>10 m/s)",
        title = "c)", col = "Bioma")+
   #theme_minimal()+
   theme(legend.position = c(0.85, 0.2)); b
@@ -97,23 +98,23 @@ c = ggplot(df, aes(x=Frequency, y=Higth))+
   #facet_wrap(~Biome)+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
   geom_smooth(method = "lm", col = "black")+
-  labs(x="FrequÍncia anual de Rajadas de Vento (>10 m/s)",
-       y="Altura da VegetaÁ„o Florestal (m)",
+  labs(x="Frequ√™ncia anual de Rajadas de Vento (>10 m/s)",
+       y="Altura da Vegeta√ß√£o Florestal (m)",
        title = "e)", col = "Bioma")+
   #theme_minimal()+
   theme(legend.position = c(0.09, 0.15)); c
 
 
 ggsave(filename = "Extreme Wind (1979-2020) x CHI_port.png", plot = a,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
 ggsave(filename = "Extreme Wind (1979-2020) x Elevation Model_port.png", plot = b,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
 ggsave(filename = "Forest Height x Extreme Wind (1979-2020)_port.png", plot = c,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Tese_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
 
