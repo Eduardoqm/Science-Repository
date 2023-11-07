@@ -1,4 +1,4 @@
-#Extreme Wind Gust Recurrence vs (DEM, Vegetation Height) - Version 2
+#Extreme Wind Gust Recurrence vs (DEM, Precipitation, Vegetation Height) - V2
 
 #Bonus: Map of DEM
 
@@ -64,27 +64,32 @@ summary(model)
 
 df$predito=predict(model)
 
+model2 = lm(Frequency~Precipitation+I(Precipitation^2), data = df)
+summary(model2)
+
+df$predito2=predict(model2)
+
 #Correlation plots ------------------------------------------------------------
-a = ggplot(df, aes(x=CHI, y=Frequency))+
-  geom_point(col = "purple", size = 4, alpha = 0.7)+
+a = ggplot(df, aes(x=CHI, y=Frequency, col = Biome))+
+  geom_point(size = 4, alpha = 0.7)+
   geom_point(data = pont, aes(x=CHI, y=Frequency), col = "red", alpha = 0.7,
              shape = 24, size = 3, stroke = 2)+
   stat_cor(show.legend = F)+
   geom_smooth(col = "black", method = "lm")+
-  #scale_colour_manual(values = c("darkgreen", "darkorange"))+
+  scale_colour_manual(values = c("darkgreen", "darkorange"))+
   labs(x="CHI Coefficient",
        y="Frequency/year of Wind Gust (>10 m/s)",
        title = "a) Extreme Wind (1979-2020) x Opitmal CHI")+
   #theme_minimal()+
   theme(legend.position = c(0.85, 0.8)); a
 
-a2 = ggplot(df, aes(x=CHI, y=Precipitation))+
-  geom_point(col = "blue", size = 4, alpha = 0.7)+
+a2 = ggplot(df, aes(x=CHI, y=Precipitation, col = Biome))+
+  geom_point(size = 4, alpha = 0.7)+
   geom_point(data = pont, aes(x=CHI, y=Precipitation), col = "red", alpha = 0.7,
              shape = 24, size = 3, stroke = 2)+
   stat_cor(show.legend = F)+
   geom_smooth(col = "black", method = "lm")+
-  #scale_colour_manual(values = c("darkgreen", "darkorange"))+
+  scale_colour_manual(values = c("darkgreen", "darkorange"))+
   labs(x="CHI Coefficient",
        y="Accumulated Precipitation (mm)",
        title = "a) Annual Accumulated Precipitation (1979-2020) x Opitmal CHI")+
@@ -92,18 +97,21 @@ a2 = ggplot(df, aes(x=CHI, y=Precipitation))+
   theme(legend.position = c(0.85, 0.8)); a2
 
 a3 = ggplot(df, aes(x=Precipitation, y=Frequency))+
-  geom_point(col = "orange", size = 4, alpha = 0.7)+
+  geom_point(aes(col = Biome), size = 4, alpha = 0.7)+
   geom_point(data = pont, aes(x=Precipitation, y=Frequency),
              col = "red", alpha = 0.7,
              shape = 24, size = 3, stroke = 2)+
-  stat_cor(show.legend = F)+
-  geom_smooth(col = "black", method = "lm")+
-  #scale_colour_manual(values = c("darkgreen", "darkorange"))+
+  #stat_cor(show.legend = F)+
+  stat_cor(show.legend = F, label.y.npc="top", label.x.npc = 0.7)+
+  stat_cor(aes(col = Biome), show.legend = F, label.y.npc = 0.85, label.x.npc = 0.7)+
+  #geom_smooth(col = "black", method = "lm")+
+  geom_smooth(aes(x=Precipitation, y=predito2), col = "black")+
+  scale_colour_manual(values = c("darkgreen", "darkorange"))+
   labs(x="Accumulated Precipitation (mm)",
        y="Frequency/year of Wind Gust (>10 m/s)",
-       title = "a) Accumulated Precipitation x Extreme Wind (1979-2020)")+
+       title = "Accumulated Precipitation x Extreme Wind (1979-2020)"); a3
   #theme_minimal()+
-  theme(legend.position = c(0.85, 0.8)); a3
+  #theme(legend.position = c(0.85, 0.8)); a3
 
 
 b = ggplot(df, aes(x=DEM, y=Frequency))+
@@ -129,9 +137,9 @@ b2 = ggplot(df, aes(x=DEM, y=Frequency))+
   scale_colour_manual(values = c("darkgreen", "darkorange"))+
   labs(x="Elevation Above Sea Level (m)",
        y="Frequency/year of Wind Gust (>10 m/s)",
-       title = "c) Extreme Wind (1979-2020) x Elevation Model")+
+       title = "c) Extreme Wind (1979-2020) x Elevation Model"); b2
   #theme_minimal()+
-  theme(legend.position = c(0.91, 0.45)); b2
+  #theme(legend.position = c(0.91, 0.45)); b2
 
 
 c = ggplot(df, aes(x=Frequency, y=Higth))+
@@ -149,37 +157,33 @@ c = ggplot(df, aes(x=Frequency, y=Higth))+
   #theme_minimal()+
   theme(legend.position = c(0.09, 0.15)); c
 
+c2 = ggplot(df, aes(x=Frequency, y=Higth))+
+  geom_point(aes(size = Precipitation, col = Biome), alpha = 0.7)+
+  geom_point(data = pont, aes(x=Frequency, y=Higth), col = "red", alpha = 0.7,
+             shape = 24, size = 3, stroke = 2)+
+  stat_cor(show.legend = F, label.y.npc="top", label.x.npc = 0.7)+
+  stat_cor(aes(col = Biome), show.legend = F, label.y.npc = 0.85, label.x.npc = 0.7)+
+  #facet_wrap(~Biome)+
+  scale_colour_manual(values = c("darkgreen", "darkorange"))+
+  geom_smooth(method = "lm", col = "black")+
+  labs(x="Frequency/year of Wind Gust (>10 m/s)",
+       y="Vegetation Height (m)",
+       title = "e) Forest Height (2019) x Extreme Wind (1979-2020)"); c2
+  #theme_minimal()+
+  #theme(legend.position = c(0.09, 0.15)); c2
 
-ggsave(filename = "Extreme Wind (1979-2020) x CHI.png", plot = a,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+
+ggsave(filename = "Extreme Wind (1979-2020) x CHI - B.png", plot = a3,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
-ggsave(filename = "Extreme Wind (1979-2020) x Elevation Model.png", plot = b,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Extreme Wind (1979-2020) x Elevation Model - B.png", plot = b2,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
 
-ggsave(filename = "Forest Height x Extreme Wind (1979-2020).png", plot = c,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Forest Height x Extreme Wind (1979-2020) - B.png", plot = c2,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
        width = 16, height = 10, units = "cm", dpi = 300)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
