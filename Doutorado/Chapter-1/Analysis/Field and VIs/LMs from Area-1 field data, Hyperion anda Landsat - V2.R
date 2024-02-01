@@ -84,11 +84,9 @@ land$index = as.character(land$index)
 land$treat = as.character(land$treat)
 
 land$index[land$index == "evi2"] <- c("EVI")
-land$index[land$index == "ndvi"] <- c("NDVI")
 land$index[land$index == "ndii"] <- c("NDII")
 land$index[land$index == "grnd"] <- c("GRND")
 land$index[land$index == "nbr"] <- c("NBR")
-land$index[land$index == "nbr2"] <- c("NBR2")
 
 land$treat[land$treat == "control"] <- c("Controle")
 land$treat[land$treat == "b3yr"] <- c("B3yr")
@@ -96,7 +94,8 @@ land$treat[land$treat == "b1yr"] <- c("B1yr")
 
 #Resume repeat years with mean and select same years of Hyperion
 land = land %>% 
-  group_by(x, y, index, year, treat) %>% 
+  group_by(x, y, index, year, treat) %>%
+  filter(index %in% c("EVI","NDII","GRND","NBR")) %>% 
   summarise(value = mean(value)) %>% 
   filter(year >= 2004)
 
@@ -117,28 +116,17 @@ hy$year = as.numeric(hy$year)
 hy$index = as.character(hy$index)
 hy$treat = as.character(hy$treat)
 
-hy$index[hy$index == "evi2"] <- c("EVI")
-hy$index[hy$index == "ndvi"] <- c("NDVI")
-hy$index[hy$index == "ndii"] <- c("NDII")
 hy$index[hy$index == "vig"] <- c("VIG")
 hy$index[hy$index == "vari"] <- c("VARI")
-hy$index[hy$index == "nirv"] <- c("NIRv")
-hy$index[hy$index == "lwvi2"] <- c("LWVI2")
 hy$index[hy$index == "msi"] <- c("MSI")
-hy$index[hy$index == "ndwi"] <- c("NDWI")
-hy$index[hy$index == "pssr"] <- c("PSSR")
 hy$index[hy$index == "psri"] <- c("PSRI")
-hy$index[hy$index == "sipi"] <- c("SIPI")
-hy$index[hy$index == "wbi"] <- c("WBI")
-hy$index[hy$index == "pri"] <- c("PRI")
-hy$index[hy$index == "rendvi"] <- c("RENDVI")
-hy$index[hy$index == "nbr"] <- c("NBR")
-hy$index[hy$index == "nbr2"] <- c("NBR2")
 
 hy$treat[hy$treat == "control"] <- c("Controle")
 hy$treat[hy$treat == "b3yr"] <- c("B3yr")
 hy$treat[hy$treat == "b1yr"] <- c("B1yr")
 
+hy = hy %>% filter(index %in% c("PSRI","VUG","VARI","MSI"))
+  
 #Edge - Core separation
 diffy = min(hy$y) - max(hy$y)
 hy$dist = ((max(hy$y) - hy$y)/diffy)*1000
@@ -208,7 +196,7 @@ ggplot(bmsland, aes(Value, Biomass, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free")
+  facet_wrap(~Indice, scales = "free", ncol = 1)
 
 
 lailand = dfland[, c(-4,-6)]
