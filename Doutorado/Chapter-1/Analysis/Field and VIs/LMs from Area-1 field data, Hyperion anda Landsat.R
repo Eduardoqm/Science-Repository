@@ -199,23 +199,32 @@ dfland = full_join(field2, land2, by = "id")
 
 colnames(dfland)[5] = c("Indice")
 dfland = dfland %>% 
-  separate(id,  c("Year", "Treatment", "Dist")) %>%
-  na.omit()
+  separate(id,  c("Year", "Treatment", "Dist"))
 
+bmsland = dfland[, c(-5,-6)]
+bmsland = na.omit(bmsland)
 
-ggplot(dfland, aes(Value, Biomass, col = Dist))+
+ggplot(bmsland, aes(Value, Biomass, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
   facet_wrap(~Indice, scales = "free")
 
-ggplot(dfland, aes(Value, LAI, col = Dist))+
+
+lailand = dfland[, c(-4,-6)]
+lailand = na.omit(lailand)
+
+ggplot(lailand, aes(Value, LAI, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
   facet_wrap(~Indice, scales = "free")
 
-ggplot(dfland, aes(Value, Litterfall, col = Dist))+
+
+litland = dfland[, c(-4,-5)]
+litland = na.omit(litland)
+
+ggplot(litland, aes(Value, Litterfall, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
@@ -233,25 +242,34 @@ dfhy = full_join(field2, hy2, by = "id")
 
 colnames(dfhy)[5] = c("Indice")
 dfhy = dfhy %>% 
-  separate(id,  c("Year", "Treatment", "Dist")) %>%
-  na.omit()
+  separate(id,  c("Year", "Treatment", "Dist"))
 
 
-ggplot(dfhy, aes(Value, Biomass, col = Dist))+
+bmshy = dfhy[, c(-5,-6)]
+bmshy = na.omit(bmshy)
+
+ggplot(bmshy, aes(Value, Biomass, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
   facet_wrap(~Indice, scales = "free")
 
-ggplot(dfhy, aes(Value, LAI, col = Dist))+
+
+laihy = dfhy[, c(-4,-6)]
+laihy = na.omit(laihy)
+
+ggplot(laihy, aes(Value, LAI, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
   facet_wrap(~Indice, scales = "free")
 
-ggplot(dfhy, aes(Value, Litterfall, col = Dist))+
+
+lithy = dfhy[, c(-4,-5)]
+lithy = na.omit(lithy)
+
+ggplot(lithy, aes(Value, Litterfall, col = Dist))+
   geom_point()+
-  geom_smooth(method = "lm", se = F)+
+  geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
   facet_wrap(~Indice, scales = "free")
-
