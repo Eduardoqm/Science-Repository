@@ -192,11 +192,27 @@ dfland = dfland %>%
 bmsland = dfland[, c(-5,-6)]
 bmsland = na.omit(bmsland)
 
-ggplot(bmsland, aes(Value, Biomass, col = Dist))+
+bmsland %>% 
+  filter(Year < 2012) %>% 
+  ggplot(aes(Value, Biomass, col = Dist))+
   geom_point()+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free", ncol = 1)
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)", title = "Fire period")+
+  
+  theme_light()
+
+
+bmsland %>% 
+  filter(Year > 2011) %>% 
+  ggplot(aes(Value, Biomass, col = Dist))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  stat_cor(show.legend = F)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)
+
+
 
 
 lailand = dfland[, c(-4,-6)]
