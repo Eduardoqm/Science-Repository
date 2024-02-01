@@ -195,22 +195,25 @@ bmsland = na.omit(bmsland)
 bmsland %>% 
   filter(Year < 2012) %>% 
   ggplot(aes(Value, Biomass, col = Dist))+
-  geom_point()+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
   facet_wrap(~Indice, scales = "free", nrow = 1)+
   labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)", title = "Fire period")+
-  
+  scale_color_manual(values = c("red","blue"))+
   theme_light()
 
 
 bmsland %>% 
   filter(Year > 2011) %>% 
   ggplot(aes(Value, Biomass, col = Dist))+
-  geom_point()+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
   stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free", nrow = 1)
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)", title = "Recovery")+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light()
 
 
 
