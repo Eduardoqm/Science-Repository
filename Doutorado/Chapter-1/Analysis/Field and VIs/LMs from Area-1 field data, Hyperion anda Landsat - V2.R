@@ -1,8 +1,8 @@
-#######################################
-# Linear Models for Area-1 field data #
-# (Hyper and Landsat + Biomass)       #
-# Eduardo Q Marques 29-01-2024        #
-#######################################
+############################################
+# Linear Models for Area-1 field data - V2 #
+# (Hyper and Landsat + Biomass)            #
+# Eduardo Q Marques 29-01-2024             #
+############################################
 
 library(tidyverse)
 library(reshape2)
