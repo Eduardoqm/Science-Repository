@@ -9,9 +9,13 @@ library(reshape2)
 library(lubridate)
 library(ggplot2)
 library(ggpubr)
+library(svglite)
 library(extrafont)
 font_import()
 loadfonts(device = "win", quiet = TRUE)
+
+extrafont::loadfonts(device="win") # esse comando rodado antes de liberar o ggplot2 evita alguns erros duarante a mudan?as de fontes de texto nas figuras
+windowsFonts(Times=windowsFont("TT Times New Roman"))
 
 
 #Littererfall ---------------------------------------------------------------------------
@@ -125,7 +129,7 @@ hy$treat[hy$treat == "control"] <- c("Controle")
 hy$treat[hy$treat == "b3yr"] <- c("B3yr")
 hy$treat[hy$treat == "b1yr"] <- c("B1yr")
 
-hy = hy %>% filter(index %in% c("PSRI","VUG","VARI","MSI"))
+hy = hy %>% filter(index %in% c("PSRI","VIG","VARI","MSI"))
   
 #Edge - Core separation
 diffy = min(hy$y) - max(hy$y)
@@ -192,50 +196,107 @@ dfland = dfland %>%
 bmsland = dfland[, c(-5,-6)]
 bmsland = na.omit(bmsland)
 
-bmsland %>% 
+b1 = bmsland %>% 
   filter(Year < 2012) %>% 
   ggplot(aes(Value, Biomass, col = Dist))+
   geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
   facet_wrap(~Indice, scales = "free", nrow = 1)+
   labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)", title = "Fire period")+
   scale_color_manual(values = c("red","blue"))+
-  theme_light()
+  theme_light(); b1
 
 
-bmsland %>% 
+b2 = bmsland %>% 
   filter(Year > 2011) %>% 
   ggplot(aes(Value, Biomass, col = Dist))+
   geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
   facet_wrap(~Indice, scales = "free", nrow = 1)+
   labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)", title = "Recovery")+
   scale_color_manual(values = c("red","blue"))+
-  theme_light()
-
+  theme_light(); b2
 
 
 
 lailand = dfland[, c(-4,-6)]
 lailand = na.omit(lailand)
 
-ggplot(lailand, aes(Value, LAI, col = Dist))+
-  geom_point()+
+l1 = lailand %>% 
+  filter(Year < 2012) %>% 
+  ggplot(aes(Value, LAI, col = Dist))+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free")
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "LAI (m-² m-²)", title = NULL)+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light(); l1
+
+l2 = lailand %>% 
+  filter(Year > 2011) %>% 
+  ggplot(aes(Value, LAI, col = Dist))+
+  geom_point(alpha = 0.3)+
+  geom_smooth(method = "lm")+
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "LAI (m-² m-²)", title = NULL)+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light(); l2
 
 
 litland = dfland[, c(-4,-5)]
 litland = na.omit(litland)
 
-ggplot(litland, aes(Value, Litterfall, col = Dist))+
-  geom_point()+
+lit1 = litland %>% 
+  filter(Year < 2012) %>% 
+  ggplot(aes(Value, Litterfall, col = Dist))+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free")
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "Litterfall (Mg ha-¹year-¹)", title = NULL)+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light(); lit1
+
+lit2 = litland %>% 
+  filter(Year > 2011) %>% 
+  ggplot(aes(Value, Litterfall, col = Dist))+
+  geom_point(alpha = 0.3)+
+  geom_smooth(method = "lm")+
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "Litterfall (Mg ha-¹year-¹)", title = NULL)+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light(); lit2
+
+ggland1 = ggarrange(b1, l1, lit1, ncol = 1, common.legend = T, legend = "bottom")+
+  theme(text = element_text(family = "Times New Roman"),
+        legend.position = "none",
+        panel.spacing = unit(1, "lines"),
+        axis.title.y = element_text(vjust = +3))
+
+ggland2 = ggarrange(b2, l2, lit2, ncol = 1, common.legend = T, legend = "bottom")+
+  theme(text = element_text(family = "Times New Roman"),
+        legend.position = "none",
+        panel.spacing = unit(1, "lines"),
+        axis.title.y = element_text(vjust = +3))
+
+ggsave(filename = "Fire_Field_Landsat.svg", plot = ggland1,
+       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+       width = 30, height = 20, units =  "cm", dpi = 300)
+
+ggsave(filename = "recovery_Field_Landsat.svg", plot = ggland2,
+       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+       width = 30, height = 20, units =  "cm", dpi = 300)
 
 
 #Correlation with Hyperion Indices =============================================
@@ -255,28 +316,56 @@ dfhy = dfhy %>%
 bmshy = dfhy[, c(-5,-6)]
 bmshy = na.omit(bmshy)
 
-ggplot(bmshy, aes(Value, Biomass, col = Dist))+
-  geom_point()+
+b = ggplot(bmshy, aes(Value, Biomass, col = Dist))+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free")
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)")+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light()
 
 
 laihy = dfhy[, c(-4,-6)]
 laihy = na.omit(laihy)
 
-ggplot(laihy, aes(Value, LAI, col = Dist))+
-  geom_point()+
+l = ggplot(laihy, aes(Value, LAI, col = Dist))+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free")
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "LAI (m-² m-²)")+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light()
 
 
 lithy = dfhy[, c(-4,-5)]
 lithy = na.omit(lithy)
 
-ggplot(lithy, aes(Value, Litterfall, col = Dist))+
-  geom_point()+
+lit = ggplot(lithy, aes(Value, Litterfall, col = Dist))+
+  geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(show.legend = F)+
-  facet_wrap(~Indice, scales = "free")
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           show.legend = F, r.digits = 1, p.digits = 2)+
+  facet_wrap(~Indice, scales = "free", nrow = 1)+
+  labs(x = NULL, y = "Litterfall (Mg ha-¹year-¹)", title = NULL)+
+  scale_color_manual(values = c("red","blue"))+
+  theme_light()
+
+gghy = ggarrange(b, l, lit, ncol = 1, common.legend = T, legend = "bottom")+
+  theme(text = element_text(family = "Times New Roman"),
+        legend.position = "none",
+        panel.spacing = unit(1, "lines"),
+        axis.title.y = element_text(vjust = +3))
+
+ggsave(filename = "Fire_Field_hyperion.png", plot = gghy,
+       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+       width = 30, height = 20, units =  "cm", dpi = 300)
+
+#ggsave(filename = "Fire_Field_hyperion_B.svg", plot = gghy,
+#       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+#       width = 30, height = 20, units =  "cm", dpi = 300)
+
+
