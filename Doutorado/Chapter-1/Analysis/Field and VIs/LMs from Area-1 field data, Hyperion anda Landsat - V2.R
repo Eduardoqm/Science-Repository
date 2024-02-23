@@ -384,8 +384,7 @@ bmshy2 = bmshy %>%
     r2=summary(lm(Biomass~Value))$r.squared,
     pvalue=round(summary(lm(Biomass~Value))$coefficients[2,4],4))
   
-View(bmshy2)
-
+bmshy2
 
 
 
