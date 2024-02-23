@@ -373,11 +373,32 @@ gghy = ggarrange(b, l, lit, ncol = 1, common.legend = T, legend = "bottom")+
 
 
 
-#Calculating R^2 ===============================================================
+#Verifying R^2 =================================================================
 
 #Landsat -----------------------------------------------------------------------
-head()
+head(bmsland)
 
+lmcof = function(df, yea, yea2, datfield){
+  df2 = df %>% 
+    filter(Year < yea, Year > yea2) %>%
+    group_by(Dist,Indice)%>%
+    summarise(
+      r2=summary(lm(datfield~Value))$r.squared,
+      pvalue=round(summary(lm(datfield~Value))$coefficients[2,4],4))
+  return(df2)
+}
+
+bmsf = lmcof(bmsland, 2012, 2003, Biomass)
+
+
+
+
+bmsland2 = bmsland %>% 
+  group_by(Dist,Indice)%>%
+  filter(Year < 2012) %>%
+  summarise(
+    r2=summary(lm(Biomass~Value))$r.squared,
+    pvalue=round(summary(lm(Biomass~Value))$coefficients[2,4],4))
 
 
 
