@@ -375,6 +375,13 @@ gghy = ggarrange(b, l, lit, ncol = 1, common.legend = T, legend = "bottom")+
 
 #Calculating R^2 ===============================================================
 
+#Landsat -----------------------------------------------------------------------
+head()
+
+
+
+
+
 #Hyperion ----------------------------------------------------------------------
 head(bmshy)
 
@@ -383,8 +390,37 @@ bmshy2 = bmshy %>%
   summarise(
     r2=summary(lm(Biomass~Value))$r.squared,
     pvalue=round(summary(lm(Biomass~Value))$coefficients[2,4],4))
-  
+
+
+laihy2 = laihy %>% 
+  group_by(Dist,Indice)%>%
+  summarise(
+    r2=summary(lm(LAI~Value))$r.squared,
+    pvalue=round(summary(lm(LAI~Value))$coefficients[2,4],4))
+
+
+lithy2 = lithy %>% 
+  group_by(Dist,Indice)%>%
+  summarise(
+    r2=summary(lm(Litterfall~Value))$r.squared,
+    pvalue=round(summary(lm(Litterfall~Value))$coefficients[2,4],4))
+
 bmshy2
+laihy2
+lithy2
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
