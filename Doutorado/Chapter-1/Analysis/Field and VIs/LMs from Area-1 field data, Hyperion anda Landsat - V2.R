@@ -374,6 +374,8 @@ gghy = ggarrange(b, l, lit, ncol = 1, common.legend = T, legend = "bottom")+
 
 
 #Calculating R^2 ===============================================================
+
+#Hyperion ----------------------------------------------------------------------
 head(bmshy)
 
 bmshy2 = bmshy %>% 
@@ -383,12 +385,6 @@ bmshy2 = bmshy %>%
     pvalue=round(summary(lm(Biomass~Value))$coefficients[2,4],4))
   
 View(bmshy2)
-
-modelo = lm(Biomass~Value, data = bmshy2)
-
-xx=summary(modelo)
-xx$r.squared
-xx$coefficients[2,4]
 
 
 
