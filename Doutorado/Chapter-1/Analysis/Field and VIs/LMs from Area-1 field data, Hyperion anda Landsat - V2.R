@@ -290,13 +290,13 @@ ggland2 = ggarrange(b2, l2, lit2, ncol = 1, common.legend = T, legend = "bottom"
         panel.spacing = unit(1, "lines"),
         axis.title.y = element_text(vjust = +3))
 
-ggsave(filename = "Fire_Field_Landsat.svg", plot = ggland1,
-       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
-       width = 30, height = 20, units =  "cm", dpi = 300)
+#ggsave(filename = "Fire_Field_Landsat.svg", plot = ggland1,
+#       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+#       width = 30, height = 20, units =  "cm", dpi = 300)
 
-ggsave(filename = "recovery_Field_Landsat.svg", plot = ggland2,
-       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
-       width = 30, height = 20, units =  "cm", dpi = 300)
+#ggsave(filename = "recovery_Field_Landsat.svg", plot = ggland2,
+#       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+#       width = 30, height = 20, units =  "cm", dpi = 300)
 
 
 #Correlation with Hyperion Indices =============================================
@@ -319,8 +319,9 @@ bmshy = na.omit(bmshy)
 b = ggplot(bmshy, aes(Value, Biomass, col = Dist))+
   geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-           show.legend = F, r.digits = 1, p.digits = 2)+
+  #stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+   #        show.legend = F, r.digits = 1, p.digits = 2)+
+  stat_cor(show.legend = F, r.digits = 1, p.digits = 2)+
   facet_wrap(~Indice, scales = "free", nrow = 1)+
   labs(x = NULL, y = "Biomass (Mg ha-¹year-¹)")+
   scale_color_manual(values = c("red","blue"))+
@@ -333,8 +334,9 @@ laihy = na.omit(laihy)
 l = ggplot(laihy, aes(Value, LAI, col = Dist))+
   geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-           show.legend = F, r.digits = 1, p.digits = 2)+
+  #stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+  #        show.legend = F, r.digits = 1, p.digits = 2)+
+  stat_cor(show.legend = F, r.digits = 1, p.digits = 2)+
   facet_wrap(~Indice, scales = "free", nrow = 1)+
   labs(x = NULL, y = "LAI (m-² m-²)")+
   scale_color_manual(values = c("red","blue"))+
@@ -347,8 +349,9 @@ lithy = na.omit(lithy)
 lit = ggplot(lithy, aes(Value, Litterfall, col = Dist))+
   geom_point(alpha = 0.3)+
   geom_smooth(method = "lm")+
-  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-           show.legend = F, r.digits = 1, p.digits = 2)+
+  #stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+  #        show.legend = F, r.digits = 1, p.digits = 2)+
+  stat_cor(show.legend = F, r.digits = 1, p.digits = 2)+
   facet_wrap(~Indice, scales = "free", nrow = 1)+
   labs(x = NULL, y = "Litterfall (Mg ha-¹year-¹)", title = NULL)+
   scale_color_manual(values = c("red","blue"))+
@@ -360,12 +363,33 @@ gghy = ggarrange(b, l, lit, ncol = 1, common.legend = T, legend = "bottom")+
         panel.spacing = unit(1, "lines"),
         axis.title.y = element_text(vjust = +3))
 
-ggsave(filename = "Fire_Field_hyperion.png", plot = gghy,
-       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
-       width = 30, height = 20, units =  "cm", dpi = 300)
+#ggsave(filename = "Fire_Field_hyperion_C.png", plot = gghy,
+#       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
+#       width = 30, height = 20, units =  "cm", dpi = 300)
 
 #ggsave(filename = "Fire_Field_hyperion_B.svg", plot = gghy,
 #       path = "C:/Users/workshop/Documents/Research/Doutorado/Capitulo1/Figuras paper/Suplementary Material",
 #       width = 30, height = 20, units =  "cm", dpi = 300)
+
+
+
+#Calculating R^2 ===============================================================
+head(bmshy)
+
+bmshy2 = bmshy %>% 
+  group_by(Dist,Indice)%>%
+  summarise(
+    r2=summary(lm(Biomass~Value))$r.squared,
+    pvalue=round(summary(lm(Biomass~Value))$coefficients[2,4],4))
+  
+View(bmshy2)
+
+modelo = lm(Biomass~Value, data = bmshy2)
+
+xx=summary(modelo)
+xx$r.squared
+xx$coefficients[2,4]
+
+
 
 
