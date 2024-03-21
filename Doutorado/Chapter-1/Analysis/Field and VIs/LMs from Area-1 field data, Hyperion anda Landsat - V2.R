@@ -180,6 +180,14 @@ field2 = field %>%
   spread(Variable, Value) %>% 
   unite("id",  Year, Treatment, Dist)
 
+
+#setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Ecological_Applications/Dados_compartilhar")
+#write.csv(land, "land.csv", row.names = F)
+#write.csv(hy, "hy.csv", row.names = F)
+#write.csv(lai, "lai.csv", row.names = F)
+#write.csv(litter, "litter.csv", row.names = F)
+#write.csv(bms, "bms.csv", row.names = F)
+
 #Correlation with Landsat Indices ==============================================
 land2 = land %>% 
   group_by(Variable, Year, Treatment, Dist) %>% 
@@ -378,6 +386,7 @@ gghy = ggarrange(b, l, lit, ncol = 1, common.legend = T, legend = "bottom")+
 #Landsat -----------------------------------------------------------------------
 head(bmsland)
 
+#Fire Period
 bmslf = bmsland %>% 
   group_by(Dist,Indice)%>%
   filter(Year < 2012) %>%
@@ -404,6 +413,36 @@ litlf = litland %>%
     pvalue=round(summary(lm(Litterfall~Value))$coefficients[2,4],4))
 
 litlf
+
+
+#Recovery Period
+bmslr = bmsland %>% 
+  group_by(Dist,Indice)%>%
+  filter(Year > 2011) %>% 
+  summarise(
+    r2=summary(lm(Biomass~Value))$r.squared,
+    pvalue=round(summary(lm(Biomass~Value))$coefficients[2,4],4))
+
+bmslr
+
+lailr = lailand %>% 
+  group_by(Dist,Indice)%>%
+  filter(Year > 2011) %>% 
+  summarise(
+    r2=summary(lm(LAI~Value))$r.squared,
+    pvalue=round(summary(lm(LAI~Value))$coefficients[2,4],4))
+
+lailr
+
+litlr = litland %>% 
+  group_by(Dist,Indice)%>%
+  filter(Year > 2011) %>% 
+  summarise(
+    r2=summary(lm(Litterfall~Value))$r.squared,
+    pvalue=round(summary(lm(Litterfall~Value))$coefficients[2,4],4))
+
+litlr
+
 
 #Hyperion ----------------------------------------------------------------------
 head(bmshy)

@@ -15,7 +15,9 @@ loadfonts(device = "win", quiet = TRUE)
 
 
 #Littererfall ---------------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/LAI e Liteira")
+#setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/LAI e Liteira")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/LAI e Liteira")
+
 
 litter <- read_csv("1_master_liteira_area_1_jun2020.csv")
 litter$date3 = as.Date(litter$date2,"%d/%m/%Y")
@@ -49,13 +51,13 @@ litter.sub2$Ano = as.numeric(litter.sub2$Ano)
 litter.sub2 = litter.sub2 %>% filter(Ano < 2020)
 
 #Biomass =================================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Biomassa")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Banco de Dados Tanguro/Area1-plot/Biomassa")
 
 bms = read.csv("Biomass_mgha.csv", sep = ",")
 colnames(bms) = c("Tratamento", "Dist", "Ano", "Biomass")
 
 #LAI =====================================================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 
 lai = read.csv( "LAI_full_tang.csv", sep = ",")
 
@@ -196,10 +198,10 @@ a = df %>%
   scale_color_manual(values = eqm)+
   xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = NULL, x = NULL)+ #"LAI (m² m-²)"
+  labs(y = NULL, x = NULL)+ #"LAI (m? m-?)"
   theme(text = element_text(family = "Times New Roman", size = 14),
         axis.text.x = element_blank(), legend.position = "none",
-        strip.text = element_blank())
+        strip.text = element_blank()); a
 
 b = df %>% 
   filter(Variavel == "Liteira") %>% 
@@ -213,7 +215,7 @@ b = df %>%
   scale_color_manual(values = eqm)+
   xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = NULL, x = NULL)+ #"Mg Ano-¹"
+  labs(y = NULL, x = NULL)+ #"Mg Ano-?"
   theme(text = element_text(family = "Times New Roman", size = 14), legend.position = "none",
         axis.text.x = element_blank(), strip.text = element_blank())
 
@@ -264,7 +266,7 @@ e = df %>%
   scale_color_manual(values = eqm)+
   xlim(2004, 2020)+
   theme_minimal()+
-  labs(y = NULL, x = NULL)+ #"Mg Ano-¹"
+  labs(y = NULL, x = NULL)+ #"Mg Ano-?"
   theme(text = element_text(family = "Times New Roman", size = 14),
         axis.text.x = element_blank())
 

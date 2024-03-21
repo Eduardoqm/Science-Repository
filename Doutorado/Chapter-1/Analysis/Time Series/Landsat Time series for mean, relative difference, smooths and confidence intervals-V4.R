@@ -9,9 +9,9 @@ library(tidyverse)
 library(ggplot2)
 library(mgcv)
 library(boot)
-font_import()
-loadfonts(device = "win", quiet = TRUE)
-windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
+#font_import()
+#loadfonts(device = "win", quiet = TRUE)
+#windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data ============================================================
 setwd("C:/Users/Workshop/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
@@ -249,9 +249,9 @@ difplot = ggplot(confi_diff, aes(x = Year, y = Valor, color = Indice))+
 
 
 
-ggsave(filename = "Landsat_1985-2019_diff_Confi_Intervals.png", plot = difplot,
-      path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-     width = 15, height = 20, units =  "cm", dpi = 300)
+#ggsave(filename = "Landsat_1985-2019_diff_Confi_Intervals.png", plot = difplot,
+#      path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+#     width = 15, height = 20, units =  "cm", dpi = 300)
 
 
 
