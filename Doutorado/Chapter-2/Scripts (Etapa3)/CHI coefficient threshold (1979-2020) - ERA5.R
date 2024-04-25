@@ -18,17 +18,17 @@ library(extRemes)
 library(boot)
 
 #Load data ---------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
 
 df1p = read.csv("ERA5_Block_1pixel_1979_2020.csv", sep = ",")
 df3p = read.csv("ERA5_Block_3pixel_1979_2020.csv", sep = ",")
 df5p = read.csv("ERA5_Block_5pixel_1979_2020.csv", sep = ",")
 df7p = read.csv("ERA5_Block_7pixel_1979_2020.csv", sep = ",")
 
-df1p$degrees = c("0.25°")
-df3p$degrees = c("0.75°")
-df5p$degrees = c("1.25°")
-df7p$degrees = c("1.75°")
+df1p$degrees = c("0.25?")
+df3p$degrees = c("0.75?")
+df5p$degrees = c("1.25?")
+df7p$degrees = c("1.75?")
 
 #df1p = df1p %>% separate(xy, c("x","y"), sep = "_")
 #df3p = df3p %>% separate(xy, c("x","y"), sep = "_")
@@ -61,10 +61,11 @@ corx = function(a, b){
     theme(legend.position = c(0.9, 0.25))
 }
 
-a1 = corx(df1p2, "a) ERA5 - Spatial/Temporal Block Maxima (0.25°)")
-a2 = corx(df3p2, "b) ERA5 - Spatial/Temporal Block Maxima (0.75°)")
-a3 = corx(df5p2, "c) ERA5 - Spatial/Temporal Block Maxima (1.25°)")
-a4 = corx(df7p2, "d) ERA5 - Spatial/Temporal Block Maxima (1.75°)")
+a1 = corx(df1p2, "a) ERA5 - Spatial/Temporal Block Maxima (0.25?)")
+a2 = corx(df3p2, "b) ERA5 - Spatial/Temporal Block Maxima (0.75?)")
+a3 = corx(df5p2, "c) ERA5 - Spatial/Temporal Block Maxima (1.25?)")
+a4 = corx(df7p2, "d) ERA5 - Spatial/Temporal Block Maxima (1.75?)")
+
 
 ggsave(filename = "ERA_Corr_1p_1-3-5d.png", plot = a1,
        path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
@@ -83,7 +84,7 @@ ggsave(filename = "ERA_Corr_7p_1-3-5d.png", plot = a4,
        width = 12, height = 10, units = "cm", dpi = 300)
 
 #Calculating the CHI Coefficient Threshold -------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames/CHIs")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames/CHIs")
 
 tails = function(zet, dia){
   df2 = zet
@@ -160,6 +161,9 @@ tails = function(zet, dia){
 #write.csv(chis7p, file = "CHI_7p.csv", row.names = F)
 
 #Plot Tail Dependence Threshold ------------------------------------------------
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames/CHIs")
+dir()
+
 chip1p = read.csv("CHI_1p.csv", sep = ",")
 chip3p = read.csv("CHI_3p.csv", sep = ",")
 chip5p = read.csv("CHI_5p.csv", sep = ",")
@@ -168,36 +172,38 @@ chip7p = read.csv("CHI_7p.csv", sep = ",")
 chiplot = function(a, b){
   ggplot(a, aes(quant, value, fill = window, linetype = window))+
     geom_line(aes(col = window))+
-    labs(x = "Quantile theshold q", y = "Chi", title = b)+
+    #labs(x = "Quantile theshold q", y = "Chi", title = b)+
+    labs(x = "Quantile theshold q", y = "Chi")+
+    annotate("text", x = 0.5, y = 0.57, label = b, size = 6)+
     geom_ribbon(aes(ymin = low, ymax = upp), alpha = 0.2)+
     scale_fill_manual(values = c("orange", "blue", "red"))+
     scale_color_manual(values = c("orange", "blue", "red"))+
-    ylim(0, 0.75)+
+    ylim(0, 0.57)+
     theme_bw()+
     theme(legend.position = c(0.85, 0.8))
 }
 
-b1 = chiplot(chip1p, "a) Tail Dependence (ERA5 - 0.25°)"); b1
-b2 = chiplot(chip3p, "b) Tail Dependence (ERA5 - 0.75°)"); b2
-b3 = chiplot(chip5p, "c) Tail Dependence (ERA5 - 1.25°)"); b3
-b4 = chiplot(chip7p, "d) Tail Dependence (ERA5 - 1.75°)"); b4
+b1 = chiplot(chip1p, "a)"); b1
+b2 = chiplot(chip3p, "b)"); b2
+b3 = chiplot(chip5p, "c)"); b3
+b4 = chiplot(chip7p, "d)"); b4
 
 
-ggsave(filename = "ERA_CHI_1p_1-3-5d.png", plot = b1,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 12, height = 10, units = "cm", dpi = 300)
+ggsave(filename = "ERA_CHI_1p_1-3-5d.tiff", plot = b1,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 12, height = 9.5, units = "cm", dpi = 300)
 
-ggsave(filename = "ERA_CHI_3p_1-3-5d.png", plot = b2,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 12, height = 10, units = "cm", dpi = 300)
+ggsave(filename = "ERA_CHI_3p_1-3-5d.tiff", plot = b2,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 12, height = 9.5, units = "cm", dpi = 300)
 
-ggsave(filename = "ERA_CHI_5p_1-3-5d.png", plot = b3,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 12, height = 10, units = "cm", dpi = 300)
+ggsave(filename = "ERA_CHI_5p_1-3-5d.tiff", plot = b3,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 12, height = 9.5, units = "cm", dpi = 300)
 
-ggsave(filename = "ERA_CHI_7p_1-3-5d.png", plot = b4,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 12, height = 10, units = "cm", dpi = 300)
+ggsave(filename = "ERA_CHI_7p_1-3-5d.tiff", plot = b4,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+       width = 12, height = 9.5, units = "cm", dpi = 300)
 
 
 

@@ -3,28 +3,30 @@
 #                                          #
 # Eduardo Q Marques 02-01-2023             #
 ############################################
-
+library(terra)
 library(tidyverse)
 library(reshape2)
 library(ggplot2)
 library(ggpubr)
 library(viridis)
-library(rgdal)
+#library(rgdal)
 library(sf)
 library(plotly)
 
 #Load data ---------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
 
 df = read.csv("ERA5_Block_1pixel_1979_2020.csv", sep = ",")
 
 #Shapes
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup ETH Server/Data")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup ETH Server/Data")
 
-xingu <- readOGR("Shapes/Xingu_MT.shp")
+#xingu <- readOGR("Shapes/Xingu_MT.shp")
+xingu <- vect("Shapes/Xingu_MT.shp")
 xingu = st_as_sf(xingu)
 
-bio = readOGR("Shapes/Limit_bioma_xingu.shp")
+#bio = readOGR("Shapes/Limit_bioma_xingu.shp")
+bio = vect("Shapes/Limit_bioma_xingu.shp")
 bio = st_as_sf(bio)
 
 #Wind Speed at 0.9 quantile ---------------------------------------------------
@@ -38,9 +40,9 @@ dens = ggplot(df, aes(x = Wind))+
   labs(y = NULL, x = "Wind Gust (m/s)", title = "a) Dialy Maximum Wind Gust")+
   theme_bw();dens
 
-ggsave(filename = "Extreme_WG_minimal_hist_1979_2020.png", plot = dens,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
-       width = 16, height = 10, units = "cm", dpi = 300)
+#ggsave(filename = "Extreme_WG_minimal_hist_1979_2020.png", plot = dens,
+#       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+#       width = 16, height = 10, units = "cm", dpi = 300)
 
 #Count Wind Gust higher than 10.17 --------------------------------------------
 df = df %>% 
@@ -78,17 +80,17 @@ a = ggplot(df3)+
   geom_sf(data = xingu, colour = "black", fill = NA, size = 1, stroke = 2)+
   geom_sf(data = bio, colour = "yellow", fill = NA, size = 1, stroke = 2, linetype = "21")+
   coord_sf()+
-  labs(x=NULL, y=NULL, title = "b) Extreme Wind (1979-2020)")+
+  labs(x=NULL, y=NULL, title = "a)")+
   scale_fill_viridis(option = "magma",
                      direction = -1, limits=c(4.9, 21),
-                     name = "Wind > 10 m/s")+
+                     name = ">10 m/s")+
   theme_minimal()+
-  theme(text = element_text(size = 14)); a
+  theme(text = element_text(size = 14))
 
 
 
-ggsave(filename = "Xingu_Extreme_WG_frequency_1979_2020.png", plot = a,
-       path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
+ggsave(filename = "Xingu_Extreme_WG_frequency_1979_2020.tiff", plot = a,
+       path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Figuras/Paper_Figures",
        width = 16, height = 12, units = "cm", dpi = 300)
        #width = 20, height = 16, units = "cm", dpi = 300)
 
