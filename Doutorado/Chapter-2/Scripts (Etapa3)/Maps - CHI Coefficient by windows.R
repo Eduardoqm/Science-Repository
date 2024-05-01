@@ -20,7 +20,7 @@ library(rgdal)
 library(sf)
 
 #Load data ---------------------------------------------------------------------
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Capitulo2/Backup UFZ Server/Data/DataFrames")
 
 p1 = read.csv("ERA5_Block_1pixel_1979_2020.csv", sep = ",")
 p3 = read.csv("ERA5_Block_3pixel_1979_2020.csv", sep = ",")
@@ -36,10 +36,13 @@ opt_chi = opt_chi %>%
   ungroup()
 
 opt_chi$degrees = as.character(opt_chi$degrees)
-opt_chi$degrees[opt_chi$degrees == "0.25°"] = c("0.25�")
-opt_chi$degrees[opt_chi$degrees == "0.75°"] = c("0.75�")
-opt_chi$degrees[opt_chi$degrees == "1.25°"] = c("1.25�")
-opt_chi$degrees[opt_chi$degrees == "1.75°"] = c("1.75�")
+#opt_chi$degrees[opt_chi$degrees == "0.25°"] = c("0.25?")
+#opt_chi$degrees[opt_chi$degrees == "0.75°"] = c("0.75?")
+#opt_chi$degrees[opt_chi$degrees == "1.25°"] = c("1.25?")
+#opt_chi$degrees[opt_chi$degrees == "1.75°"] = c("1.75?")
+
+#optx = opt_chi[,c(-1,-2)]
+#write.csv(optx, "ERA5_Block_pixel_window.csv", row.names = F)
 
 #Shapes
 setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo2/Backup ETH Server/Data")
