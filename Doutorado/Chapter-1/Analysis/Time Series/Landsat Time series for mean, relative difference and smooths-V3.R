@@ -15,7 +15,7 @@ loadfonts(device = "win", quiet = TRUE)
 windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data ============================================================
-setwd("C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+setwd("C:/Users/Workshop/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
 df = read.csv("Landsat_indexs_all_xy.csv", sep = ',')
 
 #Modify Data =====================================================
@@ -96,9 +96,9 @@ smtplot = ggplot(df_smt, aes(x=Year, y=Valor, color = Treatment))+
   scale_fill_manual(values = eqm)+
   theme(text = element_text(family = "Times New Roman", size = 14)); smtplot
 
-#3ggsave(filename = "Smooth_Landsat.png", plot = smtplot,
-#      path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-#       width = 20, height = 17, units =  "cm", dpi = 300)
+#ggsave(filename = "Smooth_Landsat.tiff", plot = smtplot,
+#      path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+3       width = 20, height = 17, units =  "cm", dpi = 300)
 
 #Mean time series =================================================
 df_m = df %>% 

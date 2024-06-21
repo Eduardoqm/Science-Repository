@@ -17,6 +17,7 @@ windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
 
 #Data =============================================================================================
 setwd("C:/Users/Workshop/Documents/Research/Doutorado/Banco de Dados Tanguro/Dados para analise cap1")
+dir()
 
 #df = read.csv("Hyperion_indexs_all_xy.csv", sep = ',')
 df = read.csv("Hyperion_indexs_all_xy-B.csv", sep = ',')
@@ -117,8 +118,8 @@ df3 = na.omit(df3)
 df4 = df3[,c(-1, -2, -3, -21, -22, -23)]
 
 #Running PCA
-#df4_pca = PCA(df4, graph = T)
-df4_pca = fviz_pca_var(df4)
+df4_pca = PCA(df4, graph = T)
+#df4_pca = fviz_pca_var(df4)
 
 
 
@@ -260,19 +261,20 @@ fire2_plot
 
 #All Results Panel ======================================================
 library(ggpubr)
-a = all_plot + ggtitle("A")#+ylim(-5.5, 10)+xlim(-22,11)
-b = pre_plot+ ggtitle("B")#+ylim(-3.5, 8)+xlim(-36,11)
-c = fire1_plot + ggtitle("C")#+ylim(-5.5, 10)+xlim(-21,11)
-d = fire2_plot + ggtitle("D")#+ylim(-3, 10)+xlim(-18,11)
+a = all_plot + ggtitle("a) Entire time series (2004-2012)")#+ylim(-5.5, 10)+xlim(-22,11)
+b = pre_plot+ ggtitle("b) Pre-fire period (2004)")#+ylim(-3.5, 8)+xlim(-36,11)
+c = fire1_plot + ggtitle("c) First three years of the experiment (2004-2006)")#+ylim(-5.5, 10)+xlim(-21,11)
+d = fire2_plot + ggtitle("d) Post-fire period (2012)")#+ylim(-3, 10)+xlim(-18,11)
 
 
 pca_panel = ggarrange(a,b,c,d,
                       common.legend = TRUE,
-                      legend="right",
-                      ncol = 1, nrow = 4); pca_panel
+                      legend = "right",
+                      ncol = 2, nrow = 2); pca_panel
 
-ggsave(filename = "PCA_panel3.png", plot = pca_panel,
-     path = "C:/Users/Eduardo Q Marques/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion",limitsize = F, width = 19, height = 46, units = "cm", dpi = 300)
+ggsave(filename = "PCA_panel4.tiff", plot = pca_panel,
+     path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/PCA  Hyperion",
+     limitsize = T, width = 30, height = 30, units = "cm", dpi = 300)
 
 
 

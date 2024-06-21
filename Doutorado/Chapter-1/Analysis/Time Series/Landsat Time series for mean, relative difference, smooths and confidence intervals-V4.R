@@ -196,7 +196,7 @@ confi = rbind(conf_evi, conf_ndvi, conf_ndii, conf_grnd, conf_nbr, conf_nbr2)
 
 ggplot(confi, aes(x=year, y=mean, color = treat))+
   geom_vline(xintercept = 2004,linetype = "dashed", col = "gray", size = 1)+
-  geom_vline(xintercept = 2011,linetype = "dashed", col = "gray", size = 1)+
+  geom_vline(xintercept = 2010,linetype = "dashed", col = "gray", size = 1)+
   #geom_line(aes(group = treat), size = 1.5, alpha = 0.8)+
   #geom_ribbon(aes(ymin = low, ymax = upper, fill = treat, col = NULL), alpha = 0.2)+
   geom_errorbar(aes(ymin=low, ymax=upper), width=0)+
@@ -249,9 +249,9 @@ difplot = ggplot(confi_diff, aes(x = Year, y = Valor, color = Indice))+
 
 
 
-#ggsave(filename = "Landsat_1985-2019_diff_Confi_Intervals.png", plot = difplot,
-#      path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
-#     width = 15, height = 20, units =  "cm", dpi = 300)
+ggsave(filename = "Landsat_1985-2019_diff_Confi_Intervals.png", plot = difplot,
+      path = "C:/Users/Workshop/Documents/Research/Doutorado/Capitulo1/Figuras/Landsat Time Series", 
+     width = 15, height = 20, units =  "cm", dpi = 300)
 
 
 
