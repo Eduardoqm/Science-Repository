@@ -309,5 +309,6 @@ ggsave(filename = "all_diff_confidence_intervals.png", plot = all_vis,
 
 
 
-
+diff_11 = confi_diff %>% 
+  filter(Year == 2011)
 

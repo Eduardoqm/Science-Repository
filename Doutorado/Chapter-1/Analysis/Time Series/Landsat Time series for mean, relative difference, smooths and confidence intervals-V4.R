@@ -257,7 +257,8 @@ ggsave(filename = "Landsat_1985-2019_diff_Confi_Intervals.png", plot = difplot,
 
 
 
-
+diff_11 = confi_diff %>% 
+  filter(Year == 2011)
 
 
 
