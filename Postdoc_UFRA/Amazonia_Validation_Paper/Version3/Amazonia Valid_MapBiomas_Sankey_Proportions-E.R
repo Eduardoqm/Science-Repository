@@ -73,8 +73,11 @@ l1b$mb[l1b$mb == 27] = c("Not Observed")
 #Convert equivalent class to positive
 list_cls = unique(l1b$Val_lv1)
 
+l1p = l1b
+l1p$perc = abs(l1p$perc)
+
 for (z in 1:length(list_cls)) {
-  l1b$perc[l1b$mb == list_cls[z] & l1b$Val_lv1 == list_cls[z]] <- abs(l1b$perc)
+  l1b$perc[l1b$mb == list_cls[z] & l1b$Val_lv1 == list_cls[z]] <- (l1p$perc[l1p$mb == list_cls[z] & l1p$Val_lv1 == list_cls[z]])
 }
 
 #Graphics ----------------------------------------------------------------------
