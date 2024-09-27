@@ -73,9 +73,16 @@ l1b$mb[l1b$mb == 27] = c("Not Observed")
 #Convert equivalent class to positive
 list_cls = unique(l1b$Val_lv1)
 
-for (z in 1:length(list_cls)) {
-  l1b$perc[l1b$mb == list_cls[z] & l1b$Val_lv1 == list_cls[z]] <- abs(l1b$perc)
-}
+l1b$perc[l1b$mb == list_cls[1] & l1b$Val_lv1 == list_cls[1]] <- abs(l1b$perc)
+l1b$perc[l1b$mb == list_cls[2] & l1b$Val_lv1 == list_cls[2]] <- abs(l1b$perc)
+l1b$perc[l1b$mb == list_cls[3] & l1b$Val_lv1 == list_cls[3]] <- abs(l1b$perc)
+l1b$perc[l1b$mb == list_cls[4] & l1b$Val_lv1 == list_cls[4]] <- abs(l1b$perc)
+l1b$perc[l1b$mb == list_cls[5] & l1b$Val_lv1 == list_cls[5]] <- abs(l1b$perc)
+l1b$perc[l1b$mb == list_cls[6] & l1b$Val_lv1 == list_cls[1]] <- abs(l1b$perc)
+
+#for (z in 1:length(list_cls)) {
+#  l1b$perc[l1b$mb == list_cls[z] & l1b$Val_lv1 == list_cls[z]] <- abs(l1b$perc)
+#}
 
 #Graphics ----------------------------------------------------------------------
 ggplot(l1b, aes(x = perc, y = mb, fill = Val_lv1))+
