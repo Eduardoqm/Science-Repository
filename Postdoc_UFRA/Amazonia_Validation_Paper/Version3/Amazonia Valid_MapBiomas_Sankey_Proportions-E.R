@@ -38,8 +38,8 @@ l1b = l1 %>%
   filter(MB_lv1 == 1) %>% 
   summarise(freq = table(Val_lv1))
 
-#l1b$perc = l1b$freq/sum(l1b$freq)
-l1b$perc = sprintf("%.2f",l1b$freq/sum(l1b$freq))
+l1b$perc = l1b$freq/sum(l1b$freq)
+#l1b$perc = sprintf("%.2f",l1b$freq/sum(l1b$freq))
 
 l1b$mb = list_mb[1]
 
@@ -49,8 +49,8 @@ for (z in 2:length(list_mb)) {
     filter(MB_lv1 == list_mb[z]) %>% 
     summarise(freq = table(Val_lv1))
   
-  #l1x$perc = l1x$freq/sum(l1x$freq)
-  l1x$perc = sprintf("%.2f",l1x$freq/sum(l1x$freq))
+  l1x$perc = l1x$freq/sum(l1x$freq)
+  #l1x$perc = sprintf("%.2f",l1x$freq/sum(l1x$freq))
   
   l1x$mb = list_mb[z]
   
@@ -65,7 +65,7 @@ for (z in 2:length(list_mb)) {
 #Names of classes
 #Validation
 l1b$Val_lv1[l1b$Val_lv1 == 1] = c("Forest")
-l1b$Val_lv1[l1b$Val_lv1 == 10] = c("Herbaceous and Shrubby Vegetation")
+l1b$Val_lv1[l1b$Val_lv1 == 10] = c("Herbaceous and S. Veg.")
 l1b$Val_lv1[l1b$Val_lv1 == 14] = c("Farming")
 l1b$Val_lv1[l1b$Val_lv1 == 22] = c("Non vegetated area")
 l1b$Val_lv1[l1b$Val_lv1 == 26] = c("Water")
@@ -73,15 +73,18 @@ l1b$Val_lv1[l1b$Val_lv1 == 27] = c("Not Observed")
 
 #MapBiomes
 l1b$mb[l1b$mb == 1] = c("Forest")
-l1b$mb[l1b$mb == 10] = c("Herbaceous and Shrubby Vegetation")
+l1b$mb[l1b$mb == 10] = c("Herbaceous and S. Veg.")
 l1b$mb[l1b$mb == 14] = c("Farming")
 l1b$mb[l1b$mb == 22] = c("Non vegetated area")
 l1b$mb[l1b$mb == 26] = c("Water")
 l1b$mb[l1b$mb == 27] = c("Not Observed")
+  
 
 #Graphics ----------------------------------------------------------------------
-ggplot(l1b, aes(x = perc, y = Val_lv1, fill = mb))+
-  geom_bar(position = "stack", stat = "identity")
+ggplot(l1b, aes(x = perc, y = mb, fill = Val_lv1))+
+  geom_bar(position = "stack", stat = "identity")+
+  labs(x = "Percentage of class", y = "MapBiomes Class",
+       fill = "Validate Class")
 
 
 
