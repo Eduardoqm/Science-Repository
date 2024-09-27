@@ -83,12 +83,13 @@ ggplot(l1b, aes(x = perc, y = mb, fill = Val_lv1))+
   labs(x = "Percentage of class",
        y = "MapBiomes Class",
        fill = "Validate Class")+
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed")+
   scale_fill_manual(values = c("#FFFFB2", "#1f8d49", "#ad975a",
                                "#d4271e", "gray", "#0000FF"))
 
 
 
-
+###
 
 
 
