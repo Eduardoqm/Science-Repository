@@ -53,11 +53,6 @@ for (z in 2:length(list_mb)) {
   l1b = rbind(l1b, l1x)
 }
 
-#l1b$Val_lv1 = as.character(l1b$Val_lv1)
-#l1b$mb = as.character(l1b$mb)
-#l1b$freq = as.numeric(l1b$freq)
-#l1b$perc = as.numeric(l1b$perc)
-
 #Names of classes
 #Validation
 l1b$Val_lv1[l1b$Val_lv1 == 1] = c("Forest")
