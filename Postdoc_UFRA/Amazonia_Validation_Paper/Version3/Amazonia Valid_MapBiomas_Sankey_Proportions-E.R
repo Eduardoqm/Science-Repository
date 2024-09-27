@@ -81,7 +81,7 @@ for (z in 1:length(list_cls)) {
 }
 
 #Graphics ----------------------------------------------------------------------
-ggplot(l1b, aes(x = perc, y = mb, fill = Val_lv1))+
+ggplot(l1b, aes(x = perc, y = reorder(mb,(perc > 0.9)), fill = Val_lv1))+
   geom_bar(position = "stack", stat = "identity")+
   labs(x = "Percentage of class",
        y = "MapBiomes Class",
