@@ -40,6 +40,7 @@ l1b = l1 %>%
 
 l1b$perc = l1b$freq/sum(l1b$freq)
 #l1b$perc = sprintf("%.2f",l1b$freq/sum(l1b$freq))
+l1b$perc[l1b$Val_lv1 != 1] <- (0 - l1b$perc) #Input negative values to != class
 
 l1b$mb = list_mb[1]
 
@@ -51,6 +52,7 @@ for (z in 2:length(list_mb)) {
   
   l1x$perc = l1x$freq/sum(l1x$freq)
   #l1x$perc = sprintf("%.2f",l1x$freq/sum(l1x$freq))
+  l1x$perc[l1x$Val_lv1 != z] <- (0 - l1x$perc)
   
   l1x$mb = list_mb[z]
   
@@ -83,17 +85,29 @@ l1b$mb[l1b$mb == 27] = c("Not Observed")
 #Graphics ----------------------------------------------------------------------
 ggplot(l1b, aes(x = perc, y = mb, fill = Val_lv1))+
   geom_bar(position = "stack", stat = "identity")+
-  labs(x = "Percentage of class", y = "MapBiomes Class",
-       fill = "Validate Class")
+  labs(x = "Percentage of class",
+       y = "MapBiomes Class",
+       fill = "Validate Class")+
+  scale_fill_manual(values = c("#FFFFB2", "#1f8d49", "#ad975a",
+                               "#d4271e", "gray", "#0000FF"))
 
 
 
 
 
 
+l1c = l1b
+
+l1c$perc[l1c$Val_lv1 != "Water"] <- (0 - l1c$perc)
 
 
-
+ggplot(l1c, aes(x = perc, y = mb, fill = Val_lv1))+
+  geom_bar(position = "stack", stat = "identity")+
+  labs(x = "Percentage of class",
+       y = "MapBiomes Class",
+       fill = "Validate Class")+
+  scale_fill_manual(values = c("#FFFFB2", "#1f8d49", "#ad975a",
+                               "#d4271e", "gray", "#0000FF"))
 
 
 
