@@ -38,6 +38,8 @@ l1b = l1 %>%
   filter(MB_lv1 == 1) %>% 
   summarise(freq = table(Val_lv1))
 
+l1b$perc = l1b$freq/sum(l1b$freq)
+
 l1b$mb = list_mb[1]
 
 for (z in 2:length(list_mb)) {
@@ -71,6 +73,12 @@ l1b$mb[l1b$mb == 14] = c("Farming")
 l1b$mb[l1b$mb == 22] = c("Non vegetated area")
 l1b$mb[l1b$mb == 26] = c("Water")
 l1b$mb[l1b$mb == 27] = c("Not Observed")
+
+#Percentage
+
+
+
+
 
 #Graphics ----------------------------------------------------------------------
 
