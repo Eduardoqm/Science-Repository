@@ -4,7 +4,7 @@
 
 library(tidyverse)
 library(ggplot2)
-library(ggalluvial)
+#library(ggalluvial)
 
 #Load Classes Data -------------------------------------------------------------
 setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Shapes")
@@ -71,7 +71,6 @@ l1b$mb[l1b$mb == 14] = c("Farming")
 l1b$mb[l1b$mb == 22] = c("Non vegetated area")
 l1b$mb[l1b$mb == 26] = c("Water")
 l1b$mb[l1b$mb == 27] = c("Not Observed")
-
 
 #Graphics ----------------------------------------------------------------------
 
