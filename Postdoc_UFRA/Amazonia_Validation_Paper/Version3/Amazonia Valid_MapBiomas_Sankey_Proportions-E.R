@@ -93,10 +93,99 @@ ggplot(l1b, aes(x = perc, y = reorder(mb,(perc > 0.9)), fill = Val_lv1))+
 
 
 
+#Level 3 -----------------------------------------------------------------------
+l3 = df2[,c(3,6)]
+
+#list_mb = unique(l3$MB_lv3) #List of MapBiomes classes
+list_mb = unique(l3$Val_lv3) #List of MapBiomes classes
+
+#Extract frequency validate point by each MapBiomes Class
+l3b = l3 %>% 
+  group_by(MB_lv3) %>% 
+  filter(Val_lv3 == 3) %>% 
+  summarise(freq = table(MB_lv3))
+
+l3b$perc = 0 - (l3b$freq/sum(l3b$freq)) #Input negative values to != class
+l3b$mb = list_mb[1]
+
+for (z in 2:length(list_mb)) {
+  l3x = l3 %>% 
+    group_by(MB_lv3) %>% 
+    filter(Val_lv3 == list_mb[z]) %>% 
+    summarise(freq = table(MB_lv3))
+  
+  l3x$perc = 0 - (l3x$freq/sum(l3x$freq))
+  l3x$mb = list_mb[z]
+  
+  l3b = rbind(l3b, l3x)
+}
+
+#Names of classes
+colnames(l3b)[1] = c("Val_lv3")
+
+#Validation
+l3b$Val_lv3[l3b$Val_lv3 == 3] = c("Forest Formation")
+l3b$Val_lv3[l3b$Val_lv3 == 4] = c("Savanna Formation")
+l3b$Val_lv3[l3b$Val_lv3 == 5] = c("Mangrove")
+l3b$Val_lv3[l3b$Val_lv3 == 6] = c("Floodable Forest")
+l3b$Val_lv3[l3b$Val_lv3 == 9] = c("Forest Plantation")
+l3b$Val_lv3[l3b$Val_lv3 == 11] = c("Wetland")
+l3b$Val_lv3[l3b$Val_lv3 == 12] = c("Grassland")
+l3b$Val_lv3[l3b$Val_lv3 == 13] = c("Herbaceous Sandbank Vegetation") #class 50 in MB8
+l3b$Val_lv3[l3b$Val_lv3 == 15] = c("Pasture")
+l3b$Val_lv3[l3b$Val_lv3 == 19] = c("Temporary Crop")
+l3b$Val_lv3[l3b$Val_lv3 == 23] = c("Beach, Dune and Sand Spot")
+l3b$Val_lv3[l3b$Val_lv3 == 24] = c("Urban Area")
+l3b$Val_lv3[l3b$Val_lv3 == 25] = c("Other non Vegetated Areas")
+l3b$Val_lv3[l3b$Val_lv3 == 27] = c("Not Observed")
+l3b$Val_lv3[l3b$Val_lv3 == 29] = c("Rocky Outcrop")
+l3b$Val_lv3[l3b$Val_lv3 == 30] = c("Minig")
+l3b$Val_lv3[l3b$Val_lv3 == 32] = c("Hypersaline Tidal Flat")
+l3b$Val_lv3[l3b$Val_lv3 == 33] = c("River, Lake and Ocean")
+l3b$Val_lv3[l3b$Val_lv3 == 36] = c("Perennial Crop")
+
+#MapBiomes
+l3b$mb[l3b$mb == 3] = c("Forest Formation")
+l3b$mb[l3b$mb == 4] = c("Savanna Formation")
+l3b$mb[l3b$mb == 5] = c("Mangrove")
+l3b$mb[l3b$mb == 6] = c("Floodable Forest")
+l3b$mb[l3b$mb == 9] = c("Forest Plantation")
+l3b$mb[l3b$mb == 11] = c("Wetland")
+l3b$mb[l3b$mb == 12] = c("Grassland")
+l3b$mb[l3b$mb == 13] = c("Herbaceous Sandbank Vegetation") #class 50 in MB8
+l3b$mb[l3b$mb == 15] = c("Pasture")
+l3b$mb[l3b$mb == 19] = c("Temporary Crop")
+l3b$mb[l3b$mb == 23] = c("Beach, Dune and Sand Spot")
+l3b$mb[l3b$mb == 24] = c("Urban Area")
+l3b$mb[l3b$mb == 25] = c("Other non Vegetated Areas")
+l3b$mb[l3b$mb == 27] = c("Not Observed")
+l3b$mb[l3b$mb == 29] = c("Rocky Outcrop")
+l3b$mb[l3b$mb == 30] = c("Minig")
+l3b$mb[l3b$mb == 32] = c("Hypersaline Tidal Flat")
+l3b$mb[l3b$mb == 33] = c("River, Lake and Ocean")
+l3b$mb[l3b$mb == 36] = c("Perennial Crop")
+
+#Convert equivalent class to positive
+list_cls = unique(l3b$Val_lv3)
+
+l3p = l3b
+l3p$perc = abs(l3p$perc)
+
+for (z in 1:length(list_cls)) {
+  l3b$perc[l3b$mb == list_cls[z] & l3b$Val_lv3 == list_cls[z]] <- (l3p$perc[l3p$mb == list_cls[z] & l3p$Val_lv3 == list_cls[z]])
+}
+
+#Graphics ----------------------------------------------------------------------
+ggplot(l3b, aes(x = perc, y = mb, fill = Val_lv3))+
+  geom_bar(position = "stack", stat = "identity")+
+  labs(x = "Percentage of class",
+       y = "Validate Class",
+       fill = "MapBiomes Class")+
+  geom_vline(xintercept = 0, color = "black", size = 1, linetype = "dashed")+
+  theme_minimal()
+
+
 ###
-
-
-
 
 
 
