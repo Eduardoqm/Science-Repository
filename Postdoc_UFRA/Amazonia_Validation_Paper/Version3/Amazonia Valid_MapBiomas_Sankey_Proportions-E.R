@@ -193,7 +193,7 @@ plt1 = ggplot(l3b, aes(x = perc, y = reorder(mb, ord, sum), fill = Val_lv3))+
   geom_bar(position = "stack", stat = "identity")+
   labs(x = "Percentage of class",
        y = "Validate Class",
-       fill = "MapBiomes Class")+
+       fill = "MapBiomas Class")+
   geom_vline(xintercept = 0, color = "black", size = 1, linetype = "dashed")+
   #geom_text(aes(label = paste0(ord2*100, "%")),
   #          position=position_dodge(width=0.9),
