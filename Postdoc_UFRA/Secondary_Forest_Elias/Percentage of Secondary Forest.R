@@ -1,7 +1,6 @@
-#Mean of Secondary Forest age (Elias Paper)
+#Percentage of Secondary Forest (Elias Paper)
 
 #Eduardo Q Marques 24-02-2025
-
 
 library(terra)
 
@@ -12,10 +11,18 @@ dir()
 base = rast("ET_Amazonia_2023_1km.tif")
 secf = rast("MB_Forest_age_30m.tif")
 
-#Resample by secondary forest age ----------------------------------------------
-m_age = resample(secf, base, method = "average")
+#Calculating percentage of secondary forest ------------------------------------
+secf2 = secf
+
+secf2[secf2 > 0] = 1
+secf2[secf2 == NA] = 0
+
+secf_3 = resample(secf2, base, method = "count")
+
+
+
 
 plot(secf)
 plot(m_age, add = T)
 
-writeRaster(m_age, "Mean_Forest_age_1km.tif")
+#writeRaster(m_age, "Perc_SecForest_1km.tif")
