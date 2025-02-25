@@ -14,13 +14,16 @@ secf = rast("MB_Forest_age_30m.tif")
 #Calculating percentage of secondary forest ------------------------------------
 secf2 = secf
 
+#Make binary to count
 secf2[secf2 > 0] = 1
 secf2[is.na(secf2)] = 0
 
-
-
-#Resample by not traditional way -----------------------------------------------
+#https://rdrr.io/cran/terra/man/resample.html
 secf_3 = resample(secf2, base, method = "sum")
+
+
+
+
 
 
 
