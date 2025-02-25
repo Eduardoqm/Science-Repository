@@ -12,40 +12,23 @@ base = rast("ET_Amazonia_2023_1km.tif")
 secf = rast("MB_Forest_age_30m.tif")
 
 #Calculating percentage of secondary forest ------------------------------------
-secf2 = secf
-
 #Make binary to count
+secf2 = secf
 secf2[secf2 > 0] = 1
 secf2[is.na(secf2)] = 0
 
+ttl = secf #Total of pixels to extract fraction
+ttl[ttl > 0] = 1
+ttl[is.na(ttl)] = 1
+
 #To understand resample -> https://rdrr.io/cran/terra/man/resample.html
-secf_3 = resample(secf2, base, method = "sum", threads = T)
+secf3 = resample(secf2, base, method = "sum", threads = T)
+
+ttl2 = resample(ttl, base, method = "sum", threads = T)
+
+secf4 = (scef3/ttl2)*100
 
 
+plot(secf4)
 
-
-
-
-
-
-
-base2 <- as.polygons(base, fun=function(x){x>=0})
-
-#Counting
-secf3 = terra::extract(secf2, base2[1,], fun = count, df = F, na.rm = T)
-
-
-
-
-
-
-
-secf_3 = resample(secf2, base, method = "count")
-
-
-
-
-plot(secf2)
-plot(m_age, add = T)
-
-#writeRaster(m_age, "Perc_SecForest_1km.tif")
+writeRaster(secf4, "Perc_SecForest_1km.tif")
