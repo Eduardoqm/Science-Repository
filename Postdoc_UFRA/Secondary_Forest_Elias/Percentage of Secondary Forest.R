@@ -15,7 +15,7 @@ secf = rast("MB_Forest_age_30m.tif")
 secf2 = secf
 
 secf2[secf2 > 0] = 1
-secf2[secf2 == NA] = 0
+secf2[is.na(secf2)] = 0
 
 secf_3 = resample(secf2, base, method = "count")
 
