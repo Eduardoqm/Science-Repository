@@ -19,7 +19,7 @@ secf2[secf2 > 0] = 1
 secf2[is.na(secf2)] = 0
 
 #https://rdrr.io/cran/terra/man/resample.html
-secf_3 = resample(secf2, base, method = "sum")
+secf_3 = resample(secf2, base, method = "sum", threads = T)
 
 
 
