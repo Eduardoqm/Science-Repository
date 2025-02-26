@@ -9,7 +9,7 @@ setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
 dir()
 
 base = rast("ET_Amazonia_2023_1km.tif")
-sec = rast("Perc_SecForest_1km.tif")
+secfor = rast("Perc_SecForest_1km.tif")
 mb = rast("MB2023_l1_30m.tiff")
 
 #Calculating percentage of primary forest ------------------------------------
@@ -29,14 +29,11 @@ mb4 = (mb3/ttl2)*100
 
 #Substract the Secondary Forest percentage
 
+mb5 = mb4 - secfor
 
-
-
-
-
-plot(mb)
-plot(mb4, add = T)
-plot(mb5, add = T)
+#plot(mb)
+#plot(mb4, add = T)
+#plot(mb5, add = T)
 
 writeRaster(mb5, "Perc_PriForest_1km.tif")
 
