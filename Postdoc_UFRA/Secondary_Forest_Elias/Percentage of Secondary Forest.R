@@ -15,7 +15,7 @@ mb = rast("MB2023_l1_30m.tiff")
 #Calculating percentage of primary forest ------------------------------------
 #Make binary to count
 mb2 = mb
-mb2[mb2 != 1] = 0
+mb2[mb2 != 1] = 0 # Class Forest for L1 (1)
 
 ttl = mb #Total of pixels to extract fraction
 ttl[ttl != 1] = 1
@@ -23,7 +23,6 @@ ttl[ttl != 1] = 1
 
 #To understand resample -> https://rdrr.io/cran/terra/man/resample.html
 mb3 = resample(mb2, base, method = "sum")
-
 ttl2 = resample(ttl, base, method = "sum")
 
 mb4 = (mb3/ttl2)*100
