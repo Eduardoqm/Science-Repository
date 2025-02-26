@@ -17,16 +17,15 @@ secf2 = secf
 secf2[secf2 > 0] = 1
 secf2[is.na(secf2)] = 0
 
-ttl = secf #Total of pixels to extract fraction
-ttl[ttl > 0] = 1
-ttl[is.na(ttl)] = 1
+ttl = secf2 #Total of pixels to extract fraction
+ttl[ttl == 0] = 1
 
 #To understand resample -> https://rdrr.io/cran/terra/man/resample.html
 secf3 = resample(secf2, base, method = "sum", threads = T)
 
 ttl2 = resample(ttl, base, method = "sum", threads = T)
 
-secf4 = (scef3/ttl2)*100
+secf4 = (secf3/ttl2)*100
 
 
 plot(secf4)
