@@ -1,6 +1,6 @@
-#Percentage of Primary Forest (Elias Paper)
+#Percentage of Secondary Forest (Elias Paper)
 
-#Eduardo Q Marques 26-02-2025
+#Eduardo Q Marques 24-02-2025
 
 library(terra)
 
@@ -9,32 +9,25 @@ setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
 dir()
 
 base = rast("ET_Amazonia_2023_1km.tif")
-secfor = rast("Perc_SecForest_1km.tif")
-mb = rast("MB2023_l1_30m.tiff")
+secf = rast("MB_Forest_age_30m.tif")
 
-#Calculating percentage of primary forest ------------------------------------
+#Calculating percentage of secondary forest ------------------------------------
 #Make binary to count
-mb2 = mb
-mb2[mb2 != 1] = 0 # Class Forest for L1 (1)
+secf2 = secf
+secf2[secf2 > 0] = 1
+secf2[is.na(secf2)] = 0
 
-ttl = mb #Total of pixels to extract fraction
-ttl[ttl != 1] = 1
-
+ttl = secf2 #Total of pixels to extract fraction
+ttl[ttl == 0] = 1
 
 #To understand resample -> https://rdrr.io/cran/terra/man/resample.html
-mb3 = resample(mb2, base, method = "sum")
-ttl2 = resample(ttl, base, method = "sum")
+secf3 = resample(secf2, base, method = "sum", threads = T)
 
-mb4 = (mb3/ttl2)*100
+ttl2 = resample(ttl, base, method = "sum", threads = T)
 
-#Substract the Secondary Forest percentage
-
-mb5 = mb4 - secfor
-
-#plot(mb)
-#plot(mb4, add = T)
-#plot(mb5, add = T)
-
-writeRaster(mb5, "Perc_PriForest_1km.tif")
+secf4 = (secf3/ttl2)*100
 
 
+plot(secf4)
+
+writeRaster(secf4, "Perc_SecForest_1km.tif")

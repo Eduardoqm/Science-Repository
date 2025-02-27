@@ -1,6 +1,6 @@
-#Percentage of Primary Forest (Elias Paper)
+#Percentage of Agriculture (Elias Paper)
 
-#Eduardo Q Marques 26-02-2025
+#Eduardo Q Marques 27-02-2025
 
 library(terra)
 
@@ -9,13 +9,13 @@ setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
 dir()
 
 base = rast("ET_Amazonia_2023_1km.tif")
-secfor = rast("Perc_SecForest_1km.tif")
 mb = rast("MB2023_l1_30m.tiff")
 
 #Calculating percentage of primary forest ------------------------------------
 #Make binary to count
 mb2 = mb
-mb2[mb2 != 1] = 0 # Class Forest for L1 (1)
+mb2[mb2 != 14] = 0 # Class Agriculture for L1 (14)
+mb2
 
 ttl = mb #Total of pixels to extract fraction
 ttl[ttl != 1] = 1
@@ -25,14 +25,9 @@ ttl[ttl != 1] = 1
 mb3 = resample(mb2, base, method = "sum")
 ttl2 = resample(ttl, base, method = "sum")
 
-mb4 = (mb3/ttl2)*100
-
-#Substract the Secondary Forest percentage
-mb5 = mb4 - secfor
-mb5[mb5 < 0] = NA
+mb4 = ((mb3/ttl2)*100)/14
 
 plot(mb)
-#plot(mb4, add = T)
-plot(mb5, add = T)
+plot(mb4, add = T)
 
-writeRaster(mb5, "Perc_PriForest_1km.tif")
+writeRaster(mb4, "Perc_Agriculture_1km.tif")
