@@ -52,6 +52,8 @@ df2=df%>%
   dplyr::filter(LST>=24) %>% 
   st_drop_geometry()%>%
   group_by(Regions, Age_secforest) %>% 
+  filter(Age_secforest >4) %>% 
+  filter(Age_secforest <36) %>% 
   summarise(LST = mean(LST),
             ET = mean(ET),
             Perc_agriculture = mean(Perc_agriculture),
