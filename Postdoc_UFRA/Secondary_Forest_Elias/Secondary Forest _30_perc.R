@@ -28,7 +28,7 @@ colnames(df)[1] = c("Perc_secforest")
 
 #Extracting others information -------------------------------------------------
 getv = function(z, x){
-  dfx = extract(x, z)
+  dfx = terra::extract(x, z)
   z = cbind(dfx[,2], z)
 }
 
@@ -51,18 +51,30 @@ df2=df%>%
   na.omit() %>% 
   dplyr::filter(LST>=24) %>% 
   st_drop_geometry()%>%
-  group_by(Regions, Age_secforest2) %>% 
+  group_by(Regions, Age_secforest) %>% 
   summarise(LST = mean(LST),
             ET = mean(ET),
             Perc_agriculture = mean(Perc_agriculture),
             Perc_priforest = mean(Perc_priforest),
             Perc_secforest = mean(Perc_priforest))
-  
-  #dplyr::filter(Perc_priforest <= 20) %>% 
-  #dplyr::mutate(LST=ifelse(LST<24,NA,LST))
 
+#Exploratory Graphics ----------------------------------------------------------
+ggplot(df2, aes(x = Age_secforest, y = LST))+
+  geom_point(aes(colour = Perc_agriculture))+
+  geom_smooth(method = "lm")+
+  facet_wrap(Regions~.,scales = 'free')+
+  scale_color_gradient(low='blue',high = 'orange')+
+  theme_minimal()
 
-## LST Model
+ggplot(df2, aes(x = Age_secforest, y = ET))+
+  geom_point(aes(colour = Perc_agriculture))+
+  geom_smooth(method = "lm")+
+  facet_wrap(Regions~.,scales = 'free')+
+  scale_color_gradient(low='blue',high = 'orange')+
+  theme_minimal()
+
+#Models ------------------------------------------------------------------------
+#LST Model
 m_lst=lmer(LST~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
 summary(m_lst)
 MuMIn::r.squaredGLMM(m_lst)
@@ -76,7 +88,7 @@ ggplot(df2, aes(x = Age_secforest, y = LST))+
   scale_color_gradient(low='darkgreen',high = 'red')
 
 
-## ET Model
+#ET Model
 m_et=lmer(ET~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
 summary(m_et)
 MuMIn::r.squaredGLMM(m_et)
@@ -88,8 +100,6 @@ ggplot(df2, aes(x = Age_secforest, y = ET))+
   geom_smooth(aes(x=Age_secforest, y=pred_et))+
   facet_wrap(Regions~.,scales = 'free')+
   scale_color_gradient(low='darkgreen',high = 'red')
-
-
 
 
 
