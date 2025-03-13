@@ -41,6 +41,7 @@ df = getv(df, lst); colnames(df)[1] = c("LST")
 sf_use_s2(FALSE)
 df = st_intersection(amr[1], df); colnames(df)[1] = c("Regions")
 df$Regions = substr(df$Regions, 1, 2)
+df$Age_secforest = round(df$Age_secforest, 0)
 
 plot(df)
 names(df)
@@ -50,7 +51,7 @@ df2=df%>%
   na.omit() %>% 
   dplyr::filter(LST>=24) %>% 
   st_drop_geometry()%>%
-  group_by(Regions, Age_secforest) %>% 
+  group_by(Regions, Age_secforest2) %>% 
   summarise(LST = mean(LST),
             ET = mean(ET),
             Perc_agriculture = mean(Perc_agriculture),
