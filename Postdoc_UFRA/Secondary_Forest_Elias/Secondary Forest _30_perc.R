@@ -63,14 +63,14 @@ ggplot(df2, aes(x = Age_secforest, y = LST))+
   geom_point(aes(colour = Perc_agriculture))+
   geom_smooth(method = "lm")+
   facet_wrap(Regions~.,scales = 'free')+
-  scale_color_gradient(low='blue',high = 'orange')+
+  scale_color_gradient(low='blue',high = 'yellow')+
   theme_minimal()
 
 ggplot(df2, aes(x = Age_secforest, y = ET))+
   geom_point(aes(colour = Perc_agriculture))+
   geom_smooth(method = "lm")+
   facet_wrap(Regions~.,scales = 'free')+
-  scale_color_gradient(low='blue',high = 'orange')+
+  scale_color_gradient(low='blue',high = 'yellow')+
   theme_minimal()
 
 #Models ------------------------------------------------------------------------
