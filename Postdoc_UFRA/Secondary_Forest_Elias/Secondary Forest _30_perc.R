@@ -46,6 +46,9 @@ df$Age_secforest = round(df$Age_secforest, 0)
 plot(df)
 names(df)
 
+setwd("C:/Users/Eduardo/Documents/Analises_Elias/Dados")
+write.csv(df, "Paper_Elias_Data.csv", row.names = F)
+
 #Preparing data to analysis ----------------------------------------------------
 df2=df%>%
   na.omit() %>% 
