@@ -4,7 +4,7 @@
 
 library(terra)
 library(sf)
-library(ggplot2)
+library(tidyverse)
 library(lme4)
 
 #Load data ---------------------------------------------------------------------
@@ -47,11 +47,18 @@ names(df)
 
 #Preparing data to analysis ----------------------------------------------------
 df2=df%>%
-  st_drop_geometry()%>%
-#  dplyr::mutate(LST=ifelse(LST<24,NA,LST))
+  na.omit() %>% 
   dplyr::filter(LST>=24) %>% 
+  st_drop_geometry()%>%
+  group_by(Regions, Age_secforest) %>% 
+  summarise(LST = mean(LST),
+            ET = mean(ET),
+            Perc_agriculture = mean(Perc_agriculture),
+            Perc_priforest = mean(Perc_priforest),
+            Perc_secforest = mean(Perc_priforest))
+  
   #dplyr::filter(Perc_priforest <= 20) %>% 
-  na.omit()
+  #dplyr::mutate(LST=ifelse(LST<24,NA,LST))
 
 
 ## LST Model
