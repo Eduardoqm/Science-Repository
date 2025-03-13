@@ -4,6 +4,7 @@
 
 library(terra)
 library(sf)
+library(ggplot2)
 
 #Load data ---------------------------------------------------------------------
 setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
@@ -47,33 +48,59 @@ names(df)
 
 df2=df%>%
   st_drop_geometry()%>%
-  dplyr::mutate(LST=ifelse(LST<24,NA,LST))
+#  dplyr::mutate(LST=ifelse(LST<24,NA,LST))
+  dplyr::filter(LST>=24) %>% 
+  dplyr::filter(Perc_agriculture <= 20) %>% 
+  na.omit()
 
-library(ggplot2)
 
+
+#Lst
 ggplot(df2, aes(x = Age_secforest, y = LST))+
   geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
   geom_smooth(method = 'lm')+
   facet_wrap(Regions~.,scales = 'free')+
   scale_color_gradient(low='darkgreen',high = 'red')
 
+#ET
+ggplot(df2, aes(x = Age_secforest, y = ET))+
+  geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
+  geom_smooth(method = 'lm')+
+  facet_wrap(Regions~.,scales = 'free')+
+  scale_color_gradient(low='darkgreen',high = 'red')
+
+
+
+
+## lst - modelo
+library(lme4)
+
+m_lst=lmer(LST~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
+summary(m_lst)
+MuMIn::r.squaredGLMM(m_lst)
+
+## ET - modelo
+m_et=lmer(ET~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
+summary(m_et)
+MuMIn::r.squaredGLMM(m_et)
+
+
+#Lst - grafico predict
+df2$pred_lst=predict(m_lst)
+df2$pred_et=predict(m_et)
 
 ggplot(df2, aes(x = Age_secforest, y = LST))+
-  geom_point(aes(colour = Perc_secforest),alpha=0.5)+
-  geom_smooth(method = 'lm')+
-  facet_wrap(Regions~.,scales = 'free')
+  geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
+  geom_smooth(aes(x=Age_secforest, y=pred_lst))+
+  facet_wrap(Regions~.,scales = 'free')+
+  scale_color_gradient(low='darkgreen',high = 'red')
 
-
-
-
-
-
-
-
-
-
-
-
+#ET
+ggplot(df2, aes(x = Age_secforest, y = ET))+
+  geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
+  geom_smooth(aes(x=Age_secforest, y=pred_et))+
+  facet_wrap(Regions~.,scales = 'free')+
+  scale_color_gradient(low='darkgreen',high = 'red')
 
 
 
