@@ -46,9 +46,6 @@ df$Age_secforest = round(df$Age_secforest, 0)
 plot(df)
 names(df)
 
-setwd("C:/Users/Eduardo/Documents/Analises_Elias/Dados")
-write.csv(df, "Paper_Elias_Data.csv", row.names = F)
-
 #Preparing data to analysis ----------------------------------------------------
 df2=df%>%
   na.omit() %>% 
@@ -62,6 +59,10 @@ df2=df%>%
             Perc_agriculture = mean(Perc_agriculture),
             Perc_priforest = mean(Perc_priforest),
             Perc_secforest = mean(Perc_priforest))
+
+
+setwd("C:/Users/Eduardo/Documents/Analises_Elias/Dados")
+write.csv(df2, "Paper_Elias_Data.csv", row.names = F)
 
 #Exploratory Graphics ----------------------------------------------------------
 ggplot(df2, aes(x = Age_secforest, y = LST))+
