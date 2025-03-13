@@ -42,10 +42,9 @@ df = st_intersection(amr[1], df); colnames(df)[1] = c("Regions")
 df$Regions = substr(df$Regions, 1, 2)
 
 plot(df)
-
-#writeRaster(secf4, "Perc_SecForest_1km.tif")
 names(df)
 
+#Preparing data to analysis ----------------------------------------------------
 df2=df%>%
   st_drop_geometry()%>%
 #  dplyr::mutate(LST=ifelse(LST<24,NA,LST))
@@ -54,40 +53,14 @@ df2=df%>%
   na.omit()
 
 
-
-#Lst
-ggplot(df2, aes(x = Age_secforest, y = LST))+
-  geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
-  geom_smooth(method = 'lm')+
-  facet_wrap(Regions~.,scales = 'free')+
-  scale_color_gradient(low='darkgreen',high = 'red')
-
-#ET
-ggplot(df2, aes(x = Age_secforest, y = ET))+
-  geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
-  geom_smooth(method = 'lm')+
-  facet_wrap(Regions~.,scales = 'free')+
-  scale_color_gradient(low='darkgreen',high = 'red')
-
-
-
-
-## lst - modelo
+## LST Model
 library(lme4)
 
 m_lst=lmer(LST~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
 summary(m_lst)
 MuMIn::r.squaredGLMM(m_lst)
 
-## ET - modelo
-m_et=lmer(ET~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
-summary(m_et)
-MuMIn::r.squaredGLMM(m_et)
-
-
-#Lst - grafico predict
 df2$pred_lst=predict(m_lst)
-df2$pred_et=predict(m_et)
 
 ggplot(df2, aes(x = Age_secforest, y = LST))+
   geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
@@ -95,7 +68,14 @@ ggplot(df2, aes(x = Age_secforest, y = LST))+
   facet_wrap(Regions~.,scales = 'free')+
   scale_color_gradient(low='darkgreen',high = 'red')
 
-#ET
+
+## ET Model
+m_et=lmer(ET~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
+summary(m_et)
+MuMIn::r.squaredGLMM(m_et)
+
+df2$pred_et=predict(m_et)
+
 ggplot(df2, aes(x = Age_secforest, y = ET))+
   geom_point(aes(colour = Perc_agriculture),alpha=0.1)+
   geom_smooth(aes(x=Age_secforest, y=pred_et))+
