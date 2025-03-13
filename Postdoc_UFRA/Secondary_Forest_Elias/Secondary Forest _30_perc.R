@@ -50,7 +50,7 @@ df2=df%>%
   st_drop_geometry()%>%
 #  dplyr::mutate(LST=ifelse(LST<24,NA,LST))
   dplyr::filter(LST>=24) %>% 
-  dplyr::filter(Perc_agriculture <= 20) %>% 
+  dplyr::filter(Perc_priforest <= 20) %>% 
   na.omit()
 
 
