@@ -5,6 +5,7 @@
 library(terra)
 library(sf)
 library(ggplot2)
+library(lme4)
 
 #Load data ---------------------------------------------------------------------
 setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
@@ -49,13 +50,11 @@ df2=df%>%
   st_drop_geometry()%>%
 #  dplyr::mutate(LST=ifelse(LST<24,NA,LST))
   dplyr::filter(LST>=24) %>% 
-  dplyr::filter(Perc_priforest <= 20) %>% 
+  #dplyr::filter(Perc_priforest <= 20) %>% 
   na.omit()
 
 
 ## LST Model
-library(lme4)
-
 m_lst=lmer(LST~Age_secforest*Regions+(1|Perc_agriculture)+(1|Perc_priforest),data=df2)
 summary(m_lst)
 MuMIn::r.squaredGLMM(m_lst)
