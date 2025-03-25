@@ -8,7 +8,7 @@ library(tidyverse)
 library(lme4)
 
 #Load data ---------------------------------------------------------------------
-setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters")
 dir()
 
 sec = rast("Perc_SecForest_1km.tif")
@@ -20,10 +20,10 @@ lst = rast("LST_Amazonia_2023_1km.tif")
 amr = read_sf("C:/Users/Eduardo/Documents/Analises_Elias/Shapes")
 
 #Binary filtering > 30% of secondary forest ------------------------------------
-sec2 = sec
-sec2[sec2 < 30] = NA
+#sec2 = sec
+#sec2[sec2 < 30] = NA
 
-df = st_as_sf(as.points(sec2, na.rm = T))
+df = st_as_sf(as.points(sec, na.rm = T))
 colnames(df)[1] = c("Perc_secforest")
 
 #Extracting others information -------------------------------------------------
