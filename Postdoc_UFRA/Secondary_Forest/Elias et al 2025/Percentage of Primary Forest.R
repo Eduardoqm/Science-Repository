@@ -5,7 +5,7 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters")
 dir()
 
 base = rast("ET_Amazonia_2023_1km.tif")
@@ -28,8 +28,8 @@ ttl2 = resample(ttl, base, method = "sum")
 mb4 = (mb3/ttl2)*100
 
 #Substract the Secondary Forest percentage
-mb5 = mb4 - secfor
-mb5[mb5 < 0] = NA
+#mb5 = mb4 - secfor
+#mb5[mb5 < 0] = NA
 
 plot(mb)
 #plot(mb4, add = T)

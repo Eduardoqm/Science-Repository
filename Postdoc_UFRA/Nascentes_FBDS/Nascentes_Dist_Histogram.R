@@ -6,7 +6,7 @@ library(tidyverse)
 library(moments)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Nascentes_FBDS (Silverio et al)/Modelos_nascentes")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Parados/Nascentes_FBDS (Silverio et al)/Modelos_nascentes")
 dir()
 
 df=readxl::read_excel("Nascentes_riacho_fundo_barra.xlsx")
