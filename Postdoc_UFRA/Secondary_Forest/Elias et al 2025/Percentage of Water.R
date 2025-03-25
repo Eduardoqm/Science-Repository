@@ -11,7 +11,7 @@ dir()
 base = rast("ET_Amazonia_2023_1km.tif")
 mb = rast("MB2023_l1_30m.tiff")
 
-#Calculating percentage of primary forest ------------------------------------
+#Calculating percentage of Water class -----------------------------------------
 #Make binary to count
 mb2 = mb
 mb2[mb2 != 26] = 0 # Class Water for L1 (26)
