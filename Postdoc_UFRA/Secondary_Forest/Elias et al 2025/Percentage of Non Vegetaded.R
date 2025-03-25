@@ -1,4 +1,4 @@
-#Percentage of Water (Elias Paper)
+#Percentage of Non Vegetated (Elias Paper)
 
 #Eduardo Q Marques 25-03-2025
 
@@ -14,7 +14,7 @@ mb = rast("MB2023_l1_30m.tiff")
 #Calculating percentage of Water class -----------------------------------------
 #Make binary to count
 mb2 = mb
-mb2[mb2 != 26] = 0 # Class Water for L1 (26)
+mb2[mb2 != 22] = 0 # Class Non Vegetated for L1 (22)
 mb2
 
 ttl = mb #Total of pixels to extract fraction
@@ -25,9 +25,9 @@ ttl[ttl != 1] = 1
 mb3 = resample(mb2, base, method = "sum")
 ttl2 = resample(ttl, base, method = "sum")
 
-mb4 = ((mb3/ttl2)*100)/26
+mb4 = ((mb3/ttl2)*100)/22
 
 plot(mb)
-plot(mb4)
+plot(mb4, add = T)
 
-writeRaster(mb4, "Perc_Water_1km.tif")
+writeRaster(mb4, "Perc_Non_Vegetated_1km.tif")
