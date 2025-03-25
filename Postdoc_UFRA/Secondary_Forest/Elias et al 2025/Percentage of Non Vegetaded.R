@@ -28,6 +28,6 @@ ttl2 = resample(ttl, base, method = "sum")
 mb4 = ((mb3/ttl2)*100)/26
 
 plot(mb)
-plot(mb4, add = T)
+plot(mb4)
 
 writeRaster(mb4, "Perc_Water_1km.tif")

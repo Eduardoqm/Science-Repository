@@ -32,7 +32,6 @@ mb4 = (mb3/ttl2)*100
 #mb5[mb5 < 0] = NA
 
 plot(mb)
-#plot(mb4, add = T)
-plot(mb5, add = T)
+plot(mb4, add = T)
 
-writeRaster(mb5, "Perc_PriForest_1km.tif")
+writeRaster(mb4, "Perc_PriForest_1km.tif")
