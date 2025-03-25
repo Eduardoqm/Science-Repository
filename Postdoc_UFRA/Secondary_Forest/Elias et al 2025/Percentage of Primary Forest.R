@@ -9,7 +9,7 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Raste
 dir()
 
 base = rast("ET_Amazonia_2023_1km.tif")
-secfor = rast("Perc_SecForest_1km.tif")
+#secfor = rast("Perc_SecForest_1km.tif")
 mb = rast("MB2023_l1_30m.tiff")
 
 #Calculating percentage of primary forest ------------------------------------
