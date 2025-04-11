@@ -10,15 +10,15 @@ library(lme4)
 #Load data ---------------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters"); dir()
 
-sec = rast("C:/Users/Eduardo/Documents/Analises_Elias/Rasters/Perc_SecForest_1km.tif")
-mage = rast("C:/Users/Eduardo/Documents/Analises_Elias/Rasters/Mean_Forest_age_1km.tif")
+sec = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/Perc_SecForest_1km.tif")
+mage = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/Mean_Forest_age_1km.tif")
 freqf = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/MapBiomes_Brazil/Fire/Amazonia_frequency_burned-2018_2023.tif")
 ndvi = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/Amazonia_NDVI_2023B.tif")
 grnd = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/Amazonia_GRND_2023.tif")
 ndwi = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/Amazonia_NDWI_2023.tif")
 rendvi = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/Amazonia_RENDVI_2023.tif")
 
-amr = read_sf("C:/Users/Eduardo/Documents/Analises_Elias/Shapes")
+amr = read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Shapes")
 
 #Binary filtering > 30% of secondary forest ------------------------------------
 sec2 = sec
@@ -61,24 +61,60 @@ df2=df%>%
             GRND = mean(GRND),
             NDWI = mean(NDWI),
             RENDVI = mean(RENDVI))%>% 
-  ungroup()
+  ungroup()%>%
+  mutate(
+    reg=ifelse(Regions=="SE"|Regions=="SW","SE_SW","NE_NW"))
 
 #Models ------------------------------------------------------------------------
-#NDVI
-m_ndvi=lm(NDVI~Fire_freq+Regions, data=df3)
-summary(m_ndvi)
-
 #GRND
-m_grnd=lm(GRND~Fire_freq+Regions, data=df3)
+m_grnd=lm(GRND~Fire_freq+Regions, data=df2)
 summary(m_grnd)
 
 #NDWI
-m_ndwi=lm(NDWI~Fire_freq+Regions, data=df3)
+m_ndwi=lm(NDWI~Fire_freq+Regions, data=df2)
 summary(m_ndwi)
 
 #RENDVI
-m_rendvi=lm(RENDVI~Fire_freq+Regions, data=df3)
+m_rendvi=lm(RENDVI~Fire_freq+Regions, data=df2)
 summary(m_rendvi)
+
+
+#NDVI
+m_ndvi=lm(NDVI~Fire_freq+reg, data=df2)
+summary(m_ndvi)
+coef(m_ndvi)
+
+df2x=df2%>%na.omit()
+m_ndvi1=lm(NDVI~Fire_freq+Regions+Fire_freq*Age_secforest2, data=df2x,na.action = 'na.fail')
+summary(m_ndvi1)
+anova(m_ndvi,m_ndvi1)
+MuMIn::dredge(m_ndvi1)
+
+
+#BEST NODEL ####################################################################
+m_ndvi1=lm(NDVI~Fire_freq*Age_secforest2, data=df2x,na.action = 'na.fail')
+summary(m_ndvi1)
+
+
+ggplot(df3, aes(x = Fire_freq, y = value, group =Age_secforest2,
+                color = Age_secforest2))+
+  geom_point(size = 4)+
+  geom_smooth(method = "lm")+
+  labs(x = "Frequency of Fire", color = "Age of Second Forest")+
+  #scale_color_manual(values = c('blue','yellow'))+
+  #facet_wrap(Regions~.,scales = 'free')+
+  facet_grid(Indexs~., scales = "free")+
+  theme_bw()
+
+
+
+m_yng = lm(NDVI~Fire_freq+Regions, data=filter(df2, Age_secforest2 == "1-10y"))
+summary(m_yng)
+coef(m_yng)
+
+m_old = lm(NDVI~Fire_freq+Regions, data=filter(df2, Age_secforest2 == "+11y"))
+summary(m_old)
+coef(m_old)
 
 #Plotting results --------------------------------------------------------------
 df3 = df2 %>% 

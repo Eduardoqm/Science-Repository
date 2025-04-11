@@ -30,4 +30,4 @@ mb4 = ((mb3/ttl2)*100)/10
 plot(mb)
 plot(mb4, add = T)
 
-writeRaster(mb4, "Perc_Non_Forest_1km.tif")
+writeRaster(mb4, "Perc_Natural_No_Forest_1km.tif")
