@@ -20,8 +20,18 @@ listLST = function(x){
 lst1 = listLST("LST_Landsat9_1_2023")
 lst2 = listLST("LST_Landsat9_2_2023")
 
-#Resample by secondary forest age ----------------------------------------------
-m_age = resample(secf, base, method = "average")
+#Make the mosaics --------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 plot(secf)
 plot(m_age, add = T)
