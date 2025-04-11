@@ -21,6 +21,16 @@ lst1 = listLST("LST_Landsat9_1_2023")
 lst2 = listLST("LST_Landsat9_2_2023")
 
 #Make the mosaics --------------------------------------------------------------
+img = rast(lst1[1])
+
+for (n in 2:length(lst1)) {
+  print(n)
+  img2 = rast(lst1[n])
+  img = mosaic(img, img2, fun="mean")
+}
+
+plot(img)
+
 
 
 
