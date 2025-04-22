@@ -6,10 +6,6 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-#setwd("G:/Meu Drive/GEE_LST_Landsat9")
-#setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
-#dir()
-
 listLST = function(x){
   lst =  list.files(path="G:/Meu Drive/GEE_LST_Landsat9",
                      pattern = x,
@@ -31,19 +27,5 @@ for (n in 2:length(lst1)) {
 
 plot(img)
 
-
-
-
-
-
-
-
-
-
-
-
-
-plot(secf)
-plot(m_age, add = T)
-
-writeRaster(m_age, "Mean_Forest_age_1km.tif")
+setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
+writeRaster(img, "LST_Land9_jan2023.tif")
