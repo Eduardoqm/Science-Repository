@@ -6,6 +6,9 @@
 library(tidyverse)
 library(terra)
 library(sf)
+library(future) #Multicore work
+
+parallel::detectCores()
 
 #Load Data ---------------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/ECOSTRESS")
@@ -28,21 +31,24 @@ Jan <- substr(readLines(metalist[1]), 127, 205),
 Fev <- substr(readLines(metalist[2]), 127, 205),
 Mar <- substr(readLines(metalist[3]), 127, 205),
 Apr <- substr(readLines(metalist[4]), 127, 205))
-head(meta1)
+head(meta1); length(meta1)
 
 meta2 = c(
   May <- substr(readLines(metalist[5]), 127, 205),
   Jun <- substr(readLines(metalist[6]), 127, 205),
-  Jul <- substr(readLines(metalist[7]), 127, 205),
-  Agu <- substr(readLines(metalist[8]), 127, 205),
-  Sep <- substr(readLines(metalist[9]), 127, 205))
-head(meta2)
+  Jul <- substr(readLines(metalist[7]), 127, 205))
+head(meta2); length(meta2)
 
 meta3 = c(
+  Agu <- substr(readLines(metalist[8]), 127, 205),
+  Sep <- substr(readLines(metalist[9]), 127, 205))
+head(meta3); length(meta3)
+
+meta4 = c(
   Out <- substr(readLines(metalist[10]), 127, 205),
   Nov <- substr(readLines(metalist[11]), 127, 205),
   Dec <- substr(readLines(metalist[12]), 127, 205))
-head(meta3)
+head(meta4); length(meta4)
 
 #January to April --------------------------------------------------------------
 Jan_Apr <- list()
@@ -62,42 +68,120 @@ plot(et2)
 
 writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
 
-#May to September --------------------------------------------------------------
-May_Sep <- list()
+#May to July -------------------------------------------------------------------
+May_Jul <- list()
+
+#for(i in 1:length(meta2)) {
+#  cat(i,'\n')
+#  r <-terra::rast(meta2[i])
+#  r2=terra::resample(r,ex2)
+#  May_Jul[[i]] <-r2
+#}
 
 for(i in 1:length(meta2)) {
-  cat(i,'\n')
-  r <-terra::rast(meta2[i])
-  r2=terra::resample(r,ex2)
-  May_Sep[[i]] <-r2
+  cat("Proccess", i, "\n")
+  
+  tryCatch({
+    r <- terra::rast(meta2[i])
+    r2 <- terra::resample(r, ex2)
+    May_Jul[[i]] <- r2
+  }, error = function(e) {
+    cat("No exist", meta2[i], ":", conditionMessage(e), "\n")
+    May_Jul[[i]] <- NULL
+  })
 }
 
 
-fl2=sprc(May_Sep)
-fl3=mosaic(fl2,fun='max')
-et3=max(fl3,na.rm = T)
+May_Jul2 <- May_Jul[!sapply(May_Jul, is.null)]
+
+#fl2=sprc(May_Jul2)
+#fl3=mosaic(fl2,fun='max')
+#et3=max(fl3,na.rm = T)
+
+# Planejar execução paralela com sessões separadas
+plan(multisession, workers = 27)
+
+stacked <- terra::rast(May_Jul2)
+et3 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+
+writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
 plot(et3)
 
-writeRaster(et3, "ECOSTRESS_EVAP_May_Sep_2022.tif")
+#August to September -----------------------------------------------------------
+Aug_Sep <- list()
+
+plan(multisession, workers = 27)
+
+for(i in 1:length(meta3)) {
+  cat("Proccess", i, "\n")
+  
+  tryCatch({
+    r <- terra::rast(meta3[i])
+    r2 <- terra::resample(r, ex2)
+    Aug_Sep[[i]] <- r2
+  }, error = function(e) {
+    cat("No exist", meta3[i], ":", conditionMessage(e), "\n")
+    Aug_Sep[[i]] <- NULL
+  })
+}
+
+
+Aug_Sep2 <- Aug_Sep[!sapply(Aug_Sep, is.null)]
+#for(i in 1:length(meta3)) {
+#  cat(i,'\n')
+#  r <-terra::rast(meta3[i])
+#  r2=terra::resample(r,ex2)
+#  Aug_Sep[[i]] <-r2
+#}
+
+
+#fl2=sprc(Aug_Sep)
+#fl3=mosaic(fl2,fun='max')
+#et4=max(fl3,na.rm = T)
+stacked <- terra::rast(Aug_Sep2)
+et4 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+
+writeRaster(et4, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
+plot(et4)
 
 #October to December -----------------------------------------------------------
 Oct_Dec <- list()
 
-for(i in 1:length(meta3)) {
-  cat(i,'\n')
-  r <-terra::rast(meta3[i])
-  r2=terra::resample(r,ex2)
-  Oct_Dec[[i]] <-r2
+plan(multisession, workers = 27)
+
+for(i in 1:length(meta4)) {
+  cat("Proccess", i, "\n")
+  
+  tryCatch({
+    r <- terra::rast(meta4[i])
+    r2 <- terra::resample(r, ex2)
+    Oct_Dec[[i]] <- r2
+  }, error = function(e) {
+    cat("No exist", meta4[i], ":", conditionMessage(e), "\n")
+    Oct_Dec[[i]] <- NULL
+  })
 }
 
 
-fl2=sprc(Oct_Dec)
-fl3=mosaic(fl2,fun='max')
-et4=max(fl3,na.rm = T)
-plot(et4)
+#for(i in 1:length(meta4)) {
+#  cat(i,'\n')
+#  r <-terra::rast(meta4[i])
+#  r2=terra::resample(r,ex2)
+#  Oct_Dec[[i]] <-r2
+#}
 
-writeRaster(et4, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
 
+#fl2=sprc(Oct_Dec)
+#fl3=mosaic(fl2,fun='max')
+#et5=max(fl3,na.rm = T)
+
+Oct_Dec2 <- Oct_Dec[!sapply(Oct_Dec, is.null)]
+
+stacked <- terra::rast(Oct_Dec2)
+et5 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+
+writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
+plot(et5)
 
 
 
