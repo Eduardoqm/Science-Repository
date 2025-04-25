@@ -187,6 +187,41 @@ plot(et5)
 
 # ------------------------------------------------------------------------------
 
+library(tidyverse)
+library(terra)
+library(sf)
+library(future) #Multicore work
+
+parallel::detectCores()
+
+#Load Data ---------------------------------------------------------------------
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/ECOSTRESS")
+dir()
+
+wet1 = rast("ECOSTRESS_EVAP_Jan_April_2022.tif")
+wet2 = rast("ECOSTRESS_EVAP_Oct_Dec_2022.tif")
+
+dry1 = rast("ECOSTRESS_EVAP_May_July_2022.tif")
+dry2 = rast("ECOSTRESS_EVAP_Aug_Sep_2022.tif")
+
+#Joing wet and dry seasons -----------------------------------------------------
+plan(multisession, workers = 27)
+
+#Wet
+stacked <- c(wet1, wet2)
+wet <- terra::app(stacked, fun = mean, na.rm = TRUE)
+
+writeRaster(wet, "ECOSTRESS_EVAP_WetSeason_2022.tif")
+plot(wet)
+
+#Dry
+stacked <- c(dry1, dry2)
+dry <- terra::app(stacked, fun = mean, na.rm = TRUE)
+
+writeRaster(dry, "ECOSTRESS_EVAP_DrySeason_2022.tif")
+plot(dry)
+
+
 #xx=do.call('rbind',results)
 #max(xx$nrow) # 4275
 #max(xx$ncol) # 4718
@@ -195,30 +230,71 @@ plot(et5)
 #et2=max(et_all,na.rm = T)
 #et2= app(et_all, function(i) max(i,na.rm=T))
 
-dir()
+et_all = terra::app(c(wet, dry), fun = mean, na.rm = TRUE)
+plot(et_all)
 
 ##
 sf=rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/MB_Forest_age_30m.tif")
 plot(sf)
 names(sf)="age"
-etx=terra::resample(et2,sf)
+etx=terra::resample(et_all,sf)
 plot(etx)
 
 etx2=c(sf,etx)
 res=zonal(etx, sf, "mean", na.rm=TRUE)
-res$mm_m2=(res$max*0.0864)*0.408
+res$mm_m2=(res$mean*0.0864)*0.408
+res$Season = "All"
 
 #1 W m-2 = 0.0864 MJ m-2 day-1
 #1 MJ m-2 day-1 = 0.408 mm day-1
 
 
-
-
-# grafico de resultados - individuos
+# grafico de resultados (Fully year)
 ggplot(res,aes(age,mm_m2))+
   geom_point()+
   stat_smooth(span=0.5)
-##
+
+
+#Dry Season
+etx=terra::resample(dry,sf)
+plot(etx)
+
+etx2=c(sf,etx)
+dry_res=zonal(etx, sf, "mean", na.rm=TRUE)
+dry_res$mm_m2=(dry_res$mean*0.0864)*0.408
+dry_res$Season = "Dry"
+
+ggplot(dry_res,aes(age,mm_m2))+
+  geom_point()+
+  stat_smooth(span=0.5)+
+  labs(title = "Dry Season (May - September")
+
+
+#Wet Season
+etx=terra::resample(wet,sf)
+plot(etx)
+
+etx2=c(sf,etx)
+wet_res=zonal(etx, sf, "mean", na.rm=TRUE)
+wet_res$mm_m2=(wet_res$mean*0.0864)*0.408
+wet_res$Season = "Wet"
+
+ggplot(wet_res,aes(age,mm_m2))+
+  geom_point()+
+  stat_smooth(span=0.5)+
+  labs(title = "Wet Season (October - April")
+
+
+
+df = rbind(res[c(1,3,4)], dry_res[c(1,3,4)], wet_res[c(1,3,4)])
+colnames(df) = c("Age", "mm", "Season")
+
+ggplot(df, aes(Age, mm, col = Season))+
+  geom_point()+
+  stat_smooth(span=0.5)
+
+
+write.csv(df, "ECOSTRESS_Vegetation_Age.csv", row.names = F)
 
 ##### analise estatistica
 m_year=lm(log(LST_c)~log(sf_age),data=df)
