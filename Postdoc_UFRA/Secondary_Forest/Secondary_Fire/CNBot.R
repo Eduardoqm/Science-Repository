@@ -1,11 +1,12 @@
 #Secondary Fire > SF30% (Congress of Botany)
 
-#Eduardo Q Marques 19-03-2025
+#Eduardo Q Marques 19-03-2025 Updated 07-07-2025
 
 library(terra)
 library(sf)
 library(tidyverse)
 library(lme4)
+library(ggpubr)
 
 #Load data ---------------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters"); dir()
@@ -96,18 +97,9 @@ m_ndvi1=lm(NDVI~Fire_freq*Age_secforest2, data=df2x,na.action = 'na.fail')
 summary(m_ndvi1)
 
 
-ggplot(df3, aes(x = Fire_freq, y = value, group =Age_secforest2,
-                color = Age_secforest2))+
-  geom_point(size = 4)+
-  geom_smooth(method = "lm")+
-  labs(x = "Frequency of Fire", color = "Age of Second Forest")+
-  #scale_color_manual(values = c('blue','yellow'))+
-  #facet_wrap(Regions~.,scales = 'free')+
-  facet_grid(Indexs~., scales = "free")+
-  theme_bw()
 
 
-
+#Young versus Old
 m_yng = lm(NDVI~Fire_freq+Regions, data=filter(df2, Age_secforest2 == "1-10y"))
 summary(m_yng)
 coef(m_yng)
@@ -122,13 +114,28 @@ df3 = df2 %>%
                names_to = "Indexs",
                values_to = "value")
 
+df3$Age_secforest2[df3$Age_secforest2 == "1-10y"] <- "1-10 anos"
+df3$Age_secforest2[df3$Age_secforest2 == "+11y"] <- "+11 anos"
 
-ggplot(df3, aes(x = Fire_freq, y = value, group =Age_secforest2,
+
+plt = ggplot(df3, aes(x = Fire_freq, y = value, group =Age_secforest2,
                 color = Age_secforest2))+
   geom_point(size = 4)+
   geom_smooth(method = "lm")+
-  labs(x = "Frequency of Fire", color = "Age of Second Forest")+
-  #scale_color_manual(values = c('blue','yellow'))+
-  #facet_wrap(Regions~.,scales = 'free')+
+  stat_cor(show.legend = F, label.y.npc = 0.01, label.x.npc = 0.01,
+           p.digits = 0)+
+  labs(x = "Frequência de fogo", y = "Valor do índice",
+       color = "Idade da floresta")+
+  scale_color_manual(values = c('#1b9e77','#d95f02'))+
   facet_grid(Indexs~Regions, scales = "free")+
-  theme_bw()
+  theme_bw(); plt
+
+ggsave(filename = "Sec_Forest_IV_Fire.tiff", plot = plt,
+       width = 27, height = 19, units = "cm", dpi = 600,
+       path = "G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Congresso_Botanica")
+
+
+
+
+
+
