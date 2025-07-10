@@ -30,4 +30,4 @@ secf4 = (secf3/ttl2)*100
 
 plot(secf4)
 
-writeRaster(secf4, "Perc_SecForest_1km.tif")
+writeRaster(secf4, "Perc_SecForest_70m.tif")
