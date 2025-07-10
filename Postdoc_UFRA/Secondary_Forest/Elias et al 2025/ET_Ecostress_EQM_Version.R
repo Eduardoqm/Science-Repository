@@ -195,7 +195,7 @@ library(future) #Multicore work
 parallel::detectCores()
 
 #Load Data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/ECOSTRESS")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS")
 dir()
 
 wet1 = rast("ECOSTRESS_EVAP_Jan_April_2022.tif")
@@ -220,6 +220,16 @@ dry <- terra::app(stacked, fun = mean, na.rm = TRUE)
 
 writeRaster(dry, "ECOSTRESS_EVAP_DrySeason_2022.tif")
 plot(dry)
+
+#Annual
+wet = rast("ECOSTRESS_EVAP_WetSeason_2022.tif")
+dry = rast("ECOSTRESS_EVAP_DrySeason_2022.tif")
+stacked <- c(wet, dry)
+annual <- terra::app(stacked, fun = mean, na.rm = TRUE)
+
+writeRaster(annual, "ECOSTRESS_EVAP_annual_2022.tif")
+plot(annual)
+
 
 
 #xx=do.call('rbind',results)
