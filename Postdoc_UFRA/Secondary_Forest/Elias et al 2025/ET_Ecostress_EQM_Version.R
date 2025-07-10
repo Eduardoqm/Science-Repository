@@ -222,8 +222,8 @@ writeRaster(dry, "ECOSTRESS_EVAP_DrySeason_2022.tif")
 plot(dry)
 
 #Annual
-wet = rast("ECOSTRESS_EVAP_WetSeason_2022.tif")
-dry = rast("ECOSTRESS_EVAP_DrySeason_2022.tif")
+#wet = rast("ECOSTRESS_EVAP_WetSeason_2022.tif")
+#dry = rast("ECOSTRESS_EVAP_DrySeason_2022.tif")
 stacked <- c(wet, dry)
 annual <- terra::app(stacked, fun = mean, na.rm = TRUE)
 
