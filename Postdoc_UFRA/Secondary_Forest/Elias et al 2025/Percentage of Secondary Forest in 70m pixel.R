@@ -5,11 +5,11 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("C:/Users/Eduardo/Documents/Analises_Elias/Rasters")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Toy")
 dir()
 
-base = rast("ET_Amazonia_2023_1km.tif")
-secf = rast("MB_Forest_age_30m.tif")
+base = rast("LST_Landsat_Annual_2022.tif")
+secf = rast("MB_Forest_age_30m_toy.tif")
 
 #Calculating percentage of secondary forest ------------------------------------
 #Make binary to count
