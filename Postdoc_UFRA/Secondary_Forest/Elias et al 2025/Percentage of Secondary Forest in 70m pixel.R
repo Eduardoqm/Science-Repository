@@ -5,10 +5,10 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Toy")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Toy/raster")
 dir()
 
-base = rast("LST_Landsat_Annual_2022.tif")
+base = rast("ECOSTRESS_Annual_2022_toy.tif")
 secf = rast("MB_Forest_age_30m_toy.tif")
 
 #Calculating percentage of secondary forest ------------------------------------
