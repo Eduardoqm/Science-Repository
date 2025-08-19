@@ -44,13 +44,6 @@ master2 = master[!duplicated(master$UTCDateTime), ]
 setwd("C:/Users/Eduardo/Documents/PurpleAir")
 write.csv(master2,"Master_qualidade_ar_cp_B.csv")
 
-#Verifying data ----------------------------------------------------------------
-master3$Date = as.Date(substr(master3$UTCDateTime, 1,10), "%Y/%m/%d")
-
-ggplot(master3, aes(Date, temp_Celcius))+
-  geom_point(alpha = 0.1)+
-  theme_minimal()
-
 
 
 
