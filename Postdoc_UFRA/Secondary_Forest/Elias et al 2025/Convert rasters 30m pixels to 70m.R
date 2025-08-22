@@ -37,28 +37,30 @@ plot(base2)
 #Resample by base --------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
 
-secf2 = resample(secf, base, method = "average")
-plot(base)
+#writeRaster(base2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
+
+secf2 = resample(secf, base2, method = "average")
+plot(base2)
 plot(secf2)
 writeRaster(secf2, "MB_Forest_age_70m.tif")
 
-fore2 = resample(fore, base, method = "average")
+fore2 = resample(fore, base2, method = "average")
 plot(fore2)
 writeRaster(fore2, "Forest_70m.tif")
 
-past2 = resample(past, base, method = "average")
+past2 = resample(past, base2, method = "average")
 plot(past2)
 writeRaster(past2, "Pasture_70m.tif")
 
-lst_an_2022b = resample(lst_year, base, method = "average")
+lst_an_2022b = resample(lst_year, base2, method = "average")
 plot(lst_an_2022b)
 writeRaster(lst_an_2022b, "LST_Landsat_Annual_2022_2023_70m.tif")
 
-lst_dry_2022b = resample(lst_dry, base, method = "average")
+lst_dry_2022b = resample(lst_dry, base2, method = "average")
 plot(lst_dry_2022b)
 writeRaster(lst_dry_2022b, "LST_Landsat_Dry_2022_2023_70m.tif")
 
-lst_wet_2022b = resample(lst_wet, base, method = "average")
+lst_wet_2022b = resample(lst_wet, base2, method = "average")
 plot(lst_wet_2022b)
 writeRaster(lst_wet_2022b, "LST_Landsat_Wet_2022_2023_70m.tif")
 
