@@ -10,6 +10,8 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 dir()
 
 base = rast("ECOSTRESS_EVAP_Annual_2022.tif")
+evp_dry = rast("ECOSTRESS_EVAP_DrySeason_2022.tif")
+evp_wet = rast("ECOSTRESS_EVAP_WetSeason_2022.tif")
 secf = rast("MB_Forest_age_30m.tif")
 fore = rast("Forest_30m.tif")
 past = rast("Pasture_30m.tif")
@@ -30,14 +32,22 @@ limit = vect("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Anali
 #lst_wet_2022 = rast("LST_Landsat_Rainy_2022.tif")
 #lst_wet_2023 = rast("LST_Landsat_Rainy_2023.tif")
 
-#Make base only inside the study area ------------------------------------------
-base2 = mask(crop(base, limit), limit)
-plot(base2)
-
 #Resample by base --------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
 
-#writeRaster(base2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
+base2 = mask(crop(base, limit), limit)
+plot(base2)
+writeRaster(base2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
+
+evp_dry2 = resample(evp_dry, base2, method = "average")
+evp_dry2 = mask(crop(evp_dry2, limit), limit)
+plot(evp_dry2)
+writeRaster(evp_dry2, "ECOSTRESS_EVAP_DrySeason_2022_70m.tif")
+
+evp_wet2 = resample(evp_wet, base2, method = "average")
+evp_wet2 = mask(crop(evp_wet2, limit), limit)
+plot(evp_wet2)
+writeRaster(evp_wet2, "ECOSTRESS_EVAP_DrySeason_2022_70m.tif")
 
 secf2 = resample(secf, base2, method = "average")
 secf2 = mask(crop(secf2, limit), limit)
