@@ -17,6 +17,8 @@ lst_year = rast("LST_Landsat_Annual_2022_2023.tif")
 lst_dry = rast("LST_Landsat_Dry_2022_2023.tif")
 lst_wet = rast("LST_Landsat_Rainy_2022_2023.tif")
 
+limit = vect("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
+
 #base = rast("ECOSTRESS_Annual_2022_toy.tif")
 #secf = rast("MB_Forest_age_30m_toy.tif")
 #fore = rast("Forest_30m_toy.tif")
@@ -27,6 +29,10 @@ lst_wet = rast("LST_Landsat_Rainy_2022_2023.tif")
 #lst_dry_2023 = rast("LST_Landsat_Dry_2023.tif")
 #lst_wet_2022 = rast("LST_Landsat_Rainy_2022.tif")
 #lst_wet_2023 = rast("LST_Landsat_Rainy_2023.tif")
+
+#Make base only inside the study area ------------------------------------------
+base2 = mask(crop(base, limit), limit)
+plot(base2)
 
 #Resample by base --------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
