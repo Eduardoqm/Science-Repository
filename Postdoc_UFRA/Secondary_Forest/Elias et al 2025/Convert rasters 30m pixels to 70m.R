@@ -40,7 +40,6 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 #writeRaster(base2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
 
 secf2 = resample(secf, base2, method = "average")
-plot(base2)
 plot(secf2)
 writeRaster(secf2, "MB_Forest_age_70m.tif")
 
