@@ -11,30 +11,20 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 dir()
 
 #LST
-lst_year22 = rast("LST_Landsat_Annual_2022_70m.tif")
-lst_dry22 = rast("LST_Landsat_Dry_2022_70m.tif")
-lst_wet22 = rast("LST_Landsat_Wet_2022_70m.tif")
-
-lst_year23 = rast("LST_Landsat_Annual_2023_70m.tif")
-lst_dry23 = rast("LST_Landsat_Dry_2023_70m.tif")
-lst_wet23 = rast("LST_Landsat_Wet_2023_70m.tif")
-
-lst_year = mean(lst_year22, lst_year23)
-lst_dry = mean(lst_dry22, lst_dry23)
-lst_wet = mean(lst_wet22, lst_wet23)
+lst_year = rast("LST_Landsat_Annual_2022_2023_70m.tif")
+lst_dry = rast("LST_Landsat_Dry_2022_2023_70m.tif")
+lst_wet = rast("LST_Landsat_Wet_2022_2023_70m.tif")
 
 plot(lst_year)
 plot(lst_dry)
 plot(lst_wet)
 
-#er <- rast(ext(lst_year), resolution=res(lst_year))
-
 #Secondary Forest
-sf=rast("MB_Forest_age_70m_toy.tif")
+sf=rast("MB_Forest_age_70m.tif")
 plot(sf)
 
 #Primary Forest
-fr=rast("Forest_70m_toy.tif")
+fr=rast("Forest_70m.tif")
 plot(fr)
 
 focal_sf = function(x){
@@ -76,7 +66,7 @@ gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
 
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
-ggsave(plot = gglst, "Delta_LST_Amazonia_toy.png", dpi = 300,
+ggsave(plot = gglst, "Delta_LST_Amazonia_full.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
