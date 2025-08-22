@@ -1,0 +1,127 @@
+#LST by Secondary Forest Age (Focal)
+
+#Eduardo Q Marques 22-08-2025
+
+library(terra)
+library(tidyverse)
+library(sf)
+
+#Load data ---------------------------------------------------------------------
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
+dir()
+
+#LST
+lst_year22 = rast("LST_Landsat_Annual_2022_70m.tif")
+lst_dry22 = rast("LST_Landsat_Dry_2022_70m.tif")
+lst_wet22 = rast("LST_Landsat_Wet_2022_70m.tif")
+
+lst_year23 = rast("LST_Landsat_Annual_2023_70m.tif")
+lst_dry23 = rast("LST_Landsat_Dry_2023_70m.tif")
+lst_wet23 = rast("LST_Landsat_Wet_2023_70m.tif")
+
+lst_year = mean(lst_year22, lst_year23)
+lst_dry = mean(lst_dry22, lst_dry23)
+lst_wet = mean(lst_wet22, lst_wet23)
+
+plot(lst_year)
+plot(lst_dry)
+plot(lst_wet)
+
+#er <- rast(ext(lst_year), resolution=res(lst_year))
+
+#Secondary Forest
+sf=rast("MB_Forest_age_70m_toy.tif")
+plot(sf)
+
+#Primary Forest
+fr=rast("Forest_70m_toy.tif")
+plot(fr)
+
+focal_sf = function(x){
+  #Calculating LST for Primary Forest --------------------------------------------
+  fr_pri=ifel(is.na(sf),fr,NA) #Selecting only Primary Forest
+  #plot(fr_pri)
+  
+  lst_pri=ifel(is.na(fr_pri),NA,x)
+  #plot(lst_pri)
+  
+  #Use focal to calculate difference in Secondary and Primary (Delta)-------------
+  lst_f <- focal(lst_pri, w=21, mean, na.rm=TRUE)
+  #plot(lst_f)
+  
+  lst_delta_pri=ifel(is.na(sf),NA,x-lst_f)
+  #plot(lst_delta_pri)
+  
+  resf=as.data.frame(c(sf,lst_delta_pri))
+  #head(resf)
+  
+  resf2=resf%>%
+    mutate(sf_age=round(MB_Forest_age_30m,0))%>%
+    group_by(sf_age)%>%
+    summarise(lst=mean(LST_Celsius,na.rm=T))
+  #head(resf2)
+  return(resf2)
+}
+
+df1 = focal_sf(lst_year); df1$cond = "Annual"
+df2 = focal_sf(lst_dry); df2$cond = "Dry Season"
+df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
+lst_df = rbind(df1, df2, df3)
+
+gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
+  geom_point(size = 3)+
+  stat_smooth()+
+  labs(x="Secondary forest age (year)",y="Δ LST", col = "Condition")+
+  theme_minimal(); gglst
+
+
+setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
+ggsave(plot = gglst, "Delta_LST_Amazonia_toy.png", dpi = 300,
+       height = 10, width = 15, units = "cm")
+
+
+
+
+
+
+
+
+
+
+
+
+####Original part###############################################################
+#Make a raster stack -----------------------------------------------------------
+#all=c(lst_year,sf,fr)
+#plot(all)
+
+#Calculating LST for Primary Forest --------------------------------------------
+fr_pri=ifel(is.na(sf),fr,NA) #Selecting only Primary Forest
+plot(fr_pri)
+
+lst_pri=ifel(is.na(fr_pri),NA,lst_year)
+plot(lst_pri)
+
+#Use focal to calculate difference in Secondary and Primary (Delta)-------------
+lst_f <- focal(lst_pri, w=21, mean, na.rm=TRUE)
+plot(lst_f)
+
+lst_delta_pri=ifel(is.na(sf),NA,lst_year-lst_f)
+plot(lst_delta_pri)
+
+
+resf=as.data.frame(c(sf,lst_delta_pri))
+head(resf)
+
+resf2=resf%>%
+  mutate(sf_age=round(MB_Forest_age_30m,0))%>%
+  group_by(sf_age)%>%
+  summarise(lst=mean(LST_Celsius,na.rm=T))
+head(resf2)
+
+ggplot(resf2,aes(sf_age,lst))+
+  geom_point()+
+  stat_smooth()+
+  labs(x="Secondary forest age (year)",y="Δ LST (Annual)")
+
+
