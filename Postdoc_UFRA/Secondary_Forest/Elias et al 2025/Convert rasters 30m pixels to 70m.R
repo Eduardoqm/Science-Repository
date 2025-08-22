@@ -47,7 +47,7 @@ writeRaster(evp_dry2, "ECOSTRESS_EVAP_DrySeason_2022_70m.tif")
 evp_wet2 = resample(evp_wet, base2, method = "average")
 evp_wet2 = mask(crop(evp_wet2, limit), limit)
 plot(evp_wet2)
-writeRaster(evp_wet2, "ECOSTRESS_EVAP_DrySeason_2022_70m.tif")
+writeRaster(evp_wet2, "ECOSTRESS_EVAP_WetSeason_2022_70m.tif")
 
 secf2 = resample(secf, base2, method = "average")
 secf2 = mask(crop(secf2, limit), limit)
