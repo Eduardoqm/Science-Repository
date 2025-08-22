@@ -40,28 +40,34 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 #writeRaster(base2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
 
 secf2 = resample(secf, base2, method = "average")
+secf2 = mask(crop(secf2, limit), limit)
 plot(secf2)
 writeRaster(secf2, "MB_Forest_age_70m.tif")
 
 fore2 = resample(fore, base2, method = "average")
+fore2 = mask(crop(fore2, limit), limit)
 plot(fore2)
 writeRaster(fore2, "Forest_70m.tif")
 
 past2 = resample(past, base2, method = "average")
+past2 = mask(crop(past2, limit), limit)
 plot(past2)
 writeRaster(past2, "Pasture_70m.tif")
 
-lst_an_2022b = resample(lst_year, base2, method = "average")
-plot(lst_an_2022b)
-writeRaster(lst_an_2022b, "LST_Landsat_Annual_2022_2023_70m.tif")
+lst_year2 = resample(lst_year, base2, method = "average")
+lst_year2 = mask(crop(lst_year2, limit), limit)
+plot(lst_year2)
+writeRaster(lst_year2, "LST_Landsat_Annual_2022_2023_70m.tif")
 
-lst_dry_2022b = resample(lst_dry, base2, method = "average")
-plot(lst_dry_2022b)
-writeRaster(lst_dry_2022b, "LST_Landsat_Dry_2022_2023_70m.tif")
+lst_dry2 = resample(lst_dry, base2, method = "average")
+lst_dry2 = mask(crop(lst_dry2, limit), limit)
+plot(lst_dry2)
+writeRaster(lst_dry2, "LST_Landsat_Dry_2022_2023_70m.tif")
 
-lst_wet_2022b = resample(lst_wet, base2, method = "average")
-plot(lst_wet_2022b)
-writeRaster(lst_wet_2022b, "LST_Landsat_Wet_2022_2023_70m.tif")
+lst_wet2 = resample(lst_wet, base2, method = "average")
+lst_wet2 = mask(crop(lst_wet2, limit), limit)
+plot(lst_wet2)
+writeRaster(lst_wet2, "LST_Landsat_Wet_2022_2023_70m.tif")
 
 
 
