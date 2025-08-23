@@ -5,6 +5,9 @@
 library(terra)
 library(tidyverse)
 library(sf)
+library(future) #Multicore work
+
+parallel::detectCores()
 
 #Load data ---------------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
@@ -43,16 +46,20 @@ focal_sf = function(x){
   #plot(lst_delta_pri)
   
   resf=as.data.frame(c(sf,lst_delta_pri))
+  colnames(resf) = c("sf_age", "lst")
   #head(resf)
   
+
   resf2=resf%>%
-    mutate(sf_age=round(MB_Forest_age_30m,0))%>%
+    mutate(sf_age=round(sf_age,0))%>%
     group_by(sf_age)%>%
-    summarise(lst=mean(LST_Celsius,na.rm=T))
+    summarise(lst=mean(lst,na.rm=T))
   #head(resf2)
   return(resf2)
 }
 
+
+plan(multisession, workers = 27)
 df1 = focal_sf(lst_year); df1$cond = "Annual"
 df2 = focal_sf(lst_dry); df2$cond = "Dry Season"
 df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
@@ -69,49 +76,6 @@ setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analise
 ggsave(plot = gglst, "Delta_LST_Amazonia_full.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
-
-
-
-
-
-
-
-
-
-
-
-####Original part###############################################################
-#Make a raster stack -----------------------------------------------------------
-#all=c(lst_year,sf,fr)
-#plot(all)
-
-#Calculating LST for Primary Forest --------------------------------------------
-fr_pri=ifel(is.na(sf),fr,NA) #Selecting only Primary Forest
-plot(fr_pri)
-
-lst_pri=ifel(is.na(fr_pri),NA,lst_year)
-plot(lst_pri)
-
-#Use focal to calculate difference in Secondary and Primary (Delta)-------------
-lst_f <- focal(lst_pri, w=21, mean, na.rm=TRUE)
-plot(lst_f)
-
-lst_delta_pri=ifel(is.na(sf),NA,lst_year-lst_f)
-plot(lst_delta_pri)
-
-
-resf=as.data.frame(c(sf,lst_delta_pri))
-head(resf)
-
-resf2=resf%>%
-  mutate(sf_age=round(MB_Forest_age_30m,0))%>%
-  group_by(sf_age)%>%
-  summarise(lst=mean(LST_Celsius,na.rm=T))
-head(resf2)
-
-ggplot(resf2,aes(sf_age,lst))+
-  geom_point()+
-  stat_smooth()+
-  labs(x="Secondary forest age (year)",y="Δ LST (Annual)")
-
+setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
+write.csv(lst_df, "LST_SecFor_Age.csv", row.names = F)
 
