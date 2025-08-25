@@ -39,7 +39,7 @@ focal_sf = function(x){
   #plot(lst_pri)
   
   #Use focal to calculate difference in Secondary and Primary (Delta)-------------
-  lst_f <- focal(lst_pri, w=21, mean, na.rm=TRUE)
+  lst_f <- focal(lst_pri, w=61, median, na.rm=TRUE)
   #plot(lst_f)
   
   lst_delta_pri=ifel(is.na(sf),NA,x-lst_f)
@@ -73,9 +73,9 @@ gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
 
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
-ggsave(plot = gglst, "Delta_LST_Amazonia_full.png", dpi = 300,
+ggsave(plot = gglst, "Delta_LST_Amazonia_full_W61.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
-write.csv(lst_df, "LST_SecFor_Age.csv", row.names = F)
+write.csv(lst_df, "LST_SecFor_Age_W61.csv", row.names = F)
 
