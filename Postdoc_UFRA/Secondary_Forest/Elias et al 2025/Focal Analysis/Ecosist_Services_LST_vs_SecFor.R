@@ -29,15 +29,21 @@ plot(sf)
 #Primary Forest
 fr=rast("Forest_70m.tif")
 plot(fr)
-fr_pri=ifel(is.na(sf),fr,NA) #Selecting only Primary Forest
-#plot(fr_pri)
 
+#Proccess before Focal ---------------------------------------------------------
+#Selecting only Primary Forest
+fr_pri=ifel(is.na(sf),fr,NA)
+plot(fr_pri)
+
+
+
+#Focal Function ----------------------------------------------------------------
 focal_sf = function(x){
-  #Calculating LST for Primary Forest --------------------------------------------
+  #Calculating LST for Primary Forest
   lst_pri=ifel(is.na(fr_pri),NA,x)
   #plot(lst_pri)
   
-  #Use focal to calculate difference in Secondary and Primary (Delta)-------------
+  #Use focal to calculate difference in Secondary and Primary (Delta)
   lst_f <- focal(lst_pri, w=61, median, na.rm=TRUE)
   #plot(lst_f)
   
@@ -57,7 +63,7 @@ focal_sf = function(x){
   return(resf2)
 }
 
-
+#Running Focal function, plotting and saving results ---------------------------
 plan(multisession, workers = 27)
 df1 = focal_sf(lst_year); df1$cond = "Annual"
 df2 = focal_sf(lst_dry); df2$cond = "Dry Season"
