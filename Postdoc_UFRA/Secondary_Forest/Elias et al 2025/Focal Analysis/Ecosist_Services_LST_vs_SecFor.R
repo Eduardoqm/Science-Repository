@@ -22,18 +22,20 @@ plot(lst_year)
 plot(lst_dry)
 plot(lst_wet)
 
-#Secondary Forest
-sf=rast("MB_Forest_age_70m.tif")
-plot(sf)
-
 #Primary Forest
 fr=rast("Forest_70m.tif")
 plot(fr)
+
+#Secondary Forest
+sf=rast("MB_Forest_age_70m.tif")
+plot(sf)
 
 #Proccess before Focal ---------------------------------------------------------
 #Selecting only Primary Forest
 fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
+
+#Selection Secondary forest > 30% purity
 
 
 

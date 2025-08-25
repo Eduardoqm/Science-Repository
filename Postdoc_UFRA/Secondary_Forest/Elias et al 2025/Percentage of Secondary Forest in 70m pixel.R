@@ -5,11 +5,20 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Toy/raster")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters")
 dir()
 
-base = rast("ECOSTRESS_Annual_2022_toy.tif")
-secf = rast("MB_Forest_age_30m_toy.tif")
+base = rast("ECOSTRESS_EVAP_Annual_2022.tif")
+secf = rast("MB_Forest_age_30m.tif")
+
+limit = vect("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
+
+#Cropping rasters --------------------------------------------------------------
+base = mask(crop(base, limit), limit)
+plot(base)
+
+secf = mask(crop(secf, limit), limit)
+plot(secf)
 
 #Calculating percentage of secondary forest ------------------------------------
 #Make binary to count
@@ -30,4 +39,5 @@ secf4 = (secf3/ttl2)*100
 
 plot(secf4)
 
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
 writeRaster(secf4, "Perc_SecForest_70m.tif")
