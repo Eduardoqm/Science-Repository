@@ -56,7 +56,6 @@ focal_sf = function(x){
   colnames(resf) = c("sf_age", "lst")
   #head(resf)
   
-
   resf2=resf%>%
     mutate(sf_age=round(sf_age,0))%>%
     group_by(sf_age)%>%
