@@ -29,12 +29,11 @@ plot(sf)
 #Primary Forest
 fr=rast("Forest_70m.tif")
 plot(fr)
+fr_pri=ifel(is.na(sf),fr,NA) #Selecting only Primary Forest
+#plot(fr_pri)
 
 focal_sf = function(x){
   #Calculating LST for Primary Forest --------------------------------------------
-  fr_pri=ifel(is.na(sf),fr,NA) #Selecting only Primary Forest
-  #plot(fr_pri)
-  
   lst_pri=ifel(is.na(fr_pri),NA,x)
   #plot(lst_pri)
   
