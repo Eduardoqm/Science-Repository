@@ -36,8 +36,8 @@ fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
 
 #Selection Secondary forest > 30% purity
-
-
+sf2=ifel(sf_perc < 30,sf,NA)
+plot(sf2)
 
 #Focal Function ----------------------------------------------------------------
 focal_sf = function(x){
