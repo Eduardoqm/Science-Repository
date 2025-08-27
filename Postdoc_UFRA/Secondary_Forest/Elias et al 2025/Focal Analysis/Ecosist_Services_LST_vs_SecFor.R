@@ -40,7 +40,7 @@ fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
 
 #Selection Secondary forest > 30% purity
-sf=ifel(sf_perc < 30,sf,NA)
+sf=ifel(sf_perc < 70,sf,NA)
 plot(sf)
 
 #Focal Function ----------------------------------------------------------------
@@ -83,9 +83,9 @@ gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
 
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
-ggsave(plot = gglst, "Delta_LST_Amazonia_full_W61.png", dpi = 300,
+ggsave(plot = gglst, "Delta_LST_Amazonia_full_W61_70.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
-write.csv(lst_df, "LST_SecFor_Age_W61.csv", row.names = F)
+write.csv(lst_df, "LST_SecFor_Age_W61_70.csv", row.names = F)
 
