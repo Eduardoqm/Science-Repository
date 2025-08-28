@@ -56,8 +56,8 @@ focal_sf = function(x){
   lst_delta_pri=ifel(is.na(sf),NA,x-lst_f)
   #plot(lst_delta_pri)
   
-  resf=as.data.frame(c(sf,lst_delta_pri))
-  colnames(resf) = c("sf_age", "delta_lst")
+  resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
+  colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
   #head(resf)
   
   #resf2=resf%>%
@@ -69,23 +69,23 @@ focal_sf = function(x){
 }
 
 #Running Focal function, plotting and saving results ---------------------------
-plan(multisession, workers = 27) #11:35
+plan(multisession, workers = 27) #8:55
 df1 = focal_sf(lst_year); df1$cond = "Annual"
 df2 = focal_sf(lst_dry); df2$cond = "Dry Season"
 df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
 lst_df = rbind(df1, df2, df3)
 
-gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
-  geom_point(size = 3)+
-  stat_smooth()+
-  labs(x="Secondary forest age (year)",y="Δ LST", col = "Condition")+
-  theme_minimal(); gglst
+#gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
+#  geom_point(size = 3)+
+#  stat_smooth()+
+#  labs(x="Secondary forest age (year)",y="Δ LST", col = "Condition")+
+#  theme_minimal(); gglst
 
 
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
-ggsave(plot = gglst, "Delta_LST_Amazonia_full_W61_70.png", dpi = 300,
-       height = 10, width = 15, units = "cm")
+#setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
+#ggsave(plot = gglst, "Delta_LST_Amazonia_full_W61_70.png", dpi = 300,
+#       height = 10, width = 15, units = "cm")
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
-write.csv(lst_df, "LST_SecFor_Age_W61_70.csv", row.names = F)
+write.csv(lst_df, "LST_SecFor_Age_full.csv", row.names = F)
 
