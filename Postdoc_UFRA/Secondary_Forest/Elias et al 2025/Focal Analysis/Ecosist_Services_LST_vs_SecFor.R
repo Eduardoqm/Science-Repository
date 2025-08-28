@@ -69,7 +69,7 @@ focal_sf = function(x){
 }
 
 #Running Focal function, plotting and saving results ---------------------------
-plan(multisession, workers = 27)
+plan(multisession, workers = 27) #11:35
 df1 = focal_sf(lst_year); df1$cond = "Annual"
 df2 = focal_sf(lst_dry); df2$cond = "Dry Season"
 df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
