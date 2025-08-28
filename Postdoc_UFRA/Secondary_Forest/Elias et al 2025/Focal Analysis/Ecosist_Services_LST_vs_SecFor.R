@@ -39,9 +39,9 @@ plot(sf_perc)
 fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
 
-#Selection Secondary forest > 30% purity
-sf=ifel(sf_perc < 70,sf,NA)
-plot(sf)
+#Selection Secondary forest > 70% purity
+#sf=ifel(sf_perc < 70,sf,NA)
+#plot(sf)
 
 #Focal Function ----------------------------------------------------------------
 focal_sf = function(x){
@@ -57,15 +57,15 @@ focal_sf = function(x){
   #plot(lst_delta_pri)
   
   resf=as.data.frame(c(sf,lst_delta_pri))
-  colnames(resf) = c("sf_age", "lst")
+  colnames(resf) = c("sf_age", "delta_lst")
   #head(resf)
   
-  resf2=resf%>%
-    mutate(sf_age=round(sf_age,0))%>%
-    group_by(sf_age)%>%
-    summarise(lst=mean(lst,na.rm=T))
+  #resf2=resf%>%
+  #  mutate(sf_age=round(sf_age,0))%>%
+  #  group_by(sf_age)%>%
+  #  summarise(lst=mean(lst,na.rm=T))
   #head(resf2)
-  return(resf2)
+  return(resf)
 }
 
 #Running Focal function, plotting and saving results ---------------------------
