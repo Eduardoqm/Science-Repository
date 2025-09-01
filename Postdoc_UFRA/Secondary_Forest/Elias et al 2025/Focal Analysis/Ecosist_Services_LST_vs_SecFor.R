@@ -35,8 +35,8 @@ sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
 #Proccess before Focal ---------------------------------------------------------
-#sf_perc = ifel(sf_perc < 5,sf_perc,NA)
-#plot(sf_perc)
+sf_perc = ifel(sf_perc == 0,NA, sf_perc)
+plot(sf_perc)
 
 #Selecting only Primary Forest
 fr_pri=ifel(is.na(sf),fr,NA)
