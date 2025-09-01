@@ -84,7 +84,7 @@ plan(multisession, workers = 27)
 #df2 = focal_sf(lst_dry); df2$cond = "Dry Season" 
 #write.csv(df2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
 
-df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
+df3 = focal_sf(lst_wet); df3$cond = "Rainy Season" #11:15
 write.csv(df3, "LST_SecFor_Age_Rainy_full.csv", row.names = F)
 #lst_df = rbind(df1, df2, df3)
 
