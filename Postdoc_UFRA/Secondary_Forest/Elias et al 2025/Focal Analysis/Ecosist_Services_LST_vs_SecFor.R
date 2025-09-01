@@ -40,8 +40,8 @@ fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
 
 #Selection Secondary forest > 70% purity
-#sf=ifel(sf_perc < 70,sf,NA)
-#plot(sf)
+sf=ifel(sf_perc < 5,sf,NA)
+plot(sf)
 
 #Focal Function ----------------------------------------------------------------
 focal_sf = function(x){
@@ -69,11 +69,20 @@ focal_sf = function(x){
 }
 
 #Running Focal function, plotting and saving results ---------------------------
-plan(multisession, workers = 27) #8:55
-df1 = focal_sf(lst_year); df1$cond = "Annual"
-df2 = focal_sf(lst_dry); df2$cond = "Dry Season"
+#setwd("C:/Users/Ecostation")
+setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
+
+plan(multisession, workers = 27)
+
+#df1 = focal_sf(lst_year); df1$cond = "Annual" #8:30
+#write.csv(df1, "LST_SecFor_Age_Annual_full.csv", row.names = F)
+
+#df2 = focal_sf(lst_dry); df2$cond = "Dry Season" 
+#write.csv(df2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
+
 df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
-lst_df = rbind(df1, df2, df3)
+write.csv(df3, "LST_SecFor_Age_Rainy_full.csv", row.names = F)
+#lst_df = rbind(df1, df2, df3)
 
 #gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
 #  geom_point(size = 3)+
@@ -86,6 +95,6 @@ lst_df = rbind(df1, df2, df3)
 #ggsave(plot = gglst, "Delta_LST_Amazonia_full_W61_70.png", dpi = 300,
 #       height = 10, width = 15, units = "cm")
 
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
-write.csv(lst_df, "LST_SecFor_Age_full.csv", row.names = F)
+#setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
+#write.csv(lst_df, "LST_SecFor_Age_full.csv", row.names = F)
 
