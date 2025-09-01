@@ -35,13 +35,16 @@ sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
 #Proccess before Focal ---------------------------------------------------------
+#sf_perc = ifel(sf_perc < 5,sf_perc,NA)
+#plot(sf_perc)
+
 #Selecting only Primary Forest
 fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
 
 #Selection Secondary forest > 70% purity
-sf=ifel(sf_perc < 5,sf,NA)
-plot(sf)
+#sf=ifel(sf_perc < 5,sf,NA)
+#plot(sf)
 
 #Focal Function ----------------------------------------------------------------
 focal_sf = function(x){
@@ -65,7 +68,8 @@ focal_sf = function(x){
   #  group_by(sf_age)%>%
   #  summarise(lst=mean(lst,na.rm=T))
   #head(resf2)
-  return(resf)
+  resf2 = resf %>% na.omit()
+  return(resf2)
 }
 
 #Running Focal function, plotting and saving results ---------------------------
