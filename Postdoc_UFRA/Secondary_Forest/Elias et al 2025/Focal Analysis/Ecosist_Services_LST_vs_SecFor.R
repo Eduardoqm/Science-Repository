@@ -78,14 +78,14 @@ setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analise
 
 plan(multisession, workers = 27)
 
-#df1 = focal_sf(lst_year); df1$cond = "Annual" #8:30
-#write.csv(df1, "LST_SecFor_Age_Annual_full.csv", row.names = F)
+df1 = focal_sf(lst_year); df1$cond = "Annual"
+write.csv(df1, "LST_SecFor_Age_Annual_full.csv", row.names = F)
 
-#df2 = focal_sf(lst_dry); df2$cond = "Dry Season" 
-#write.csv(df2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
+df2 = focal_sf(lst_dry); df2$cond = "Dry Season" 
+write.csv(df2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
 
-df3 = focal_sf(lst_wet); df3$cond = "Rainy Season" #11:15
-write.csv(df3, "LST_SecFor_Age_Rainy_full.csv", row.names = F)
+#df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
+#write.csv(df3, "LST_SecFor_Age_Rainy_full.csv", row.names = F)
 #lst_df = rbind(df1, df2, df3)
 
 #gglst = ggplot(lst_df,aes(x=sf_age, y=lst, col=cond))+
