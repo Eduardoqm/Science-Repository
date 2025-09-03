@@ -43,20 +43,17 @@ plot(sf_perc)
 fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
 
-#Selection Secondary forest > 70% purity
-#sf=ifel(sf_perc < 5,sf,NA)
-#plot(sf)
-
+#Focal Function -------------------------------------------------------------
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
 start.time <- Sys.time()
-#Focal Function -------------------------------------------------------------
+
 #LST Annual
 #Calculating LST for Primary Forest
 lst_pri=ifel(is.na(fr_pri),NA,lst_year)
 #plot(lst_pri)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
-lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE,na.policy="only")
+lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
 #plot(lst_f)
 
 lst_delta_pri=lst_year-lst_f
@@ -75,7 +72,7 @@ write.csv(resf2, "LST_SecFor_Age_Annual_full.csv", row.names = F)
 lst_pri=ifel(is.na(fr_pri),NA,lst_dry)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
-lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE,na.policy="only")
+lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
 
 lst_delta_pri=lst_dry-lst_f
 plot(lst_delta_pri)
@@ -94,7 +91,7 @@ lst_pri=ifel(is.na(fr_pri),NA,lst_wet)
 
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
-lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE,na.policy="only")
+lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
 #plot(lst_f)
 
 lst_delta_pri=lst_wet-lst_f
