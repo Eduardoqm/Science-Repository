@@ -47,6 +47,7 @@ plot(fr_pri)
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
 start.time <- Sys.time()
 
+
 #LST Annual
 #Calculating LST for Primary Forest
 lst_pri=ifel(is.na(fr_pri),NA,lst_year)
@@ -88,7 +89,6 @@ write.csv(resf2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
 #LST Rainy Season
 #Calculating LST for Primary Forest
 lst_pri=ifel(is.na(fr_pri),NA,lst_wet)
-
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
 lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
