@@ -78,10 +78,10 @@ setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analise
 
 plan(multisession, workers = 27)
 
-df1 = focal_sf(lst_year); df1$cond = "Annual"
-write.csv(df1, "LST_SecFor_Age_Annual_full.csv", row.names = F)
+#df1 = focal_sf(lst_year); df1$cond = "Annual"
+#write.csv(df1, "LST_SecFor_Age_Annual_full.csv", row.names = F)
 
-df2 = focal_sf(lst_dry); df2$cond = "Dry Season" 
+df2 = focal_sf(lst_dry); df2$cond = "Dry Season" #10:54
 write.csv(df2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
 
 #df3 = focal_sf(lst_wet); df3$cond = "Rainy Season"
