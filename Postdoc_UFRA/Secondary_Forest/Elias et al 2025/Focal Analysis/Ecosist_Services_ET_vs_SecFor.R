@@ -46,6 +46,7 @@ setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analise
 start.time <- Sys.time()
 
 #ET Annual
+gc()
 #Calculating et for Primary Forest
 et_pri=ifel(is.na(fr_pri),NA,et_year)
 #plot(et_pri)
@@ -66,6 +67,7 @@ write.csv(resf2, "ET_SecFor_Age_Annual_full.csv", row.names = F)
 
 
 #ET Dry Season
+gc()
 et_pri=ifel(is.na(fr_pri),NA,et_dry)
 et_f <- focal(et_pri, w=21, median, na.rm=TRUE, na.policy="only")
 et_delta_pri=et_dry-et_f
@@ -80,10 +82,14 @@ write.csv(resf2, "ET_SecFor_Age_Dry_full.csv", row.names = F)
 
 
 #ET Rainy Season
+gc()
 et_pri=ifel(is.na(fr_pri),NA,et_wet)
 et_f <- focal(et_pri, w=21, median, na.rm=TRUE, na.policy="only")
 et_delta_pri=et_wet-et_f
-#plot(et_delta_pri)
+
+#writeRaster(et_delta_pri, "et_delta_pri.tif")
+et_delta_pri = rast("et_delta_pri.tiff")
+plot(et_delta_pri)
 
 resf=as.data.frame(c(sf,et_delta_pri, sf_perc))
 colnames(resf) = c("sf_age", "delta_et", "sf_perc")
