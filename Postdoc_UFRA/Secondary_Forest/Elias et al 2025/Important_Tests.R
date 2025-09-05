@@ -1,28 +1,3 @@
-plan(multisession, workers = 27)
-
-#Calculating LST for Primary Forest
-lst_pri=ifel(is.na(fr_pri),NA,lst_dry)
-plot(lst_pri)
-
-#Use focal to calculate difference in Secondary and Primary (Delta)
-lst_f <- focal(lst_pri, w=61, median, na.rm=TRUE)
-plot(lst_f)
-
-lst_delta_pri=ifel(is.na(sf),NA,lst_dry-lst_f)
-plot(lst_delta_pri)
-
-resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
-colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
-#head(resf)
-
-#resf2=resf%>%
-#  mutate(sf_age=round(sf_age,0))%>%
-#  group_by(sf_age)%>%
-#  summarise(lst=mean(lst,na.rm=T))
-#head(resf2)
-resf2 = resf %>% na.omit()
-
-
 
 library(ggplot2)
 library(tidyverse)
