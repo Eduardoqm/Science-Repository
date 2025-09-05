@@ -40,6 +40,7 @@ plot(sf_perc)
 #Selecting only Primary Forest
 fr_pri=ifel(is.na(sf),fr,NA)
 plot(fr_pri)
+#writeRaster(fr_pri, "MB_Forest_age_70m_B.tif")
 
 #Focal Function -------------------------------------------------------------
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
@@ -88,8 +89,8 @@ et_f <- focal(et_pri, w=21, median, na.rm=TRUE, na.policy="only")
 et_delta_pri=et_wet-et_f
 
 #writeRaster(et_delta_pri, "et_delta_pri.tif")
-et_delta_pri = rast("et_delta_pri.tiff")
-plot(et_delta_pri)
+#et_delta_pri = rast("et_delta_pri.tif")
+#plot(et_delta_pri)
 
 resf=as.data.frame(c(sf,et_delta_pri, sf_perc))
 colnames(resf) = c("sf_age", "delta_et", "sf_perc")
