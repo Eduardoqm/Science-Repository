@@ -1,6 +1,6 @@
 #Evapotranspiration by Secondary Forest Age (Focal)
 
-#Eduardo Q Marques 27-08-2025
+#Eduardo Q Marques 05-09-2025
 
 library(terra)
 library(tidyverse)
