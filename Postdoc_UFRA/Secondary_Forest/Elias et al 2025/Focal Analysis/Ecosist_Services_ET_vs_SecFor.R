@@ -22,8 +22,8 @@ plot(et_dry)
 plot(et_wet)
 
 #Primary Forest
-fr=rast("Forest_70m.tif" )
-plot(fr)
+fr_pri=rast("Forest_70m.tif" )
+plot(fr_pri)
 
 #Secondary Forest
 sf=rast("MB_Forest_age_70m.tif")
@@ -36,11 +36,6 @@ plot(sf_perc)
 #Proccess before Focal ---------------------------------------------------------
 sf_perc = ifel(sf_perc == 0,NA, sf_perc)
 plot(sf_perc)
-
-#Selecting only Primary Forest
-fr_pri=ifel(is.na(sf),fr,NA)
-plot(fr_pri)
-#writeRaster(fr_pri, "MB_Forest_age_70m_B.tif")
 
 #Focal Function -------------------------------------------------------------
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
