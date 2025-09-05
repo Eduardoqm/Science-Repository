@@ -45,7 +45,6 @@ plot(fr_pri)
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
 start.time <- Sys.time()
 
-
 #ET Annual
 #Calculating et for Primary Forest
 et_pri=ifel(is.na(fr_pri),NA,et_year)
@@ -56,7 +55,7 @@ et_f <- focal(et_pri, w=21, median, na.rm=TRUE, na.policy="only")
 #plot(et_f)
 
 et_delta_pri=et_year-et_f
-plot(et_delta_pri)
+#plot(et_delta_pri)
 
 resf=as.data.frame(c(sf,et_delta_pri, sf_perc))
 colnames(resf) = c("sf_age", "delta_et", "sf_perc")
@@ -66,41 +65,32 @@ resf2$cond = "Annual"
 write.csv(resf2, "ET_SecFor_Age_Annual_full.csv", row.names = F)
 
 
-#et Dry Season
-#Calculating et for Primary Forest
+#ET Dry Season
 et_pri=ifel(is.na(fr_pri),NA,et_dry)
-
-#Use focal to calculate difference in Secondary and Primary (Delta)
 et_f <- focal(et_pri, w=21, median, na.rm=TRUE, na.policy="only")
-
 et_delta_pri=et_dry-et_f
-plot(et_delta_pri)
+#plot(et_delta_pri)
 
 resf=as.data.frame(c(sf,et_delta_pri, sf_perc))
 colnames(resf) = c("sf_age", "delta_et", "sf_perc")
 resf2 = resf %>% na.omit()
 resf2$cond = "Dry Season"
 
-write.csv(resf2, "et_SecFor_Age_Dry_full.csv", row.names = F)
+write.csv(resf2, "ET_SecFor_Age_Dry_full.csv", row.names = F)
 
 
-#et Rainy Season
-#Calculating et for Primary Forest
+#ET Rainy Season
 et_pri=ifel(is.na(fr_pri),NA,et_wet)
-
-#Use focal to calculate difference in Secondary and Primary (Delta)
 et_f <- focal(et_pri, w=21, median, na.rm=TRUE, na.policy="only")
-#plot(et_f)
-
 et_delta_pri=et_wet-et_f
-plot(et_delta_pri)
+#plot(et_delta_pri)
 
 resf=as.data.frame(c(sf,et_delta_pri, sf_perc))
 colnames(resf) = c("sf_age", "delta_et", "sf_perc")
 resf2 = resf %>% na.omit()
 resf2$cond = "Rainy Season"
 
-write.csv(resf2, "et_SecFor_Age_Rainy_full.csv", row.names = F)
+write.csv(resf2, "ET_SecFor_Age_Rainy_full.csv", row.names = F)
 
 end.time <- Sys.time()
 time.taken <- end.time - start.time
