@@ -38,3 +38,42 @@ plot(sf_perc)
 sf_perc = ifel(sf_perc == 0,NA, sf_perc)
 plot(sf_perc)
 
+#Focal Function -------------------------------------------------------------
+setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
+start.time <- Sys.time()
+
+#LST Annual
+#Calculating LST for Primary Forest
+lst_pri=ifel(is.na(fr_pri),NA,lst_year)
+#plot(lst_pri)
+
+#Use focal to calculate difference in Secondary and Primary (Delta)
+lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
+#plot(lst_f)
+rm(lst_pri)
+
+lst_delta_pri=lst_year-lst_f
+rm(lst_year, lst_f)
+plot(lst_delta_pri)
+
+resf=as.data.frame(c(esa,lst_delta_pri, sf_perc))
+rm(lst_delta_pri)
+colnames(resf) = c("agb", "delta_lst", "sf_perc")
+resf2 = resf %>% na.omit()
+rm(resf)
+resf2$cond = "Annual"
+
+write.csv(resf2, "LST_AGB_Annual_full.csv", row.names = F)
+rm(resf2)
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
+
+
+
+
+
+
+
