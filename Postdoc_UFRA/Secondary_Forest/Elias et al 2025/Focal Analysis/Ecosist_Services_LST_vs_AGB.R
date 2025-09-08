@@ -92,7 +92,7 @@ rm(esa2, lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 rm(resf)
-resf2$cond = "Dry"
+resf2$cond = "Dry Season"
 
 write.csv(resf2, "LST_AGB_Dry_full.csv", row.names = F)
 rm(resf2)
@@ -121,7 +121,7 @@ rm(esa2, lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 rm(resf)
-resf2$cond = "Rainy"
+resf2$cond = "Rainy Season"
 
 write.csv(resf2, "LST_AGB_Rainy_full.csv", row.names = F)
 
