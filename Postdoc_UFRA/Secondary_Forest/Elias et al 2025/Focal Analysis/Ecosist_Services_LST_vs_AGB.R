@@ -86,6 +86,7 @@ plot(lst_delta_pri)
 esa2 = ifel(is.na(lst_delta_pri),NA, esa)
 plot(esa2)
 
+gc()
 resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
 rm(esa2, lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
@@ -97,6 +98,7 @@ write.csv(resf2, "LST_AGB_Dry_full.csv", row.names = F)
 rm(resf2)
 
 #LST Rainy Season
+gc()
 #Calculating LST for Primary Forest
 lst_pri=ifel(is.na(fr_pri),NA,lst_wet)
 #plot(lst_pri)
@@ -113,6 +115,7 @@ plot(lst_delta_pri)
 esa2 = ifel(is.na(lst_delta_pri),NA, esa)
 plot(esa2)
 
+gc()
 resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
 rm(esa2, lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
