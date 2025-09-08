@@ -69,6 +69,59 @@ resf2$cond = "Annual"
 write.csv(resf2, "LST_AGB_Annual_full.csv", row.names = F)
 rm(resf2)
 
+#LST Dry Season
+#Calculating LST for Primary Forest
+lst_pri=ifel(is.na(fr_pri),NA,lst_dry)
+#plot(lst_pri)
+
+#Use focal to calculate difference in Secondary and Primary (Delta)
+lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
+#plot(lst_f)
+rm(lst_pri)
+
+lst_delta_pri=lst_dry-lst_f
+rm(lst_dry, lst_f)
+plot(lst_delta_pri)
+
+esa2 = ifel(is.na(lst_delta_pri),NA, esa)
+plot(esa2)
+
+resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
+rm(esa2, lst_delta_pri)
+colnames(resf) = c("agb", "delta_lst", "sf_perc")
+resf2 = resf %>% na.omit()
+rm(resf)
+resf2$cond = "Annual"
+
+write.csv(resf2, "LST_AGB_Dry_full.csv", row.names = F)
+rm(resf2)
+
+#LST Rainy Season
+#Calculating LST for Primary Forest
+lst_pri=ifel(is.na(fr_pri),NA,lst_wet)
+#plot(lst_pri)
+
+#Use focal to calculate difference in Secondary and Primary (Delta)
+lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
+#plot(lst_f)
+rm(lst_pri)
+
+lst_delta_pri=lst_wet-lst_f
+rm(lst_wet, lst_f)
+plot(lst_delta_pri)
+
+esa2 = ifel(is.na(lst_delta_pri),NA, esa)
+plot(esa2)
+
+resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
+rm(esa2, lst_delta_pri)
+colnames(resf) = c("agb", "delta_lst", "sf_perc")
+resf2 = resf %>% na.omit()
+rm(resf)
+resf2$cond = "Annual"
+
+write.csv(resf2, "LST_AGB_Rainy_full.csv", row.names = F)
+
 end.time <- Sys.time()
 time.taken <- end.time - start.time
 time.taken
