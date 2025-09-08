@@ -56,8 +56,11 @@ lst_delta_pri=lst_year-lst_f
 rm(lst_year, lst_f)
 plot(lst_delta_pri)
 
-resf=as.data.frame(c(esa,lst_delta_pri, sf_perc))
-rm(lst_delta_pri)
+esa2 = ifel(is.na(lst_delta_pri),NA, esa)
+plot(esa2)
+
+resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
+rm(esa2, lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 rm(resf)
