@@ -7,10 +7,8 @@ library(tidyverse)
 library(sf)
 library(future) #Multicore work
 
-parallel::detectCores()
-
 #Load data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Rgrassmpled_70m")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
 dir()
 
 #LST
@@ -22,105 +20,93 @@ plot(lst_year)
 plot(lst_dry)
 plot(lst_wet)
 
-#Primary Forest
-fr_pri = rast("Forest_70m.tif" )
-plot(fr_pri)
-
-#grass Biomass
-grass = rast("Pasture_70m.tif")
+#Pasture
+grass=rast("Pasture_70m.tif")
 plot(grass)
+
+#Secondary Forest
+sf=rast("MB_Forest_age_70m.tif")
+plot(sf)
 
 #Percentage of Secondary Forest
 sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
 #Proccess before Focal ---------------------------------------------------------
-#sf_perc = ifel(sf_perc == 0,NA, sf_perc)
-#plot(sf_perc)
+sf_perc = ifel(sf_perc == 0,NA, sf_perc)
+plot(sf_perc)
 
 #Focal Function -------------------------------------------------------------
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
 start.time <- Sys.time()
 
+gc()
 #LST Annual
 #Calculating LST for Primary Forest
-lst_pri=ifel(is.na(fr_pri),NA,lst_year)
-#plot(lst_pri)
+lst_pri=ifel(is.na(grass),NA,lst_year)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
 lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
-#plot(lst_f)
 rm(lst_pri)
 
+gc()
 lst_delta_pri=lst_year-lst_f
-rm(lst_year, lst_f)
+rm(et_year, et_f)
 plot(lst_delta_pri)
 
-grass2 = ifel(is.na(lst_delta_pri),NA, grass)
-plot(grass2)
-
-resf=as.data.frame(c(grass2,lst_delta_pri))
-rm(grass2, lst_delta_pri)
-colnames(resf) = c("pasture", "delta_lst")
+gc()
+resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
+rm(grass2, et_delta_pri)
+colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
-rm(resf)
 resf2$cond = "Annual Season"
 
 write.csv(resf2, "LST_Pasture_Annual_full.csv", row.names = F)
-rm(resf2)
+
 
 #LST Dry Season
+gc()
 #Calculating LST for Primary Forest
-lst_pri=ifel(is.na(fr_pri),NA,lst_dry)
-#plot(lst_pri)
+lst_pri=ifel(is.na(grass),NA,lst_dry)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
 lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
-#plot(lst_f)
 rm(lst_pri)
 
+gc()
 lst_delta_pri=lst_dry-lst_f
-rm(lst_dry, lst_f)
+rm(et_year, et_f)
 plot(lst_delta_pri)
 
-grass2 = ifel(is.na(lst_delta_pri),NA, grass)
-plot(grass2)
-
 gc()
-resf=as.data.frame(c(grass2,lst_delta_pri))
-rm(grass2, lst_delta_pri)
-colnames(resf) = c("pasture", "delta_lst")
+resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
+rm(grass2, et_delta_pri)
+colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
-rm(resf)
 resf2$cond = "Dry Season"
 
 write.csv(resf2, "LST_Pasture_Dry_full.csv", row.names = F)
-rm(resf2)
+
 
 #LST Rainy Season
-gc()
+gc
 #Calculating LST for Primary Forest
-lst_pri=ifel(is.na(fr_pri),NA,lst_wet)
-#plot(lst_pri)
+lst_pri=ifel(is.na(grass),NA,lst_wet)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
 lst_f <- focal(lst_pri, w=21, median, na.rm=TRUE, na.policy="only")
-#plot(lst_f)
 rm(lst_pri)
 
+gc()
 lst_delta_pri=lst_wet-lst_f
-rm(lst_wet, lst_f)
+rm(et_year, et_f)
 plot(lst_delta_pri)
 
-grass2 = ifel(is.na(lst_delta_pri),NA, grass)
-plot(grass2)
-
 gc()
-resf=as.data.frame(c(grass2,lst_delta_pri))
-rm(grass2, lst_delta_pri)
-colnames(resf) = c("pasture", "delta_lst")
+resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
+rm(grass2, et_delta_pri)
+colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
-rm(resf)
 resf2$cond = "Rainy Season"
 
 write.csv(resf2, "LST_Pasture_Rainy_full.csv", row.names = F)
