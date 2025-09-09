@@ -39,7 +39,7 @@ plot(sf_perc)
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
 start.time <- Sys.time()
 
-#et Annual
+#ET Annual
 #Calculating et for Primary Forest
 et_pri=ifel(is.na(fr_pri),NA,et_year)
 #plot(et_pri)
@@ -61,9 +61,9 @@ rm(grass2, et_delta_pri)
 colnames(resf) = c("pasture", "delta_et")
 resf2 = resf %>% na.omit()
 rm(resf)
-resf2$cond = "Annual"
+resf2$cond = "Annual Season"
 
-write.csv(resf2, "et_Pasture_Annual_full.csv", row.names = F)
+write.csv(resf2, "ET_Pasture_Annual_full.csv", row.names = F)
 rm(resf2)
 
 #et Dry Season
