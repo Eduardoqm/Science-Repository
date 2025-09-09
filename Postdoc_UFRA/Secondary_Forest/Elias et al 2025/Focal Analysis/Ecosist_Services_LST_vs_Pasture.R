@@ -64,7 +64,7 @@ rm(grass2, lst_delta_pri)
 colnames(resf) = c("pasture", "delta_lst")
 resf2 = resf %>% na.omit()
 rm(resf)
-resf2$cond = "Annual"
+resf2$cond = "Annual Season"
 
 write.csv(resf2, "LST_Pasture_Annual_full.csv", row.names = F)
 rm(resf2)
