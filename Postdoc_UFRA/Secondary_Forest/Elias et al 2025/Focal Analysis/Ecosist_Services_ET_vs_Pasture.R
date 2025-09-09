@@ -66,7 +66,7 @@ resf2$cond = "Annual Season"
 write.csv(resf2, "ET_Pasture_Annual_full.csv", row.names = F)
 rm(resf2)
 
-#et Dry Season
+#ET Dry Season
 #Calculating et for Primary Forest
 et_pri=ifel(is.na(fr_pri),NA,et_dry)
 #plot(et_pri)
@@ -91,10 +91,10 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Dry Season"
 
-write.csv(resf2, "et_Pasture_Dry_full.csv", row.names = F)
+write.csv(resf2, "ET_Pasture_Dry_full.csv", row.names = F)
 rm(resf2)
 
-#et Rainy Season
+#ET Rainy Season
 gc()
 #Calculating et for Primary Forest
 et_pri=ifel(is.na(fr_pri),NA,et_wet)
@@ -120,7 +120,7 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Rainy Season"
 
-write.csv(resf2, "et_Pasture_Rainy_full.csv", row.names = F)
+write.csv(resf2, "ET_Pasture_Rainy_full.csv", row.names = F)
 
 end.time <- Sys.time()
 time.taken <- end.time - start.time
