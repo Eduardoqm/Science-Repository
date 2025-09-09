@@ -89,7 +89,7 @@ write.csv(resf2, "LST_Pasture_Dry_full.csv", row.names = F)
 
 
 #LST Rainy Season
-gc
+gc()
 #Calculating LST for Primary Forest
 lst_pri=ifel(is.na(grass),NA,lst_wet)
 
