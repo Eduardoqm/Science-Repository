@@ -5,7 +5,11 @@ library(tidyverse)
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
 dir()
 
-lst_df = read.csv("LST_SecFor_Age_Rainy_full.csv")
+lst_a = read.csv("LST_SecFor_Age_Annual_full.csv")
+lst_b = read.csv("LST_SecFor_Age_Dry_full.csv")
+lst_c = read.csv("LST_SecFor_Age_Rainy_full.csv")
+
+lst_df = rbind(lst_a, lst_b, lst_c)
 
 df5 = lst_df %>% 
   filter(sf_perc >= 5) %>% 
