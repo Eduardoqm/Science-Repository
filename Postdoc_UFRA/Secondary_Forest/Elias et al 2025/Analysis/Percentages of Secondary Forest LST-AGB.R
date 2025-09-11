@@ -1,4 +1,4 @@
-#Percentages of Secondary Forest test
+#Percentages of Secondary Forest (LST - AGB test)
 
 #Eduardo Q Marques 11-09-2025
 
