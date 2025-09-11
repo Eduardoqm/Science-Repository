@@ -20,25 +20,25 @@ df5 = lst_df %>%
 df30 = lst_df %>%
   filter(sf_perc >= 30)%>% 
   mutate(sf_age=round(sf_age,0))%>%
-  group_by(sf_age)%>%
+  group_by(sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
 df50 = lst_df%>% 
   filter(sf_perc >= 50)%>% 
   mutate(sf_age=round(sf_age,0))%>%
-  group_by(sf_age)%>%
+  group_by(sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
 df70 = lst_df %>% 
   filter(sf_perc >= 70)%>% 
   mutate(sf_age=round(sf_age,0))%>%
-  group_by(sf_age)%>%
+  group_by(sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
 df100 = lst_df %>% 
   filter(sf_perc == 100)%>% 
   mutate(sf_age=round(sf_age,0))%>%
-  group_by(sf_age)%>%
+  group_by(sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
 
@@ -48,11 +48,11 @@ gg5 = ggplot(df5, aes(x=sf_age, y=lst, col = cond))+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
        col = "Condition", title = "Purity >5%")+
-  scale_color_manual(values = c("#99d594", "#fc8d59", "#67a9cf"))+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg5
 
 ggsave(plot = gg5, "Delta_LST_Amazonia_full_W61_5_perc.png", dpi = 300,
-       height = 10, width = 12, units = "cm")
+       height = 10, width = 15, units = "cm")
 
 
 gg30 = ggplot(df30, aes(x=sf_age, y=lst))+
