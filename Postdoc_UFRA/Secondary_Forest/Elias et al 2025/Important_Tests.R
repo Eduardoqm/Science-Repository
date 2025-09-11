@@ -12,7 +12,7 @@ lst_c = read.csv("LST_SecFor_Age_Rainy_full.csv")
 lst_df = rbind(lst_a, lst_b, lst_c)
 
 df5 = lst_df %>% 
-  group_by(cond) %>% 
+  group_by(sf_age, sf_perc, cond) %>% 
   filter(sf_perc >= 5) %>% 
   mutate(sf_age=round(sf_age,0))%>%
   group_by(sf_age)%>%
