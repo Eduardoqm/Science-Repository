@@ -1,3 +1,6 @@
+#Percentages of Secondary Forest test
+
+#Eduardo Q Marques 11-09-2025
 
 library(ggplot2)
 library(tidyverse)
@@ -42,7 +45,7 @@ df100 = lst_df %>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
 
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
+setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\Percentage_tests\\")
 gg5 = ggplot(df5, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
@@ -55,46 +58,50 @@ ggsave(plot = gg5, "Delta_LST_Amazonia_full_W61_5_perc.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
-gg30 = ggplot(df30, aes(x=sf_age, y=lst))+
+gg30 = ggplot(df30, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       title = "Purity >30%")+
+       col = "Condition", title = "Purity >30%")+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg30
 
 ggsave(plot = gg30, "Delta_LST_Amazonia_full_W61_30_perc.png", dpi = 300,
-       height = 10, width = 12, units = "cm")
+       height = 10, width = 15, units = "cm")
 
 
-gg50 = ggplot(df50, aes(x=sf_age, y=lst))+
+gg50 = ggplot(df50, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       title = "Purity >50%")+
+       col = "Condition", title = "Purity >50%")+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg50
 
 ggsave(plot = gg50, "Delta_LST_Amazonia_full_W61_50_perc.png", dpi = 300,
-       height = 10, width = 12, units = "cm")
+       height = 10, width = 15, units = "cm")
 
-gg70 = ggplot(df70, aes(x=sf_age, y=lst))+
+gg70 = ggplot(df70, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       title = "Purity >70%")+
+       col = "Condition", title = "Purity >70%")+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg70
 
 ggsave(plot = gg70, "Delta_LST_Amazonia_full_W61_70_perc.png", dpi = 300,
-       height = 10, width = 12, units = "cm")
+       height = 10, width = 15, units = "cm")
 
 
-gg100 = ggplot(df100, aes(x=sf_age, y=lst))+
+gg100 = ggplot(df100, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       title = "Purity >100%")+
+       col = "Condition", title = "Purity >100%")+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg100
 
 ggsave(plot = gg100, "Delta_LST_Amazonia_full_W61_100_perc.png", dpi = 300,
-       height = 10, width = 12, units = "cm")
+       height = 10, width = 15, units = "cm")
 
 
