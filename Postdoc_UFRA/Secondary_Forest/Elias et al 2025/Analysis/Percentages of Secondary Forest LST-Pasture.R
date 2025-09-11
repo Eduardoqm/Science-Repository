@@ -54,7 +54,7 @@ gg5 = ggplot(df5, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg5
 
-ggsave(plot = gg5, "Delta_LST_Amazonia_full_W61_5_perc.png", dpi = 300,
+ggsave(plot = gg5, "Delta_LST_Pasture_5_perc.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
@@ -66,7 +66,7 @@ gg30 = ggplot(df30, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg30
 
-ggsave(plot = gg30, "Delta_LST_Amazonia_full_W61_30_perc.png", dpi = 300,
+ggsave(plot = gg30, "Delta_LST_Pasture_30_perc.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
@@ -78,7 +78,7 @@ gg50 = ggplot(df50, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg50
 
-ggsave(plot = gg50, "Delta_LST_Amazonia_full_W61_50_perc.png", dpi = 300,
+ggsave(plot = gg50, "Delta_LST_Pasture_50_perc.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 gg70 = ggplot(df70, aes(x=sf_age, y=lst, col = cond))+
@@ -89,7 +89,7 @@ gg70 = ggplot(df70, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg70
 
-ggsave(plot = gg70, "Delta_LST_Amazonia_full_W61_70_perc.png", dpi = 300,
+ggsave(plot = gg70, "Delta_LST_Pasture_70_perc.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
@@ -101,7 +101,7 @@ gg100 = ggplot(df100, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg100
 
-ggsave(plot = gg100, "Delta_LST_Amazonia_full_W61_100_perc.png", dpi = 300,
+ggsave(plot = gg100, "Delta_LST_Pasture_100_perc.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
