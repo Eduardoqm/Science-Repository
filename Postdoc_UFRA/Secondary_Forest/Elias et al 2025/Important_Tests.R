@@ -43,11 +43,12 @@ df100 = lst_df %>%
 
 
 setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures\\")
-gg5 = ggplot(df5, aes(x=sf_age, y=lst))+
+gg5 = ggplot(df5, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       title = "Purity >5%")+
+       col = "Condition", title = "Purity >5%")+
+  scale_color_manual(values = c("#99d594", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg5
 
 ggsave(plot = gg5, "Delta_LST_Amazonia_full_W61_5_perc.png", dpi = 300,
