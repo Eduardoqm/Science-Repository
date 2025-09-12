@@ -22,9 +22,9 @@ plot(et_year)
 plot(et_dry)
 plot(et_wet)
 
-#Primary Forest
-fr_pri = rast("Forest_70m.tif" )
-plot(fr_pri)
+#Pasture
+grass=rast("Pasture_70m.tif")
+plot(grass)
 
 #ESA Biomass
 esa = rast("ESA_Biomass_70m.tif" )
@@ -43,8 +43,8 @@ setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analise
 start.time <- Sys.time()
 
 #ET Annual
-#Calculating et for Primary Forest
-et_pri=ifel(is.na(fr_pri),NA,et_year)
+#Calculating et for Pasture
+et_pri=ifel(is.na(grass),NA,et_year)
 #plot(et_pri)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
@@ -66,12 +66,12 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Annual"
 
-write.csv(resf2, "ET_AGB_Annual_full.csv", row.names = F)
+write.csv(resf2, "ET_AGB_Past_Annual_full.csv", row.names = F)
 rm(resf2)
 
 #ET Dry Season
-#Calculating et for Primary Forest
-et_pri=ifel(is.na(fr_pri),NA,et_dry)
+#Calculating et for Pasture
+et_pri=ifel(is.na(grass),NA,et_dry)
 #plot(et_pri)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
@@ -94,13 +94,13 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Dry Season"
 
-write.csv(resf2, "ET_AGB_Dry_full.csv", row.names = F)
+write.csv(resf2, "ET_AGB_Past_Dry_full.csv", row.names = F)
 rm(resf2)
 
 #ET Rainy Season
 gc()
-#Calculating et for Primary Forest
-et_pri=ifel(is.na(fr_pri),NA,et_wet)
+#Calculating et for Pasture
+et_pri=ifel(is.na(grass),NA,et_wet)
 #plot(et_pri)
 
 #Use focal to calculate difference in Secondary and Primary (Delta)
@@ -123,7 +123,7 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Rainy Season"
 
-write.csv(resf2, "ET_AGB_Rainy_full.csv", row.names = F)
+write.csv(resf2, "ET_AGB_Past_Rainy_full.csv", row.names = F)
 
 end.time <- Sys.time()
 time.taken <- end.time - start.time
