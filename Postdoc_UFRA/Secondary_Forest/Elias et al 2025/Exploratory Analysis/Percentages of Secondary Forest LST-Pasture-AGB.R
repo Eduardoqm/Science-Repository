@@ -1,6 +1,6 @@
 #Percentages of Secondary Forest (LST - Pasture - AGB test)
 
-#Eduardo Q Marques 11-09-2025
+#Eduardo Q Marques 12-09-2025
 
 library(ggplot2)
 library(tidyverse)
