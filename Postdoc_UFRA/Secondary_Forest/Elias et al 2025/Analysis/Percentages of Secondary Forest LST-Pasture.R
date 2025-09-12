@@ -50,7 +50,7 @@ gg5 = ggplot(df5, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       col = "Condition", title = "SF x Pasture - Purity >5%")+
+       col = "Condition", title = "Secondary Forest vs. Pasture - Purity >5%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg5
 
@@ -62,7 +62,7 @@ gg30 = ggplot(df30, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       col = "Condition", title = "SF x Pasture - Purity >30%")+
+       col = "Condition", title = "Secondary Forest vs. Pasture - Purity >30%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg30
 
@@ -74,7 +74,7 @@ gg50 = ggplot(df50, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       col = "Condition", title = "SF x Pasture - Purity >50%")+
+       col = "Condition", title = "Secondary Forest vs. Pasture - Purity >50%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg50
 
@@ -85,7 +85,7 @@ gg70 = ggplot(df70, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       col = "Condition", title = "SF x Pasture - Purity >70%")+
+       col = "Condition", title = "Secondary Forest vs. Pasture - Purity >70%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg70
 
@@ -97,7 +97,7 @@ gg100 = ggplot(df100, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
-       col = "Condition", title = "SF x Pasture - Purity >100%")+
+       col = "Condition", title = "Secondary Forest vs. Pasture - Purity >100%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg100
 
