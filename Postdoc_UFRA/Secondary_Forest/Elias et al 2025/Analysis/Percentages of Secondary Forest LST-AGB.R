@@ -50,7 +50,7 @@ gg5 = ggplot(df5, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
-       col = "Condition", title = "Purity >5%")+
+       col = "Condition", title = "Secondary vs. Primary Forest - Purity >5%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg5
 
@@ -62,7 +62,7 @@ gg30 = ggplot(df30, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
-       col = "Condition", title = "Purity >30%")+
+       col = "Condition", title = "Secondary vs. Primary Forest - Purity >30%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg30
 
@@ -74,7 +74,7 @@ gg50 = ggplot(df50, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
-       col = "Condition", title = "Purity >50%")+
+       col = "Condition", title = "Secondary vs. Primary Forest - Purity >50%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg50
 
@@ -85,7 +85,7 @@ gg70 = ggplot(df70, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
-       col = "Condition", title = "Purity >70%")+
+       col = "Condition", title = "Secondary vs. Primary Forest - Purity >70%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg70
 
@@ -97,7 +97,7 @@ gg100 = ggplot(df100, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
-       col = "Condition", title = "Purity >100%")+
+       col = "Condition", title = "Secondary vs. Primary Forest - Purity >100%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg100
 
