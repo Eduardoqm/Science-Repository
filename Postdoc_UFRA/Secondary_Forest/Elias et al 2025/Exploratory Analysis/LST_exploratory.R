@@ -59,6 +59,8 @@ lst_agb2 = lst_agb %>%
   group_by(test, agb, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
+#Plotting Results --------------------------------------------------------------
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Figures")
 
 plt1 = ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
@@ -71,14 +73,10 @@ plt1 = ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
   theme(strip.text.x = element_text(hjust = 0, margin=margin(l=0)),
         strip.text = element_text(size=13)); plt1
 
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures")
-
-
-
-
-
-ggsave(plot = gg70, "Delta_LST_Pasture_70_perc.png", dpi = 300,
+ggsave(plot = plt1, "Delta_LST_Results.png", dpi = 300,
        height = 10, width = 30, units = "cm")
+
+
 
 
 ggplot(lst_agb2, aes(x=agb, y=lst, col = cond))+
