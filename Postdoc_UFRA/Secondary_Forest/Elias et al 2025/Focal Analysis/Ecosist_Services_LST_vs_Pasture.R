@@ -59,7 +59,7 @@ resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
 rm(grass2, et_delta_pri)
 colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
-resf2$cond = "Annual Season"
+resf2$cond = "Annual"
 
 write.csv(resf2, "LST_Pasture_Annual_full.csv", row.names = F)
 
