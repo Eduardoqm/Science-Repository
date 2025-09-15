@@ -60,7 +60,7 @@ lst_agb2 = lst_agb %>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
 
-ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
+plt1 = ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
@@ -68,9 +68,10 @@ ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free", strip.position = "top")+
   theme_minimal()+
-  theme(strip.text.x = element_text(hjust = 0, margin=margin(l=0)))
+  theme(strip.text.x = element_text(hjust = 0, margin=margin(l=0)),
+        strip.text = element_text(size=13)); plt1
 
-
+setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Figures")
 
 
 
