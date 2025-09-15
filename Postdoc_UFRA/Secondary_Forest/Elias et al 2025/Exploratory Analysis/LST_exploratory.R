@@ -66,8 +66,15 @@ ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
   labs(x="Secondary forest age (year)",y="Δ LST (C°)",
        col = "Condition")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
-  facet_wrap(~test, scales = "free")+
-  theme_minimal()
+  facet_wrap(~test, scales = "free", strip.position = "top")+
+  theme_minimal()+
+  theme(strip.text.x = element_text(hjust = 0, margin=margin(l=0)))
+
+
+
+
+
+
 
 ggsave(plot = gg70, "Delta_LST_Pasture_70_perc.png", dpi = 300,
        height = 10, width = 30, units = "cm")
