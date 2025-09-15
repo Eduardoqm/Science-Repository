@@ -25,6 +25,8 @@ lst_c = read.csv("LST_Pasture_Rainy_full.csv")
 lst_past = rbind(lst_a, lst_b, lst_c)
 lst_past$test = "sf_past"
 
+lst_sf = rbind(lst_pri, lst_past)
+
 #Secondary Forest - Primary Forest x AGB
 lst_a = read.csv("LST_AGB_Annual_full.csv")
 lst_b = read.csv("LST_AGB_Dry_full.csv")
@@ -41,19 +43,47 @@ lst_c = read.csv("LST_AGB_Past_Rainy_full.csv")
 lst_past_agb = rbind(lst_a, lst_b, lst_c)
 lst_past_agb$test = "sf_past_agb"
 
+lst_agb = rbind(lst_pri_agb, lst_past_agb)
+
 #Filtering data ----------------------------------------------------------------
-lst_pri2 = lst_pri %>% 
+lst_sf2 = lst_sf %>% 
   filter(sf_perc >= 70)%>% 
   mutate(sf_age=round(sf_age,0))%>%
   group_by(test, sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
+lst_agb2 = lst_agb %>% 
+  filter(sf_perc >= 70)%>% 
+  filter(agb < 401) %>% 
+  mutate(agb=round(agb,0))%>%
+  group_by(test, agb, cond)%>%
+  summarise(lst=mean(delta_lst,na.rm=T))
 
 
+ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
+  geom_point(size = 3)+
+  stat_smooth()+
+  labs(x="Secondary forest age (year)",y="Δ LST (C°)",
+       col = "Condition")+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
+  facet_wrap(~test, scales = "free")+
+  theme_minimal()
+
+ggsave(plot = gg70, "Delta_LST_Pasture_70_perc.png", dpi = 300,
+       height = 10, width = 30, units = "cm")
 
 
+ggplot(lst_agb2, aes(x=agb, y=lst, col = cond))+
+  geom_point(size = 3)+
+  stat_smooth()+
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
+       col = "Condition")+
+  scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
+  facet_wrap(~test, scales = "free")+
+  theme_minimal()
 
-
+ggsave(plot = gg70, "Delta_LST_AGB_70_perc.png", dpi = 300,
+       height = 10, width = 15, units = "cm")
 
 
 
