@@ -15,7 +15,7 @@ lst_b = read.csv("LST_SecFor_Age_Dry_full.csv")
 lst_c = read.csv("LST_SecFor_Age_Rainy_full.csv")
 
 lst_pri = rbind(lst_a, lst_b, lst_c)
-lst_pri$test = "sf_pri"
+lst_pri$test = "a) Secondary - Primary Forest"
 
 #Secondary Forest - Pasture
 lst_a = read.csv("LST_Pasture_Annual_full.csv")
@@ -23,7 +23,7 @@ lst_b = read.csv("LST_Pasture_Dry_full.csv")
 lst_c = read.csv("LST_Pasture_Rainy_full.csv")
 
 lst_past = rbind(lst_a, lst_b, lst_c)
-lst_past$test = "sf_past"
+lst_past$test = "b) Secondary Forest - Pasture"
 
 lst_sf = rbind(lst_pri, lst_past)
 
