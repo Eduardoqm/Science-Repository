@@ -41,7 +41,12 @@ lst_c = read.csv("LST_AGB_Past_Rainy_full.csv")
 lst_past_agb = rbind(lst_a, lst_b, lst_c)
 lst_past_agb$test = "sf_past_agb"
 
-
+#Filtering data ----------------------------------------------------------------
+lst_pri2 = lst_pri %>% 
+  filter(sf_perc >= 70)%>% 
+  mutate(sf_age=round(sf_age,0))%>%
+  group_by(test, sf_age, cond)%>%
+  summarise(lst=mean(delta_lst,na.rm=T))
 
 
 
