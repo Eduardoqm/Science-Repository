@@ -70,7 +70,7 @@ plt1 = ggplot(lst_sf2, aes(x=sf_age, y=lst, col = cond))+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free", strip.position = "top")+
   theme_minimal()+
-  theme(strip.text.x = element_text(hjust = 0, margin=margin(l=0)),
+  theme(strip.text.x = element_text(vjust = 1, hjust = 0, margin=margin(l=0)),
         strip.text = element_text(size=13)); plt1
 
 ggsave(plot = plt1, "Delta_LST_Results.png", dpi = 300,
@@ -88,7 +88,7 @@ ggplot(lst_agb2, aes(x=agb, y=lst, col = cond))+
   facet_wrap(~test, scales = "free")+
   theme_minimal()
 
-ggsave(plot = gg70, "Delta_LST_AGB_70_perc.png", dpi = 300,
+ggsave(plot = plt2, "Delta_LST_AGB_Results.png", dpi = 300,
        height = 10, width = 15, units = "cm")
 
 
