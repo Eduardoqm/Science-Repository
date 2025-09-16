@@ -33,7 +33,7 @@ lst_b = read.csv("LST_AGB_Dry_full.csv")
 lst_c = read.csv("LST_AGB_Rainy_full.csv")
 
 lst_pri_agb = rbind(lst_a, lst_b, lst_c)
-lst_pri_agb$test = "sf_pri_agb"
+lst_pri_agb$test = "c) Secondary - Primary Forest x AGB"
 
 #Secondary Forest - Pasture x AGB
 lst_a = read.csv("LST_AGB_Past_Annual_full.csv")
@@ -41,7 +41,7 @@ lst_b = read.csv("LST_AGB_Past_Dry_full.csv")
 lst_c = read.csv("LST_AGB_Past_Rainy_full.csv")
 
 lst_past_agb = rbind(lst_a, lst_b, lst_c)
-lst_past_agb$test = "sf_past_agb"
+lst_past_agb$test = "d) Secondary Forest - Pasture x AGB"
 
 lst_agb = rbind(lst_pri_agb, lst_past_agb)
 
@@ -77,19 +77,19 @@ ggsave(plot = plt1, "Delta_LST_Results.png", dpi = 300,
        height = 10, width = 30, units = "cm")
 
 
-
-
-ggplot(lst_agb2, aes(x=agb, y=lst, col = cond))+
+plt2 = ggplot(lst_agb2, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
        col = "Condition")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free")+
-  theme_minimal()
+  theme_minimal()+
+  theme(strip.text.x = element_text(vjust = 1, hjust = 0, margin=margin(l=0)),
+        strip.text = element_text(size=13)); plt2
 
 ggsave(plot = plt2, "Delta_LST_AGB_Results.png", dpi = 300,
-       height = 10, width = 15, units = "cm")
+       height = 10, width = 30, units = "cm")
 
 
 

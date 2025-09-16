@@ -51,12 +51,12 @@ rm(lst_pri)
 
 gc()
 lst_delta_pri=lst_year-lst_f
-rm(et_year, et_f)
+#rm(lst_year, lst_f)
 plot(lst_delta_pri)
 
 gc()
 resf=as.data.frame(c(sf,lst_delta_pri, sf_perc))
-rm(grass2, et_delta_pri)
+#rm(lst_delta_pri)
 colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 resf2$cond = "Annual"
