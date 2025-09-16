@@ -59,6 +59,8 @@ lst_agb2 = lst_agb %>%
   group_by(test, agb, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
+#lst_agb2$agb2 = (cut(lst_agb2$agb, breaks = seq(0,10000, by = 10), labels = F)*10)
+
 #Plotting Results --------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Figures")
 
@@ -77,7 +79,7 @@ ggsave(plot = plt1, "Delta_LST_Results.png", dpi = 300,
        height = 10, width = 30, units = "cm")
 
 
-plt2 = ggplot(lst_agb2, aes(x=agb, y=lst, col = cond))+
+plt2 = ggplot(lst_agb, aes(x=agb, y=lst, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
   labs(x="Aboveground Biomass (Mg/ha)",y="Δ LST (C°)",
