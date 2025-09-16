@@ -11,7 +11,7 @@ library(future) #Multicore work
 parallel::detectCores()
 
 #Load Data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/ECOSTRESS")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
 
 guama=read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serra (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 guama2=st_transform(guama,crs = 4326)
@@ -195,7 +195,7 @@ library(future) #Multicore work
 parallel::detectCores()
 
 #Load Data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
 dir()
 
 wet1 = rast("ECOSTRESS_EVAP_Jan_April_2022.tif")
@@ -229,6 +229,20 @@ annual <- terra::app(stacked, fun = mean, na.rm = TRUE)
 
 writeRaster(annual, "ECOSTRESS_EVAP_annual_2022.tif")
 plot(annual)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
