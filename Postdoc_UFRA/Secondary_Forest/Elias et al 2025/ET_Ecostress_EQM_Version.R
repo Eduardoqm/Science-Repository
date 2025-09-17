@@ -63,9 +63,6 @@ Jan_Apr <- list()
 #fl2=sprc(Jan_Apr)
 #fl3=mosaic(fl2,fun='max')
 #et2=max(fl3,na.rm = T)
-#plot(et2)
-
-#writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
 
 
 
@@ -78,12 +75,18 @@ for(i in 1:length(meta1)) {
     Jan_Apr[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta1[i], ":", conditionMessage(e), "\n")
-    Jan_Apr[[i]] <- NULL
+    #Jan_Apr[[i]] <- NULL
   })
 }
 
 
 Jan_Apr2 <- Jan_Apr[!sapply(Jan_Apr, is.null)]
+
+for (z in 1:332) {
+  print(z)
+  plot(Jan_Apr[[z]])
+  
+}
 
 #fl2=sprc(May_Jul2)
 #fl3=mosaic(fl2,fun='max')
