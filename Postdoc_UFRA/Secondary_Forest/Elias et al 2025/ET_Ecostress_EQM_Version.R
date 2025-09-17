@@ -1,7 +1,6 @@
-
 #Evapotranspiration by ECOSTRESS (Elias Paper)
 
-#Adapted from Divino V Silverio by Eduardo Q Marques 21-04-2025
+#Adapted from Divino V Silverio by Eduardo Q Marques 21-04-2025 updated 17-09-2025
 
 library(tidyverse)
 library(terra)
@@ -18,8 +17,8 @@ guama2=st_transform(guama,crs = 4326)
 plot(guama2)
 
 #fl=dir(pattern = "ECO3*")
-#ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
-ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
+ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
+#ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
 ex2 <- rast(ext(guama2), resolution=res(ex))
 res(ex)
 
@@ -76,7 +75,7 @@ for(i in 1:length(meta1)) {
   tryCatch({
     r <- terra::rast(meta1[i])
     r2 <- terra::resample(r, ex2)
-    May_Jul[[i]] <- r2
+    Jan_Apr[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta1[i], ":", conditionMessage(e), "\n")
     Jan_Apr[[i]] <- NULL
