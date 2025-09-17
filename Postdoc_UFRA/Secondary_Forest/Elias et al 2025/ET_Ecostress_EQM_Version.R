@@ -13,14 +13,22 @@ parallel::detectCores()
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
 
 guama=read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
-guama2=st_transform(guama,crs = 4326)
-plot(guama2)
+#guama2=st_transform(guama,crs = 4326)
+#guama2=st_transform(guama, crs = 32723)
+#plot(guama2)
 
 #fl=dir(pattern = "ECO3*")
-ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
-#ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
-ex2 <- rast(ext(guama2), resolution=res(ex))
-res(ex)
+#ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
+ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
+#res(ex)
+#plot(ex)
+#ex2 <- rast(ext(guama), resolution=res(ex))
+
+base = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/Base_img.tif")
+gc()
+ex2 <- project(base, "EPSG:32723", res=res(base))
+res(ex2)
+plot(ex2)
 
 #Get file names by month -------------------------------------------------------
 metalist = list.files(path = "G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/metadata", full.names = T)
@@ -66,7 +74,8 @@ Jan_Apr <- list()
 
 
 
-for(i in 1:length(meta1)) {
+#for(i in 1:length(meta1)) {
+for(i in c(1:5,281)) {
   cat("Proccess", i, "\n")
   
   tryCatch({
@@ -75,19 +84,12 @@ for(i in 1:length(meta1)) {
     Jan_Apr[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta1[i], ":", conditionMessage(e), "\n")
-    #Jan_Apr[[i]] <- NULL
+    Jan_Apr[[i]] <- NULL
   })
 }
 
 
 Jan_Apr2 <- Jan_Apr[!sapply(Jan_Apr, is.null)]
-
-for (z in 1:332) {
-  print(z)
-  plot(Jan_Apr[[z]])
-  
-}
-
 #fl2=sprc(May_Jul2)
 #fl3=mosaic(fl2,fun='max')
 #et3=max(fl3,na.rm = T)
