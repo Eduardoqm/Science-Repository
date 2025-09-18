@@ -40,7 +40,6 @@ df = df[,-1]
 colnames(df)[1] = c("class")
 df = df %>% dplyr::filter(class != 0)
 
-df$class[df$class == 0] = "No class"
 df$class[df$class == 3] = "Forest Formation"
 df$class[df$class == 4] = "Savanna Formation"
 df$class[df$class == 5] = "Mangrove"
@@ -63,12 +62,3 @@ df$class[df$class == 33] = "River, Lake and Ocean"
 
 setwd("G:/Meu Drive/Postdoc_UFRA/Colaborations/IDEFLOR")
 write.csv(df, "IDEFLOR_Area_MB_Classes.csv", row.names = F)
-
-
-
-
-
-
-
-
-
