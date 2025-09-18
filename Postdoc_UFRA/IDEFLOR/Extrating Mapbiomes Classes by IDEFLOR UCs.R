@@ -36,7 +36,7 @@ for (i in 1:29) {
 
 #Input classes names
 df = df[,-1]
-colnames(df)[1] = c("class")
+colnames(df)[1] = c("Class")
 
 
 df$class[df$class == 0] = "No class"
@@ -58,8 +58,6 @@ df$class[df$class == 30] = "Mining"
 df$class[df$class == 25] = "Other non Vegetated Areas"
 df$class[df$class == 26] = "Water"
 df$class[df$class == 33] = "River, Lake and Ocean"
-
-
 
 
 
