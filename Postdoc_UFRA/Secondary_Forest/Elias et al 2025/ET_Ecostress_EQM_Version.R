@@ -13,20 +13,22 @@ parallel::detectCores()
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
 
 guama=read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
-#guama2=st_transform(guama,crs = 4326)
+guama2=st_transform(guama,crs = 4326)
 #guama2=st_transform(guama, crs = 32723)
+#guama2=st_transform(guama, crs = "EPSG:32723")
 #plot(guama2)
 
 #fl=dir(pattern = "ECO3*")
 #ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
 ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
-#res(ex)
-#plot(ex)
-#ex2 <- rast(ext(guama), resolution=res(ex))
+ex2 <- project(ex, "EPSG:4326", res=res(ex))
+res(ex)
+plot(ex)
+ex2 <- rast(ext(guama), resolution=res(ex))
 
-base = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/Base_img.tif")
-gc()
-ex2 <- project(base, "EPSG:32723", res=res(base))
+#base = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/Base_img.tif")
+#gc()
+#ex2 <- project(base, "EPSG:32723", res=res(ex))
 res(ex2)
 plot(ex2)
 
@@ -75,7 +77,7 @@ Jan_Apr <- list()
 
 
 #for(i in 1:length(meta1)) {
-for(i in c(1:5,281)) {
+for(i in c(1:2,281)) {
   cat("Proccess", i, "\n")
   
   tryCatch({
