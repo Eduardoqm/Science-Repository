@@ -26,4 +26,5 @@ for (z in 1:18) {
   idclas[z,2] <- freq(mb2 == idclas[z,1])[2,3]
 }
 
-idclas$area_km = (idclas$npixel*900)/1000000
+idclas$area_ha = (idclas$npixel*900)/10000
+idclas$UC = "All"
