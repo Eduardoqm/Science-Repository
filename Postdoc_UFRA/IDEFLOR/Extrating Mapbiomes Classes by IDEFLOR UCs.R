@@ -22,13 +22,6 @@ df$area_ha = (df$count*900)/10000
 df$UC = "All"
 
 #By UCs
-mbi = mask(crop(mb, ucs[1,2]), ucs[1,2])
-
-df2 = freq(mbi)
-df2$area_ha = (df2$count*900)/10000
-df2$UC = ucs$nome_[1]
-
-
 for (i in 1:29) {
   print(ucs$nome_[i])
   mbi = mask(crop(mb, ucs[i,2]), ucs[i,2])
@@ -42,6 +35,31 @@ for (i in 1:29) {
 }
 
 #Input classes names
+df = df[,-1]
+colnames(df)[1] = c("class")
+
+
+df$class[df$class == 0] = "No class"
+df$class[df$class == 3] = "Forest Formation"
+df$class[df$class == 4] = "Savanna Formation"
+df$class[df$class == 5] = "Mangrove"
+df$class[df$class == 6] = "Floodable Forest"
+df$class[df$class == 11] = "Wetland"
+df$class[df$class == 12] = "Grassland"
+df$class[df$class == 29] = "Rocky Outcrop"
+df$class[df$class == 15] = "Pasture"
+df$class[df$class == 39] = "Soybean"
+df$class[df$class == 40] = "Rice"
+df$class[df$class == 41] = "Other Temporary Crops"
+df$class[df$class == 9] = "Forest Plantation"
+df$class[df$class == 23] = "Beach, Dune and Sand Spot"
+df$class[df$class == 24] = "Urban Area"
+df$class[df$class == 30] = "Mining"
+df$class[df$class == 25] = "Other non Vegetated Areas"
+df$class[df$class == 26] = "Water"
+df$class[df$class == 33] = "River, Lake and Ocean"
+
+
 
 
 
