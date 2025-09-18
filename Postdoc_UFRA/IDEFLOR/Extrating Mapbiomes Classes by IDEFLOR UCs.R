@@ -15,6 +15,11 @@ plot(ucs, add = T)
 mb2 = mask(crop(mb, ucs), ucs)
 plot(mb2)
 
-classes = unique(mb2)[,1]
+idclas = unique(mb2)
+idclas$npixel = 0
 
-freq(mb2 == 41)[2,3]
+#freq(mb2 == 0)[2,3]
+
+for (z in 1:18) {
+  idclas[z,2] <- freq(mb2 == idclas[z,1])[2,3]
+}
