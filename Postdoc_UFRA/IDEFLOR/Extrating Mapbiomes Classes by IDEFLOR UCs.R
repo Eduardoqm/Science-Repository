@@ -15,4 +15,6 @@ plot(ucs, add = T)
 mb2 = mask(crop(mb, ucs), ucs)
 plot(mb2)
 
-classes = unique(mb2)
+classes = unique(mb2)[,1]
+
+freq(mb2 == 41)[2,3]
