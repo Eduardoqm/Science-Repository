@@ -4,6 +4,7 @@
 
 library(terra)
 library(sf)
+library(tidyverse)
 
 #Data
 mb = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
@@ -36,8 +37,8 @@ for (i in 1:29) {
 
 #Input classes names
 df = df[,-1]
-colnames(df)[1] = c("Class")
-
+colnames(df)[1] = c("class")
+df = df %>% dplyr::filter(class != 0)
 
 df$class[df$class == 0] = "No class"
 df$class[df$class == 3] = "Forest Formation"
@@ -60,8 +61,8 @@ df$class[df$class == 26] = "Water"
 df$class[df$class == 33] = "River, Lake and Ocean"
 
 
-
-
+setwd("G:/Meu Drive/Postdoc_UFRA/Colaborations/IDEFLOR")
+write.csv(df, "IDEFLOR_Area_MB_Classes.csv", row.names = F)
 
 
 
