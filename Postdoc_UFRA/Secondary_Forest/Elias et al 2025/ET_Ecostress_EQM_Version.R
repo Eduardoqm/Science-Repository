@@ -2,12 +2,8 @@
 
 #Adapted from Divino V Silverio by Eduardo Q Marques 21-04-2025 updated 17-09-2025
 
-library(tidyverse)
 library(terra)
 library(sf)
-library(future) #Multicore work
-
-parallel::detectCores()
 
 #Load Data ---------------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
@@ -171,9 +167,6 @@ writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
 library(tidyverse)
 library(terra)
 library(sf)
-library(future) #Multicore work
-
-parallel::detectCores()
 
 #Load Data ---------------------------------------------------------------------
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
@@ -186,8 +179,6 @@ dry1 = rast("ECOSTRESS_EVAP_May_July_2022.tif")
 dry2 = rast("ECOSTRESS_EVAP_Aug_Sep_2022.tif")
 
 #Joing wet and dry seasons -----------------------------------------------------
-plan(multisession, workers = 27)
-
 #Wet
 gc()
 stacked <- c(wet1, wet2)
