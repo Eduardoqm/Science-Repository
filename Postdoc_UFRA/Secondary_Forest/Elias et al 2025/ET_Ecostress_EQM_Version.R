@@ -14,23 +14,17 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 
 guama=read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 #guama2=st_transform(guama,crs = 4326)
-guama2=st_transform(guama, crs = 32723)
+#guama2=st_transform(guama, crs = 32723)
 #guama2=st_transform(guama, crs = "EPSG:32723")
-#plot(guama2)
 
-#fl=dir(pattern = "ECO3*")
-#ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
 ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
-#ex2 <- project(ex, "EPSG:4326", res=res(ex))
-res(ex)
-plot(ex)
-#ex2 <- rast(ext(guama2), resolution=res(ex))
+ex2 <- project(ex, crs(guama))
 
-base = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/Base_img.tif")
-gc()
-ex2 <- project(base, "EPSG:32723", res=res(ex))
-res(ex2)
-plot(ex2)
+ex2b <- rast(guama, resolution=res(ex2))
+ex2c <- rasterize(guama, ex2b)
+res(ex2c)
+plot(ex2c)
+plot(ex2, add = T)
 
 #Get file names by month -------------------------------------------------------
 metalist = list.files(path = "G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/metadata", full.names = T)
@@ -69,7 +63,8 @@ for(i in 1:length(meta1)) {
   
   tryCatch({
     r <- terra::rast(meta1[i])
-    r2 <- terra::resample(r, ex2)
+    r <- project(r, crs(guama))
+    r2 <- terra::resample(r, ex2c)
     Jan_Apr[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta1[i], ":", conditionMessage(e), "\n")
@@ -77,19 +72,12 @@ for(i in 1:length(meta1)) {
   })
 }
 
-
 Jan_Apr2 <- Jan_Apr[!sapply(Jan_Apr, is.null)]
 
-
-# Planejar execução paralela com sessões separadas
-plan(multisession, workers = 27)
-
 stacked <- terra::rast(Jan_Apr2)
+plot(stacked)
 et2 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
 plot(et2)
-
-et2 <- project(et2, "EPSG:4326")
-et2 = mask(crop(et2, guama2), guama2)
 
 writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
 
@@ -97,19 +85,13 @@ writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
 #May to July -------------------------------------------------------------------
 May_Jul <- list()
 
-#for(i in 1:length(meta2)) {
-#  cat(i,'\n')
-#  r <-terra::rast(meta2[i])
-#  r2=terra::resample(r,ex2)
-#  May_Jul[[i]] <-r2
-#}
-
 for(i in 1:length(meta2)) {
   cat("Proccess", i, "\n")
   
   tryCatch({
     r <- terra::rast(meta2[i])
-    r2 <- terra::resample(r, ex2)
+    r <- project(r, crs(guama))
+    r2 <- terra::resample(r, ex2c)
     May_Jul[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta2[i], ":", conditionMessage(e), "\n")
@@ -117,33 +99,24 @@ for(i in 1:length(meta2)) {
   })
 }
 
-
 May_Jul2 <- May_Jul[!sapply(May_Jul, is.null)]
-
-#fl2=sprc(May_Jul2)
-#fl3=mosaic(fl2,fun='max')
-#et3=max(fl3,na.rm = T)
-
-# Planejar execução paralela com sessões separadas
-plan(multisession, workers = 27)
 
 stacked <- terra::rast(May_Jul2)
 et3 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+plot(et3)
 
 writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
-plot(et3)
 
 #August to September -----------------------------------------------------------
 Aug_Sep <- list()
-
-plan(multisession, workers = 27)
 
 for(i in 1:length(meta3)) {
   cat("Proccess", i, "\n")
   
   tryCatch({
     r <- terra::rast(meta3[i])
-    r2 <- terra::resample(r, ex2)
+    r <- project(r, crs(guama))
+    r2 <- terra::resample(r, ex2c)
     Aug_Sep[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta3[i], ":", conditionMessage(e), "\n")
@@ -153,22 +126,12 @@ for(i in 1:length(meta3)) {
 
 
 Aug_Sep2 <- Aug_Sep[!sapply(Aug_Sep, is.null)]
-#for(i in 1:length(meta3)) {
-#  cat(i,'\n')
-#  r <-terra::rast(meta3[i])
-#  r2=terra::resample(r,ex2)
-#  Aug_Sep[[i]] <-r2
-#}
 
-
-#fl2=sprc(Aug_Sep)
-#fl3=mosaic(fl2,fun='max')
-#et4=max(fl3,na.rm = T)
 stacked <- terra::rast(Aug_Sep2)
 et4 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+plot(et4)
 
 writeRaster(et4, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
-plot(et4)
 
 #October to December -----------------------------------------------------------
 Oct_Dec <- list()
@@ -180,7 +143,8 @@ for(i in 1:length(meta4)) {
   
   tryCatch({
     r <- terra::rast(meta4[i])
-    r2 <- terra::resample(r, ex2)
+    r <- project(r, crs(guama))
+    r2 <- terra::resample(r, ex2c)
     Oct_Dec[[i]] <- r2
   }, error = function(e) {
     cat("No exist", meta4[i], ":", conditionMessage(e), "\n")
@@ -188,26 +152,14 @@ for(i in 1:length(meta4)) {
   })
 }
 
-
-#for(i in 1:length(meta4)) {
-#  cat(i,'\n')
-#  r <-terra::rast(meta4[i])
-#  r2=terra::resample(r,ex2)
-#  Oct_Dec[[i]] <-r2
-#}
-
-
-#fl2=sprc(Oct_Dec)
-#fl3=mosaic(fl2,fun='max')
-#et5=max(fl3,na.rm = T)
-
 Oct_Dec2 <- Oct_Dec[!sapply(Oct_Dec, is.null)]
 
 stacked <- terra::rast(Oct_Dec2)
 et5 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+plot(et5)
 
 writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
-plot(et5)
+
 
 
 
