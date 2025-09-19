@@ -165,7 +165,6 @@ writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
 # ------------------------------------------------------------------------------
 #Part2 Unifying the seasons
 
-library(tidyverse)
 library(terra)
 library(sf)
 
