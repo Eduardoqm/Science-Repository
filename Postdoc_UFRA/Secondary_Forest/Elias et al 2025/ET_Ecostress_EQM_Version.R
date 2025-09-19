@@ -13,22 +13,22 @@ parallel::detectCores()
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
 
 guama=read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
-guama2=st_transform(guama,crs = 4326)
-#guama2=st_transform(guama, crs = 32723)
+#guama2=st_transform(guama,crs = 4326)
+guama2=st_transform(guama, crs = 32723)
 #guama2=st_transform(guama, crs = "EPSG:32723")
 #plot(guama2)
 
 #fl=dir(pattern = "ECO3*")
 #ex=rast('ECO3ETPTJPL.001_EVAPOTRANSPIRATION_PT_JPL_ETcanopy_doy2022198192703_aid0009.tif')
 ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
-ex2 <- project(ex, "EPSG:4326", res=res(ex))
+#ex2 <- project(ex, "EPSG:4326", res=res(ex))
 res(ex)
 plot(ex)
-ex2 <- rast(ext(guama), resolution=res(ex))
+#ex2 <- rast(ext(guama2), resolution=res(ex))
 
-#base = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/Base_img.tif")
-#gc()
-#ex2 <- project(base, "EPSG:32723", res=res(ex))
+base = rast("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/Base_img.tif")
+gc()
+ex2 <- project(base, "EPSG:32723", res=res(ex))
 res(ex2)
 plot(ex2)
 
@@ -63,21 +63,8 @@ head(meta4); length(meta4)
 #January to April --------------------------------------------------------------
 Jan_Apr <- list()
 
-#for(i in 1:length(meta1)) {
-#  cat(i,'\n')
-#  r <-terra::rast(meta1[i])
-#  r2=terra::resample(r,ex2)
-#  Jan_Apr[[i]] <-r2
-#}
-
-#fl2=sprc(Jan_Apr)
-#fl3=mosaic(fl2,fun='max')
-#et2=max(fl3,na.rm = T)
-
-
-
-#for(i in 1:length(meta1)) {
-for(i in c(1:2,281)) {
+for(i in 1:length(meta1)) {
+#for(i in c(1:2,281)) {
   cat("Proccess", i, "\n")
   
   tryCatch({
@@ -92,18 +79,19 @@ for(i in c(1:2,281)) {
 
 
 Jan_Apr2 <- Jan_Apr[!sapply(Jan_Apr, is.null)]
-#fl2=sprc(May_Jul2)
-#fl3=mosaic(fl2,fun='max')
-#et3=max(fl3,na.rm = T)
+
 
 # Planejar execução paralela com sessões separadas
 plan(multisession, workers = 27)
 
 stacked <- terra::rast(Jan_Apr2)
 et2 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+plot(et2)
+
+et2 <- project(et2, "EPSG:4326")
+et2 = mask(crop(et2, guama2), guama2)
 
 writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
-plot(et2)
 
 
 #May to July -------------------------------------------------------------------
