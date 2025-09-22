@@ -129,6 +129,8 @@ stacked <- terra::rast(Aug_Sep2)
 et4 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
 plot(et4)
 
+et4b = et4[et4<1000]
+
 writeRaster(et4, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
 
 #October to December -----------------------------------------------------------
