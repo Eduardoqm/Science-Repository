@@ -20,10 +20,14 @@ plot(mb2)
 #1 = 1-10 years
 #1 = 11-20 years
 #1 = > 20 years
+mb2[mb2 < 11] <- 1
+mb2[mb2 > 20] <- 3
+mb2[mb2 > 9] <- 2
+plot(mb2)
 
-mb3 = ifel(mb2 < 11, 1, mb2)
-mb2 = ifel(mb2 > 20, 3, 2)
-plot(mb3)
+#mb3 = ifel(mb2 < 11, 1, mb2)
+#mb2 = ifel(mb2 > 20, 3, 2)
+
 
 #Dataframe to input classes
 df = freq(mb2)
