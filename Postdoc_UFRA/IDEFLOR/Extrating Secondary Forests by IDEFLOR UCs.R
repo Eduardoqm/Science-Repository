@@ -21,9 +21,9 @@ plot(mb2)
 #1 = 11-20 years
 #1 = > 20 years
 
-mb2 = ifel(mb2 < 11, 1, mb2)
+mb3 = ifel(mb2 < 11, 1, mb2)
 mb2 = ifel(mb2 > 20, 3, 2)
-plot(mb2)
+plot(mb3)
 
 df = freq(mb2)
 
@@ -33,7 +33,7 @@ df$UC = "All"
 #By UCs
 for (i in 1:29) {
   print(ucs$nome_[i])
-  mbi = mask(crop(mb, ucs[i,2]), ucs[i,2])
+  mbi = mask(crop(mb2, ucs[i,2]), ucs[i,2])
   plot(mbi)
   
   df2 = freq(mbi)
@@ -46,27 +46,12 @@ for (i in 1:29) {
 #Input classes names
 df = df[,-1]
 colnames(df)[1] = c("class")
-df = df %>% dplyr::filter(class != 0)
+#df = df %>% dplyr::filter(class != 0)
 
-df$class[df$class == 3] = "Forest Formation"
-df$class[df$class == 4] = "Savanna Formation"
-df$class[df$class == 5] = "Mangrove"
-df$class[df$class == 6] = "Floodable Forest"
-df$class[df$class == 11] = "Wetland"
-df$class[df$class == 12] = "Grassland"
-df$class[df$class == 29] = "Rocky Outcrop"
-df$class[df$class == 15] = "Pasture"
-df$class[df$class == 39] = "Soybean"
-df$class[df$class == 40] = "Rice"
-df$class[df$class == 41] = "Other Temporary Crops"
-df$class[df$class == 9] = "Forest Plantation"
-df$class[df$class == 23] = "Beach, Dune and Sand Spot"
-df$class[df$class == 24] = "Urban Area"
-df$class[df$class == 30] = "Mining"
-df$class[df$class == 25] = "Other non Vegetated Areas"
-df$class[df$class == 26] = "Water"
-df$class[df$class == 33] = "River, Lake and Ocean"
+df$class[df$class == 1] = "1-10 years"
+df$class[df$class == 2] = "11-20 years"
+df$class[df$class == 3] = "> 20 years"
 
 
 setwd("G:/Meu Drive/Postdoc_UFRA/Colaborations/IDEFLOR")
-write.csv(df, "IDEFLOR_Area_MB_Classes.csv", row.names = F)
+write.csv(df, "IDEFLOR_Area_MB_Secondary_Forest.csv", row.names = F)
