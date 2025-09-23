@@ -114,6 +114,8 @@ for(i in 1:length(meta3)) {
   tryCatch({
     r <- terra::rast(meta3[i])
     r <- project(r, crs(guama))
+    plot(r)
+    print(summary(r)[6])
     r2 <- terra::resample(r, ex2c)
     Aug_Sep[[i]] <- r2
   }, error = function(e) {
@@ -126,13 +128,26 @@ for(i in 1:length(meta3)) {
 Aug_Sep2 <- Aug_Sep[!sapply(Aug_Sep, is.null)]
 
 stacked <- terra::rast(Aug_Sep2)
-et4 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+
+#for (z in 1:180) {
+#   cat("Proccess", z, "\n")
+#  tryCatch({
+    #plot(stacked[[z]])
+#    print(summary(stacked[[z]])[6])
+#  }, error = function(e) {
+#    cat("No exist", meta3[i], ":", conditionMessage(e), "\n")
+#    Aug_Sep[[i]] <- NULL
+#  })
+#}
+
+
+et4 <- terra::app(stacked, fun = max, na.rm = TRUE)
 plot(et4)
 
-et4b = et4[et4<1000]
+et4b = ifel(et4 > 12, NA, et4) #Maximum I foud was 11
 plot(et4b)
 
-writeRaster(et4, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
+writeRaster(et4b, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
 
 #October to December -----------------------------------------------------------
 gc()
