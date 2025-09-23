@@ -16,7 +16,7 @@ plot(ucs, add = T)
 mb2 = mask(crop(mb, ucs), ucs)
 plot(mb2)
 
-#Input classes
+#Classifying
 #1 = 1-10 years
 #1 = 11-20 years
 #1 = > 20 years
@@ -25,6 +25,7 @@ mb3 = ifel(mb2 < 11, 1, mb2)
 mb2 = ifel(mb2 > 20, 3, 2)
 plot(mb3)
 
+#Dataframe to input classes
 df = freq(mb2)
 
 df$area_ha = (df$count*900)/10000
