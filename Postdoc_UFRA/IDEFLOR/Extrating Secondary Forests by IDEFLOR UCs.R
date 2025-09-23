@@ -25,10 +25,6 @@ mb2[mb2 > 20] <- 3
 mb2[mb2 > 9] <- 2
 plot(mb2)
 
-#mb3 = ifel(mb2 < 11, 1, mb2)
-#mb2 = ifel(mb2 > 20, 3, 2)
-
-
 #Dataframe to input classes
 df = freq(mb2)
 
@@ -51,7 +47,6 @@ for (i in 1:29) {
 #Input classes names
 df = df[,-1]
 colnames(df)[1] = c("class")
-#df = df %>% dplyr::filter(class != 0)
 
 df$class[df$class == 1] = "1-10 years"
 df$class[df$class == 2] = "11-20 years"
