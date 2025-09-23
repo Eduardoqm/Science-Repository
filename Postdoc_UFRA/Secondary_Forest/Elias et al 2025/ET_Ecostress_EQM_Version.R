@@ -130,6 +130,9 @@ for(i in 1:length(meta3)) {
 Aug_Sep2 <- Aug_Sep[!sapply(Aug_Sep, is.null)]
 
 stacked <- terra::rast(Aug_Sep2)
+plot(stacked[[27]])
+plot(stacked[[107]])
+plot(stacked[[125]])
 
 #for (z in 1:180) {
 #   cat("Proccess", z, "\n")
@@ -142,11 +145,10 @@ stacked <- terra::rast(Aug_Sep2)
 #  })
 #}
 
-
 et4 <- terra::app(stacked, fun = max, na.rm = TRUE)
 plot(et4)
 
-et4b = ifel(et4 > 12, NA, et4) #Maximum I foud was 11
+et4b = ifel(et4 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
 plot(et4b)
 
 writeRaster(et4b, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
