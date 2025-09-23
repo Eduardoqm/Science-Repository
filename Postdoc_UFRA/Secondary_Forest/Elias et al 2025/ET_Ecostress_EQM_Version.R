@@ -88,6 +88,8 @@ for(i in 1:length(meta2)) {
   tryCatch({
     r <- terra::rast(meta2[i])
     r <- project(r, crs(guama))
+    #plot(r)
+    print(summary(r)[6])
     r2 <- terra::resample(r, ex2c)
     May_Jul[[i]] <- r2
   }, error = function(e) {
@@ -99,7 +101,7 @@ for(i in 1:length(meta2)) {
 May_Jul2 <- May_Jul[!sapply(May_Jul, is.null)]
 
 stacked <- terra::rast(May_Jul2)
-et3 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+et3 <- terra::app(stacked, fun = max, na.rm = TRUE)
 plot(et3)
 
 writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
@@ -114,7 +116,7 @@ for(i in 1:length(meta3)) {
   tryCatch({
     r <- terra::rast(meta3[i])
     r <- project(r, crs(guama))
-    plot(r)
+    #plot(r)
     print(summary(r)[6])
     r2 <- terra::resample(r, ex2c)
     Aug_Sep[[i]] <- r2
@@ -172,7 +174,7 @@ for(i in 1:length(meta4)) {
 Oct_Dec2 <- Oct_Dec[!sapply(Oct_Dec, is.null)]
 
 stacked <- terra::rast(Oct_Dec2)
-et5 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
+et5 <- terra::app(stacked, fun = max, na.rm = TRUE)
 plot(et5)
 
 writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
