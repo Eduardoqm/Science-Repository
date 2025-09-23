@@ -5,7 +5,7 @@
 library(tidyverse)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Coorientacoes\\Roner_Rodrigues")
+setwd("C:/Users/Eduardo/Documents/Programing/Science-Repository/Postdoc_UFRA/Rodrigues")
 dir()
 
 df = read.csv2("Dados_Roner.csv", sep = ",")
@@ -44,23 +44,23 @@ df2 = df %>%
 
 
 #Effect in APPS Antropization
-app1 = ggplot(df2, aes(past,app_ant))+
+app1 = ggplot(df2, aes(past*100,app_ant*100))+
   geom_point(col = "orange", size = 4, alpha = 0.1)+
-  labs(x = "Pastagem (%)", y = "APP antrôpizada (%)",
+  labs(x = "Pasture (%)", y = "Anthropized PPA (%)",
        title = "a)")+
   stat_smooth(col = "black", method = "lm")+
-  theme_bw()
+  theme_bw(); app1
 
 past1=lm(app_ant~past,df2)
 summary(past1)
 
 
-app2 = ggplot(df2, aes(agri,app_ant))+
+app2 = ggplot(df2, aes(agri*100,app_ant*100))+
   geom_point(col = "purple", size = 4, alpha = 0.1)+
-  labs(x = "Culturas Permanentes (%)", y = "APP antrôpizada (%)",
+  labs(x = "Permanent agriculture (%)", y = "Anthropized PPA (%)",
        title = "b)")+
   stat_smooth(col = "black", method = "lm")+
-  theme_bw()
+  theme_bw(); app2
 
 agri1=lm(app_ant~agri,df2)
 summary(agri1)
@@ -69,23 +69,23 @@ summary(agri1)
 
 
 #Effect in Intact Vegetation
-reser1 = ggplot(df2, aes(past,preser))+
+reser1 = ggplot(df2, aes(past*100,preser*100))+
   geom_point(col = "orange", size = 4, alpha = 0.1)+
-  labs(x = "Pastagem (%)", y = "Reserva Legal (%)",
+  labs(x = "Pastagem (%)", y = "Legal Reserve (%)",
        title = "a)")+
   stat_smooth(col = "black", method = "lm")+
-  theme_bw()
+  theme_bw(); reser1
 
 past2=lm(preser~past,df2)
 summary(past2)
 
 
-reser2 = ggplot(df2, aes(agri,preser))+
+reser2 = ggplot(df2, aes(agri*100,preser*100))+
   geom_point(col = "purple", size = 4, alpha = 0.1)+
-  labs(x = "Culturas Permanentes (%)", y = "Reserva Legal (%)",
+  labs(x = "Permanent agriculture (%)", y = "Reserva Legal (%)",
        title = "b)")+
   stat_smooth(col = "black", method = "lm")+
-  theme_bw()
+  theme_bw(); reser2
 
 agri2=lm(preser~agri,df2)
 summary(agri2)
