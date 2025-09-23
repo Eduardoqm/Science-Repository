@@ -1,13 +1,13 @@
 #Extrating Secindary Forest age by IDEFLOR UCs
 
-#Eduardo Q Marques 18-09-2025
+#Eduardo Q Marques 23-09-2025
 
 library(terra)
 library(sf)
 library(tidyverse)
 
 #Data
-mb = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
+mb = rast("G:/Meu Drive/Postdoc_UFRA/Geodata/Rasters/MB_Forest_age_30m.tif")
 ucs = read_sf("G:/Meu Drive/Postdoc_UFRA/Colaborations/IDEFLOR/Shapefile_UCs_Estaduais_IDEFLOR-Bio.shp")
 
 plot(mb)
