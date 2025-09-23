@@ -71,7 +71,7 @@ summary(agri1)
 #Effect in Intact Vegetation
 reser1 = ggplot(df2, aes(past*100,preser*100))+
   geom_point(col = "orange", size = 4, alpha = 0.1)+
-  labs(x = "Pastagem (%)", y = "Legal Reserve (%)",
+  labs(x = "Pasture (%)", y = "Legal Reserve (%)",
        title = "a)")+
   stat_smooth(col = "black", method = "lm")+
   theme_bw(); reser1
@@ -82,7 +82,7 @@ summary(past2)
 
 reser2 = ggplot(df2, aes(agri*100,preser*100))+
   geom_point(col = "purple", size = 4, alpha = 0.1)+
-  labs(x = "Permanent agriculture (%)", y = "Reserva Legal (%)",
+  labs(x = "Permanent agriculture (%)", y = "Legal Reserve (%)",
        title = "b)")+
   stat_smooth(col = "black", method = "lm")+
   theme_bw(); reser2
@@ -93,20 +93,20 @@ summary(agri2)
 
 
 #Export graphics ---------------------------------------------------------------
-ggsave(filename = "APP_Antrop_past.png", plot = app1,
-       width = 20, height = 12, units = "cm", dpi = 300)
+ggsave(filename = "APP_Antrop_past.tiff", plot = app1,
+       width = 15, height = 9, units = "cm", dpi = 300)
 
 
-ggsave(filename = "APP_Antrop_perm.png", plot = app2,
-       width = 20, height = 12, units = "cm", dpi = 300)
+ggsave(filename = "APP_Antrop_perm.tiff", plot = app2,
+       width = 15, height = 9, units = "cm", dpi = 300)
 
 
-ggsave(filename = "Reserva_past.png", plot = reser1,
-       width = 20, height = 12, units = "cm", dpi = 300)
+ggsave(filename = "Reserva_past.tiff", plot = reser1,
+       width = 15, height = 9, units = "cm", dpi = 300)
 
 
-ggsave(filename = "Reserva_perm.png", plot = reser2,
-       width = 20, height = 12, units = "cm", dpi = 300)
+ggsave(filename = "Reserva_perm.tiff", plot = reser2,
+       width = 15, height = 9, units = "cm", dpi = 300)
 
 
 
