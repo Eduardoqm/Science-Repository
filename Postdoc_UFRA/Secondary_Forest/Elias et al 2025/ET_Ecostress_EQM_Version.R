@@ -104,6 +104,10 @@ stacked <- terra::rast(May_Jul2)
 et3 <- terra::app(stacked, fun = max, na.rm = TRUE)
 plot(et3)
 
+#Proccess 218: 16.70
+#et3b = ifel(et3 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
+#plot(et3b)
+
 writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
 
 #August to September -----------------------------------------------------------
