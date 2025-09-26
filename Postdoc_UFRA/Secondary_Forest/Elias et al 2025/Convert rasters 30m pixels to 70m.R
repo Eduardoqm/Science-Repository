@@ -9,7 +9,8 @@ library(terra)
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters")
 dir()
 
-base = rast("ECOSTRESS_EVAP_Annual_2022.tif")
+base = rast("Base.tif")
+evp_year = rast("ECOSTRESS_EVAP_Annual_2022.tif")
 evp_dry = rast("ECOSTRESS_EVAP_DrySeason_2022.tif")
 evp_wet = rast("ECOSTRESS_EVAP_WetSeason_2022.tif")
 secf = rast("MB_Forest_age_30m.tif")
@@ -27,7 +28,11 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 
 base2 = mask(crop(base, limit), limit)
 plot(base2)
-writeRaster(base2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
+
+evp_year2 = resample(evp_year, base2, method = "average")
+evp_year2 = mask(crop(evp_year2, limit), limit)
+plot(evp_year2)
+writeRaster(evp_year2, "ECOSTRESS_EVAP_Annual_2022_70m.tif")
 
 evp_dry2 = resample(evp_dry, base2, method = "average")
 evp_dry2 = mask(crop(evp_dry2, limit), limit)

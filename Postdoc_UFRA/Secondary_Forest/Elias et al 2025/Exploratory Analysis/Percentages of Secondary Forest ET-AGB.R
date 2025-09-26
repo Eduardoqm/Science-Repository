@@ -49,7 +49,7 @@ setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analise
 gg5 = ggplot(df5, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (mm/year)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition", title = "Secondary vs. Primary Forest - Purity >5%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg5
@@ -61,7 +61,7 @@ ggsave(plot = gg5, "Delta_ET_AGB_5_perc.png", dpi = 300,
 gg30 = ggplot(df30, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (mm/year)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition", title = "Secondary vs. Primary Forest - Purity >30%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg30
@@ -73,7 +73,7 @@ ggsave(plot = gg30, "Delta_ET_AGB_30_perc.png", dpi = 300,
 gg50 = ggplot(df50, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (mm/year)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition", title = "Secondary vs. Primary Forest - Purity >50%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg50
@@ -84,7 +84,7 @@ ggsave(plot = gg50, "Delta_ET_AGB_50_perc.png", dpi = 300,
 gg70 = ggplot(df70, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (mm/year)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition", title = "Secondary vs. Primary Forest - Purity >70%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg70
@@ -96,7 +96,7 @@ ggsave(plot = gg70, "Delta_ET_AGB_70_perc.png", dpi = 300,
 gg100 = ggplot(df100, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (mm/year)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition", title = "Secondary vs. Primary Forest - Purity >100%")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   theme_minimal(); gg100
