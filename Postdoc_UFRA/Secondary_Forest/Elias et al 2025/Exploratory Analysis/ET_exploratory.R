@@ -33,7 +33,7 @@ et_b = read.csv("ET_AGB_Dry_full.csv")
 et_c = read.csv("ET_AGB_Rainy_full.csv")
 
 et_pri_agb = rbind(et_a, et_b, et_c)
-et_pri_agb$test = "c) Secondary - Primary Forest x AGB"
+et_pri_agb$test = "c) Secondary - Primary Forest"
 
 #Secondary Forest - Pasture x AGB
 et_a = read.csv("ET_AGB_Past_Annual_full.csv")
@@ -41,7 +41,7 @@ et_b = read.csv("ET_AGB_Past_Dry_full.csv")
 et_c = read.csv("ET_AGB_Past_Rainy_full.csv")
 
 et_past_agb = rbind(et_a, et_b, et_c)
-et_past_agb$test = "d) Secondary Forest - Pasture x AGB"
+et_past_agb$test = "d) Secondary Forest - Pasture"
 
 et_agb = rbind(et_pri_agb, et_past_agb)
 
@@ -67,7 +67,7 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 plt1 = ggplot(et_sf2, aes(x=sf_age, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Secondary forest age (year)",y="Δ et (C°)",
+  labs(x="Secondary forest age (year)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free", strip.position = "top")+
@@ -76,14 +76,14 @@ plt1 = ggplot(et_sf2, aes(x=sf_age, y=et, col = cond))+
         strip.text = element_text(size=13),
         legend.position = "none"); plt1
 
-ggsave(plot = plt1, "Delta_et_Results.png", dpi = 300,
+ggsave(plot = plt1, "Delta_ET_Results.png", dpi = 300,
        height = 10, width = 30, units = "cm")
 
 
 plt2 = ggplot(et_agb2, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ et (C°)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
        col = "Condition")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free")+
@@ -92,7 +92,7 @@ plt2 = ggplot(et_agb2, aes(x=agb, y=et, col = cond))+
         strip.text = element_text(size=13),
         legend.position = c(0.9, 0.5)); plt2
 
-ggsave(plot = plt2, "Delta_et_AGB_Results.png", dpi = 300,
+ggsave(plot = plt2, "Delta_ET_AGB_Results.png", dpi = 300,
        height = 10, width = 30, units = "cm")
 
 
