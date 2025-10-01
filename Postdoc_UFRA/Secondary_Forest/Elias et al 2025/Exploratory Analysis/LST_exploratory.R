@@ -56,7 +56,8 @@ lst_sf2 = lst_sf %>%
 
 lst_agb2 = lst_agb %>% 
   filter(sf_perc >= 70)%>% 
-  filter(agb < 401) %>% 
+  #filter(agb < 401) %>% 
+  filter(agb < 201) %>% 
   mutate(agb=round(agb,0))%>%
   group_by(test, cond, grupo)%>%
   summarise(agb = mean(agb),lst=mean(delta_lst,na.rm=T))
