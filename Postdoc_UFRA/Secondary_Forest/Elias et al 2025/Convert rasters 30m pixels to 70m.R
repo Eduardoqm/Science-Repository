@@ -6,7 +6,7 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/")
 dir()
 
 base = rast("Base.tif")
@@ -24,7 +24,7 @@ lst_wet = rast("LST_Landsat_Rainy_2022_2023.tif")
 limit = vect("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 
 #Resample by base --------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
+setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Resampled_70m")
 
 base2 = mask(crop(base, limit), limit)
 plot(base2)
