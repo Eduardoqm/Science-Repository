@@ -56,7 +56,8 @@ et_sf2 = et_sf %>%
 
 et_agb2 = et_agb %>% 
   filter(sf_perc >= 70)%>% 
-  filter(agb < 401) %>% 
+  #filter(agb < 401) %>% 
+  filter(agb < 201) %>% 
   mutate(agb=round(agb,0))%>%
   group_by(test, cond, grupo)%>%
   summarise(agb = mean(agb),et=mean(delta_et,na.rm=T))
@@ -67,7 +68,7 @@ setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Eli
 plt1 = ggplot(et_sf2, aes(x=sf_age, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Secondary forest age (year)",y="Δ Evapotranspiration (W/m²)",
+  labs(x="Secondary forest age (year)",y="Δ Evapotranspiration (W/m²/day)",
        col = "Condition")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free", strip.position = "top")+
@@ -83,7 +84,7 @@ ggsave(plot = plt1, "Delta_ET_Results.png", dpi = 300,
 plt2 = ggplot(et_agb2, aes(x=agb, y=et, col = cond))+
   geom_point(size = 3)+
   stat_smooth()+
-  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²)",
+  labs(x="Aboveground Biomass (Mg/ha)",y="Δ Evapotranspiration (W/m²/day)",
        col = "Condition")+
   scale_color_manual(values = c("#66bd63", "#fc8d59", "#67a9cf"))+
   facet_wrap(~test, scales = "free")+
