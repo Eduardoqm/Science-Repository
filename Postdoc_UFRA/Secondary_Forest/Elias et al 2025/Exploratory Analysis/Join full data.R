@@ -73,7 +73,7 @@ et_b = read.csv("ET_AGB_Dry_full.csv")
 et_c = read.csv("ET_AGB_Rainy_full.csv")
 
 et_pri_agb = rbind(et_a, et_b, et_c)
-et_pri_agb$test = "Secondary - Primary Forest x SF age"
+et_pri_agb$test = "Secondary - Primary Forest x AGB"
 
 #Secondary Forest - Pasture x AGB
 et_a = read.csv("ET_AGB_Past_Annual_full.csv")
@@ -81,7 +81,7 @@ et_b = read.csv("ET_AGB_Past_Dry_full.csv")
 et_c = read.csv("ET_AGB_Past_Rainy_full.csv")
 
 et_past_agb = rbind(et_a, et_b, et_c)
-et_past_agb$test = "Secondary Forest - Pasture x SF age"
+et_past_agb$test = "Secondary Forest - Pasture x AGB"
 
 et_agb = rbind(et_pri_agb, et_past_agb)
 
@@ -95,11 +95,35 @@ head(et_sf)
 head(et_agb)
 
 
+lst_sf2 = lst_sf %>% 
+  filter(sf_perc >= 70)%>% 
+  mutate(sf_age=round(sf_age,0)) %>% 
+  group_by(delta_lst, sf_age, cond, test) %>% 
+  summarise(lst=mean(delta_lst,na.rm=T))
+
+lst_agb2 = lst_agb %>% 
+  filter(sf_perc >= 70)%>% 
+  #filter(agb < 401) %>% 
+  filter(agb < 201) %>% 
+  mutate(agb=round(agb,0))%>%
+  group_by(test, cond, grupo)%>%
+  summarise(agb = mean(agb),lst=mean(delta_lst,na.rm=T))
 
 
 
+et_sf2 = et_sf %>% 
+  filter(sf_perc >= 70)%>% 
+  mutate(sf_age=round(sf_age,0))%>%
+  group_by(test, sf_age, cond)%>%
+  summarise(et=mean(delta_et,na.rm=T))
 
-
+et_agb2 = et_agb %>% 
+  filter(sf_perc >= 70)%>% 
+  #filter(agb < 401) %>% 
+  filter(agb < 201) %>% 
+  mutate(agb=round(agb,0))%>%
+  group_by(test, cond, grupo)%>%
+  summarise(agb = mean(agb),et=mean(delta_et,na.rm=T))
 
 
 
