@@ -9,56 +9,16 @@ library(tidyverse)
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Dados")
 dir()
 
-#Secondary Forest - Primary Forest
-lst_a = read.csv("LST_SecFor_Age_Annual_full.csv")
-lst_b = read.csv("LST_SecFor_Age_Dry_full.csv")
-lst_c = read.csv("LST_SecFor_Age_Rainy_full.csv")
-
-lst_pri = rbind(lst_a, lst_b, lst_c)
-lst_pri$test = "a) Secondary - Primary Forest"
-
-#Secondary Forest - Pasture
-lst_a = read.csv("LST_Pasture_Annual_full.csv")
-lst_b = read.csv("LST_Pasture_Dry_full.csv")
-lst_c = read.csv("LST_Pasture_Rainy_full.csv")
-
-lst_past = rbind(lst_a, lst_b, lst_c)
-lst_past$test = "b) Secondary Forest - Pasture"
-
-lst_sf = rbind(lst_pri, lst_past)
-
-#Secondary Forest - Primary Forest x AGB
-lst_a = read.csv("LST_AGB_Annual_full.csv")
-lst_b = read.csv("LST_AGB_Dry_full.csv")
-lst_c = read.csv("LST_AGB_Rainy_full.csv")
-
-lst_pri_agb = rbind(lst_a, lst_b, lst_c)
-lst_pri_agb$test = "c) Secondary - Primary Forest x AGB"
-
-#Secondary Forest - Pasture x AGB
-lst_a = read.csv("LST_AGB_Past_Annual_full.csv")
-lst_b = read.csv("LST_AGB_Past_Dry_full.csv")
-lst_c = read.csv("LST_AGB_Past_Rainy_full.csv")
-
-lst_past_agb = rbind(lst_a, lst_b, lst_c)
-lst_past_agb$test = "d) Secondary Forest - Pasture x AGB"
-
-lst_agb = rbind(lst_pri_agb, lst_past_agb)
-
-lst_agb$grupo = cut(lst_agb$agb, breaks = seq(0,10000, by = 5), labels = F)
+lst_sf = read.csv("LST_SecFor_full.csv")
+lst_agb = read.csv("LST_AGB_full.csv")
 
 #Filtering data ----------------------------------------------------------------
 lst_sf2 = lst_sf %>% 
-  filter(sf_perc >= 70)%>% 
-  mutate(sf_age=round(sf_age,0))%>%
   group_by(test, sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
 
+lst_agb$grupo = cut(lst_agb$agb, breaks = seq(0,10000, by = 5), labels = F)
 lst_agb2 = lst_agb %>% 
-  filter(sf_perc >= 70)%>% 
-  #filter(agb < 401) %>% 
-  filter(agb < 201) %>% 
-  mutate(agb=round(agb,0))%>%
   group_by(test, cond, grupo)%>%
   summarise(agb = mean(agb),lst=mean(delta_lst,na.rm=T))
 

@@ -9,56 +9,16 @@ library(tidyverse)
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Dados")
 dir()
 
-#Secondary Forest - Primary Forest
-et_a = read.csv("ET_SecFor_Age_Annual_full.csv")
-et_b = read.csv("ET_SecFor_Age_Dry_full.csv")
-et_c = read.csv("ET_SecFor_Age_Rainy_full.csv")
-
-et_pri = rbind(et_a, et_b, et_c)
-et_pri$test = "a) Secondary - Primary Forest"
-
-#Secondary Forest - Pasture
-et_a = read.csv("ET_Pasture_Annual_full.csv")
-et_b = read.csv("ET_Pasture_Dry_full.csv")
-et_c = read.csv("ET_Pasture_Rainy_full.csv")
-
-et_past = rbind(et_a, et_b, et_c)
-et_past$test = "b) Secondary Forest - Pasture"
-
-et_sf = rbind(et_pri, et_past)
-
-#Secondary Forest - Primary Forest x AGB
-et_a = read.csv("ET_AGB_Annual_full.csv")
-et_b = read.csv("ET_AGB_Dry_full.csv")
-et_c = read.csv("ET_AGB_Rainy_full.csv")
-
-et_pri_agb = rbind(et_a, et_b, et_c)
-et_pri_agb$test = "c) Secondary - Primary Forest"
-
-#Secondary Forest - Pasture x AGB
-et_a = read.csv("ET_AGB_Past_Annual_full.csv")
-et_b = read.csv("ET_AGB_Past_Dry_full.csv")
-et_c = read.csv("ET_AGB_Past_Rainy_full.csv")
-
-et_past_agb = rbind(et_a, et_b, et_c)
-et_past_agb$test = "d) Secondary Forest - Pasture"
-
-et_agb = rbind(et_pri_agb, et_past_agb)
-
-et_agb$grupo = cut(et_agb$agb, breaks = seq(0,10000, by = 5), labels = F)
+et_sf = read.csv("ET_SecFor_full.csv")
+et_agb = read.csv("ET_AGB_full.csv")
 
 #Filtering data ----------------------------------------------------------------
 et_sf2 = et_sf %>% 
-  filter(sf_perc >= 70)%>% 
-  mutate(sf_age=round(sf_age,0))%>%
   group_by(test, sf_age, cond)%>%
   summarise(et=mean(delta_et,na.rm=T))
 
+et_agb$grupo = cut(et_agb$agb, breaks = seq(0,10000, by = 5), labels = F)
 et_agb2 = et_agb %>% 
-  filter(sf_perc >= 70)%>% 
-  #filter(agb < 401) %>% 
-  filter(agb < 201) %>% 
-  mutate(agb=round(agb,0))%>%
   group_by(test, cond, grupo)%>%
   summarise(agb = mean(agb),et=mean(delta_et,na.rm=T))
 
