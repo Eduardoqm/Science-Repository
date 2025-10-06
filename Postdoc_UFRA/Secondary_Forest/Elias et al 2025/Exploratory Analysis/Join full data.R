@@ -106,10 +106,9 @@ write.csv(lst_sf2, "LST_SecFor_full.csv", row.names = F)
 
 lst_agb2 = lst_agb %>% 
   filter(sf_perc >= 70)%>% 
-  #filter(agb < 401) %>% 
   filter(agb < 201) %>% 
   mutate(agb=round(agb,0))%>%
-  group_by(delta_lst, abg, cond, grupo, test)%>%
+  group_by(delta_lst, agb, cond, grupo, test)%>%
   summarise(agb = mean(agb),delta_lst=mean(delta_lst,na.rm=T))
 
 write.csv(lst_sf2, "LST_AGB_full.csv", row.names = F)
