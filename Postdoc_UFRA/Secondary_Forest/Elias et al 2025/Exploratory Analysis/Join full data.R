@@ -99,15 +99,15 @@ lst_sf2 = lst_sf %>%
   filter(sf_perc >= 70)%>% 
   mutate(sf_age=round(sf_age,0)) %>% 
   group_by(delta_lst, sf_age, cond, test) %>% 
-  summarise(lst=mean(delta_lst,na.rm=T))
+  summarise(delta_lst=mean(delta_lst,na.rm=T))
 
 lst_agb2 = lst_agb %>% 
   filter(sf_perc >= 70)%>% 
   #filter(agb < 401) %>% 
   filter(agb < 201) %>% 
   mutate(agb=round(agb,0))%>%
-  group_by(test, cond, grupo)%>%
-  summarise(agb = mean(agb),lst=mean(delta_lst,na.rm=T))
+  group_by(delta_lst, abg, cond, grupo, test)%>%
+  summarise(agb = mean(agb),delta_lst=mean(delta_lst,na.rm=T))
 
 
 
