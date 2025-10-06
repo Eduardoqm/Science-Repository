@@ -45,7 +45,7 @@ et_past_agb$test = "d) Secondary Forest - Pasture"
 
 et_agb = rbind(et_pri_agb, et_past_agb)
 
-et_agb$grupo = cut(et_agb$agb, breaks = seq(0,10000, by = 10), labels = F)
+et_agb$grupo = cut(et_agb$agb, breaks = seq(0,10000, by = 5), labels = F)
 
 #Filtering data ----------------------------------------------------------------
 et_sf2 = et_sf %>% 
