@@ -119,7 +119,7 @@ write.csv(lst_agb2, "LST_AGB_full.csv", row.names = F)
 et_sf2 = et_sf %>% 
   filter(sf_perc >= 70)%>% 
   mutate(sf_age=round(sf_age,0))%>%
-  group_by(delta_ett, sf_age, cond, test)%>%
+  group_by(delta_et, sf_age, cond, test)%>%
   summarise(delta_et=mean(delta_et,na.rm=T))
 
 write.csv(et_sf2, "ET_SecFor_full.csv", row.names = F)
