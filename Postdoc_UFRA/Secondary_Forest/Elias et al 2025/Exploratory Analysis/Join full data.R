@@ -111,24 +111,25 @@ lst_agb2 = lst_agb %>%
   group_by(delta_lst, agb, cond, grupo, test)%>%
   summarise(agb = mean(agb),delta_lst=mean(delta_lst,na.rm=T))
 
-write.csv(lst_sf2, "LST_AGB_full.csv", row.names = F)
+write.csv(lst_agb2, "LST_AGB_full.csv", row.names = F)
 
 
 et_sf2 = et_sf %>% 
   filter(sf_perc >= 70)%>% 
   mutate(sf_age=round(sf_age,0))%>%
-  group_by(test, sf_age, cond)%>%
-  summarise(et=mean(delta_et,na.rm=T))
+  group_by(delta_ett, sf_age, cond, test)%>%
+  summarise(delta_et=mean(delta_et,na.rm=T))
+
+write.csv(et_sf2, "ET_SecFor_full.csv", row.names = F)
 
 et_agb2 = et_agb %>% 
   filter(sf_perc >= 70)%>% 
-  #filter(agb < 401) %>% 
   filter(agb < 201) %>% 
   mutate(agb=round(agb,0))%>%
-  group_by(test, cond, grupo)%>%
-  summarise(agb = mean(agb),et=mean(delta_et,na.rm=T))
+  group_by(delta_et, agb, cond, grupo, test)%>%
+  summarise(agb = mean(agb),delta_et=mean(delta_et,na.rm=T))
 
-
+write.csv(et_agb2, "ET_AGB_full.csv", row.names = F)
 
 
 
