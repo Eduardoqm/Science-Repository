@@ -111,6 +111,8 @@ lst_agb2 = lst_agb %>%
   group_by(delta_lst, agb, cond, grupo, test)%>%
   summarise(agb = mean(agb),delta_lst=mean(delta_lst,na.rm=T))
 
+lst_agb2 = lst_agb2[,-4]
+
 write.csv(lst_agb2, "LST_AGB_full.csv", row.names = F)
 
 
@@ -128,6 +130,8 @@ et_agb2 = et_agb %>%
   mutate(agb=round(agb,0))%>%
   group_by(delta_et, agb, cond, grupo, test)%>%
   summarise(agb = mean(agb),delta_et=mean(delta_et,na.rm=T))
+
+et_agb2 = et_agb2[,-4]
 
 write.csv(et_agb2, "ET_AGB_full.csv", row.names = F)
 
