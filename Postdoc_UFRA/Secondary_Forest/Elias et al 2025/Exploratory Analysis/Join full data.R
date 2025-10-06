@@ -101,6 +101,9 @@ lst_sf2 = lst_sf %>%
   group_by(delta_lst, sf_age, cond, test) %>% 
   summarise(delta_lst=mean(delta_lst,na.rm=T))
 
+write.csv(lst_sf2, "LST_SecFor_full.csv", row.names = F)
+
+
 lst_agb2 = lst_agb %>% 
   filter(sf_perc >= 70)%>% 
   #filter(agb < 401) %>% 
@@ -109,6 +112,7 @@ lst_agb2 = lst_agb %>%
   group_by(delta_lst, abg, cond, grupo, test)%>%
   summarise(agb = mean(agb),delta_lst=mean(delta_lst,na.rm=T))
 
+write.csv(lst_sf2, "LST_AGB_full.csv", row.names = F)
 
 
 et_sf2 = et_sf %>% 
