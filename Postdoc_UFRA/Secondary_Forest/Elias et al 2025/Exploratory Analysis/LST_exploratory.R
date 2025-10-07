@@ -12,7 +12,7 @@ dir()
 lst_sf = read.csv("LST_SecFor_full.csv")
 lst_agb = read.csv("LST_AGB_full.csv")
 
-#Filtering data ----------------------------------------------------------------
+#Summarizing data --------------------------------------------------------------
 lst_sf2 = lst_sf %>% 
   group_by(test, sf_age, cond)%>%
   summarise(lst=mean(delta_lst,na.rm=T))
