@@ -12,7 +12,7 @@ dir()
 et_sf = read.csv("ET_SecFor_full.csv")
 et_agb = read.csv("ET_AGB_full.csv")
 
-#Filtering data ----------------------------------------------------------------
+#Summarizing data --------------------------------------------------------------
 et_sf2 = et_sf %>% 
   group_by(test, sf_age, cond)%>%
   summarise(et=mean(delta_et,na.rm=T))
