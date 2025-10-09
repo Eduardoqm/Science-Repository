@@ -76,7 +76,9 @@ dhum = ggplot(dia, aes(x=hora2, y= humid))+
   theme_minimal(); dhum
 
 #PurpleAir Humidity ------------------------------------------------------------
-pair = read.csv("PurpleAir_20251007.csv")
+pair = read_csv("PurpleAir_20251007.csv")
+
+pair$time = as.numeric(substr(pair$UTCDateTime, 12, 13))
 
 ggplot(pair, aes(x=UTCDateTime, y= current_humidity))+
   geom_point(col = "blue", size = 3, alpha = 0.5)+
