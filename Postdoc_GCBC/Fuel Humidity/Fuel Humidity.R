@@ -6,8 +6,8 @@ library(tidyverse)
 library(ggpubr)
 
 #Load data ---------------------------------------------------------------------
-#setwd("G:/Meu Drive/Postdoc_UFRA/Documentos/PosDoc_GCBC/Apresentação")
-setwd("G:/My Drive/Postdoc_UFRA/Documentos/PosDoc_GCBC/Apresentação") #leptop
+setwd("G:/Meu Drive/Postdoc_UFRA/Documentos/PosDoc_GCBC/Apresentação") #Ecostation
+#setwd("G:/My Drive/Postdoc_UFRA/Documentos/PosDoc_GCBC/Apresentação") #leptop
 dir()
 
 df = read.csv("umidade_serrapilheira.csv")
@@ -44,8 +44,7 @@ hum = ggplot(df3, aes(x=Idade, y= humid))+
   theme_minimal()+
   theme(legend.position = "none"); hum
 
-
-#Litterfall by basket
+#Litterfall by basket ----------------------------------------------------------
 serra = read.csv("cesta_serapilheira.csv")
 
 serra2 = serra %>% 
@@ -62,7 +61,7 @@ cesto = ggplot(serra2, aes(x=Idade, y=Peso_Total2))+
        col = NULL)+
   theme_minimal(); cesto
 
-#Daily variation
+#Daily humidity variation ------------------------------------------------------
 library(lubridate)
 
 dia = read.csv("Umidade_diaria.csv", check.names = F)
@@ -76,7 +75,21 @@ dhum = ggplot(dia, aes(x=hora2, y= humid))+
   labs(x = "Time (Hours)", y = "Humidity (%)")+
   theme_minimal(); dhum
 
+#PurpleAir Humidity ------------------------------------------------------------
+pair = read.csv("PurpleAir_20251007.csv")
 
+ggplot(pair, aes(x=UTCDateTime, y= current_humidity))+
+  geom_point(col = "blue", size = 3, alpha = 0.5)+
+  geom_smooth()+
+  stat_cor(show.legend = F, label.y.npc = 1, label.x.npc = 0.5, p.digits = 0)+
+  labs(x = "Time (Hours)", y = "Humidity (%)")+
+  theme_minimal()
+
+
+
+
+
+#Exporting plots ---------------------------------------------------------------
 ggsave(plot = mar, filename = "Peso_marimonhey.png",
        width = 13, height = 10, units = "cm", dpi = 600)
 
