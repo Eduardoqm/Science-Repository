@@ -79,9 +79,16 @@ dhum = ggplot(dia, aes(x=hora2, y= humid))+
 pair = read_csv("PurpleAir_20251007.csv")
 
 pair$time = as.numeric(substr(pair$UTCDateTime, 12, 13))
+pair$current_temp_c = (pair$current_temp_f - 32) * 5/9
 
-ggplot(pair, aes(x=UTCDateTime, y= current_humidity))+
-  geom_point(col = "blue", size = 3, alpha = 0.5)+
+pair2 = pair %>% 
+  group_by(time) %>% 
+  filter(time > 5, time < 17) %>% 
+  summarise(current_humidity = mean(current_humidity),
+            current_temp_c = mean(current_temp_c))
+
+ggplot(pair2, aes(x=time, y= current_humidity))+
+  geom_point(col = "purple", size = 3, alpha = 0.5)+
   geom_smooth()+
   stat_cor(show.legend = F, label.y.npc = 1, label.x.npc = 0.5, p.digits = 0)+
   labs(x = "Time (Hours)", y = "Humidity (%)")+
