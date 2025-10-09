@@ -87,14 +87,19 @@ pair2 = pair %>%
   summarise(current_humidity = mean(current_humidity),
             current_temp_c = mean(current_temp_c))
 
-ggplot(pair2, aes(x=time, y= current_humidity))+
+pphum = ggplot(pair2, aes(x=time, y= current_humidity))+
   geom_point(col = "purple", size = 3, alpha = 0.5)+
-  geom_smooth()+
+  geom_smooth(col = "purple")+
   stat_cor(show.legend = F, label.y.npc = 1, label.x.npc = 0.5, p.digits = 0)+
-  labs(x = "Time (Hours)", y = "Humidity (%)")+
-  theme_minimal()
+  labs(x = "Time (Hours)", y = "Air Humidity (%)")+
+  theme_minimal(); pphum
 
-
+pptmp = ggplot(pair2, aes(x=time, y= current_temp_c))+
+  geom_point(col = "purple", size = 3, alpha = 0.5)+
+  geom_smooth(col = "purple")+
+  stat_cor(show.legend = F, label.y.npc = 1, label.x.npc = 0.5, p.digits = 0)+
+  labs(x = "Time (Hours)", y = "Air Temperature (Cº)")+
+  theme_minimal(); pptmp
 
 
 
@@ -106,6 +111,12 @@ ggsave(plot = hum, filename = "Humidity_marimonhey.png",
        width = 13, height = 10, units = "cm", dpi = 600)
 
 ggsave(plot = dhum, filename = "Humidity_daily.png",
+       width = 13, height = 10, units = "cm", dpi = 600)
+
+ggsave(plot = pphum, filename = "PPair_Humidity_daily.png",
+       width = 13, height = 10, units = "cm", dpi = 600)
+
+ggsave(plot = pptmp, filename = "PPair_temp_daily.png",
        width = 13, height = 10, units = "cm", dpi = 600)
 
 ggsave(plot = cesto, filename = "Peso_cesto.png",
