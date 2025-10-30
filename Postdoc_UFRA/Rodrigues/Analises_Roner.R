@@ -3,6 +3,7 @@
 # Eduardo Q Marques 05-02-2025
 
 library(tidyverse)
+library(ggpubr)
 
 #Load data ---------------------------------------------------------------------
 setwd("C:/Users/Eduardo/Documents/Programing/Science-Repository/Postdoc_UFRA/Rodrigues")
@@ -46,7 +47,7 @@ df2 = df %>%
 #Effect in APPS Antropization
 app1 = ggplot(df2, aes(past*100,app_ant*100))+
   geom_point(col = "orange", size = 4, alpha = 0.1)+
-  labs(x = "Pasture (%)", y = "Anthropized PPA (%)",
+  labs(x = "Pasture (%)", y = "Anthropized APP (%)",
        title = "a)")+
   stat_smooth(col = "black", method = "lm")+
   theme_bw(); app1
@@ -57,7 +58,7 @@ summary(past1)
 
 app2 = ggplot(df2, aes(agri*100,app_ant*100))+
   geom_point(col = "purple", size = 4, alpha = 0.1)+
-  labs(x = "Permanent agriculture (%)", y = "Anthropized PPA (%)",
+  labs(x = "Permanent crops  (%)", y = "Anthropized APP (%)",
        title = "b)")+
   stat_smooth(col = "black", method = "lm")+
   theme_bw(); app2
@@ -66,6 +67,7 @@ agri1=lm(app_ant~agri,df2)
 summary(agri1)
 
 
+ggapp = ggarrange(app1, app2, ncol = 1); ggapp
 
 
 #Effect in Intact Vegetation
@@ -82,7 +84,7 @@ summary(past2)
 
 reser2 = ggplot(df2, aes(agri*100,preser*100))+
   geom_point(col = "purple", size = 4, alpha = 0.1)+
-  labs(x = "Permanent agriculture (%)", y = "Legal Reserve (%)",
+  labs(x = "Permanent crops (%)", y = "Legal Reserve (%)",
        title = "b)")+
   stat_smooth(col = "black", method = "lm")+
   theme_bw(); reser2
@@ -90,23 +92,16 @@ reser2 = ggplot(df2, aes(agri*100,preser*100))+
 agri2=lm(preser~agri,df2)
 summary(agri2)
 
-
+ggreser = ggarrange(reser1, reser2, ncol = 1); ggapp
 
 #Export graphics ---------------------------------------------------------------
-ggsave(filename = "APP_Antrop_past.tiff", plot = app1,
-       width = 15, height = 9, units = "cm", dpi = 300)
+ggsave(filename = "APP_Antrop_.tiff", plot = ggapp,
+       width = 15, height = 18, units = "cm", dpi = 300)
 
 
-ggsave(filename = "APP_Antrop_perm.tiff", plot = app2,
-       width = 15, height = 9, units = "cm", dpi = 300)
+ggsave(filename = "Reserva.tiff", plot = ggreser,
+       width = 15, height = 18, units = "cm", dpi = 300)
 
-
-ggsave(filename = "Reserva_past.tiff", plot = reser1,
-       width = 15, height = 9, units = "cm", dpi = 300)
-
-
-ggsave(filename = "Reserva_perm.tiff", plot = reser2,
-       width = 15, height = 9, units = "cm", dpi = 300)
 
 
 

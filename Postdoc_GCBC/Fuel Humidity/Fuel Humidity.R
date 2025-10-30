@@ -20,7 +20,7 @@ df2 = df %>%
 #filter(dif_peso_seco_e_umido > 0)
 
 df2$peso_seco2 = df2$peso_seco*0.539 #185.5 cm² is the size of Marimon-Hey
-
+mean(df2$peso_seco2)
 
 mar = ggplot(df2, aes(x=Idade, y= peso_seco2))+
   geom_point(col = "blue", size = 3, alpha = 0.5)+
