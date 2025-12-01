@@ -10,13 +10,13 @@ library(future) #Multicore work
 parallel::detectCores()
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Resampled_70m")
+setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/Resampled_70m")
 dir()
 
 #LST
-lst_year = rast("LST_Landsat_Annual_2022_2023_70m.tif")
-lst_dry = rast("LST_Landsat_Dry_2022_2023_70m.tif")
-lst_wet = rast("LST_Landsat_Wet_2022_2023_70m.tif")
+lst_year = rast("LST_Landsat_Annual_2022_70m.tif")
+lst_dry = rast("LST_Landsat_Dry_2022_70m.tif")
+lst_wet = rast("LST_Landsat_Wet_2022_70m.tif")
 
 plot(lst_year)
 plot(lst_dry)
@@ -35,11 +35,12 @@ sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
 #Proccess before Focal ---------------------------------------------------------
-sf_perc = ifel(sf_perc == 0,NA, sf_perc)
-plot(sf_perc)
+#sf_perc = ifel(sf_perc == 0,NA, sf_perc)
+#plot(sf_perc)
+#writeRaster(sf_perc, "Perc_SecForest_70m_B.tif")
 
 #Focal Function -------------------------------------------------------------
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
+setwd("C:/Users/Public/Documents/Analises_Elias/Dados/LST")
 start.time <- Sys.time()
 
 #LST Annual
@@ -66,7 +67,7 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Annual"
 
-write.csv(resf2, "LST_AGB_Annual_full.csv", row.names = F)
+write.csv(resf2, "LST_AGB_Annual_full_2022.csv", row.names = F)
 rm(resf2)
 
 #LST Dry Season
@@ -94,7 +95,7 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Dry Season"
 
-write.csv(resf2, "LST_AGB_Dry_full.csv", row.names = F)
+write.csv(resf2, "LST_AGB_Dry_full_2022.csv", row.names = F)
 rm(resf2)
 
 #LST Rainy Season
@@ -123,7 +124,7 @@ resf2 = resf %>% na.omit()
 rm(resf)
 resf2$cond = "Rainy Season"
 
-write.csv(resf2, "LST_AGB_Rainy_full.csv", row.names = F)
+write.csv(resf2, "LST_AGB_Rainy_full_2022.csv", row.names = F)
 
 end.time <- Sys.time()
 time.taken <- end.time - start.time
