@@ -10,14 +10,13 @@ library(future) #Multicore work
 parallel::detectCores()
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/Resampled_70m")
-#setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Rasters\\Toy\\raster\\")
+setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/Resampled_70m")
 dir()
 
 #LST
-lst_year = rast("LST_Landsat_Annual_2022_2023_70m.tif")
-lst_dry = rast("LST_Landsat_Dry_2022_2023_70m.tif")
-lst_wet = rast("LST_Landsat_Wet_2022_2023_70m.tif")
+lst_year = rast("LST_Landsat_Annual_2022_70m.tif")
+lst_dry = rast("LST_Landsat_Dry_2022_70m.tif")
+lst_wet = rast("LST_Landsat_Wet_2022_70m.tif")
 
 plot(lst_year)
 plot(lst_dry)
@@ -35,12 +34,8 @@ plot(sf)
 sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
-#Proccess before Focal ---------------------------------------------------------
-sf_perc = ifel(sf_perc == 0,NA, sf_perc)
-plot(sf_perc)
-
 #Focal Function -------------------------------------------------------------
-setwd("G:\\Meu Drive\\Postdoc_UFRA\\Papers\\Serrapilheira (Elias et al)\\Analises_Elias\\Dados\\")
+setwd("C:/Users/Public/Documents/Analises_Elias/Dados/LST")
 start.time <- Sys.time()
 
 
@@ -61,7 +56,7 @@ colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 resf2$cond = "Annual"
 
-write.csv(resf2, "LST_SecFor_Age_Annual_full.csv", row.names = F)
+write.csv(resf2, "LST_SecFor_Age_Annual_full_2022.csv", row.names = F)
 
 
 #LST Dry Season
@@ -79,7 +74,7 @@ colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 resf2$cond = "Dry Season"
 
-write.csv(resf2, "LST_SecFor_Age_Dry_full.csv", row.names = F)
+write.csv(resf2, "LST_SecFor_Age_Dry_full_2022.csv", row.names = F)
 
 
 #LST Rainy Season
@@ -98,7 +93,7 @@ colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 resf2$cond = "Rainy Season"
 
-write.csv(resf2, "LST_SecFor_Age_Rainy_full.csv", row.names = F)
+write.csv(resf2, "LST_SecFor_Age_Rainy_full_2022.csv", row.names = F)
 
 end.time <- Sys.time()
 time.taken <- end.time - start.time

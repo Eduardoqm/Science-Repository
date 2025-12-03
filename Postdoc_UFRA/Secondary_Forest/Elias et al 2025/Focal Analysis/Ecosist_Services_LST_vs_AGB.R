@@ -34,11 +34,6 @@ plot(esa)
 sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
-#Proccess before Focal ---------------------------------------------------------
-#sf_perc = ifel(sf_perc == 0,NA, sf_perc)
-#plot(sf_perc)
-#writeRaster(sf_perc, "Perc_SecForest_70m_B.tif")
-
 #Focal Function -------------------------------------------------------------
 setwd("C:/Users/Public/Documents/Analises_Elias/Dados/LST")
 start.time <- Sys.time()
@@ -57,11 +52,11 @@ lst_delta_pri=lst_year-lst_f
 rm(lst_year, lst_f)
 plot(lst_delta_pri)
 
-esa2 = ifel(is.na(lst_delta_pri),NA, esa)
+esa2 = ifel(is.na(sf_perc),NA, esa) #To get biomass only in pixels with delta
 plot(esa2)
 
 resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
-rm(esa2, lst_delta_pri)
+rm(lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 rm(resf)
@@ -84,12 +79,10 @@ lst_delta_pri=lst_dry-lst_f
 rm(lst_dry, lst_f)
 plot(lst_delta_pri)
 
-esa2 = ifel(is.na(lst_delta_pri),NA, esa)
-plot(esa2)
 
 gc()
 resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
-rm(esa2, lst_delta_pri)
+rm(lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 rm(resf)
@@ -113,12 +106,9 @@ lst_delta_pri=lst_wet-lst_f
 rm(lst_wet, lst_f)
 plot(lst_delta_pri)
 
-esa2 = ifel(is.na(lst_delta_pri),NA, esa)
-plot(esa2)
-
 gc()
 resf=as.data.frame(c(esa2,lst_delta_pri, sf_perc))
-rm(esa2, lst_delta_pri)
+rm(lst_delta_pri)
 colnames(resf) = c("agb", "delta_lst", "sf_perc")
 resf2 = resf %>% na.omit()
 rm(resf)
