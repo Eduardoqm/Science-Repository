@@ -1,17 +1,16 @@
 #Evapotranspiration by ECOSTRESS (Elias Paper)
 
-#Adapted from Divino V Silverio by Eduardo Q Marques 21-04-2025 updated 17-09-2025
+#Adapted from Divino V Silverio by Eduardo Q Marques 21-04-2025 updated 08-12-2025
 
 library(terra)
 library(sf)
 
 #Load Data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
+setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2022")
+dir()
 
-guama=read_sf("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
-#guama2=st_transform(guama,crs = 4326)
-#guama2=st_transform(guama, crs = 32723)
-#guama2=st_transform(guama, crs = "EPSG:32723")
+guama=read_sf("C:/Users/Public/Documents/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
+plot(guama)
 
 ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
 ex2 <- project(ex, crs(guama))
