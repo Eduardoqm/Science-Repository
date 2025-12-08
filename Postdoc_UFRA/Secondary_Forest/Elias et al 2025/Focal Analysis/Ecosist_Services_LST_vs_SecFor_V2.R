@@ -35,7 +35,7 @@ sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
 #Tiles for processing
-grix = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/Grix_hexa.shp")
+grix = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/Grix_4P.shp")
 
 #Focal Function -------------------------------------------------------------
 setwd("C:/Users/Public/Documents/Analises_Elias/Dados/LST")
