@@ -17,7 +17,7 @@ base = rast("Base.tif")
 #esa = rast("ESA_Biomass_70m_A.tif")
 #fore = rast("Forest_30m.tif")
 #past = rast("Pasture_30m.tif")
-lst_year = rast("LST_Annual_2022.tif")
+#lst_year = rast("LST_Annual_2022.tif")
 lst_dry = rast("LST_DrySeason_2022.tif")
 lst_wet = rast("LST_WetSeason_2022.tif")
 
@@ -65,14 +65,9 @@ plot(base2)
 #writeRaster(past2, "Pasture_70m.tif")
 
 
-lst_year[lst_year < 10] <- NA
+#lst_year[lst_year < 10] <- NA
 lst_dry[lst_dry < 10] <- NA
 lst_wet[lst_wet < 10] <- NA
-
-lst_year2 = resample(lst_year, base2, method = "average")
-lst_year2 = mask(crop(lst_year2, limit), limit)
-plot(lst_year2)
-writeRaster(lst_year2, "LST_Landsat_Annual_2022_70m.tif")
 
 lst_dry2 = resample(lst_dry, base2, method = "average")
 lst_dry2 = mask(crop(lst_dry2, limit), limit)
@@ -84,7 +79,11 @@ lst_wet2 = mask(crop(lst_wet2, limit), limit)
 plot(lst_wet2)
 writeRaster(lst_wet2, "LST_Landsat_Wet_2022_70m.tif")
 
-
+#lst_year2 = resample(lst_year, base2, method = "average")
+#lst_year2 = mask(crop(lst_year2, limit), limit)
+lst_year2 = mean(lst_dry2, lst_wet2)
+plot(lst_year2)
+writeRaster(lst_year2, "LST_Landsat_Annual_2022_70m.tif")
 
 
 
