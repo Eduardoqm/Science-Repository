@@ -1,13 +1,10 @@
 #LST by Secondary Forest Age (Focal)
 
-#Eduardo Q Marques 22-08-2025 Divino Update 03-09-2025
+#Eduardo Q Marques 08-12-2025
 
 library(terra)
 library(tidyverse)
 library(sf)
-library(future) #Multicore work
-
-parallel::detectCores()
 
 #Load data ---------------------------------------------------------------------
 setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/Resampled_70m")
@@ -37,7 +34,75 @@ plot(sf_perc)
 #Tiles for processing
 grix = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/Grix_4P.shp")
 
-#Focal Function -------------------------------------------------------------
+#Focal Function ----------------------------------------------------------------
+
+fcl = function(comparado, eco_service, variable_x){
+  fr_prix = mask(crop(fr_pri, grix[1]), grix[1])
+  lst_yearx = mask(crop(lst_year, grix[1]), grix[1])
+  sfx = mask(crop(sf, grix[1]), grix[1])
+  sf_percx = mask(crop(sf_perc, grix[1]), grix[1])
+  
+  lst_prix = ifel(is.na(fr_prix),NA,lst_yearx)
+  
+  lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
+  
+  lst_delta_pri=lst_yearx-lst_f
+}
+
+
+
+plot(grix)
+fr_prix = mask(crop(fr_pri, grix[1]), grix[1])
+lst_yearx = mask(crop(lst_year, grix[1]), grix[1])
+sfx = mask(crop(sf, grix[1]), grix[1])
+sf_percx = mask(crop(sf_perc, grix[1]), grix[1])
+
+lst_prix = ifel(is.na(fr_prix),NA,lst_yearx)
+
+lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
+plot(lst_f, add = T, legend = FALSE)
+
+lst_delta_pri=lst_yearx-lst_f
+
+resf=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
+colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
+resf = resf %>% na.omit()
+
+for (z in 2:length(grix)) {
+  fr_prix = mask(crop(fr_pri, grix[z]), grix[z])
+  lst_yearx = mask(crop(lst_year, grix[z]), grix[z])
+  sfx = mask(crop(sf, grix[z]), grix[z])
+  sf_percx = mask(crop(sf_perc, grix[z]), grix[z])
+  lst_prix = ifel(is.na(fr_prix),NA,lst_yearx)
+  
+  lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
+  plot(lst_f, add = T, legend = FALSE)
+  
+  lst_delta_pri=lst_yearx-lst_f
+  
+  resf2=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
+  colnames(resf2) = c("sf_age", "delta_lst", "sf_perc")
+  resf2 = resf2 %>% na.omit()
+  resf = rbind(resf, resf2)  
+}
+
+resf$cond = "Annual"
+resf$year = 2022
+write.csv(resf, "LST_SecFor_Age_Annual_full_2022.csv", row.names = F)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 setwd("C:/Users/Public/Documents/Analises_Elias/Dados/LST")
 start.time <- Sys.time()
 
