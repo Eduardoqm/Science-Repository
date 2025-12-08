@@ -35,7 +35,7 @@ sf_perc = rast("Perc_SecForest_70m.tif")
 plot(sf_perc)
 
 #Tiles for processing
-grix = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/Grids_part_by_part.shp")
+grix = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/Grix_hexa.shp")
 
 #Focal Function -------------------------------------------------------------
 setwd("C:/Users/Public/Documents/Analises_Elias/Dados/LST")
@@ -122,7 +122,7 @@ resf$year = 2022
 write.csv(resf, "LST_SecFor_Age_Dry_full_2022.csv", row.names = F)
 
 
-#LST Rainy Season
+#LST Rainy Season --------------------------------------------------------------
 plot(grix)
 fr_prix = mask(crop(fr_pri, grix[1]), grix[1])
 lst_wetx = mask(crop(lst_wet, grix[1]), grix[1])
