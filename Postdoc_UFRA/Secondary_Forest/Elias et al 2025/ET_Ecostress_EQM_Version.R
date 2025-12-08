@@ -93,7 +93,8 @@ plot(stacked)
 et2 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
 plot(et2)
 
-writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
+writeRaster(et2, "ECOSTRESS_ET_Rainy_2022.tif")
+#writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
 
 
 #May to July -------------------------------------------------------------------
@@ -125,8 +126,8 @@ plot(et3)
 #Proccess 218: 16.70
 #et3b = ifel(et3 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
 #plot(et3b)
-
-writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
+writeRaster(et3, "ECOSTRESS_ET_Dry_2022.tif")
+#writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
 
 #August to September -----------------------------------------------------------
 gc()
