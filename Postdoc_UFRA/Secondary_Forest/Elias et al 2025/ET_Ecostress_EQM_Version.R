@@ -22,7 +22,7 @@ plot(ex2c)
 plot(ex2, add = T)
 
 #Get file names by month -------------------------------------------------------
-metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/metadata", full.names = T)
+metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2022/metadata", full.names = T)
 
 #Read the file
 rainy = c(
