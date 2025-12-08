@@ -24,48 +24,49 @@ plot(ex2, add = T)
 #Get file names by month -------------------------------------------------------
 metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2022/metadata", full.names = T)
 
-#Read the file
-rainy = c(
+#Read the rainy
+meta1 = c(
   Dec <- substr(readLines(metalist[12]), 127, 205),
   Jan <- substr(readLines(metalist[1]), 127, 205),
   Fev <- substr(readLines(metalist[2]), 127, 205),
   Mar <- substr(readLines(metalist[3]), 127, 205),
   Apr <- substr(readLines(metalist[4]), 127, 205),
   May <- substr(readLines(metalist[5]), 127, 205))
-head(rainy); length(rainy)
+head(meta1); length(meta1)
 
-dry = c(
+#Read the dry
+meta2 = c(
   Jun <- substr(readLines(metalist[6]), 127, 205),
   Jul <- substr(readLines(metalist[7]), 127, 205),
   Agu <- substr(readLines(metalist[8]), 127, 205),
   Sep <- substr(readLines(metalist[9]), 127, 205),
   Out <- substr(readLines(metalist[10]), 127, 205),
   Nov <- substr(readLines(metalist[11]), 127, 205))
-head(dry); length(dry)
-
-meta1 = c(
-Jan <- substr(readLines(metalist[1]), 127, 205),
-Fev <- substr(readLines(metalist[2]), 127, 205),
-Mar <- substr(readLines(metalist[3]), 127, 205),
-Apr <- substr(readLines(metalist[4]), 127, 205))
-head(meta1); length(meta1)
-
-meta2 = c(
-  May <- substr(readLines(metalist[5]), 127, 205),
-  Jun <- substr(readLines(metalist[6]), 127, 205),
-  Jul <- substr(readLines(metalist[7]), 127, 205))
 head(meta2); length(meta2)
 
-meta3 = c(
-  Agu <- substr(readLines(metalist[8]), 127, 205),
-  Sep <- substr(readLines(metalist[9]), 127, 205))
-head(meta3); length(meta3)
+#meta1 = c(
+#Jan <- substr(readLines(metalist[1]), 127, 205),
+#Fev <- substr(readLines(metalist[2]), 127, 205),
+#Mar <- substr(readLines(metalist[3]), 127, 205),
+#Apr <- substr(readLines(metalist[4]), 127, 205))
+#head(meta1); length(meta1)
 
-meta4 = c(
-  Out <- substr(readLines(metalist[10]), 127, 205),
-  Nov <- substr(readLines(metalist[11]), 127, 205),
-  Dec <- substr(readLines(metalist[12]), 127, 205))
-head(meta4); length(meta4)
+#meta2 = c(
+#  May <- substr(readLines(metalist[5]), 127, 205),
+#  Jun <- substr(readLines(metalist[6]), 127, 205),
+#  Jul <- substr(readLines(metalist[7]), 127, 205))
+#head(meta2); length(meta2)
+
+#meta3 = c(
+#  Agu <- substr(readLines(metalist[8]), 127, 205),
+#  Sep <- substr(readLines(metalist[9]), 127, 205))
+#head(meta3); length(meta3)
+
+#meta4 = c(
+#  Out <- substr(readLines(metalist[10]), 127, 205),
+#  Nov <- substr(readLines(metalist[11]), 127, 205),
+#  Dec <- substr(readLines(metalist[12]), 127, 205))
+#head(meta4); length(meta4)
 
 #January to April --------------------------------------------------------------
 Jan_Apr <- list()
