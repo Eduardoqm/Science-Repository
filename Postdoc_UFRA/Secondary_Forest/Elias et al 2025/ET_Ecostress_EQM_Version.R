@@ -22,9 +22,27 @@ plot(ex2c)
 plot(ex2, add = T)
 
 #Get file names by month -------------------------------------------------------
-metalist = list.files(path = "G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day/metadata", full.names = T)
+metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/metadata", full.names = T)
 
 #Read the file
+rainy = c(
+  Dec <- substr(readLines(metalist[12]), 127, 205),
+  Jan <- substr(readLines(metalist[1]), 127, 205),
+  Fev <- substr(readLines(metalist[2]), 127, 205),
+  Mar <- substr(readLines(metalist[3]), 127, 205),
+  Apr <- substr(readLines(metalist[4]), 127, 205),
+  May <- substr(readLines(metalist[5]), 127, 205))
+head(rainy); length(rainy)
+
+dry = c(
+  Jun <- substr(readLines(metalist[6]), 127, 205),
+  Jul <- substr(readLines(metalist[7]), 127, 205),
+  Agu <- substr(readLines(metalist[8]), 127, 205),
+  Sep <- substr(readLines(metalist[9]), 127, 205),
+  Out <- substr(readLines(metalist[10]), 127, 205),
+  Nov <- substr(readLines(metalist[11]), 127, 205))
+head(dry); length(dry)
+
 meta1 = c(
 Jan <- substr(readLines(metalist[1]), 127, 205),
 Fev <- substr(readLines(metalist[2]), 127, 205),
