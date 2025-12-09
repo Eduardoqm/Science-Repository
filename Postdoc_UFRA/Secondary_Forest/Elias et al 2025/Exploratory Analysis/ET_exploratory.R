@@ -58,4 +58,63 @@ ggsave(plot = plt2, "Delta_ET_AGB_Results.png", dpi = 300,
 
 
 
+#===============================================================================
+
+
+
+
+library(tidyverse)
+
+setwd("C:/Users/Public/Documents/Analises_Elias/Dados/ET")
+dir()
+
+df = read_csv("ET_AGB_Past_Dry_full_2022.csv")
+head(df)
+
+
+df2=df%>%
+  filter(sf_perc>=70)%>%
+  mutate(agb=round(agb,0))%>%
+  group_by(agb,cond)%>%
+  summarise(delta_et=mean(delta_et,na.rm=T),
+            sf_perc=mean(sf_perc,na.rm=T),
+            n=n())%>%
+  filter(n>200,agb<250)
+
+
+
+head(df2)
+
+ggplot(df2,aes(agb,delta_et))+
+  geom_point()
+
+
+
+
+
+
+df1 = read_csv("ET_AGB_Past_Rainy_full_2022.csv")
+head(df1)
+
+
+df20=df1%>%
+  filter(sf_perc>=70)%>%
+  mutate(agb=round(agb,0))%>%
+  group_by(agb,cond)%>%
+  summarise(delta_et=mean(delta_et,na.rm=T),
+            sf_perc=mean(sf_perc,na.rm=T),
+            n=n())%>%
+  filter(n>200,agb<250)
+head(df20)
+
+
+dff=df20%>%
+  bind_rows(df2)
+head(dff)
+
+ggplot(dff,aes(agb,delta_et,colour=cond))+
+  geom_point()+
+  stat_smooth()
+
+
 

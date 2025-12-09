@@ -6,13 +6,13 @@ library(terra)
 library(sf)
 
 #Load Data ---------------------------------------------------------------------
-setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2022")
+setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2023")
 dir()
 
 guama=read_sf("C:/Users/Public/Documents/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 plot(guama)
 
-ex=rast("ECO_L3T_JET.002_ETdaily_doy2022002132231_aid0009_23S.tif")
+ex=rast("ECO_L3T_JET.002_ETdaily_doy2023001143327_aid0006_20S.tif")
 ex2 <- project(ex, crs(guama))
 
 ex2b <- rast(guama, resolution=res(ex2))
@@ -22,7 +22,7 @@ plot(ex2c)
 plot(ex2, add = T)
 
 #Get file names by month -------------------------------------------------------
-metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2022/metadata", full.names = T)
+metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2023/metadata", full.names = T)
 
 #Read the rainy
 meta1 = c(
@@ -93,8 +93,8 @@ plot(stacked)
 et2 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
 plot(et2)
 
-writeRaster(et2, "ECOSTRESS_ET_Rainy_2022.tif")
-#writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2022.tif")
+writeRaster(et2, "ECOSTRESS_ET_Rainy_2023.tif")
+#writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2023.tif")
 
 
 #May to July -------------------------------------------------------------------
@@ -124,15 +124,15 @@ plot(et3)
 #Proccess 218: 16.70
 #et3b = ifel(et3 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
 #plot(et3b)
-writeRaster(et3, "ECOSTRESS_ET_Dry_2022.tif")
-#writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
+writeRaster(et3, "ECOSTRESS_ET_Dry_2023.tif")
+#writeRaster(et3, "ECOSTRESS_EVAP_May_July_2023.tif")
 
 
 
 
 et_m = mean(et2, et3)
 plot(et_m)
-writeRaster(et_m, "ECOSTRESS_ET_Annual_2022.tif")
+writeRaster(et_m, "ECOSTRESS_ET_Annual_2023.tif")
 
 
 
@@ -227,7 +227,7 @@ plot(et4)
 et4b = ifel(et4 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
 plot(et4b)
 
-writeRaster(et4b, "ECOSTRESS_EVAP_Aug_Sep_2022.tif")
+writeRaster(et4b, "ECOSTRESS_EVAP_Aug_Sep_2023.tif")
 
 #October to December -----------------------------------------------------------
 gc()
@@ -255,7 +255,7 @@ stacked <- terra::rast(Oct_Dec2)
 et5 <- terra::app(stacked, fun = max, na.rm = TRUE)
 plot(et5)
 
-writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2022.tif")
+writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2023.tif")
 
 
 
@@ -270,11 +270,11 @@ library(sf)
 setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
 dir()
 
-wet1 = rast("ECOSTRESS_EVAP_Jan_April_2022.tif")
-wet2 = rast("ECOSTRESS_EVAP_Oct_Dec_2022.tif")
+wet1 = rast("ECOSTRESS_EVAP_Jan_April_2023.tif")
+wet2 = rast("ECOSTRESS_EVAP_Oct_Dec_2023.tif")
 
-dry1 = rast("ECOSTRESS_EVAP_May_July_2022.tif")
-dry2 = rast("ECOSTRESS_EVAP_Aug_Sep_2022.tif")
+dry1 = rast("ECOSTRESS_EVAP_May_July_2023.tif")
+dry2 = rast("ECOSTRESS_EVAP_Aug_Sep_2023.tif")
 
 #Joing wet and dry seasons -----------------------------------------------------
 #Wet
@@ -283,7 +283,7 @@ stacked <- c(wet1, wet2)
 wet <- terra::app(stacked, fun = mean, na.rm = TRUE)
 plot(wet)
 
-writeRaster(wet, "ECOSTRESS_EVAP_WetSeason_2022.tif")
+writeRaster(wet, "ECOSTRESS_EVAP_WetSeason_2023.tif")
 
 #Dry
 gc()
@@ -291,17 +291,17 @@ stacked <- c(dry1, dry2)
 dry <- terra::app(stacked, fun = mean, na.rm = TRUE)
 plot(dry)
 
-writeRaster(dry, "ECOSTRESS_EVAP_DrySeason_2022.tif")
+writeRaster(dry, "ECOSTRESS_EVAP_DrySeason_2023.tif")
 
 #Annual
 gc()
-#wet = rast("ECOSTRESS_EVAP_WetSeason_2022.tif")
-#dry = rast("ECOSTRESS_EVAP_DrySeason_2022.tif")
+#wet = rast("ECOSTRESS_EVAP_WetSeason_2023.tif")
+#dry = rast("ECOSTRESS_EVAP_DrySeason_2023.tif")
 stacked <- c(wet, dry)
 annual <- terra::app(stacked, fun = mean, na.rm = TRUE)
 plot(annual)
 
-writeRaster(annual, "ECOSTRESS_EVAP_annual_2022.tif")
+writeRaster(annual, "ECOSTRESS_EVAP_annual_2023.tif")
 
 
 
