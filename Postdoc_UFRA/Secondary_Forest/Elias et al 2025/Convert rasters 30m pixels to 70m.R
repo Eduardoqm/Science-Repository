@@ -18,8 +18,8 @@ base = rast("Base.tif")
 #fore = rast("Forest_30m.tif")
 #past = rast("Pasture_30m.tif")
 #lst_year = rast("LST_Annual_2022.tif")
-lst_dry = rast("LST_DrySeason_2022.tif")
-lst_wet = rast("LST_WetSeason_2022.tif")
+lst_dry = rast("LST_Dry_2022.tif")
+lst_wet = rast("LST_Rainy_2022.tif")
 
 limit = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 

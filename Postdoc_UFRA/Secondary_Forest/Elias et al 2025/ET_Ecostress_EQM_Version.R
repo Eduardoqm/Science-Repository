@@ -107,8 +107,6 @@ for(i in 1:length(meta2)) {
   tryCatch({
     r <- terra::rast(meta2[i])
     r <- project(r, crs(guama))
-    #plot(r)
-    print(summary(r)[6])
     r2 <- terra::resample(r, ex2c)
     May_Jul[[i]] <- r2
   }, error = function(e) {
@@ -128,6 +126,61 @@ plot(et3)
 #plot(et3b)
 writeRaster(et3, "ECOSTRESS_ET_Dry_2022.tif")
 #writeRaster(et3, "ECOSTRESS_EVAP_May_July_2022.tif")
+
+
+
+
+et_m = mean(et2, et3)
+plot(et_m)
+writeRaster(et_m, "ECOSTRESS_ET_Annual_2022.tif")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #August to September -----------------------------------------------------------
 gc()

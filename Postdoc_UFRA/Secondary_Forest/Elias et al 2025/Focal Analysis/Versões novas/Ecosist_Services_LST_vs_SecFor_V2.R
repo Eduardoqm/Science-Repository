@@ -18,21 +18,21 @@ lst_year = rast("LST_Landsat_Annual_2022_70m.tif")
 lst_dry = rast("LST_Landsat_Dry_2022_70m.tif")
 lst_wet = rast("LST_Landsat_Wet_2022_70m.tif")
 
-plot(lst_year)
-plot(lst_dry)
-plot(lst_wet)
+#plot(lst_year)
+#plot(lst_dry)
+#plot(lst_wet)
 
 #Primary Forest
 fr_pri=rast("Forest_70m.tif" )
-plot(fr_pri)
+#plot(fr_pri)
 
 #Secondary Forest
 sf=rast("MB_Forest_age_70m.tif")
-plot(sf)
+#plot(sf)
 
 #Percentage of Secondary Forest
 sf_perc = rast("Perc_SecForest_70m.tif")
-plot(sf_perc)
+#plot(sf_perc)
 
 #Tiles for processing
 grix = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/Grix_4P.shp")
@@ -43,7 +43,7 @@ start.time <- Sys.time()
 
 #LST Annual---------------------------------------------------------------------
 #Use focal to calculate difference in Secondary and Primary (Delta)
-plot(grix)
+#plot(grix)
 fr_prix = mask(crop(fr_pri, grix[1]), grix[1])
 lst_yearx = mask(crop(lst_year, grix[1]), grix[1])
 sfx = mask(crop(sf, grix[1]), grix[1])
@@ -51,9 +51,11 @@ sf_percx = mask(crop(sf_perc, grix[1]), grix[1])
 lst_prix = ifel(is.na(fr_prix),NA,lst_yearx)
 
 lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
-plot(lst_f, add = T, legend = FALSE)
+#plot(lst_f, add = T, legend = FALSE)
 
 lst_delta_pri=lst_yearx-lst_f
+nome = paste0(grix[1]$id, "Delta_LST_annual_2022.tif")
+writeRaster(lst_delta_pri, nome)
 
 resf=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
 colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
@@ -67,9 +69,11 @@ for (z in 2:length(grix)) {
   lst_prix = ifel(is.na(fr_prix),NA,lst_yearx)
   
   lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
-  plot(lst_f, add = T, legend = FALSE)
+  #plot(lst_f, add = T, legend = FALSE)
   
   lst_delta_pri=lst_yearx-lst_f
+  nome = paste0(grix[z]$id, "Delta_LST_annual_2022.tif")
+  writeRaster(lst_delta_pri, nome)
   
   resf2=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
   colnames(resf2) = c("sf_age", "delta_lst", "sf_perc")
@@ -83,7 +87,7 @@ write.csv(resf, "LST_SecFor_Age_Annual_full_2022.csv", row.names = F)
 
 
 #LST Dry Season-----------------------------------------------------------------
-plot(grix)
+#plot(grix)
 fr_prix = mask(crop(fr_pri, grix[1]), grix[1])
 lst_dryx = mask(crop(lst_dry, grix[1]), grix[1])
 sfx = mask(crop(sf, grix[1]), grix[1])
@@ -91,9 +95,11 @@ sf_percx = mask(crop(sf_perc, grix[1]), grix[1])
 lst_prix = ifel(is.na(fr_prix),NA,lst_dryx)
 
 lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
-plot(lst_f, add = T, legend = FALSE)
+#plot(lst_f, add = T, legend = FALSE)
 
 lst_delta_pri=lst_dryx-lst_f
+nome = paste0(grix[1]$id, "Delta_LST_dry_2022.tif")
+writeRaster(lst_delta_pri, nome)
 
 resf=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
 colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
@@ -107,9 +113,11 @@ for (z in 2:length(grix)) {
   lst_prix = ifel(is.na(fr_prix),NA,lst_dryx)
   
   lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
-  plot(lst_f, add = T, legend = FALSE)
+  #plot(lst_f, add = T, legend = FALSE)
   
   lst_delta_pri=lst_dryx-lst_f
+  nome = paste0(grix[z]$id, "Delta_LST_dry_2022.tif")
+  writeRaster(lst_delta_pri, nome)
   
   resf2=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
   colnames(resf2) = c("sf_age", "delta_lst", "sf_perc")
@@ -123,7 +131,7 @@ write.csv(resf, "LST_SecFor_Age_Dry_full_2022.csv", row.names = F)
 
 
 #LST Rainy Season --------------------------------------------------------------
-plot(grix)
+#plot(grix)
 fr_prix = mask(crop(fr_pri, grix[1]), grix[1])
 lst_wetx = mask(crop(lst_wet, grix[1]), grix[1])
 sfx = mask(crop(sf, grix[1]), grix[1])
@@ -131,9 +139,11 @@ sf_percx = mask(crop(sf_perc, grix[1]), grix[1])
 lst_prix = ifel(is.na(fr_prix),NA,lst_wetx)
 
 lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
-plot(lst_f, add = T, legend = FALSE)
+#plot(lst_f, add = T, legend = FALSE)
 
 lst_delta_pri=lst_wetx-lst_f
+nome = paste0(grix[1]$id, "Delta_LST_Rainy_2022.tif")
+writeRaster(lst_delta_pri, nome)
 
 resf=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
 colnames(resf) = c("sf_age", "delta_lst", "sf_perc")
@@ -147,9 +157,11 @@ for (z in 2:length(grix)) {
   lst_prix = ifel(is.na(fr_prix),NA,lst_wetx)
   
   lst_f <- focal(lst_prix, w=21, median, na.rm=TRUE, na.policy="only")
-  plot(lst_f, add = T, legend = FALSE)
+  #plot(lst_f, add = T, legend = FALSE)
   
   lst_delta_pri=lst_dryx-lst_f
+  nome = paste0(grix[z]$id, "Delta_LST_Rainy_2022.tif")
+  writeRaster(lst_delta_pri, nome)
   
   resf2=as.data.frame(c(sfx,lst_delta_pri, sf_percx))
   colnames(resf2) = c("sf_age", "delta_lst", "sf_perc")
