@@ -10,7 +10,7 @@ setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2023")
 dir()
 
 guama=read_sf("C:/Users/Public/Documents/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
-plot(guama)
+#plot(guama)
 
 ex=rast("ECO_L3T_JET.002_ETdaily_doy2023001143327_aid0006_20S.tif")
 ex2 <- project(ex, crs(guama))
@@ -18,8 +18,8 @@ ex2 <- project(ex, crs(guama))
 ex2b <- rast(guama, resolution=res(ex2))
 ex2c <- rasterize(guama, ex2b)
 res(ex2c)
-plot(ex2c)
-plot(ex2, add = T)
+#plot(ex2c)
+#plot(ex2, add = T)
 
 #Get file names by month -------------------------------------------------------
 metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2023/metadata", full.names = T)
@@ -69,6 +69,7 @@ head(meta2); length(meta2)
 #head(meta4); length(meta4)
 
 #January to April --------------------------------------------------------------
+start.time <- Sys.time()
 Jan_Apr <- list()
 
 for(i in 1:length(meta1)) {
@@ -128,14 +129,14 @@ writeRaster(et3, "ECOSTRESS_ET_Dry_2023.tif")
 #writeRaster(et3, "ECOSTRESS_EVAP_May_July_2023.tif")
 
 
-
-
 et_m = mean(et2, et3)
 plot(et_m)
 writeRaster(et_m, "ECOSTRESS_ET_Annual_2023.tif")
 
 
-
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
 
 
 
