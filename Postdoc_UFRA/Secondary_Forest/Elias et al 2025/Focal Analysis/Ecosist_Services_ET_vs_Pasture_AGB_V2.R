@@ -1,4 +1,4 @@
-#ET Forest by ESA Biomass (Focal)
+#ET Pasture by ESA Biomass (Focal)
 #E.Q.Marques and J.Brito 11-12-2025
 
 library(terra)
@@ -6,7 +6,7 @@ library(sf)
 library(tidyverse)
 
 #General Configurations --------------------------------------------------------
-setwd("C:/Users/Cliente/Downloads/dados")  
+setwd("C:/Users/Cliente/Downloads/dados")
 
 #Creates a temporary Terra files folder (prevents RAM overflow)
 if (!dir.exists("C:/Users/Cliente/Downloads/dados/tmp_terra")) {
@@ -22,7 +22,7 @@ et_year <- rast("ECOSTRESS_ET_Annual_2022_70m.tif")
 et_dry  <- rast("ECOSTRESS_ET_Dry_2022_70m.tif")
 et_wet  <- rast("ECOSTRESS_ET_Wet_2022_70m.tif")
 
-fr_pri <- rast("Forest_70m.tif")
+pasto <- rast("Pasture_70m.tif")
 esa <- rast("ESA_Biomass_70m.tif")
 sf_perc <- rast("Perc_SecForest_70m.tif")
 sf_perc <- ifel(sf_perc == 0, NA, sf_perc)
@@ -32,7 +32,7 @@ save_delta_raster <- function(et_rast, output_file) {
   
   message("Generating Delta Raster: ", output_file)
   
-  et_pri <- ifel(is.na(fr_pri), NA, et_rast)
+  et_pri <- ifel(is.na(pasto), NA, et_rast)
   et_f   <- focal(et_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
   delta_et <- et_rast - et_f
   
@@ -42,7 +42,7 @@ save_delta_raster <- function(et_rast, output_file) {
 }
 
 #Function save dataframe by blocks ---------------------------------------------
-process_et_block <- function(et_rast, Delta_rast, cond_name, output_file, nlines_block = 100) {
+process_et_block <- function(et_rast,Delta_rast, cond_name, output_file, nlines_block = 100) {
   
   message("=== Starting Process: ", cond_name, " ===")
   
@@ -91,13 +91,13 @@ process_et_block <- function(et_rast, Delta_rast, cond_name, output_file, nlines
 start.time <- Sys.time()
 
 #Focal
-save_delta_raster(et_year, "Delta_ET_Forest_AGB_Annual_2022.tif")
-save_delta_raster(et_dry,  "Delta_ET_Forest_AGB_Dry_2022.tif")
-save_delta_raster(et_wet,  "Delta_ET_Forest_AGB_Rainy_2022.tif")
+save_delta_raster(et_year, "Delta_et_Pasture_AGB_Annual_2022.tif")
+save_delta_raster(et_dry,  "Delta_et_Pasture_AGB_Dry_2022.tif")
+save_delta_raster(et_wet,  "Delta_et_Pasture_AGB_Rainy_2022.tif")
 
-Delta_year  <- rast("Delta_ET_Forest_AGB_Annual_2022.tif")  
-Delta_dry  <- rast("Delta_ET_Forest_AGB_Dry_2022.tif")  
-Delta_wet  <- rast("Delta_ET_Forest_AGB_Rainy_2022.tif")  
+Delta_year  <- rast("Delta_et_Pasture_AGB_Annual_2022.tif")  
+Delta_dry  <- rast("Delta_et_Pasture_AGB_Dry_2022.tif")  
+Delta_wet  <- rast("Delta_et_Pasture_AGB_Rainy_2022.tif")  
 
 #Dataframe
 process_et_block(et_year, Delta_year, "Annual", "et_AGB_Annual_full.csv")
@@ -127,5 +127,5 @@ final_df2 <- final_df %>%
 
 final_df2$year <- 2022
 
-write.csv(final_df2, "ET_Forest_AGB_2022.csv", row.names = FALSE)
+write.csv(final_df2, "ET_Pasture_AGB_2022.csv", row.names = FALSE)
 
