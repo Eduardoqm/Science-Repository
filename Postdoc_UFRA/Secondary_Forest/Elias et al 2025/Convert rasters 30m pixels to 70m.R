@@ -9,16 +9,16 @@ setwd("C:/Users/Public/Documents/Analises_Elias/Rasters")
 dir()
 
 base = rast("Base.tif")
-evp_year = rast("ECOSTRESS_ET_Annual_2023.tif")
-evp_dry = rast("ECOSTRESS_ET_Dry_2023.tif")
-evp_wet = rast("ECOSTRESS_ET_Rainy_2023.tif")
+evp_year = rast("ECOSTRESS_ET_Annual_2024.tif")
+evp_dry = rast("ECOSTRESS_ET_Dry_2024.tif")
+evp_wet = rast("ECOSTRESS_ET_Rainy_2024.tif")
 #secf = rast("MB_Forest_age_30m.tif")
 #esa = rast("ESA_Biomass_70m_A.tif")
 #fore = rast("Forest_30m.tif")
 #past = rast("Pasture_30m.tif")
-#lst_year = rast("LST_Annual_2023.tif")
-#lst_dry = rast("LST_Dry_2023.tif")
-#lst_wet = rast("LST_Rainy_2023.tif")
+#lst_year = rast("LST_Annual_2024.tif")
+#lst_dry = rast("LST_Dry_2024.tif")
+#lst_wet = rast("LST_Rainy_2024.tif")
 
 limit = vect("C:/Users/Public/Documents/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 
@@ -27,21 +27,6 @@ setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/Resampled_70m")
 
 base2 = mask(crop(base, limit), limit)
 plot(base2)
-
-evp_year2 = resample(evp_year, base2, method = "average")
-evp_year2 = mask(crop(evp_year2, limit), limit)
-plot(evp_year2)
-writeRaster(evp_year2, "ECOSTRESS_ET_Annual_2023_70m.tif")
-
-evp_dry2 = resample(evp_dry, base2, method = "average")
-evp_dry2 = mask(crop(evp_dry2, limit), limit)
-plot(evp_dry2)
-writeRaster(evp_dry2, "ECOSTRESS_ET_Dry_2023_70m.tif")
-
-evp_wet2 = resample(evp_wet, base2, method = "average")
-evp_wet2 = mask(crop(evp_wet2, limit), limit)
-plot(evp_wet2)
-writeRaster(evp_wet2, "ECOSTRESS_ET_Wet_2023_70m.tif")
 
 #secf2 = resample(secf, base2, method = "average")
 #secf2 = mask(crop(secf2, limit), limit)
@@ -64,6 +49,26 @@ writeRaster(evp_wet2, "ECOSTRESS_ET_Wet_2023_70m.tif")
 #writeRaster(past2, "Pasture_70m.tif")
 
 
+evp_year[evp_year > 30] <- NA
+evp_dry[evp_dry > 30] <- NA
+evp_wet[evp_wet > 30] <- NA
+
+evp_year2 = resample(evp_year, base2, method = "average")
+evp_year2 = mask(crop(evp_year2, limit), limit)
+plot(evp_year2)
+writeRaster(evp_year2, "ECOSTRESS_ET_Annual_2024_70m.tif")
+
+evp_dry2 = resample(evp_dry, base2, method = "average")
+evp_dry2 = mask(crop(evp_dry2, limit), limit)
+plot(evp_dry2)
+writeRaster(evp_dry2, "ECOSTRESS_ET_Dry_2024_70m.tif")
+
+evp_wet2 = resample(evp_wet, base2, method = "average")
+evp_wet2 = mask(crop(evp_wet2, limit), limit)
+plot(evp_wet2)
+writeRaster(evp_wet2, "ECOSTRESS_ET_Wet_2024_70m.tif")
+
+
 #lst_year[lst_year < 10] <- NA
 #lst_dry[lst_dry < 10] <- NA
 #lst_wet[lst_wet < 10] <- NA
@@ -71,18 +76,18 @@ writeRaster(evp_wet2, "ECOSTRESS_ET_Wet_2023_70m.tif")
 #lst_dry2 = resample(lst_dry, base2, method = "average")
 #lst_dry2 = mask(crop(lst_dry2, limit), limit)
 #plot(lst_dry2)
-#writeRaster(lst_dry2, "LST_Landsat_Dry_2023_70m.tif")
+#writeRaster(lst_dry2, "LST_Landsat_Dry_2024_70m.tif")
 
 #lst_wet2 = resample(lst_wet, base2, method = "average")
 #lst_wet2 = mask(crop(lst_wet2, limit), limit)
 #plot(lst_wet2)
-#writeRaster(lst_wet2, "LST_Landsat_Wet_2023_70m.tif")
+#writeRaster(lst_wet2, "LST_Landsat_Wet_2024_70m.tif")
 
 #lst_year2 = resample(lst_year, base2, method = "average")
 #lst_year2 = mask(crop(lst_year2, limit), limit)
 #lst_year2 = mean(lst_dry2, lst_wet2)
 #plot(lst_year2)
-#writeRaster(lst_year2, "LST_Landsat_Annual_2023_70m.tif")
+#writeRaster(lst_year2, "LST_Landsat_Annual_2024_70m.tif")
 
 
 

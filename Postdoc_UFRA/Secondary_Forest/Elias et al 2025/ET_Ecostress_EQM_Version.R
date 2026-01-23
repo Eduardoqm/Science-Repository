@@ -6,13 +6,13 @@ library(terra)
 library(sf)
 
 #Load Data ---------------------------------------------------------------------
-setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2023")
+setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2024")
 dir()
 
 guama=read_sf("C:/Users/Public/Documents/Analises_Elias/Shapes/BR_Amazon_DrySeason_filtered.shp")
 #plot(guama)
 
-ex=rast("ECO_L3T_JET.002_ETdaily_doy2023001143327_aid0006_20S.tif")
+ex=rast("ECO_L3T_JET.002_ETdaily_doy2024019181712_aid0009_19S.tif")
 ex2 <- project(ex, crs(guama))
 
 ex2b <- rast(guama, resolution=res(ex2))
@@ -22,7 +22,7 @@ res(ex2c)
 #plot(ex2, add = T)
 
 #Get file names by month -------------------------------------------------------
-metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2023/metadata", full.names = T)
+metalist = list.files(path = "C:/Users/Public/Documents/Analises_Elias/Rasters/ET_separado/2024/metadata", full.names = T)
 
 #Read the rainy
 meta1 = c(
@@ -43,30 +43,6 @@ meta2 = c(
   Out <- substr(readLines(metalist[10]), 127, 205),
   Nov <- substr(readLines(metalist[11]), 127, 205))
 head(meta2); length(meta2)
-
-#meta1 = c(
-#Jan <- substr(readLines(metalist[1]), 127, 205),
-#Fev <- substr(readLines(metalist[2]), 127, 205),
-#Mar <- substr(readLines(metalist[3]), 127, 205),
-#Apr <- substr(readLines(metalist[4]), 127, 205))
-#head(meta1); length(meta1)
-
-#meta2 = c(
-#  May <- substr(readLines(metalist[5]), 127, 205),
-#  Jun <- substr(readLines(metalist[6]), 127, 205),
-#  Jul <- substr(readLines(metalist[7]), 127, 205))
-#head(meta2); length(meta2)
-
-#meta3 = c(
-#  Agu <- substr(readLines(metalist[8]), 127, 205),
-#  Sep <- substr(readLines(metalist[9]), 127, 205))
-#head(meta3); length(meta3)
-
-#meta4 = c(
-#  Out <- substr(readLines(metalist[10]), 127, 205),
-#  Nov <- substr(readLines(metalist[11]), 127, 205),
-#  Dec <- substr(readLines(metalist[12]), 127, 205))
-#head(meta4); length(meta4)
 
 #January to April --------------------------------------------------------------
 start.time <- Sys.time()
@@ -94,8 +70,8 @@ plot(stacked)
 et2 <- terra::app(stacked, fun = max, na.rm = TRUE) #Take less time to mosaic
 plot(et2)
 
-writeRaster(et2, "ECOSTRESS_ET_Rainy_2023.tif")
-#writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2023.tif")
+writeRaster(et2, "ECOSTRESS_ET_Rainy_2024.tif")
+#writeRaster(et2, "ECOSTRESS_EVAP_Jan_April_2024.tif")
 
 
 #May to July -------------------------------------------------------------------
@@ -125,184 +101,15 @@ plot(et3)
 #Proccess 218: 16.70
 #et3b = ifel(et3 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
 #plot(et3b)
-writeRaster(et3, "ECOSTRESS_ET_Dry_2023.tif")
-#writeRaster(et3, "ECOSTRESS_EVAP_May_July_2023.tif")
+writeRaster(et3, "ECOSTRESS_ET_Dry_2024.tif")
+#writeRaster(et3, "ECOSTRESS_EVAP_May_July_2024.tif")
 
 
 et_m = mean(et2, et3)
 plot(et_m)
-writeRaster(et_m, "ECOSTRESS_ET_Annual_2023.tif")
+writeRaster(et_m, "ECOSTRESS_ET_Annual_2024.tif")
 
 
 end.time <- Sys.time()
 time.taken <- end.time - start.time
 time.taken
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#August to September -----------------------------------------------------------
-gc()
-Aug_Sep <- list()
-
-for(i in 1:length(meta3)) {
-  cat("Proccess", i, "\n")
-  
-  tryCatch({
-    r <- terra::rast(meta3[i])
-    r <- project(r, crs(guama))
-    #plot(r)
-    print(summary(r)[6])
-    r2 <- terra::resample(r, ex2c)
-    Aug_Sep[[i]] <- r2
-  }, error = function(e) {
-    cat("No exist", meta3[i], ":", conditionMessage(e), "\n")
-    Aug_Sep[[i]] <- NULL
-  })
-}
-
-
-Aug_Sep2 <- Aug_Sep[!sapply(Aug_Sep, is.null)]
-
-stacked <- terra::rast(Aug_Sep2)
-plot(stacked[[27]])
-plot(stacked[[107]])
-plot(stacked[[125]])
-
-#for (z in 1:180) {
-#   cat("Proccess", z, "\n")
-#  tryCatch({
-    #plot(stacked[[z]])
-#    print(summary(stacked[[z]])[6])
-#  }, error = function(e) {
-#    cat("No exist", meta3[i], ":", conditionMessage(e), "\n")
-#    Aug_Sep[[i]] <- NULL
-#  })
-#}
-
-et4 <- terra::app(stacked, fun = max, na.rm = TRUE)
-plot(et4)
-
-et4b = ifel(et4 > 20, NA, et4) #Maximums I foud was 10.20, 42.50, 746.84
-plot(et4b)
-
-writeRaster(et4b, "ECOSTRESS_EVAP_Aug_Sep_2023.tif")
-
-#October to December -----------------------------------------------------------
-gc()
-Oct_Dec <- list()
-
-plan(multisession, workers = 27)
-
-for(i in 1:length(meta4)) {
-  cat("Proccess", i, "\n")
-  
-  tryCatch({
-    r <- terra::rast(meta4[i])
-    r <- project(r, crs(guama))
-    r2 <- terra::resample(r, ex2c)
-    Oct_Dec[[i]] <- r2
-  }, error = function(e) {
-    cat("No exist", meta4[i], ":", conditionMessage(e), "\n")
-    Oct_Dec[[i]] <- NULL
-  })
-}
-
-Oct_Dec2 <- Oct_Dec[!sapply(Oct_Dec, is.null)]
-
-stacked <- terra::rast(Oct_Dec2)
-et5 <- terra::app(stacked, fun = max, na.rm = TRUE)
-plot(et5)
-
-writeRaster(et5, "ECOSTRESS_EVAP_Oct_Dec_2023.tif")
-
-
-
-
-# ------------------------------------------------------------------------------
-#Part2 Unifying the seasons
-
-library(terra)
-library(sf)
-
-#Load Data ---------------------------------------------------------------------
-setwd("G:/Meu Drive/Postdoc_UFRA/Papers/Serrapilheira (Elias et al)/Analises_Elias/Rasters/ECOSTRESS_day")
-dir()
-
-wet1 = rast("ECOSTRESS_EVAP_Jan_April_2023.tif")
-wet2 = rast("ECOSTRESS_EVAP_Oct_Dec_2023.tif")
-
-dry1 = rast("ECOSTRESS_EVAP_May_July_2023.tif")
-dry2 = rast("ECOSTRESS_EVAP_Aug_Sep_2023.tif")
-
-#Joing wet and dry seasons -----------------------------------------------------
-#Wet
-gc()
-stacked <- c(wet1, wet2)
-wet <- terra::app(stacked, fun = mean, na.rm = TRUE)
-plot(wet)
-
-writeRaster(wet, "ECOSTRESS_EVAP_WetSeason_2023.tif")
-
-#Dry
-gc()
-stacked <- c(dry1, dry2)
-dry <- terra::app(stacked, fun = mean, na.rm = TRUE)
-plot(dry)
-
-writeRaster(dry, "ECOSTRESS_EVAP_DrySeason_2023.tif")
-
-#Annual
-gc()
-#wet = rast("ECOSTRESS_EVAP_WetSeason_2023.tif")
-#dry = rast("ECOSTRESS_EVAP_DrySeason_2023.tif")
-stacked <- c(wet, dry)
-annual <- terra::app(stacked, fun = mean, na.rm = TRUE)
-plot(annual)
-
-writeRaster(annual, "ECOSTRESS_EVAP_annual_2023.tif")
-
-
-
