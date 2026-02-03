@@ -208,9 +208,9 @@ plt1 = ggplot(l3b, aes(x = perc, y = reorder(mb, ord, sum), fill = Val_lv3))+
 
 
 #Saving
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Figures")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Figures")
 
-ggsave(filename = "Percent_Class.tiff", plot = plt1,
+ggsave(filename = "Percent_Class.png", plot = plt1,
        width = 19, height = 13, units = "cm", dpi = 300)
 
 ###
