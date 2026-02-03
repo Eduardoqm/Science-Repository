@@ -15,6 +15,7 @@ df$Area_perc = df$Area_perc*100
 df$Area_km2 = round(df$Area_km, 0)
 df$Area_perc = round(df$Area_perc, 1)
 
+df = df %>% filter(Area_perc > 0)
 
 plt1 = ggplot(df, aes(x = Area_km2, y = reorder(Class, Area_perc, sum)))+
   geom_bar(position = "stack", stat = "identity",
@@ -31,9 +32,9 @@ plt1 = ggplot(df, aes(x = Area_km2, y = reorder(Class, Area_perc, sum)))+
 
 
 #Saving
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Figures")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Figures")
 
-ggsave(filename = "Area_Olofsson.tiff", plot = plt1,
+ggsave(filename = "Area_Olofsson.png", plot = plt1,
        width = 19, height = 10, units = "cm", dpi = 300)
 
 
