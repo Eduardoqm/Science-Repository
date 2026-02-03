@@ -21,6 +21,7 @@ df$Val_lv1[df$Val_lv1 == 100] = 27
 df2 = df %>%
   filter(MB_lv3 != 0) %>% #Remove years that dont match
   filter(Name_MB != "indefinifo") %>% #Remove no classified points
+  filter(Name_MB != "Transition") %>% #Remove transition classes points
   na.omit()
 
 df2$Val_lv1 = as.numeric(df2$Val_lv1)
@@ -88,7 +89,7 @@ ggplot(l1b, aes(x = perc, y = reorder(mb,(perc > 0.9)), fill = Val_lv1))+
        fill = "Validate Class")+
   geom_vline(xintercept = 0, color = "black", size = 1, linetype = "dashed")+
   scale_fill_manual(values = c("#FFFFB2", "#1f8d49", "#ad975a",
-                               "#d4271e", "gray", "#0000FF"))+
+                               "#d4271e", "#0000FF"))+
   theme_minimal()
 
 
