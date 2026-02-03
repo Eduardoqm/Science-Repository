@@ -1,6 +1,6 @@
 #Amazonian Validations Analysis - Olofsson Accuracy
 
-#Eduardo Q Marques 05-07-2024 Updated: 13-09-2024
+#Eduardo Q Marques 05-07-2024 Updated: 03-02-2026
 
 library(tidyverse)
 library(terra)
