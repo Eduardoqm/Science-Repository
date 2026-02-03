@@ -7,10 +7,10 @@ library(terra)
 library(mapaccuracy)
 
 #Load Classes Data -------------------------------------------------------------
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Shapes")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Shapes")
 dir()
 
-df = read.csv("Validation_Classes_Result.csv")
+df = read.csv("Validation_Classes_Result_V4.csv")
 
 #Remove transitions from forest to others classes that make no sense -----------
 df2 = df
@@ -24,7 +24,7 @@ df3 = df2 %>%
   na.omit()
 
 #MapBiomas 2022 ----------------------------------------------------------------
-am23 = rast("G:/My Drive/Postdoc_UFRA/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
+am23 = rast("G:/My Drive/Research/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
 plot(am23)
 
 #Level 3
