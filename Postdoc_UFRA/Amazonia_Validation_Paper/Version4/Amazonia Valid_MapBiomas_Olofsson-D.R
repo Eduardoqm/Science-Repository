@@ -76,7 +76,7 @@ names(Nh) = nclass3$class
 olf3 = olofsson(r, m, Nh); olf3
 
 #Making and saving tables
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Accuracy_Test")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Accuracy_Test")
 
 UA = as.data.frame(olf3[["UA"]])
 PA = as.data.frame(olf3[["PA"]])
