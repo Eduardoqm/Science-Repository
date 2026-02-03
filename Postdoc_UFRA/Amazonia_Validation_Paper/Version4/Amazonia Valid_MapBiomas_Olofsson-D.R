@@ -90,9 +90,9 @@ olf3b$class = c(3,4,5,6,9,11,12,15,19,21,23,24,25,29,30,31,32,33,36,100,27,13)
 
 mtx3 = as.data.frame(olf3[["matrix"]])
 
-write.csv(olf3b, file = "Results_Olofsson_lvl3.csv", row.names = F)
-write.csv(mtx3, file = "Matrix_Olofsson_lvl3.csv", row.names = T)
-write.csv(nclass3, file = "MB_AM_class_area_lvl3.csv", row.names = F)
+write.csv(olf3b, file = "Results_Olofsson_lvl3_V4.csv", row.names = F)
+write.csv(mtx3, file = "Matrix_Olofsson_lvl3_V4.csv", row.names = T)
+write.csv(nclass3, file = "MB_AM_class_area_lvl3_V4.csv", row.names = F)
 
 #Level2
 r = df3$Val_lv2
@@ -115,9 +115,9 @@ olf2b$class = c(3,4,5,6,9,11,12,15,18,21,23,24,25,29,30,31,32,33,100,27,13)
 
 mtx2 = as.data.frame(olf2[["matrix"]])
 
-write.csv(olf2b, file = "Results_Olofsson_lvl2.csv", row.names = F)
-write.csv(mtx2, file = "Matrix_Olofsson_lvl2.csv", row.names = T)
-write.csv(nclass2, file = "MB_AM_class_area_lvl2.csv", row.names = F)
+write.csv(olf2b, file = "Results_Olofsson_lvl2_V4.csv", row.names = F)
+write.csv(mtx2, file = "Matrix_Olofsson_lvl2_V4.csv", row.names = T)
+write.csv(nclass2, file = "MB_AM_class_area_lvl2_V4.csv", row.names = F)
 
 #Level1
 r = df3$Val_lv1
@@ -140,9 +140,9 @@ olf1b$class = c(1,10,14,22,26,100,27)
 
 mtx1 = as.data.frame(olf1[["matrix"]])
 
-write.csv(olf1b, file = "Results_Olofsson_lvl1.csv", row.names = F)
-write.csv(mtx1, file = "Matrix_Olofsson_lvl1.csv", row.names = T)
-write.csv(nclass1, file = "MB_AM_class_area_lvl1.csv", row.names = F)
+write.csv(olf1b, file = "Results_Olofsson_lvl1_V4.csv", row.names = F)
+write.csv(mtx1, file = "Matrix_Olofsson_lvl1_V4.csv", row.names = T)
+write.csv(nclass1, file = "MB_AM_class_area_lvl1_V4.csv", row.names = F)
 
 
 
