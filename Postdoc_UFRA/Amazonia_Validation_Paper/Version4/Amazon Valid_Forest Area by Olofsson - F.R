@@ -1,11 +1,11 @@
 #Forest Area by Olofsson Test
 
-#Eduardo Q Marques 08-10-2024
+#Eduardo Q Marques 08-10-2024 Updated: 03-02-2026
 
 library(tidyverse)
 
 #Load Classes Data -------------------------------------------------------------
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Accuracy_Test")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Accuracy_Test/V4")
 dir()
 
 df = read.csv("Olofsson_area.csv")
