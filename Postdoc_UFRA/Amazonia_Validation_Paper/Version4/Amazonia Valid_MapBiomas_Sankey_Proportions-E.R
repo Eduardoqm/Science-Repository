@@ -1,16 +1,16 @@
 #Amazonian Validations Analysis - Hit and errors of classifications
 
-#Eduardo Q Marques 26-09-2024
+#Eduardo Q Marques 26-09-2024 Updated: 03-02-2026
 
 library(tidyverse)
 library(ggplot2)
 #library(ggalluvial)
 
 #Load Classes Data -------------------------------------------------------------
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Shapes")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Shapes")
 dir()
 
-df = read.csv("Validation_Classes_Result.csv")
+df = read.csv("Validation_Classes_Result_V4.csv")
 df = df[,-6] #Exclude level 4 from MapBiomas
 
 #Converto to Not Observed class
