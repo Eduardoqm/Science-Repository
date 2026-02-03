@@ -8,7 +8,7 @@ library(tidyverse)
 setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Accuracy_Test/V4")
 dir()
 
-df = read.csv("Olofsson_area.csv")
+df = read.csv("Olofsson_area_V4.csv")
 df$Area_km = df$Area_perc*4196943
 df$se_km = df$Sea*4196943
 df$Area_perc = df$Area_perc*100
