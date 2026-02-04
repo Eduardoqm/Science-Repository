@@ -21,9 +21,9 @@ mean(values(past_t),na.rm=T)
 mean(values(prf_t),na.rm=T)
 
 #By Secondary Forest age
-scf_t10 = ifel(is.na(scf>10), NA, lst_cur)
-scf_t20 = ifel(is.na(scf == (20:29)), NA, lst_cur)
-scf_t30 = ifel(is.na(scf<30), NA, lst_cur)
+scf_t10 = ifel(scf>10, NA, scf_t)
+scf_t20 = ifel(scf == (20:29), scf_t, NA)
+scf_t30 = ifel(scf<30, NA, scf_t)
 
 mean(values(scf_t10),na.rm=T)
 mean(values(scf_t20),na.rm=T)

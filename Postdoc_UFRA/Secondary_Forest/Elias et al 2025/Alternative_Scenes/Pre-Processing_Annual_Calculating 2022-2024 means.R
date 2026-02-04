@@ -1,4 +1,4 @@
-#Calculating 2022-2024 means
+#Calculating 2022-2024 means (Annual)
 #Eduardo Q Marques 12-01-2026
 
 library(terra)
