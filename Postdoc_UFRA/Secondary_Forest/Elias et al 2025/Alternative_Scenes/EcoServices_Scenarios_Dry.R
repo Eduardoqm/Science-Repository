@@ -11,6 +11,7 @@ lst_cur = rast("LST_Dry_current.tif")
 scf = rast("MB_Forest_age_70m.tif")
 past = rast("Pasture_70m.tif")
 prf = rast("Forest_70m.tif")
+dlt_lst_p = rast("Pasture_Delta_LST_Dry.tif")
 
 #scf_t = ifel(is.na(scf), NA, lst_cur)
 #past_t = ifel(is.na(past), NA, lst_cur)
@@ -20,19 +21,9 @@ prf = rast("Forest_70m.tif")
 #mean(values(past_t),na.rm=T)
 #mean(values(prf_t),na.rm=T)
 
-#By Secondary Forest age
-#scf_t10 = ifel(scf>10, NA, scf_t)
-#scf_t20 = ifel(scf == (20:29), scf_t, NA)
-#scf_t30 = ifel(scf<30, NA, scf_t)
-
-#mean(values(scf_t10),na.rm=T)
-#mean(values(scf_t20),na.rm=T)
-#mean(values(scf_t30),na.rm=T)
-
 #-------------------------------------------------------------------------------
 #lst_cur = rast("LST_Dry_current.tif")
 #dlt_lst_f = rast("Forest_Delta_LST_annual.tif")
-dlt_lst_p = rast("Pasture_Delta_LST_Dry.tif")
 #scf = rast("MB_Forest_age_70m.tif")
 #sc_perc = rast("Perc_SecForest_70m.tif" ) #Testing percentage >70
 
@@ -72,11 +63,19 @@ scn_sf = past_lst+sf_lmar
 scn_sf2 = ifel(is.na(scn_sf), lst_cur, scn_sf)
 
 
-mean(values(scn_sf2),na.rm=T) #33.13367
+mean(values(scn_sf2),na.rm=T) #32.86762
 
-33.76 - 
+33.76 - 32.86
 
-#Converting Pasture to 38 year old SF, the air temperature decrease 0.63°C.
+#Converting Pasture to 38 year old SF, the air temperature decrease 0.9°C.
+
+
+
+
+
+
+
+
 
 
 
