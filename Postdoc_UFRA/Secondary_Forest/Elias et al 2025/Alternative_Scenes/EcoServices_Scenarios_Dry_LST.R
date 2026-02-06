@@ -35,8 +35,8 @@ mean(values(lst_cur),na.rm=T) #33.76452
 #Converting SF in Pasture increase the air temperature in 0.05°C.
 
 #Scenery 2 -> Converting Pasture in a 38 year old Forest -----------------------
-mean(3.27, 3.51, 3.30) #delta in 38 years old from the three years (2022 to 2024)
-sf_lmar = -3.27 #Limiar value
+#mean(3.27, 3.51, 3.30) #delta in 38 years old from the three years (2022 to 2024)
+sf_lmar = -3.36 #Limiar value
 
 past_lst = ifel(is.na(past), NA, lst_cur) #Filtering Pasture pixels
 
@@ -44,70 +44,11 @@ past_lst = ifel(is.na(past), NA, lst_cur) #Filtering Pasture pixels
 scn_sf = past_lst+sf_lmar
 scn_sf2 = ifel(is.na(scn_sf), lst_cur, scn_sf)
 
-mean(values(scn_sf2),na.rm=T) #32.86762
+mean(values(scn_sf2),na.rm=T) #32.84293
 
 #Result
-33.76 - 32.86 #0.9
+32.84 - 33.76 #-0.92
 #Converting Pasture to 38 year old SF, the air temperature decrease 0.9°C.
-
-
-
-
-
-
-
-
-
-
-
-
-
-x11()
-plot(lst_cur)
-x11()
-plot(scn_sf2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-plot(scn_p)
-
-x11()
-plot(lst_cur)
-x11()
-plot(scn_p2)
-#writeRaster(scn_p2, "LST_Annual_pasture_scenario.tif")
-
-df_cur = as.data.frame(lst_cur)
-df_scn = as.data.frame(scn_p2)
-
-df_cur$cond = "Current"
-df_scn$cond = "Converted to Pasture"
-df = rbind(df_cur, df_scn)
-#write.csv(df, "LST_Annual_pasture_scenario.csv")
-
-
-library(ggplot2)
-
-x11()
-ggplot(df, aes(x=cond))+
-  geom_boxplot()
-
-
-
-
-
 
 
 
