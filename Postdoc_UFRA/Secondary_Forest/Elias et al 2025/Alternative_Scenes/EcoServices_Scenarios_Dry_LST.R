@@ -2,6 +2,7 @@
 #Eduardo Q Marques 04-02-2026
 
 library(terra)
+library(tidyverse)
 
 setwd("G:/Meu Drive/Dados_Elias_paper/LST_ET_scenario")
 dir()
@@ -15,6 +16,7 @@ dlt_lst_p = rast("Pasture_Delta_LST_Dry.tif")
 
 plot(lst_cur)
 plot(dlt_lst_p)
+
 
 #Scenery 1 -> Coverting SF in Pasture ------------------------------------------
 dlt_lst_p2 = ifel(is.na(scf), NA, dlt_lst_p) #Filtering SF
@@ -34,6 +36,7 @@ mean(values(lst_cur),na.rm=T) #33.76452
 33.81 - 33.76 #0.05
 #Converting SF in Pasture increase the air temperature in 0.05°C.
 
+
 #Scenery 2 -> Converting Pasture in a 38 year old Forest -----------------------
 #mean(3.27, 3.51, 3.30) #delta in 38 years old from the three years (2022 to 2024)
 sf_lmar = -3.36 #Limiar value
@@ -49,6 +52,49 @@ mean(values(scn_sf2),na.rm=T) #32.84293
 #Result
 32.84 - 33.76 #-0.92
 #Converting Pasture to 38 year old SF, the air temperature decrease 0.9°C.
+
+
+#Scenery 3 -> Forest until 10 years holding 20 years without deforestation -----
+scf_lst = ifel(is.na(scf), NA, lst_cur)
+
+summary(values(scf_lst), na.rm = T)
+
+dfa = as.data.frame(scf_lst)
+dfb = as.data.frame(ifel(is.na(scf_lst), NA, scf))
+df = cbind(dfa, dfb)
+
+colnames(df) = c("Temp_C", "Age")
+df$Age2 = round(df$Age, digits = 0)
+
+df2 = df %>% 
+  group_by(Age2) %>% 
+  summarise(Temp_C = mean(Temp_C))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
