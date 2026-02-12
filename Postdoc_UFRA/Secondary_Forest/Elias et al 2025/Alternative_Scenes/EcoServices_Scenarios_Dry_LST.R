@@ -38,45 +38,57 @@ mean(values(lst_cur),na.rm=T) #33.76452
 #Converting SF in Pasture increase the air temperature in 0.05°C.
 
 
-#Scenery 2 -> Converting Pasture in a 38 year old Forest -----------------------
 #Scenery 2 and 3-> Converting Pasture in sf and persisting to 38 years ---------
+df_delta2 = df_delta %>% 
+  filter(cond == "Dry Season") %>% 
+  group_by(age) %>% 
+  summarise(delta_lst = mean(delta_lst))
 
 #Input min, mean and maximun
-
-
-
-
-
-
-
-#mean(3.27, 3.51, 3.30) #delta in 38 years old from the three years (2022 to 2024)
-sf_lmar = -3.36 #Limiar value
+max_lmar = min(df_delta2$delta_lst) #Delta in 38 years (oldest SF)
+mean_lmar = mean(df_delta2$delta_lst) #Mean delta
+min_lmar = max(df_delta2$delta_lst) #Delta for youngster SF
 
 past_lst = ifel(is.na(past), NA, lst_cur) #Filtering Pasture pixels
 
-#Scenery 2
-scn_sf = past_lst+sf_lmar
-scn_sf2 = ifel(is.na(scn_sf), lst_cur, scn_sf)
+#Delta for youngster SF
+scn_min_sf = past_lst+min_lmar
+scn_min_sf2 = ifel(is.na(scn_min_sf), lst_cur, scn_min_sf)
 
-mean(values(scn_sf2),na.rm=T) #32.84293
+mean(values(scn_min_sf2),na.rm=T) #33.6648
+
+#Result
+33.66 - 33.76 #-0.1
+#Converting Pasture to young SF, the air temperature decrease 0.1°C.
+
+#Mean delta
+scn_mean_sf = past_lst+mean_lmar
+scn_mean_sf2 = ifel(is.na(scn_mean_sf), lst_cur, scn_mean_sf)
+
+mean(values(scn_mean_sf2),na.rm=T) #33.11481
+
+#Result
+33.11 - 33.76 #-0.65
+#Converting Pasture to SF, in mean the air temperature decrease 0.65°C.
+
+
+#Mean delta
+scn_max_sf = past_lst+max_lmar
+scn_max_sf2 = ifel(is.na(scn_max_sf), lst_cur, scn_max_sf)
+
+mean(values(scn_max_sf2),na.rm=T) #32.8423
 
 #Result
 32.84 - 33.76 #-0.92
 #Converting Pasture to 38 year old SF, the air temperature decrease 0.9°C.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+#Saving rasters of scenarios ---------------------------------------------------
+setwd("G:/Meu Drive/Dados_Elias_paper/LST_ET_scenario/Scenery_Raster")
+writeRaster(scn_p2, "Scenary_LST_SF_to_Pasture.tif")
+writeRaster(scn_min_sf2, "Scenary_LST_Pasture_to_young_SF.tif")
+writeRaster(scn_mean_sf2, "Scenary_LST_Pasture_to_mean_SF.tif")
+writeRaster(scn_max_sf2, "Scenary_LST_Pasture_to_old_SF.tif")
 
 
 
