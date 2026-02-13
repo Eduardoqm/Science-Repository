@@ -82,6 +82,32 @@ mean(values(scn_max_sf2),na.rm=T) #3.323752
 #Converting Pasture to 38 year old SF, the evapotranspiration increase 0.11 W/m²/day.
 
 
+#Saving rasters of scenarios ---------------------------------------------------
+setwd("G:/Meu Drive/Dados_Elias_paper/LST_ET_scenario/Scenery_Raster")
+writeRaster(scn_p2, "Scenary_ET_SF_to_Pasture.tif")
+writeRaster(scn_min_sf2, "Scenary_ET_Pasture_to_young_SF.tif")
+writeRaster(scn_mean_sf2, "Scenary_ET_Pasture_to_mean_SF.tif")
+writeRaster(scn_max_sf2, "Scenary_ET_Pasture_to_old_SF.tif")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
