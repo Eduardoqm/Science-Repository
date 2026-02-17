@@ -194,7 +194,8 @@ plt1 = ggplot(l3b, aes(x = perc, y = reorder(mb, ord, sum), fill = Val_lv3))+
   geom_bar(position = "stack", stat = "identity")+
   labs(x = "Percentage of class",
        y = "Validate Class",
-       fill = "MapBiomas Class")+
+       fill = "MapBiomas Class",
+       title = "   Incorrect mapped   Correct mapped")+
   geom_vline(xintercept = 0, color = "black", size = 1, linetype = "dashed")+
   #geom_text(aes(label = paste0(ord2*100, "%")),
   #          position=position_dodge(width=0.9),
@@ -209,8 +210,7 @@ plt1 = ggplot(l3b, aes(x = perc, y = reorder(mb, ord, sum), fill = Val_lv3))+
 
 #Saving
 setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Figures")
-
-ggsave(filename = "Percent_Class.png", plot = plt1,
+ggsave(filename = "Percent_Class.tiff", plot = plt1,
        width = 19, height = 13, units = "cm", dpi = 300)
 
 ###
