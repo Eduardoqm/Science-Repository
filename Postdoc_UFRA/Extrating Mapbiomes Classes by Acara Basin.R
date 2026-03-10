@@ -9,12 +9,12 @@ library(tidyverse)
 #Data
 mb = rast("G:/My Drive/Research/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
 #bc = read_sf("G:/My Drive/Research/Propostas/Ativas/FINEP_2025/Bacias_Acara/Bacias_Level_12_Acara_Guama/Bacias_Level_12_Acara_Guama.shp")
-bc = read_sf("G:/My Drive/Research/Propostas/Ativas/FINEP_2025/Bacias_Acara/Bacias_Level_12_Acara_Guama/bacias_finep_bruno.shp")
+bc = read_sf("G:/My Drive/Research/Propostas/Ativas/FINEP_2025/Bacias_Paulo/bacias_bruno_corrigido.shp")
 
 #plot(mb)
 #plot(bc, add = T)
 
-bc = bc %>% select(nome)
+bc = bc %>% select(Bacia)
 
 mb2 = mask(crop(mb, bc), bc)
 plot(mb2)
@@ -32,7 +32,7 @@ df$Bacia = "All"
 #for (i in 1:731) {
 for (i in 1:46) {
   #print(bc$HYBAS_ID[i])
-  print(bc$nome[i])
+  print(bc$Bacia[i])
   mbi = mask(crop(mb, bc[i,2]), bc[i,2])
   plot(mbi)
   
@@ -41,7 +41,7 @@ for (i in 1:46) {
   df2$aha_total = sum(df2$aha)
   df2$perc = (df2$count/sum(df2$count))*100
   #df2$Bacia = bc$HYBAS_ID[i]
-  df2$Bacia = bc$nome[i]
+  df2$Bacia = bc$Bacia[i]
   
   df = rbind(df, df2)
 }
@@ -61,16 +61,16 @@ df3 <- df %>%
   rename_with(~ str_replace_all(., " ", "_"))
 
 #colnames(df3)[1] = "HYBAS_ID"
-colnames(df3)[1] = "nome"
+colnames(df3)[1] = "Bacia"
 df3 = df3[-1,]
 
 #df3$HYBAS_ID = as.double(df3$HYBAS_ID)
 #bc = full_join(bc, df3, by = "HYBAS_ID") #Join to vector
 
-bc = full_join(bc, df3, by = "nome") #Join to vector
+bc = full_join(bc, df3, by = "Bacia") #Join to vector
 
 #Saving vector
-setwd("G:/My Drive/Research/Propostas/Ativas/FINEP_2025/Bacias_Acara/Bacias_Level_12_Acara_Guama")
+setwd("G:/My Drive/Research/Propostas/Ativas/FINEP_2025/Bacias_Paulo")
 
 #st_write(bc, "Bacias_Level_12_Acara_Guama_MapBiomas.shp")
 st_write(bc, "bacias_finep_bruno_MapBiomas.shp")
