@@ -7,7 +7,8 @@ library(tidyverse)
 setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/Toy_H3")
 dir()
 
-df = read.csv("ERA5_CP_VPD_since2025.csv"); head(df)
+df = read_csv("ERA5_CP_VPD_since1975.csv")
+head(df)
 
 df = df[,c(4,2,3)]; head(df)
 
@@ -40,7 +41,9 @@ summary(model1)
 ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
-  facet_wrap(~Region)
+  labs(x = NULL, y = "Mean VPD (kPa)", col = NULL)+
+  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  theme_bw()
 
 #Flamability duration
 #model1 <- lm(Duração ~ Ano * Season + Ano * Região)
@@ -57,7 +60,9 @@ summary(model2)
 ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
-  facet_wrap(~Region)
+  labs(x = NULL, y = "Number of hours (VPD ≥ 0.75 kPa)", col = NULL)+
+  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  theme_bw()
 
 
 
