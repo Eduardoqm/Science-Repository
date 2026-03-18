@@ -1,4 +1,4 @@
-#Toy H3
+#H3
 
 #Eduardo Q Marques 10-03-2026
 
