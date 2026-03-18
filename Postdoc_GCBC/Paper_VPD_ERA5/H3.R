@@ -59,19 +59,11 @@ head(df3)
 model2 <- lm(VPD_time ~ year * cond + year * Region, data = df3)
 summary(model2)
 
-#Residual standard error: 261.3 on 398 degrees of freedom
-#Multiple R-squared:  0.8401,	Adjusted R-squared:  0.8365 
-#F-statistic: 232.4 on 9 and 398 DF,  p-value: < 2.2e-16
-
-
-
 ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
-  labs(x = NULL, y = "Number of hours (VPD ≥ 0.75 kPa)", col = NULL)+
+  labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL)+
   facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
   theme_bw()
-
-
 
 
