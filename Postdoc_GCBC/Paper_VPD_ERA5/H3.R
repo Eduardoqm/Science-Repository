@@ -19,6 +19,7 @@ df$month = substr(df$datetime, 6, 7)
 df$day = substr(df$datetime, 9, 10)
 df$hour = substr(df$datetime, 12, 13)
 df$Region = substr(df$Source, 1, 2)
+df$hour[df$hour == ""] <- "00"
 df = df[,-2]; head(df)
 
 df$cond = "Dry Season"
@@ -53,7 +54,7 @@ df$contagem = 1
 df3 = df %>% 
   group_by(Region, year, cond) %>% 
   filter(VPD >= 0.75) %>% 
-  summarise(VPD_time = (sum(contagem)/30)/24)
+  summarise(VPD_time = sum(contagem)/365)
 head(df3)
 
 model2 <- lm(VPD_time ~ year * cond + year * Region, data = df3)
@@ -65,5 +66,22 @@ ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL)+
   facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
   theme_bw()
+
+
+#Testing historical hours ------------------------------------------------------
+df4 = df %>% 
+  group_by(Region, year, cond, hour) %>% 
+  summarise(VPD = mean(VPD))
+head(df4)
+
+df4$hour = as.numeric(df4$hour)
+ggplot(df4, aes(x=hour, y=VPD, col = cond))+
+  #geom_point()+
+  geom_smooth()+
+  geom_hline(aes(yintercept=0.75), colour="black", linetype="dashed")+
+  labs(x = "Hour", y = "VPD (kPa)", col = NULL)+
+  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  theme_bw()
+
 
 
