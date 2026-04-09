@@ -35,6 +35,7 @@ df$year = as.numeric(df$year); head(df)
 #model1 <- lm(Intesidade ~ Ano * Season + Ano * Região)
 df2 = df %>% 
   group_by(Region, year, cond) %>% 
+  filter(year > 1970) %>% 
   summarise(VPD_int = mean(VPD))
 head(df2)
 
@@ -53,6 +54,7 @@ ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
 df$contagem = 1
 df3 = df %>% 
   group_by(Region, year, cond) %>% 
+  filter(year > 1969) %>% 
   filter(VPD >= 0.75) %>% 
   summarise(VPD_time = sum(contagem)/365)
 head(df3)
@@ -71,6 +73,7 @@ ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
 #Testing historical hours ------------------------------------------------------
 df4 = df %>% 
   group_by(Region, year, cond, hour) %>% 
+  filter(year > 1970) %>% 
   summarise(VPD = mean(VPD))
 head(df4)
 
