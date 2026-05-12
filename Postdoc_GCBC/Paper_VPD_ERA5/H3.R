@@ -42,12 +42,16 @@ head(df2)
 model1 <- lm(VPD_int ~ year * cond + year * Region, data = df2)
 summary(model1)
 
-ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
+gg1 = ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Mean VPD (kPa)", col = NULL)+
   facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
-  theme_bw()
+  theme_bw(); gg1
+
+ggsave(gg1, filename = "Time_Series_VPD_Intensity_(since1975).png",
+       dpi = 600, units = "cm", height = 10, width = 18)
+
 
 #Flamability duration ----------------------------------------------------------
 #model1 <- lm(Duração ~ Ano * Season + Ano * Região)
@@ -62,13 +66,15 @@ head(df3)
 model2 <- lm(VPD_time ~ year * cond + year * Region, data = df3)
 summary(model2)
 
-ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
+gg2 = ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL)+
   facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
-  theme_bw()
+  theme_bw(); gg2
 
+ggsave(gg2, filename = "Time_Series_VPD_Duration_(since1975).png",
+       dpi = 600, units = "cm", height = 10, width = 18)
 
 #Testing historical hours ------------------------------------------------------
 df4 = df %>% 
@@ -78,13 +84,14 @@ df4 = df %>%
 head(df4)
 
 df4$hour = as.numeric(df4$hour)
-ggplot(df4, aes(x=hour, y=VPD, col = cond))+
+gg3 = ggplot(df4, aes(x=hour, y=VPD, col = cond))+
   #geom_point()+
   geom_smooth()+
   geom_hline(aes(yintercept=0.75), colour="black", linetype="dashed")+
   labs(x = "Hour", y = "VPD (kPa)", col = NULL)+
   facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
-  theme_bw()
+  theme_bw(); gg3
 
-
+ggsave(gg3, filename = "Historic_MeanVPD_Daylong_(since1975).png",
+       dpi = 600, units = "cm", height = 10, width = 18)
 
