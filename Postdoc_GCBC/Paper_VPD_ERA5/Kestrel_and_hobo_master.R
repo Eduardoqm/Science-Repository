@@ -57,6 +57,8 @@ vpd <- function(temp, UR) {
 master$VPD = vpd(master$Temp_C, master$RH)
 
 #Exporting Master --------------------------------------------------------------
+setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos")
+write.csv(master, "Master_Kestrel_Hobo_VPD_16_02_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master, aes(x = Date, y = Temp_C, col = sample))+
