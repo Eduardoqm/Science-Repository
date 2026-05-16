@@ -24,7 +24,7 @@ sdp_road = read.csv("D2_-_3104596-ESTRADA_7_de_mai._de_2026___10_20_00_AM.csv",
 prcs_kestrel = function(bd, age, sample, sensor){
   bd = bd[-1,c(1:3)]
   colnames(bd) = c("Date", "Temp_C", "RH")
-  bd$age = age; bd$sample = sample; bd$sensor = sensor
+  bd$Age = age; bd$Sample = sample; bd$Sensor = sensor
   
   bd$Date = as.POSIXct(bd$Date, format = "%Y-%m-%d %H:%M")
   bd$Temp_C = as.numeric(gsub(",", ".", bd$Temp_C))
@@ -55,24 +55,25 @@ vpd <- function(temp, UR) {
 }
 
 master$VPD = vpd(master$Temp_C, master$RH)
+master = master[,c(1:3, 7, 4:6)]
 
 #Exporting Master --------------------------------------------------------------
 setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos")
 write.csv(master, "Master_Kestrel_Hobo_VPD_16_02_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
-ggplot(master, aes(x = Date, y = Temp_C, col = sample))+
+ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+
   geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
-ggplot(master, aes(x = Date, y = RH, col = sample))+
+ggplot(master, aes(x = Date, y = RH, col = Sample))+
   geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
-ggplot(master, aes(x = Date, y = VPD, col = sample))+
+ggplot(master, aes(x = Date, y = VPD, col = Sample))+
   geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
-ggplot(master, aes(x = sample, y = VPD, col = sample))+
+ggplot(master, aes(x = Sample, y = VPD, col = Sample))+
   geom_boxplot()
 
