@@ -33,7 +33,25 @@ era = era %>% unite("id", Date2, Sample, remove = F)
 
 df = full_join(master2, era, by = "id")
 
-df2 = df[,c(8,9,4,5,10,6,11,7,12)]
+df2 = df[,c(8,3,4,5,10,6,11,7,12)]
+colnames(df2) = c("Date", "Sample", "Age", "Temp_situ", "Temp_ERA",
+                  "RH_situ", "RH_ERA", "VPD_situ", "VPD_ERA")
+
+df2$Date = as.POSIXct(df2$Date, format = "%Y-%m-%d %H:%M")
+
+df3 = df2 %>% na.omit()
+
+summary(lm(df3$VPD_situ~df3$VPD_ERA))
+
+ggplot(df3, aes(x = VPD_situ, y = VPD_ERA))+
+  geom_point()+
+  geom_smooth(method = lm)+
+  facet_wrap(~Sample, scales = "free", ncol = 1)
+
+
+
+
+
 
 
 
