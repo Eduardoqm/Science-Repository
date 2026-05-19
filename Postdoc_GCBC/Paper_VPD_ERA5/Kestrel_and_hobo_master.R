@@ -26,15 +26,15 @@ prcs_kestrel = function(bd, age, sample, sensor){
   colnames(bd) = c("Date", "Temp_C", "RH")
   bd$Age = age; bd$Sample = sample; bd$Sensor = sensor
   
-  bd$Date = as.POSIXct(bd$Date, format = "%Y-%m-%d %H:%M")
+  bd$Date = as.POSIXct(bd$Date, format = "%Y-%m-%d %I:%M:%S %p")
   bd$Temp_C = as.numeric(gsub(",", ".", bd$Temp_C))
   bd$RH = as.numeric(gsub(",", ".", bd$RH))
   return(bd)
 }
 
-sdp_road2 = prcs_kestrel(sdp_road, 18, "Estrada SEDAP", "kestrel_d2")
-ufra2 = prcs_kestrel(ufra, 20, "UFRA", "kestrel_d2")
-duquinha2 = prcs_kestrel(duquinha, 32, "Reserva S.Geraldo", "kestrel_d2")
+sdp_road2 = prcs_kestrel(sdp_road, 18, "Estrada_SEDAP", "kestrel_d2")
+ufra2 = prcs_kestrel(ufra, 20, "SecFor_UFRA", "kestrel_d2")
+duquinha2 = prcs_kestrel(duquinha, 32, "SecFor_Duquinha", "kestrel_d2")
 duquinha2 = duquinha2 %>% filter(Date > "2026-04-26 00:00:00")
 
 
