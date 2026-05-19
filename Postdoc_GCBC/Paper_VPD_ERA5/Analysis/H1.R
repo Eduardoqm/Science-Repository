@@ -13,11 +13,6 @@ era = read.csv("ERA5_CP_SecFor_VPD_2026-04-27_to_2026-05-18.csv")
 head(master)
 head(era)
 
-master$Date = as.POSIXct(master$Date, format = "%Y-%m-%d %H:%M")
-
-
-library(lubridate)
-master$Date = parse_date_time(master$Date, orders = "%Y-%m-%d %I:%M %p")
 master$Date2 = substr(master$Date, 1, 13)
 #master$Hour = substr(master$Date, 12, 13)
 
@@ -30,4 +25,21 @@ master2 = master %>%
             RH = mean(RH),
             VPD = mean(VPD)) %>% 
   unite("id", Date2:Sample, remove = F)
+
+colnames(era)[3:5] = c("Temp_ERA", "RH_ERA", "VPD_ERA")
+era = era %>% unite("id", Date2, Sample, remove = F)
+
+
+
+df = full_join(master2, era, by = "id")
+
+df2 = df[,c(8,9,4,5,10,6,11,7,12)]
+
+
+
+
+
+
+
+
 
