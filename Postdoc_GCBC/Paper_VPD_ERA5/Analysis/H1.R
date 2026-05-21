@@ -10,7 +10,6 @@ dir()
 master = read.csv("Master_Kestrel_Hobo_VPD_16_02_2026.csv")
 era = read.csv("ERA5_CP_SecFor_VPD_2026-04-27_to_2026-05-18.csv")
 
-
 #Organizing data ---------------------------------------------------------------
 master$Date2 = substr(master$Date, 1, 13)
 master2 = master %>% 
