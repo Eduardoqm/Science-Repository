@@ -35,13 +35,21 @@ df3 = df2 %>% na.omit()
 df3$Date = as.POSIXct(df3$Date, format = "%Y-%m-%d %H:%M")
 
 #Analysis ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 summary(lm(df3$Temp_situ~df3$Temp_ERA))
 summary(lm(df3$RH_situ~df3$RH_ERA))
 summary(lm(df3$VPD_situ~df3$VPD_ERA))
-
-
-
-
 
 #Exploratory Graphics ----------------------------------------------------------
 library(ggpubr)
