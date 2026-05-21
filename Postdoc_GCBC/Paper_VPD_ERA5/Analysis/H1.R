@@ -36,8 +36,49 @@ df3$Date = as.POSIXct(df3$Date, format = "%Y-%m-%d %H:%M")
 
 #Analysis ----------------------------------------------------------------------
 library(mgcv)
+library(lme4)
 
-model1 = lm(df3$VPD_situ~df3$VPD_ERA+df3$Age)
+#Exemplo1
+# Calcular beta para cada parcela/idade
+betas <- df3 %>%
+  group_by(Age) %>%
+  summarise(beta = coef(lm(VPD_situ ~ VPD_ERA))[2],
+            se_beta = summary(lm(VPD_situ ~ VPD_ERA))$coefficients[2,2])
+
+# GAM para visualização (sem inferência formal)
+modelo_visual <- gam(beta ~ s(Age), data = betas)
+plot(modelo_visual)  # Seu gráfico
+
+
+#Exemplo2
+# Modelo único que dá o gráfico + inferência correta
+modelo_correto <- gam(VPD_situ ~ s(Age, by = VPD_ERA, k = 4) + VPD_ERA,
+                      data = df3)
+
+summary(modelo_correto)
+# O termo s(idade, by=VPD_ERA5) mostra como o efeito do ERA5 muda com a idade
+
+################################################################################
+#Exemplo3
+# Se o GAM der muito trabalho, use uma abordagem mais simples:
+# Primeiro, calcule os betas por idade
+betas_por_idade <- df3 %>%
+  group_by(Age) %>%
+  summarise(beta = coef(lm(VPD_situ ~ VPD_ERA))[2],
+            .groups = "drop")
+
+# Depois modele a tendência com GAM suave (agora funciona)
+modelo_simples <- gam(beta ~ s(Age, k = 3), data = betas_por_idade)
+summary(modelo_simples)
+
+# E faça o gráfico
+plot(modelo_simples)
+
+################################################################################
+
+
+
+model1 = lmer(VPD_situ ~ VPD_ERA * Age + (1 | Sample), data = df3)
 summary(model1)
 
 beta = coef(model1)
