@@ -31,9 +31,8 @@ df2 = df[,c(8,3,4,5,10,6,11,7,12)]
 colnames(df2) = c("Date", "Sample", "Age", "Temp_situ", "Temp_ERA",
                   "RH_situ", "RH_ERA", "VPD_situ", "VPD_ERA")
 
-df2$Date = as.POSIXct(df2$Date, format = "%Y-%m-%d %H:%M")
-
 df3 = df2 %>% na.omit()
+df3$Date = as.POSIXct(df3$Date, format = "%Y-%m-%d %H:%M")
 
 #Analysis ----------------------------------------------------------------------
 summary(lm(df3$Temp_situ~df3$Temp_ERA))
@@ -45,21 +44,26 @@ summary(lm(df3$VPD_situ~df3$VPD_ERA))
 
 
 #Exploratory Graphics ----------------------------------------------------------
+library(ggpubr)
+
 ggplot(df3, aes(x = VPD_situ, y = VPD_ERA))+
   geom_point()+
   geom_smooth(method = lm)+
+  stat_cor(col = "red")+
   facet_wrap(~Sample, scales = "free")
 
 
 ggplot(df3, aes(x = Temp_situ, y = Temp_ERA))+
   geom_point()+
   geom_smooth(method = lm)+
+  stat_cor(col = "red")+
   facet_wrap(~Sample, scales = "free")
 
 
 ggplot(df3, aes(x = RH_situ, y = RH_ERA))+
   geom_point()+
   geom_smooth(method = lm)+
+  stat_cor(col = "red")+
   facet_wrap(~Sample, scales = "free")
 
 
