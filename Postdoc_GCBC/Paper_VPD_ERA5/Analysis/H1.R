@@ -67,7 +67,7 @@ ggplot(df3, aes(x = RH_situ, y = RH_ERA))+
 ggplot(df3)+
   geom_line(aes(x = Date, y = VPD_ERA), col = "red")+
   geom_line(aes(x = Date, y = VPD_situ), col = "black")+
-  facet_wrap(~Sample, scales = "free", ncol = 1)
+  facet_wrap(~Sample, ncol = 1)
 
 ggplot(df3)+
   geom_line(aes(x = Date, y = Temp_ERA), col = "red")+
