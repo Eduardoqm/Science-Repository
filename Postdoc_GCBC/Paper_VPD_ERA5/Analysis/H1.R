@@ -35,11 +35,14 @@ df3 = df2 %>% na.omit()
 df3$Date = as.POSIXct(df3$Date, format = "%Y-%m-%d %H:%M")
 
 #Analysis ----------------------------------------------------------------------
+library(mgcv)
 
+model1 = lm(df3$VPD_situ~df3$VPD_ERA+df3$Age)
+summary(model1)
 
+beta = coef(model1)
 
-
-
+model2 = lm(beta~s(df3$Age))
 
 
 
@@ -53,6 +56,17 @@ summary(lm(df3$VPD_situ~df3$VPD_ERA))
 
 #Exploratory Graphics ----------------------------------------------------------
 library(ggpubr)
+
+ggplot(df3, aes(x = VPD_situ, y = VPD_ERA))+
+  geom_point()+
+  geom_smooth(method = lm)+
+  stat_cor(col = "red")
+
+ggplot(df3, aes(x = VPD_situ, y = VPD_ERA, col = Sample))+
+  geom_point()+
+  geom_smooth(method = lm)+
+  stat_cor()
+
 
 ggplot(df3, aes(x = VPD_situ, y = VPD_ERA))+
   geom_point()+
