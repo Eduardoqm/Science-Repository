@@ -38,41 +38,40 @@ df3$Date = as.POSIXct(df3$Date, format = "%Y-%m-%d %H:%M")
 library(mgcv)
 library(lme4)
 
-#Exemplo1
-# Calcular beta para cada parcela/idade
+################################################################################
+#Exemplo3
+# Se o GAM der muito trabalho, use uma abordagem mais simples:
+# Primeiro, calcule os betas por idade
 betas <- df3 %>%
   group_by(Age) %>%
   summarise(beta = coef(lm(VPD_situ ~ VPD_ERA))[2],
             se_beta = summary(lm(VPD_situ ~ VPD_ERA))$coefficients[2,2])
 
-# GAM para visualização (sem inferência formal)
-modelo_visual <- gam(beta ~ s(Age), data = betas)
-plot(modelo_visual)  # Seu gráfico
 
+#Modelo linear dos acoplamentos
+modelo_linear <- lm(beta ~ Age, data = betas)
+summary(modelo_linear)
 
-#Exemplo2
-# Modelo único que dá o gráfico + inferência correta
-modelo_correto <- gam(VPD_situ ~ s(Age, by = VPD_ERA, k = 4) + VPD_ERA,
-                      data = df3)
-
-summary(modelo_correto)
-# O termo s(idade, by=VPD_ERA5) mostra como o efeito do ERA5 muda com a idade
-
-################################################################################
-#Exemplo3
-# Se o GAM der muito trabalho, use uma abordagem mais simples:
-# Primeiro, calcule os betas por idade
-betas_por_idade <- df3 %>%
-  group_by(Age) %>%
-  summarise(beta = coef(lm(VPD_situ ~ VPD_ERA))[2],
-            .groups = "drop")
-
-# Depois modele a tendência com GAM suave (agora funciona)
-modelo_simples <- gam(beta ~ s(Age, k = 3), data = betas_por_idade)
+#Modelo GAM dos acoplamentos
+modelo_simples <- gam(beta ~ s(Age, k = 3), data = betas)
 summary(modelo_simples)
 
-# E faça o gráfico
 plot(modelo_simples)
+
+#Modelo hierarquico
+modelo_hierarquico <- lmer(VPD_situ ~ VPD_ERA * Age + (1 | Sample),
+                           data = df3)  # df3 com dados horários
+summary(modelo_hierarquico)
+# O termo VPD_ERA:Age testa se o acoplamento muda com a idade
+
+
+#Gráfico simples com linha de tendência linear
+ggplot(betas, aes(x = Age, y = beta)) +
+  geom_point(size = 4) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(y = "Beta (acoplamento ERA5 vs. in situ)", 
+       x = "Idade da floresta (anos)")
+
 
 ################################################################################
 
