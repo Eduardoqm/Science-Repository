@@ -9,7 +9,7 @@ library(tidyverse)
 setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/H3")
 dir()
 
-df = read_csv("ERA5_CP_VPD_since1975.csv")
+df = read_csv("ERA5_amaz_VPD_since1975.csv")
 head(df)
 
 df = df[,c(4,2,3)]; head(df)
