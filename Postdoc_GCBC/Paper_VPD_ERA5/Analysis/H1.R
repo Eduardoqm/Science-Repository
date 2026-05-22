@@ -20,8 +20,12 @@ master2 = master %>%
   unite("id", Date2:Sample, remove = F)
 
 
-era$Date2 = substr(era$datetime, 1, 13)
 colnames(era)[3:5] = c("Temp_ERA", "RH_ERA", "VPD_ERA")
+era = era %>% unite("id", Date2, Sample, remove = F)
+
+era$datetime = as.POSIXct(era$datetime, format = "%Y-%m-%d %H:%M")
+
+era$Date2 = substr(era$datetime, 1, 13)
 era = era %>% unite("id", Date2, Sample, remove = F)
 
 #Joing Situ and ERA5 data ------------------------------------------------------
@@ -72,7 +76,11 @@ ggplot(betas, aes(x = Age, y = beta)) +
   labs(y = "Beta (acoplamento ERA5 vs. in situ)", 
        x = "Idade da floresta (anos)")
 
-
+ggplot(betas, aes(x = Age, y = beta)) +
+  geom_point(size = 4) +
+  geom_smooth() +
+  labs(y = "Beta (acoplamento ERA5 vs. in situ)", 
+       x = "Idade da floresta (anos)")
 ################################################################################
 
 
