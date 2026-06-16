@@ -13,7 +13,7 @@ ufra = read.csv("D2-3104592-CAP_UFRA_12_de_mai._de_2026___4_20_00_PM.csv",
                 sep = ",", skip = 3)  #Skip first line informations
 
 
-duquinha = read.csv("D2-3104605-S_GERALDO_29_de_mai._de_2026___10_40_00_AM.csv",
+duquinha = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv",
                 sep = ",", skip = 3)  #Skip first line informations
 
 
@@ -77,7 +77,7 @@ master = rbind(kestrel, hobo)
 
 #Exporting Master --------------------------------------------------------------
 setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos")
-write.csv(master, "Master_Kestrel_Hobo_VPD_29_05_2026.csv", row.names = F)
+write.csv(master, "Master_Kestrel_Hobo_VPD_10_06_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+

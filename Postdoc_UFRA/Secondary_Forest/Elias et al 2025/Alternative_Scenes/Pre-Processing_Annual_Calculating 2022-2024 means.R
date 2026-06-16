@@ -3,7 +3,8 @@
 
 library(terra)
 
-setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/Resampled_70m")
+#setwd("C:/Users/Public/Documents/Analises_Elias/Rasters/Resampled_70m")
+setwd("C:/Users/Workshop/Documents/Dados Elias") #From Workshop Leptop
 dir()
 
 #LST
@@ -22,7 +23,9 @@ et24 <- rast("ECOSTRESS_ET_Annual_2024_70m.tif")
 et_cur = mean(et22, et23, et24, na.rm = T)
 plot(et_cur)
 
-setwd("G:/Meu Drive/Dados_Elias_paper/LST_ET_scenario")
+#setwd("G:/Meu Drive/Dados_Elias_paper/LST_ET_scenario")
+setwd("G:/My Drive/Research/Papers/Serrapilheira (Elias et al)/Scenery")#From Workshop Leptop
+
 writeRaster(lst_cur, "LST_Annual_current.tif")
 writeRaster(et_cur, "ET_Annual_current.tif")
 
