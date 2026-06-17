@@ -1,158 +1,98 @@
-# H1 - The ERA5 performance along the successional gradient
+#Paper VPD ERA5 Amazon
+# H1 - The increase in VPD has been more pronounced
+# in southern Amazon than in central Amazon over
+# the past five decades.
 
-#Eduardo Q Marques 19-05-2026
+#Eduardo Q Marques 10-03-2026
 
 library(tidyverse)
 
-#Load data ---------------------------------------------------------------------
-setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/H1")
 dir()
-master = read.csv("Master_Kestrel_Hobo_VPD_16_02_2026.csv")
-era = read.csv("ERA5_CP_SecFor_VPD_2026-04-27_to_2026-05-18.csv")
 
-#Organizing data ---------------------------------------------------------------
-master$Date2 = substr(master$Date, 1, 13)
-master2 = master %>% 
-  group_by(Date2, Sample, Age) %>% 
-  summarise(Temp_C = mean(Temp_C),
-            RH = mean(RH),
-            VPD = mean(VPD)) %>% 
-  unite("id", Date2:Sample, remove = F)
+df = read_csv("ERA5_amaz_VPD_since1975.csv")
+head(df)
 
+df = df[,c(4,2,3)]; head(df)
 
-colnames(era)[3:5] = c("Temp_ERA", "RH_ERA", "VPD_ERA")
-era = era %>% unite("id", Date2, Sample, remove = F)
+df$year = substr(df$datetime, 1, 4)
+df$month = substr(df$datetime, 6, 7)
+df$day = substr(df$datetime, 9, 10)
+df$hour = substr(df$datetime, 12, 13)
+df$Region = substr(df$Source, 1, 2)
+df$hour[df$hour == ""] <- "00"
+df = df[,-2]; head(df)
 
-era$datetime = as.POSIXct(era$datetime, format = "%Y-%m-%d %H:%M")
+df$cond = "Dry Season"
+rain_months = c("12", "01", "02", "03", "04", "05")
 
-era$Date2 = substr(era$datetime, 1, 13)
-era = era %>% unite("id", Date2, Sample, remove = F)
+for (z in rain_months) {
+  df$cond[df$month == z] = "Rainy Season"
+}
 
-#Joing Situ and ERA5 data ------------------------------------------------------
-df = full_join(master2, era, by = "id")
+df$year = as.numeric(df$year); head(df)
 
-df2 = df[,c(8,3,4,5,10,6,11,7,12)]
-colnames(df2) = c("Date", "Sample", "Age", "Temp_situ", "Temp_ERA",
-                  "RH_situ", "RH_ERA", "VPD_situ", "VPD_ERA")
+#Itensity ----------------------------------------------------------------------
+#model1 <- lm(Intesidade ~ Ano * Season + Ano * Região)
+df2 = df %>% 
+  group_by(Region, year, cond) %>% 
+  filter(year > 1970) %>% 
+  summarise(VPD_int = mean(VPD))
+head(df2)
 
-df3 = df2 %>% na.omit()
-df3$Date = as.POSIXct(df3$Date, format = "%Y-%m-%d %H:%M")
-
-#Analysis ----------------------------------------------------------------------
-library(mgcv)
-library(lme4)
-
-################################################################################
-#Exemplo3
-# Se o GAM der muito trabalho, use uma abordagem mais simples:
-# Primeiro, calcule os betas por idade
-betas <- df3 %>%
-  group_by(Age) %>%
-  summarise(beta = coef(lm(VPD_situ ~ VPD_ERA))[2],
-            se_beta = summary(lm(VPD_situ ~ VPD_ERA))$coefficients[2,2])
-
-
-#Modelo linear dos acoplamentos
-modelo_linear <- lm(beta ~ Age, data = betas)
-summary(modelo_linear)
-
-#Modelo GAM dos acoplamentos
-modelo_simples <- gam(beta ~ s(Age, k = 3), data = betas)
-summary(modelo_simples)
-
-plot(modelo_simples)
-
-#Modelo hierarquico
-modelo_hierarquico <- lmer(VPD_situ ~ VPD_ERA * Age + (1 | Sample),
-                           data = df3)  # df3 com dados horários
-summary(modelo_hierarquico)
-# O termo VPD_ERA:Age testa se o acoplamento muda com a idade
-
-
-#Gráfico simples com linha de tendência linear
-ggplot(betas, aes(x = Age, y = beta)) +
-  geom_point(size = 4) +
-  geom_smooth(method = "lm", se = TRUE) +
-  labs(y = "Beta (acoplamento ERA5 vs. in situ)", 
-       x = "Idade da floresta (anos)")
-
-ggplot(betas, aes(x = Age, y = beta)) +
-  geom_point(size = 4) +
-  geom_smooth() +
-  labs(y = "Beta (acoplamento ERA5 vs. in situ)", 
-       x = "Idade da floresta (anos)")
-################################################################################
-
-
-
-model1 = lmer(VPD_situ ~ VPD_ERA * Age + (1 | Sample), data = df3)
+model1 <- lm(VPD_int ~ year * cond + year * Region, data = df2)
 summary(model1)
 
-beta = coef(model1)
-
-model2 = lm(beta~s(df3$Age))
-
-
-
-
-
-
-
-summary(lm(df3$Temp_situ~df3$Temp_ERA))
-summary(lm(df3$RH_situ~df3$RH_ERA))
-summary(lm(df3$VPD_situ~df3$VPD_ERA))
-
-#Exploratory Graphics ----------------------------------------------------------
-library(ggpubr)
-
-ggplot(df3, aes(x = VPD_situ, y = VPD_ERA))+
+gg1 = ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
   geom_point()+
-  geom_smooth(method = lm)+
-  stat_cor(col = "red")
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = "Mean VPD (kPa)", col = NULL)+
+  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  theme_bw(); gg1
 
-ggplot(df3, aes(x = VPD_situ, y = VPD_ERA, col = Sample))+
+ggsave(gg1, filename = "Time_Series_VPD_Intensity_(since1975).png",
+       dpi = 600, units = "cm", height = 10, width = 18)
+
+
+#Flamability duration ----------------------------------------------------------
+#model1 <- lm(Duração ~ Ano * Season + Ano * Região)
+df$contagem = 1
+df3 = df %>% 
+  group_by(Region, year, cond) %>% 
+  filter(year > 1969) %>% 
+  filter(VPD >= 0.75) %>% 
+  summarise(VPD_time = sum(contagem)/365)
+head(df3)
+
+model2 <- lm(VPD_time ~ year * cond + year * Region, data = df3)
+summary(model2)
+
+gg2 = ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   geom_point()+
-  geom_smooth(method = lm)+
-  stat_cor()
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL)+
+  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  theme_bw(); gg2
 
+ggsave(gg2, filename = "Time_Series_VPD_Duration_(since1975).png",
+       dpi = 600, units = "cm", height = 10, width = 18)
 
-ggplot(df3, aes(x = VPD_situ, y = VPD_ERA))+
-  geom_point()+
-  geom_smooth(method = lm)+
-  stat_cor(col = "red")+
-  facet_wrap(~Sample, scales = "free")
+#Testing historical hours ------------------------------------------------------
+df4 = df %>% 
+  group_by(Region, year, cond, hour) %>% 
+  filter(year > 1970) %>% 
+  summarise(VPD = mean(VPD))
+head(df4)
 
+df4$hour = as.numeric(df4$hour)
+gg3 = ggplot(df4, aes(x=hour, y=VPD, col = cond))+
+  #geom_point()+
+  geom_smooth()+
+  geom_hline(aes(yintercept=0.75), colour="black", linetype="dashed")+
+  labs(x = "Hour", y = "VPD (kPa)", col = NULL)+
+  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  theme_bw(); gg3
 
-ggplot(df3, aes(x = Temp_situ, y = Temp_ERA))+
-  geom_point()+
-  geom_smooth(method = lm)+
-  stat_cor(col = "red")+
-  facet_wrap(~Sample, scales = "free")
-
-
-ggplot(df3, aes(x = RH_situ, y = RH_ERA))+
-  geom_point()+
-  geom_smooth(method = lm)+
-  stat_cor(col = "red")+
-  facet_wrap(~Sample, scales = "free")
-
-
-
-ggplot(df3)+
-  geom_line(aes(x = Date, y = VPD_ERA), col = "red")+
-  geom_line(aes(x = Date, y = VPD_situ), col = "black")+
-  facet_wrap(~Sample, ncol = 1)
-
-ggplot(df3)+
-  geom_line(aes(x = Date, y = Temp_ERA), col = "red")+
-  geom_line(aes(x = Date, y = Temp_situ), col = "black")+
-  facet_wrap(~Sample, scales = "free", ncol = 1)
-
-ggplot(df3)+
-  geom_line(aes(x = Date, y = RH_ERA), col = "red")+
-  geom_line(aes(x = Date, y = RH_situ), col = "black")+
-  facet_wrap(~Sample, scales = "free", ncol = 1)
-
-
-
+ggsave(gg3, filename = "Historic_MeanVPD_Daylong_(since1975).png",
+       dpi = 600, units = "cm", height = 10, width = 18)
 
