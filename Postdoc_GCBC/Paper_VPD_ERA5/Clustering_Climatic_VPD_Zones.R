@@ -4,6 +4,7 @@
 
 library(terra)
 
+#Load data ---------------------------------------------------------------------
 setwd("G:/My Drive/GEE_VPD_Mensal")
 dir()
 
