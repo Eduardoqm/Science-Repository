@@ -35,6 +35,7 @@ df_zone = freq(vpd_zone)
 df_zone$class = c("Zero months", "Until two months",
                   "Two to three months", "More than 3 months")
 
+df_zone$Area_perc = (df_zone$count/sum(df_zone$count))*100
 
 
 
