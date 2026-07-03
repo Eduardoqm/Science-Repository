@@ -35,8 +35,11 @@ df_zone = freq(vpd_zone)
 df_zone$class = c("Zero months", "Until two months",
                   "Two to three months", "More than 3 months")
 
+df_zone$Area_km2 = df_zone$count*81
 df_zone$Area_perc = (df_zone$count/sum(df_zone$count))*100
 
+library(ggplot2)
 
-
+ggplot(df_zone, aes(x=class, y=Area_perc))+
+  geom_col()
 
