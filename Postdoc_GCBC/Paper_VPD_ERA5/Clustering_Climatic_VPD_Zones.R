@@ -9,21 +9,32 @@ setwd("G:/My Drive/GEE_VPD_Mensal")
 dir()
 
 list_rst = list.files()
-
 month_vpd = rast(list_rst)
 plot(month_vpd)
 
+#Binary segmentation to limier of inflammable VPD (0.75 kPa) -------------------
 ray_vpd = ifel(month_vpd < 0.75, 0, 1)
 plot(ray_vpd)
 
-ray_vpd2 = sum(ray_vpd)
+ray_vpd2 = sum(ray_vpd) #Sum of months with pixels
 plot(ray_vpd2)
 
+#Clustarization by total months within VPD limier ------------------------------
 vpd_zone = ray_vpd2
 
+#Classifying
 vpd_zone[vpd_zone < 1] <- 0
 vpd_zone[vpd_zone >= 1 & vpd_zone < 2] <- 1
 vpd_zone[vpd_zone >= 2 & vpd_zone < 3] <- 2
 vpd_zone[vpd_zone >= 3] <- 3
 
 plot(vpd_zone)
+
+#Basic proportions -------------------------------------------------------------
+
+
+
+
+
+
+
