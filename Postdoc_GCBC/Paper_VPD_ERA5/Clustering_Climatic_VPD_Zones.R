@@ -31,8 +31,9 @@ vpd_zone[vpd_zone >= 3] <- 3
 plot(vpd_zone)
 
 #Basic proportions -------------------------------------------------------------
-
-
+df_zone = freq(vpd_zone)
+df_zone$class = c("Zero months", "Until two months",
+                  "Two to three months", "More than 3 months")
 
 
 
