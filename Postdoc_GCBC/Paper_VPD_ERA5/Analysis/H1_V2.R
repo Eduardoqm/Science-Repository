@@ -7,10 +7,10 @@
 
 library(tidyverse)
 
-setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/H1")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/H1")
 dir()
 
-df = read_csv("ERA5_amaz_VPD_since1975.csv")
+df = read_csv("ERA5_Amaz_VPD_clusterd_since1975.csv")
 head(df)
 
 df = df[,c(4,2,3)]; head(df)
@@ -19,7 +19,7 @@ df$year = substr(df$datetime, 1, 4)
 df$month = substr(df$datetime, 6, 7)
 df$day = substr(df$datetime, 9, 10)
 df$hour = substr(df$datetime, 12, 13)
-df$Region = substr(df$Source, 1, 2)
+df$Region = df$Source #substr(df$Source, 1, 2)
 df$hour[df$hour == ""] <- "00"
 df = df[,-2]; head(df)
 
