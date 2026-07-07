@@ -3,7 +3,7 @@
 # in southern Amazon than in central Amazon over
 # the past five decades.
 
-#Eduardo Q Marques 10-03-2026
+#Eduardo Q Marques 10-03-2026 updated07-07-2026
 
 library(tidyverse)
 
