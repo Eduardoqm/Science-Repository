@@ -47,7 +47,9 @@ gg1 = ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Mean VPD (kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  facet_wrap(~factor(Region, c("zero_months","until_3_months",
+                               "more_than_3_less_6","6_or_more_months")),
+             scales = "free")+
   theme_bw(); gg1
 
 ggsave(gg1, filename = "Time_Series_VPD_Intensity_(since1975).png",
@@ -71,7 +73,9 @@ gg2 = ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  facet_wrap(~factor(Region, c("zero_months","until_3_months",
+                               "more_than_3_less_6","6_or_more_months")),
+             scales = "free")+
   theme_bw(); gg2
 
 ggsave(gg2, filename = "Time_Series_VPD_Duration_(since1975).png",
@@ -90,7 +94,9 @@ gg3 = ggplot(df4, aes(x=hour, y=VPD, col = cond))+
   geom_smooth()+
   geom_hline(aes(yintercept=0.75), colour="black", linetype="dashed")+
   labs(x = "Hour", y = "VPD (kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("NW","NE","SW","SE")), scales = "free")+
+  facet_wrap(~factor(Region, c("zero_months","until_3_months",
+                               "more_than_3_less_6","6_or_more_months")),
+             scales = "free")+
   theme_bw(); gg3
 
 ggsave(gg3, filename = "Historic_MeanVPD_Daylong_(since1975).png",
