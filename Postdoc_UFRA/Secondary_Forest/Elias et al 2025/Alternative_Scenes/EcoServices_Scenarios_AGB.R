@@ -39,8 +39,7 @@ mean(values(esa),na.rm=T) #206.02
 
 
 #Scenery 2 and 3-> Converting Pasture in sf and persisting to 38 years ---------
-df_delta2 = df_delta %>% 
-  filter(cond == "Dry Season") %>% 
+df_delta2 = df_delta %>%
   group_by(age) %>% 
   summarise(delta_esa = mean(delta_esa))
 
@@ -49,37 +48,37 @@ max_lmar = min(df_delta2$delta_esa) #Delta in 38 years (oldest SF)
 mean_lmar = mean(df_delta2$delta_esa) #Mean delta
 min_lmar = max(df_delta2$delta_esa) #Delta for youngster SF
 
-past_lst = ifel(is.na(past), NA, esa) #Filtering Pasture pixels
+past_esa = ifel(is.na(past), NA, esa) #Filtering Pasture pixels
 
 #Delta for youngster SF
-scn_min_sf = past_lst+min_lmar
+scn_min_sf = past_esa+min_lmar
 scn_min_sf2 = ifel(is.na(scn_min_sf), esa, scn_min_sf)
 
 mean(values(scn_min_sf2),na.rm=T) #33.6648
 
 #Result
-33.66 - 33.76 #-0.1
+33.66 - 206.02 #-0.1
 #Converting Pasture to young SF, the air temperature decrease 0.1°C.
 
 #Mean delta
-scn_mean_sf = past_lst+mean_lmar
+scn_mean_sf = past_esa+mean_lmar
 scn_mean_sf2 = ifel(is.na(scn_mean_sf), esa, scn_mean_sf)
 
 mean(values(scn_mean_sf2),na.rm=T) #33.11481
 
 #Result
-33.11 - 33.76 #-0.65
+33.11 - 206.02 #-0.65
 #Converting Pasture to SF, in mean the air temperature decrease 0.65°C.
 
 
 #Mean delta
-scn_max_sf = past_lst+max_lmar
+scn_max_sf = past_esa+max_lmar
 scn_max_sf2 = ifel(is.na(scn_max_sf), esa, scn_max_sf)
 
 mean(values(scn_max_sf2),na.rm=T) #32.8423
 
 #Result
-32.84 - 33.76 #-0.92
+32.84 - 206.02 #-0.92
 #Converting Pasture to 38 year old SF, the air temperature decrease 0.9°C.
 
 
