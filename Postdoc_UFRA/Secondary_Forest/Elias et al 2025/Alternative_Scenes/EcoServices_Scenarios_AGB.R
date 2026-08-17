@@ -42,12 +42,12 @@ mean(values(esa),na.rm=T) #206.02
 df_delta2 = df_delta %>% 
   filter(cond == "Dry Season") %>% 
   group_by(age) %>% 
-  summarise(delta_lst = mean(delta_lst))
+  summarise(delta_esa = mean(delta_esa))
 
 #Input min, mean and maximun
-max_lmar = min(df_delta2$delta_lst) #Delta in 38 years (oldest SF)
-mean_lmar = mean(df_delta2$delta_lst) #Mean delta
-min_lmar = max(df_delta2$delta_lst) #Delta for youngster SF
+max_lmar = min(df_delta2$delta_esa) #Delta in 38 years (oldest SF)
+mean_lmar = mean(df_delta2$delta_esa) #Mean delta
+min_lmar = max(df_delta2$delta_esa) #Delta for youngster SF
 
 past_lst = ifel(is.na(past), NA, esa) #Filtering Pasture pixels
 
