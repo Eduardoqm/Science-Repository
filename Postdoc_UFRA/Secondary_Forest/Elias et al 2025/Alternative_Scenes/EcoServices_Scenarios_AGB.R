@@ -4,34 +4,34 @@
 library(terra)
 library(tidyverse)
 
-setwd("G:/Meu Drive/Dados_Elias_paper/LST_ET_scenario")
+setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Scenery")
 dir()
 
 #Load data ---------------------------------------------------------------------
-lst_cur = rast("LST_Dry_current.tif")
+esa = rast("ESA_Biomass_70m.tif"  )
 scf = rast("MB_Forest_age_70m.tif")
 past = rast("Pasture_70m.tif")
 prf = rast("Forest_70m.tif")
-dlt_lst_p = rast("Pasture_Delta_LST_Dry.tif")
-df_delta = read.csv("G:/Meu Drive/Dados_Elias_paper/Delta_Data_Frame/LST_Pasture_age_FULL.csv")
+dlt_esa_p = rast("Delta_AGB_Forest_age_Pasture.tif")
+df_delta = read.csv("Pasture_AGB_age_full_C.csv")
 
-plot(lst_cur)
-plot(dlt_lst_p)
+plot(esa)
+plot(dlt_esa_p)
 
 
 #Scenery 1 -> Coverting SF in Pasture ------------------------------------------
-dlt_lst_p2 = ifel(is.na(scf), NA, dlt_lst_p) #Filtering SF
-plot(dlt_lst_p2)
+dlt_esa_p2 = ifel(is.na(scf), NA, dlt_esa_p) #Filtering SF
+plot(dlt_esa_p2)
 
-dlt_lst_p3 = dlt_lst_p2*-1 #Inverting signal to make sense
-plot(dlt_lst_p3)
+dlt_esa_p3 = dlt_esa_p2*-1 #Inverting signal to make sense
+plot(dlt_esa_p3)
 
 #Scenery 1
-scn_p = lst_cur+dlt_lst_p3
-scn_p2 = ifel(is.na(scn_p), lst_cur, scn_p)
+scn_p = esa+dlt_esa_p3
+scn_p2 = ifel(is.na(scn_p), esa, scn_p)
 
 mean(values(scn_p2),na.rm=T) #33.81549
-mean(values(lst_cur),na.rm=T) #33.76452
+mean(values(esa),na.rm=T) #33.76452
 
 #Result
 33.81 - 33.76 #0.05
@@ -49,11 +49,11 @@ max_lmar = min(df_delta2$delta_lst) #Delta in 38 years (oldest SF)
 mean_lmar = mean(df_delta2$delta_lst) #Mean delta
 min_lmar = max(df_delta2$delta_lst) #Delta for youngster SF
 
-past_lst = ifel(is.na(past), NA, lst_cur) #Filtering Pasture pixels
+past_lst = ifel(is.na(past), NA, esa) #Filtering Pasture pixels
 
 #Delta for youngster SF
 scn_min_sf = past_lst+min_lmar
-scn_min_sf2 = ifel(is.na(scn_min_sf), lst_cur, scn_min_sf)
+scn_min_sf2 = ifel(is.na(scn_min_sf), esa, scn_min_sf)
 
 mean(values(scn_min_sf2),na.rm=T) #33.6648
 
@@ -63,7 +63,7 @@ mean(values(scn_min_sf2),na.rm=T) #33.6648
 
 #Mean delta
 scn_mean_sf = past_lst+mean_lmar
-scn_mean_sf2 = ifel(is.na(scn_mean_sf), lst_cur, scn_mean_sf)
+scn_mean_sf2 = ifel(is.na(scn_mean_sf), esa, scn_mean_sf)
 
 mean(values(scn_mean_sf2),na.rm=T) #33.11481
 
@@ -74,7 +74,7 @@ mean(values(scn_mean_sf2),na.rm=T) #33.11481
 
 #Mean delta
 scn_max_sf = past_lst+max_lmar
-scn_max_sf2 = ifel(is.na(scn_max_sf), lst_cur, scn_max_sf)
+scn_max_sf2 = ifel(is.na(scn_max_sf), esa, scn_max_sf)
 
 mean(values(scn_max_sf2),na.rm=T) #32.8423
 
