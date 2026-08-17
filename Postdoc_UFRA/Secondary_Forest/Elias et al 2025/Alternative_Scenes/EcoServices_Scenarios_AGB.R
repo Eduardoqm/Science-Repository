@@ -54,11 +54,11 @@ past_esa = ifel(is.na(past), NA, esa) #Filtering Pasture pixels
 scn_min_sf = past_esa+min_lmar
 scn_min_sf2 = ifel(is.na(scn_min_sf), esa, scn_min_sf)
 
-mean(values(scn_min_sf2),na.rm=T) #33.6648
+mean(values(scn_min_sf2),na.rm=T) #219.49
 
 #Result
-33.66 - 206.02 #-0.1
-#Converting Pasture to young SF, the air temperature decrease 0.1°C.
+219.49 - 206.02 # 13.47
+#Converting Pasture to young SF, the AGB increase 13.47 M/ton.
 
 #Mean delta
 scn_mean_sf = past_esa+mean_lmar
