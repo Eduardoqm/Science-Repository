@@ -30,12 +30,12 @@ plot(dlt_esa_p3)
 scn_p = esa+dlt_esa_p3
 scn_p2 = ifel(is.na(scn_p), esa, scn_p)
 
-mean(values(scn_p2),na.rm=T) #33.81549
-mean(values(esa),na.rm=T) #33.76452
+mean(values(scn_p2),na.rm=T) #204.06
+mean(values(esa),na.rm=T) #206.02
 
 #Result
-33.81 - 33.76 #0.05
-#Converting SF in Pasture increase the air temperature in 0.05°C.
+204.06 - 206.02 #-1.95
+#Converting SF in Pasture decrease the AGB in 1.95 M/ton.
 
 
 #Scenery 2 and 3-> Converting Pasture in sf and persisting to 38 years ---------
