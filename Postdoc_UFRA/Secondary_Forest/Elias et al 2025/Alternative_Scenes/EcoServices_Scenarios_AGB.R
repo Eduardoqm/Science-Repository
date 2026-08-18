@@ -88,19 +88,16 @@ expanse(scf, unit = "ha")
 expanse(past, unit = "ha")
 #Area of pasture is 57,146,526 ha
 
-
-
-
-
 #Scenary 1
 -1.95*11566432 #-22554542
-#Converting SF in Pasture decrease the AGB in a total of -22,554,542 ton.
+#Converting SF in Pasture decrease the AGB in a total of -22,554,542 M/ton.
 
 #Scenary 2
 9.27*57146526 #529748296
-#Converting Pasture to SF, in mean the AGB increase a total of 529,748,296 ton.
+#Converting Pasture to SF, in mean the AGB increase a total of 529,748,296 M/ton.
 
 13.47*57146526 #769763705
+#Converting Pasture to 38 year old SF, the AGB increase increase a total of 769,763,705 M/ton.
 
 #Saving rasters of scenarios ---------------------------------------------------
 writeRaster(scn_p2, "Scenary_ESA_SF_to_Pasture.tif")
@@ -142,9 +139,9 @@ df <- tibble(
     0.11
   ),
   AGB = c(
-    -1.95,
-    9.27,
-    13.47
+    -22554542,
+    529748296,
+    769763705
   )
 )
 
@@ -272,7 +269,7 @@ p3 <- ggplot(df,
   scale_fill_manual(values = cols) +
   
   scale_y_continuous(
-    limits = c(-3, 15),
+    limits = c(-23000000, 769763705),
     #breaks = seq(-0.06, 0.12, by = 0.03),
     #expand = expansion(mult = c(0.02, 0.08))
   ) +
