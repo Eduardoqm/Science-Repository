@@ -82,20 +82,25 @@ mean(values(scn_min_sf2),na.rm=T) #219.49
 #Converting Pasture to 38 year old SF, the AGB increase 13.47 M/ton.
 
 #Sum Scenery results -----------------------------------------------------------
-scf_df = data.frame(scf)
-scf_df$pix = 1
-scf_df$n_pixel = sum(scf_df$pix)
+expanse(scf, unit = "ha")
+#Area of SF is 11,566,432 ha
 
-#Area of SF is 11.693.301,69 ha
+expanse(past, unit = "ha")
+#Area of pasture is 57,146,526 ha
+
+
+
+
+
 #Scenary 1
--1.95*11693301.69 #-22801938
-#Converting SF in Pasture decrease the AGB in a total of 22,801,938 t/ha.
+-1.95*11566432 #-22554542
+#Converting SF in Pasture decrease the AGB in a total of -22,554,542 ton.
 
 #Scenary 2
-9.27*11693301.69 #108396907
-#Converting Pasture to SF, in mean the AGB increase a total of 108,396,907 t/ha.
+9.27*57146526 #529748296
+#Converting Pasture to SF, in mean the AGB increase a total of 529,748,296 ton.
 
-13.47
+13.47*57146526 #769763705
 
 #Saving rasters of scenarios ---------------------------------------------------
 writeRaster(scn_p2, "Scenary_ESA_SF_to_Pasture.tif")
