@@ -35,7 +35,7 @@ mean(values(esa),na.rm=T) #206.02
 
 #Result
 204.06 - 206.02 #-1.95
-#Converting SF in Pasture decrease the AGB in 1.95 M/ton.
+#Converting SF in Pasture decrease the AGB in 1.95 tons per pixel (3.98t/ha).
 
 
 #Scenery 2 and 3-> Converting Pasture in sf and persisting to 38 years ---------
@@ -58,7 +58,7 @@ mean(values(scn_max_sf2),na.rm=T) #199.47
 
 #Result
 199.47 - 206.02 #-0.92
-#Converting Pasture to young SF, the AGB decrease 13.47 M/ton.
+#Converting Pasture to young SF, the AGB decrease 13.47 tons per pixel (27.49/ha).
 
 #Mean delta
 scn_mean_sf = past_esa+mean_lmar
@@ -68,7 +68,7 @@ mean(values(scn_mean_sf2),na.rm=T) #215.29
 
 #Result
 215.29 - 206.02 #9.27
-#Converting Pasture to SF, in mean the AGB increase 9.27 M/ton.
+#Converting Pasture to SF, in mean the AGB increase 9.27 tons per pixel (18.92/ha).
 
 
 #Mean delta
@@ -79,7 +79,7 @@ mean(values(scn_min_sf2),na.rm=T) #219.49
 
 #Result
 219.49 - 206.02 # 13.47
-#Converting Pasture to 38 year old SF, the AGB increase 13.47 M/ton.
+#Converting Pasture to 38 year old SF, the AGB increase 13.47 tons per pixel (27.49/ha).
 
 #Sum Scenery results -----------------------------------------------------------
 #expanse(scf, unit = "m")
