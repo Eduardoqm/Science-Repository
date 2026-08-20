@@ -107,10 +107,6 @@ writeRaster(scn_min_sf2, "Scenary_ESA_Pasture_to_young_SF.tif")
 writeRaster(scn_mean_sf2, "Scenary_ESA_Pasture_to_mean_SF.tif")
 writeRaster(scn_max_sf2, "Scenary_ESA_Pasture_to_old_SF.tif")
 
-
-
-
-
 #Elias Scenary Graphs ----------------------------------------------------------
 ### Figuras dos cenarios
 
