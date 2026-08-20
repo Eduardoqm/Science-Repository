@@ -82,22 +82,24 @@ mean(values(scn_min_sf2),na.rm=T) #219.49
 #Converting Pasture to 38 year old SF, the AGB increase 13.47 M/ton.
 
 #Sum Scenery results -----------------------------------------------------------
-expanse(scf, unit = "ha")
-#Area of SF is 11,566,432 ha
+#expanse(scf, unit = "m")
+#Area of SF is 81,000,000,000 m² (MapBiomas)
 
-expanse(past, unit = "ha")
-#Area of pasture is 57,146,526 ha
+#expanse(past, unit = "m")
+#Area of pasture is 508,281,750,000 m² (MapBiomas)
+
+#Pixel area is 4900 m²
 
 #Scenary 1
--1.95*11566432 #-22554542
-#Converting SF in Pasture decrease the AGB in a total of -22,554,542 M/ton.
+(-1.95*81000000000)/4900  #-32234694 tons
+#Converting SF in Pasture decrease the AGB in a total of −0.03223 Pg.
 
 #Scenary 2
-9.27*57146526 #529748296
-#Converting Pasture to SF, in mean the AGB increase a total of 529,748,296 M/ton.
+(9.27*508281750000)/4900  #961586086 tons
+#Converting Pasture to SF, in mean the AGB increase a total of 0.962 Pg.
 
-13.47*57146526 #769763705
-#Converting Pasture to 38 year old SF, the AGB increase increase a total of 769,763,705 M/ton.
+(13.47*508281750000)/4900  #1397256158 tons
+#Converting Pasture to 38 year old SF, the AGB increase increase a total of  1.397 Pg.
 
 #Saving rasters of scenarios ---------------------------------------------------
 writeRaster(scn_p2, "Scenary_ESA_SF_to_Pasture.tif")
@@ -139,9 +141,9 @@ df <- tibble(
     0.11
   ),
   AGB = c(
-    -22554542,
-    529748296,
-    769763705
+    -0.03223,
+    0.962,
+    1.6219
   )
 )
 
@@ -159,8 +161,7 @@ cols <- c(
 # Panel A - LST
 #---------------------------------
 
-p1 <- ggplot(df,
-             aes(x = Scenario,
+p1 <- ggplot(df, aes(x = Scenario,
                  y = LST,
                  fill = Scenario)) +
   
@@ -173,8 +174,7 @@ p1 <- ggplot(df,
   geom_text(
     aes(label = sprintf("%.2f", LST)),
     hjust = ifelse(df$LST > 0, -0.25, 1.20),
-    size = 4.5
-  ) +
+    size = 4.5) +
   
   coord_flip() +
   
@@ -183,28 +183,24 @@ p1 <- ggplot(df,
   scale_y_continuous(
     limits = c(-1.0, 0.15),
     breaks = seq(-1.0, 0.1, by = 0.2),
-    expand = expansion(mult = c(0.02, 0.08))
-  ) +
+    expand = expansion(mult = c(0.02, 0.08))) +
   
   labs(
     x = NULL,
-    y = expression(Delta*"LST (degree*C)")
-  ) +
+    y = expression(Delta*"LST (degree*C)")) +
   
   theme_classic(base_size = 16) +
   
   theme(
     legend.position = "none",
     axis.text.y = element_text(size = 12),
-    axis.title.y = element_blank()
-  )
+    axis.title.y = element_blank())
 
 #---------------------------------
 # Panel B - ET
 #---------------------------------
 
-p2 <- ggplot(df,
-             aes(x = Scenario,
+p2 <- ggplot(df, aes(x = Scenario,
                  y = ET,
                  fill = Scenario)) +
   
@@ -214,11 +210,9 @@ p2 <- ggplot(df,
              linewidth = 0.5,
              colour = "grey40") +
   
-  geom_text(
-    aes(label = sprintf("%.2f", ET)),
+  geom_text(aes(label = sprintf("%.2f", ET)),
     hjust = ifelse(df$ET > 0, -0.25, 1.20),
-    size = 4.5
-  ) +
+    size = 4.5) +
   
   coord_flip() +
   
@@ -227,28 +221,23 @@ p2 <- ggplot(df,
   scale_y_continuous(
     limits = c(-0.06, 0.13),
     breaks = seq(-0.06, 0.12, by = 0.03),
-    expand = expansion(mult = c(0.02, 0.08))
-  ) +
+    expand = expansion(mult = c(0.02, 0.08))) +
   
   labs(
     x = NULL,
-    y = expression(Delta*"ET (mm day"^{-1}*")")
-  ) +
+    y = expression(Delta*"ET (mm day"^{-1}*")")) +
   
   theme_classic(base_size = 16) +
   
-  theme(
-    legend.position = "none",
+  theme(legend.position = "none",
     axis.text.y = element_text(size = 12),
-    axis.title.y = element_blank()
-  )
+    axis.title.y = element_blank())
 
 #---------------------------------
 # Panel C - ABG
 #---------------------------------
 
-p3 <- ggplot(df,
-             aes(x = Scenario,
+p3 <- ggplot(df, aes(x = Scenario,
                  y = AGB,
                  fill = Scenario)) +
   
@@ -258,34 +247,27 @@ p3 <- ggplot(df,
              linewidth = 0.5,
              colour = "grey40") +
   
-  geom_text(
-    aes(label = sprintf("%.2f", AGB)),
+  geom_text(aes(label = sprintf("%.2f", AGB)),
     hjust = ifelse(df$AGB > 0, -0.25, 1.20),
-    size = 4.5
-  ) +
+    size = 4.5) +
   
   coord_flip() +
   
   scale_fill_manual(values = cols) +
   
-  scale_y_continuous(
-    limits = c(-23000000, 769763705),
+  scale_y_continuous(limits = c(-0.1, 1.7),
     #breaks = seq(-0.06, 0.12, by = 0.03),
-    #expand = expansion(mult = c(0.02, 0.08))
-  ) +
+    #expand = expansion(mult = c(0.02, 0.08))) +
   
   labs(
     x = NULL,
-    y = expression(Delta*"AGB (t/ha)")
-  ) +
+    y = expression("AGB (Pg)")) +
   
   theme_classic(base_size = 16) +
   
-  theme(
-    legend.position = "none",
+  theme(legend.position = "none",
     axis.text.y = element_text(size = 12),
-    axis.title.y = element_blank()
-  )
+    axis.title.y = element_blank())
 #---------------------------------
 # Combine panels
 #---------------------------------
@@ -296,5 +278,4 @@ fig <- ggarrange(p1, p2, p3,
                  labels = c('a)', 'b)', 'c)'),   
                  label.x = 0.01, 
                  align = c("v"),
-                 common.legend = F
-); fig
+                 common.legend = F); fig
