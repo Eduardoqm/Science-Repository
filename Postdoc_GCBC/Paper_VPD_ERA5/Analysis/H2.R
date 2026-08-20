@@ -21,4 +21,4 @@ h_vpd = rast(list_rst)
 plot(h_vpd)
 
 #Get only SF pixels ------------------------------------------------------------
-h_vpd2 = resample(h_vpd, scf24, method = "mean")
+h_vpd2 = resample(h_vpd, scf24, method = "average")
