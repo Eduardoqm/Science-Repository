@@ -21,4 +21,14 @@ h_vpd = rast(list_rst)
 plot(h_vpd)
 
 #Get only SF pixels ------------------------------------------------------------
-h_vpd2 = resample(h_vpd, scf24, method = "average")
+#h_vpd2 = resample(h_vpd, scf24, method = "average")
+scf24b = resample(scf24, h_vpd[[1]], method = "average")
+plot(scf24b)
+
+#Percentage of SF
+scf_count = ifel(scf24 < 1, 0, 1)
+plot(scf_count)
+
+scf_count = resample(scf_count, h_vpd[[1]], method = "sum")
+plot(scf_count)
+
