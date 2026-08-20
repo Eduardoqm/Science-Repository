@@ -116,6 +116,7 @@ writeRaster(scn_max_sf2, "Scenary_ESA_Pasture_to_old_SF.tif")
 
 library(tidyverse)
 library(patchwork)
+require(ggpubr)
 
 df <- tibble(
   Scenario = factor(
@@ -143,7 +144,7 @@ df <- tibble(
   AGB = c(
     -0.03223,
     0.962,
-    1.6219
+    1.397
   )
 )
 
@@ -257,7 +258,8 @@ p3 <- ggplot(df, aes(x = Scenario,
   
   scale_y_continuous(limits = c(-0.1, 1.7),
     #breaks = seq(-0.06, 0.12, by = 0.03),
-    #expand = expansion(mult = c(0.02, 0.08))) +
+    #expand = expansion(mult = c(0.02, 0.08))
+    ) +
   
   labs(
     x = NULL,
@@ -271,7 +273,6 @@ p3 <- ggplot(df, aes(x = Scenario,
 #---------------------------------
 # Combine panels
 #---------------------------------
-require(ggpubr)
 fig <- ggarrange(p1, p2, p3, 
                  ncol = 1,
                  nrow = 3,
