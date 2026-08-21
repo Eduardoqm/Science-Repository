@@ -6,6 +6,7 @@
 #Eduardo Q Marques 20-08-2026
 
 library(terra)
+library(tidyverse)
 
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
@@ -45,13 +46,24 @@ plot(scf_count)
 scf_perc = (scf_count/80000)*100
 plot(scf_perc)
 
-scf_50 = ifel(scf_perc < 50, NA, scf_perc)
-plot(scf_50)
+#age = ifel(scf_perc <50, NA, scf24b)
 
-age = ifel(scf_perc <50, NA, scf24b)
-plot(age)
 
-df = as.data.frame(age)
+#Stack Age and Percentage of SF ------------------------------------------------
+h_vpd = c(h_vpd, scf24b, scf_perc)
+
+df_vpd = as.data.frame(h_vpd)
+
+colnames(df_vpd) = c("Jan", "Fev", "Mar", "April", "May", "June",
+                     "July", "Aug", "Set", "Oct", "Nov", "Dec",
+                     "Age", "Perc_SF")
+
+df_vpd2 = df_vpd
+
+
+
+
+
 
 
 
