@@ -58,7 +58,15 @@ colnames(df_vpd) = c("Jan", "Fev", "Mar", "April", "May", "June",
                      "July", "Aug", "Set", "Oct", "Nov", "Dec",
                      "Age", "Perc_SF")
 
-df_vpd2 = df_vpd
+df_vpd2 = df_vpd |> 
+  na.omit() |> 
+  filter(Perc_SF >= 50)
+
+
+ggplot(df_vpd, aes(x=Age, y=Jan))+
+  geom_line()+
+  geom_smooth()
+  
 
 
 
