@@ -38,8 +38,6 @@ plot(scf24b)
 
 #Percentage of SF
 scf_count = ifel(scf24 < 1, 0, 1)
-plot(scf_count)
-
 scf_count = resample(scf_count, h_vpd[[1]], method = "sum")
 plot(scf_count)
 
@@ -58,16 +56,67 @@ colnames(df_vpd) = c("Jan", "Fev", "Mar", "April", "May", "June",
                      "July", "Aug", "Set", "Oct", "Nov", "Dec",
                      "Age", "Perc_SF")
 
+
 df_vpd2 = df_vpd |> 
   na.omit() |> 
-  filter(Perc_SF >= 50)
+  filter(Perc_SF >= 50) |> 
+  pivot_longer(
+    cols = c(Jan, Fev, Mar, April, May, June, July, Aug, Set, Oct, Nov, Dec), 
+    names_to = "Month", 
+    values_to = "Hours")
 
-
-ggplot(df_vpd, aes(x=Age, y=Jan))+
-  geom_line()+
+ggplot(df_vpd2, aes(x=Age, y=Hours))+
+  geom_point()+
   geom_smooth()
-  
 
+
+ggplot(df_vpd2, aes(x=Age, y=Hours, col=Month))+
+  #geom_point()+
+  geom_smooth(method = "lm")+
+  facet_wrap(~Month, scale = "free")
+
+
+
+
+
+
+
+
+
+
+#Extracting by random points ---------------------------------------------------
+smp <- spatSample(scf24, size = 10000, method = "random", 
+                         as.points = TRUE, na.rm = TRUE)
+
+plot(scf24)
+plot(smp, add = T)
+
+df = as.data.frame(smp)
+
+vpd = terra::extract(h_vpd, smp)
+
+df2 = cbind(vpd, df)
+
+colnames(df2) = c("id", "Jan", "Fev", "Mar", "April", "May", "June",
+                     "July", "Aug", "Set", "Oct", "Nov", "Dec",
+                     "Age")
+
+
+df3 = df2 |> 
+  pivot_longer(
+    cols = c(Jan, Fev, Mar, April, May, June, July, Aug, Set, Oct, Nov, Dec), 
+    names_to = "Month", 
+    values_to = "Hours")
+
+ggplot(df3, aes(x=Age, y=Hours))+
+  geom_point()+
+  geom_smooth()
+
+
+ggplot(df_vpd3, aes(x=Age, y=Hours, col=Month))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  facet_wrap(~Month, scale = "free")
 
 
 
