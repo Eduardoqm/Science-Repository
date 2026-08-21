@@ -45,7 +45,13 @@ plot(scf_count)
 scf_perc = (scf_count/80000)*100
 plot(scf_perc)
 
+scf_50 = ifel(scf_perc < 50, NA, scf_perc)
+plot(scf_50)
 
+age = ifel(scf_perc <50, NA, scf24b)
+plot(age)
+
+df = as.data.frame(age)
 
 
 
