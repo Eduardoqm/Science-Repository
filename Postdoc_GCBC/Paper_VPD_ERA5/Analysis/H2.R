@@ -9,14 +9,24 @@ library(terra)
 
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
-scf23 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2023.tif")
-scf24 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2023.tif")
+#Leptop
+#scf23 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2023.tif")
+#scf24 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2023.tif")
+
+#Workstation
+scf23 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
+scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024.tif")
 
 plot(scf23)
 plot(scf24)
 
 #VPD >= 075 kPa hours by month
-list_rst = list.files("G:/My Drive/GEE_VPD_Horas_2024", full.names = T); list_rst
+#Leptop
+#list_rst = list.files("G:/My Drive/GEE_VPD_Horas_2024", full.names = T); list_rst
+
+#Workstation
+list_rst = list.files("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/VPD_month", full.names = T); list_rst
+
 h_vpd = rast(list_rst)
 plot(h_vpd)
 
@@ -31,4 +41,12 @@ plot(scf_count)
 
 scf_count = resample(scf_count, h_vpd[[1]], method = "sum")
 plot(scf_count)
+
+scf_perc = (scf_count/80000)*100
+plot(scf_perc)
+
+
+
+
+
 
