@@ -7,16 +7,19 @@
 
 library(terra)
 library(tidyverse)
+library(parallel)
 
-# 1. Verificar quantas threads/núcleos o terra reconhece
-getOption("terraNumThreads")
+# 1. Descobrir o número de núcleos disponíveis (deve retornar 28)
+num_cores <- detectCores()
+print(num_cores)
 
-# 2. Forçar o terra a usar todos os 28 núcleos disponíveis
-terraOptions(threads = 28)
+# 2. Criar um cluster com os seus 28 núcleos no Ubuntu
+cl <- makeCluster(num_cores - 1) # Deixa 1 núcleo livre para o sistema operacional
 
-# 3. Se você estiver usando funções que aceitam paralelismo interno (como app, predict, etc.)
-# ou operações de I/O do raster, garanta que o multithread esteja ativo:
-terraOptions(parallel = TRUE)
+# Carregar o pacote terra em cada nó do cluster
+clusterEvalQ(cl, {
+  library(terra)
+})
 
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
@@ -42,15 +45,15 @@ h_vpd = rast(list_rst)
 plot(h_vpd)
 
 #Extracting by stratified points -----------------------------------------------
-freq(scf24)
-scf24B = round(scf24)
-freq(scf24B)
-plot(scf24B)
+#scf24B = round(scf24)
+#freq(scf24)
+#freq(scf24B)
+#plot(scf24B)
 
-smp <- spatSample(scf24B, size = 5, method = "stratified", 
+smp <- spatSample(scf24B, size = 10000000, method = "stratified", 
                          as.points = TRUE, na.rm = TRUE)
 
-plot(scf24B)
+plot(scf24)
 plot(smp, add = T)
 
 df = as.data.frame(smp)
@@ -77,6 +80,8 @@ df4 = df3 |>
   group_by(Age, Month) |> 
   summarise(Hours = mean(Hours),
             n = n())
+
+write.csv(df4, "Hours_VPD75_Age.csv", row.names = F)
 
 ggplot(df4, aes(x=Age, y=Hours))+
   geom_point()+
