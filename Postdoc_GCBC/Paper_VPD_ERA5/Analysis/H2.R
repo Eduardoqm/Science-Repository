@@ -32,13 +32,15 @@ h_vpd = rast(list_rst)
 plot(h_vpd)
 
 #Extracting by stratified points -----------------------------------------------
+freq(scf24)
 scf24B = round(scf24)
+freq(scf24B)
 plot(scf24B)
 
-smp <- spatSample(scf24B, size = 100, method = "stratified", 
+smp <- spatSample(scf24B, size = 5, method = "stratified", 
                          as.points = TRUE, na.rm = TRUE)
 
-plot(scf24)
+plot(scf24B)
 plot(smp, add = T)
 
 df = as.data.frame(smp)
