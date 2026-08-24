@@ -8,6 +8,16 @@
 library(terra)
 library(tidyverse)
 
+# 1. Verificar quantas threads/núcleos o terra reconhece
+getOption("terraNumThreads")
+
+# 2. Forçar o terra a usar todos os 28 núcleos disponíveis
+terraOptions(threads = 28)
+
+# 3. Se você estiver usando funções que aceitam paralelismo interno (como app, predict, etc.)
+# ou operações de I/O do raster, garanta que o multithread esteja ativo:
+terraOptions(parallel = TRUE)
+
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
 #Leptop
