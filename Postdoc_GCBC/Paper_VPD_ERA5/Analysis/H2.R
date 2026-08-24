@@ -15,10 +15,10 @@ library(tidyverse)
 #scf24 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2023.tif")
 
 #Workstation
-scf23 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
+#scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
 scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024.tif")
 
-plot(scf23)
+#plot(scf23)
 plot(scf24)
 
 #VPD >= 075 kPa hours by month
@@ -30,6 +30,64 @@ list_rst = list.files("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/
 
 h_vpd = rast(list_rst)
 plot(h_vpd)
+
+#Extracting by stratified points -----------------------------------------------
+scf24B = round(scf24)
+plot(scf24B)
+
+smp <- spatSample(scf24B, size = 100, method = "stratified", 
+                         as.points = TRUE, na.rm = TRUE)
+
+plot(scf24)
+plot(smp, add = T)
+
+df = as.data.frame(smp)
+
+vpd = terra::extract(h_vpd, smp)
+
+df2 = cbind(vpd, df)
+
+colnames(df2) = c("id", "Jan", "Fev", "Mar", "April", "May", "June",
+                     "July", "Aug", "Set", "Oct", "Nov", "Dec", "Age")
+
+df3 = df2 |> 
+  pivot_longer(
+    cols = c(Jan, Fev, Mar, April, May, June, July, Aug, Set, Oct, Nov, Dec), 
+    names_to = "Month", 
+    values_to = "Hours")
+
+df3$Age = round(df3$Age, digits = 0)
+
+write.csv(df3, "Hours_VPD75_Age_full.csv", row.names = F)
+
+df4 = df3 |> 
+  na.omit() |> 
+  group_by(Age, Month) |> 
+  summarise(Hours = mean(Hours),
+            n = n())
+
+ggplot(df4, aes(x=Age, y=Hours))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+
+ggplot(df4, aes(x=Age, y=Hours, col=Month))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  facet_wrap(~Month, scale = "free")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Get only SF pixels ------------------------------------------------------------
 #h_vpd2 = resample(h_vpd, scf24, method = "average")
@@ -74,53 +132,6 @@ ggplot(df_vpd2, aes(x=Age, y=Hours, col=Month))+
   #geom_point()+
   geom_smooth(method = "lm")+
   facet_wrap(~Month, scale = "free")
-
-
-
-
-
-
-
-
-
-
-#Extracting by random points ---------------------------------------------------
-smp <- spatSample(scf24, size = 10000, method = "random", 
-                         as.points = TRUE, na.rm = TRUE)
-
-plot(scf24)
-plot(smp, add = T)
-
-df = as.data.frame(smp)
-
-vpd = terra::extract(h_vpd, smp)
-
-df2 = cbind(vpd, df)
-
-colnames(df2) = c("id", "Jan", "Fev", "Mar", "April", "May", "June",
-                     "July", "Aug", "Set", "Oct", "Nov", "Dec",
-                     "Age")
-
-
-df3 = df2 |> 
-  pivot_longer(
-    cols = c(Jan, Fev, Mar, April, May, June, July, Aug, Set, Oct, Nov, Dec), 
-    names_to = "Month", 
-    values_to = "Hours")
-
-ggplot(df3, aes(x=Age, y=Hours))+
-  geom_point()+
-  geom_smooth()
-
-
-ggplot(df_vpd3, aes(x=Age, y=Hours, col=Month))+
-  geom_point()+
-  geom_smooth(method = "lm")+
-  facet_wrap(~Month, scale = "free")
-
-
-
-
 
 
 
