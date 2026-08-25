@@ -11,45 +11,37 @@ library(tidyverse)
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/H2")
 dir()
 
-df_full = read_csv("Hours_VPD75_Age_full.csv")
-df = read_csv("Hours_VPD75_Age.csv")
+df24 = read_csv("Hours_VPD75_Age_full.csv")
 
 
 #Graphics ----------------------------------------------------------------------
-ggplot(df_full, aes(x=Age, y=Hours))+
+ggplot(df24, aes(x=Age, y=Hours))+
   #geom_point()+
   geom_smooth(method = "lm")
 
-ggplot(df_full, aes(x=Age, y=Hours, col=Month))+
+ggplot(df24, aes(x=Age, y=Hours, col=Month))+
   #geom_point()+
   geom_smooth(method = "lm")+
   facet_wrap(~Month, scale = "free")
 
 
-ggplot(df, aes(x=Age, y=Hours))+
-  geom_point()+
-  geom_smooth(method = "lm")
-
-ggplot(df, aes(x=Age, y=Hours, col=Month))+
-  geom_point()+
-  geom_smooth(method = "lm")+
-  facet_wrap(~Month, scale = "free")
 
 
-df2 = df |> 
+df24$cond = df24$Month
+df24$cond[df24$cond %in% c("Dec", "Jan", "Fev", "Mar", "April", "May")] <- "Rainy Season"
+df24$cond[df24$cond != "Rainy Season"] <- "Dry Season"
+
+
+df2 = df24 |> 
   na.omit() |> 
-  group_by(Age, Month) |> 
-  summarise(Hours = median(Hours),
+  group_by(Age, cond) |> 
+  summarise(Hours = mean(Hours),
             n = n())
 
 ggplot(df2, aes(x=Age, y=Hours))+
   geom_point()+
-  geom_smooth(method = "lm")
-
-ggplot(df2, aes(x=Age, y=Hours, col=Month))+
-  geom_point()+
-  geom_smooth()+
-  facet_wrap(~Month, scale = "free")
+  geom_smooth(method = "lm")+
+  facet_wrap(~cond, scale = "free")
 
 
 #Logaritmar os dados para rodar o modelo...
