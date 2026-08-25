@@ -11,25 +11,24 @@ library(tidyverse)
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/H2")
 dir()
 
-df24 = read_csv("Hours_VPD75_Age_full.csv")
+df24 = read_csv("Hours_VPD75_Age_full_2024.csv")
 
 
 #Graphics ----------------------------------------------------------------------
 ggplot(df24, aes(x=Age, y=Hours))+
-  #geom_point()+
   geom_smooth(method = "lm")
 
 ggplot(df24, aes(x=Age, y=Hours, col=Month))+
-  #geom_point()+
   geom_smooth(method = "lm")+
   facet_wrap(~Month, scale = "free")
-
-
-
 
 df24$cond = df24$Month
 df24$cond[df24$cond %in% c("Dec", "Jan", "Fev", "Mar", "April", "May")] <- "Rainy Season"
 df24$cond[df24$cond != "Rainy Season"] <- "Dry Season"
+
+ggplot(df24, aes(x=Age, y=Hours))+
+  geom_smooth(method = "lm")+
+  facet_wrap(~cond, scale = "free")
 
 
 df2 = df24 |> 
