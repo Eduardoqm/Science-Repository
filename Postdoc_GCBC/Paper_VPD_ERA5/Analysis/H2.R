@@ -29,7 +29,7 @@ clusterEvalQ(cl, {
 
 #Workstation
 #scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
-scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024.tif")
+scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
 
 #plot(scf23)
 plot(scf24)
@@ -46,12 +46,12 @@ plot(h_vpd)
 
 #Extracting by stratified points -----------------------------------------------
 #scf24B = round(scf24)
-#freq(scf24)
-#freq(scf24B)
+#writeRaster(scf24B, "/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
+#unique(scf24)
+#unique(scf24B)
 #plot(scf24B)
 
-smp <- spatSample(scf24B, size = 10000000, method = "stratified", 
-                         as.points = TRUE, na.rm = TRUE)
+smp <- spatSample(scf24, size = 1000000, method = "random", as.points = TRUE, na.rm = TRUE)
 
 plot(scf24)
 plot(smp, add = T)
@@ -71,7 +71,7 @@ df3 = df2 |>
     names_to = "Month", 
     values_to = "Hours")
 
-df3$Age = round(df3$Age, digits = 0)
+#df3$Age = round(df3$Age, digits = 0)
 
 write.csv(df3, "Hours_VPD75_Age_full.csv", row.names = F)
 
