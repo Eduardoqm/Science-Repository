@@ -1,4 +1,4 @@
-#Paper VPD ERA5 Amazon
+#Paper VPD ERA5 Amazon - Proccess to extract info
 # H2 - Along the successional gradient, young secondary forests
 #remain exposed for longer periods to microclimatic conditions
 #that favor fire spread throughout the dry season.
@@ -9,18 +9,6 @@ library(terra)
 library(tidyverse)
 library(parallel)
 
-# 1. Descobrir o número de núcleos disponíveis (deve retornar 28)
-num_cores <- detectCores()
-print(num_cores)
-
-# 2. Criar um cluster com os seus 28 núcleos no Ubuntu
-cl <- makeCluster(num_cores - 1) # Deixa 1 núcleo livre para o sistema operacional
-
-# Carregar o pacote terra em cada nó do cluster
-clusterEvalQ(cl, {
-  library(terra)
-})
-
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
 #Leptop
@@ -28,7 +16,7 @@ clusterEvalQ(cl, {
 #scf24 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2023.tif")
 
 #Workstation
-#scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
+#scf23 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
 scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
 
 #plot(scf23)
@@ -44,14 +32,9 @@ list_rst = list.files("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/
 h_vpd = rast(list_rst)
 plot(h_vpd)
 
-#Extracting by stratified points -----------------------------------------------
-#scf24B = round(scf24)
-#writeRaster(scf24B, "/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
-#unique(scf24)
-#unique(scf24B)
-#plot(scf24B)
-
-smp <- spatSample(scf24, size = 1000000, method = "random", as.points = TRUE, na.rm = TRUE)
+#Extracting by random points -----------------------------------------------
+smp <- spatSample(scf24, size = 1000000, method = "random",
+                  as.points = TRUE, na.rm = TRUE)
 
 plot(scf24)
 plot(smp, add = T)
@@ -83,73 +66,14 @@ df4 = df3 |>
 
 write.csv(df4, "Hours_VPD75_Age.csv", row.names = F)
 
+
 ggplot(df4, aes(x=Age, y=Hours))+
   geom_point()+
   geom_smooth(method = "lm")
-
 
 ggplot(df4, aes(x=Age, y=Hours, col=Month))+
   geom_point()+
   geom_smooth(method = "lm")+
   facet_wrap(~Month, scale = "free")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#Get only SF pixels ------------------------------------------------------------
-#h_vpd2 = resample(h_vpd, scf24, method = "average")
-scf24b = resample(scf24, h_vpd[[1]], method = "average")
-plot(scf24b)
-
-#Percentage of SF
-scf_count = ifel(scf24 < 1, 0, 1)
-scf_count = resample(scf_count, h_vpd[[1]], method = "sum")
-plot(scf_count)
-
-scf_perc = (scf_count/80000)*100
-plot(scf_perc)
-
-#age = ifel(scf_perc <50, NA, scf24b)
-
-
-#Stack Age and Percentage of SF ------------------------------------------------
-h_vpd = c(h_vpd, scf24b, scf_perc)
-
-df_vpd = as.data.frame(h_vpd)
-
-colnames(df_vpd) = c("Jan", "Fev", "Mar", "April", "May", "June",
-                     "July", "Aug", "Set", "Oct", "Nov", "Dec",
-                     "Age", "Perc_SF")
-
-
-df_vpd2 = df_vpd |> 
-  na.omit() |> 
-  filter(Perc_SF >= 50) |> 
-  pivot_longer(
-    cols = c(Jan, Fev, Mar, April, May, June, July, Aug, Set, Oct, Nov, Dec), 
-    names_to = "Month", 
-    values_to = "Hours")
-
-ggplot(df_vpd2, aes(x=Age, y=Hours))+
-  geom_point()+
-  geom_smooth()
-
-
-ggplot(df_vpd2, aes(x=Age, y=Hours, col=Month))+
-  #geom_point()+
-  geom_smooth(method = "lm")+
-  facet_wrap(~Month, scale = "free")
-
-
 
 
