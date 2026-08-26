@@ -14,9 +14,9 @@ library(tidyverse)
 scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
 plot(scf24)
 
-scf23 = scf24 - 1
-scf23 = ifel(scf23 < 1, NA, scf23)
-plot(scf23)
+scf25 = scf24 + 1
+#scf25 = ifel(scf25 < 1, NA, scf25)
+plot(scf25)
 
 #VPD >= 075 kPa hours by month
 #Workstation
@@ -26,10 +26,10 @@ h_vpd = rast(list_rst)
 plot(h_vpd)
 
 #Extracting by random points -----------------------------------------------
-smp <- spatSample(scf23, size = 1000000, method = "random",
+smp <- spatSample(scf25, size = 1000000, method = "random",
                   as.points = TRUE, na.rm = TRUE)
 
-plot(scf23)
+plot(scf25)
 plot(smp, add = T)
 
 df = as.data.frame(smp)
