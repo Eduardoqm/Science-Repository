@@ -15,7 +15,6 @@ scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest
 plot(scf24)
 
 scf25 = scf24 + 1
-#scf25 = ifel(scf25 < 1, NA, scf25)
 plot(scf25)
 
 #VPD >= 075 kPa hours by month
