@@ -1,4 +1,4 @@
-#Paper VPD ERA5 Amazon - Proccess to extract info
+#Paper VPD ERA5 Amazon - Proccess to extract info - 2024
 # H2 - Along the successional gradient, young secondary forests
 #remain exposed for longer periods to microclimatic conditions
 #that favor fire spread throughout the dry season.

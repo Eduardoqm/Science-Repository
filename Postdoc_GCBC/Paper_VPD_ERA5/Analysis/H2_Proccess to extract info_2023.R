@@ -11,7 +11,11 @@ library(tidyverse)
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
 #Workstation
-scf23 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2023.tif")
+scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
+plot(scf24)
+
+scf23 = scf24 - 1
+scf23 = ifel(scf23 < 1, NA, scf23)
 plot(scf23)
 
 #VPD >= 075 kPa hours by month
