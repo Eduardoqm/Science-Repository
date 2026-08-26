@@ -20,7 +20,7 @@ plot(scf25)
 
 #VPD >= 075 kPa hours by month
 #Workstation
-list_rst = list.files("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/VPD_month_2023", full.names = T); list_rst
+list_rst = list.files("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/VPD_month_2025", full.names = T); list_rst
 
 h_vpd = rast(list_rst)
 plot(h_vpd)
@@ -47,7 +47,7 @@ df3 = df2 |>
     names_to = "Month", 
     values_to = "Hours")
 
-write.csv(df3, "Hours_VPD75_Age_full_2023.csv", row.names = F)
+write.csv(df3, "Hours_VPD75_Age_full_2025.csv", row.names = F)
 
 df4 = df3 |> 
   na.omit() |> 
@@ -55,7 +55,7 @@ df4 = df3 |>
   summarise(Hours = mean(Hours),
             n = n())
 
-write.csv(df4, "Hours_VPD75_Age_2023.csv", row.names = F)
+write.csv(df4, "Hours_VPD75_Age_2025.csv", row.names = F)
 
 
 ggplot(df4, aes(x=Age, y=Hours))+
