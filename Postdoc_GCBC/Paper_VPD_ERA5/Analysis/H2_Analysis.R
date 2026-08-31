@@ -44,10 +44,8 @@ ggplot(df2, aes(x=Age, y=Hours))+
 
 
 #Logaritmar os dados para rodar o modelo...
-
-
-
-
+model1 <- lm(Hours ~ Age * cond, data = df2)
+summary(model1)
 
 
 
