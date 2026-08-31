@@ -1,16 +1,15 @@
-#Clustering Climatic Zones of Amazon by VPD
+#Climatic Zones samples by classes
 
-#Eduardo Q Marques 03-07-2026
+#Eduardo Q Marques 31-08-2026
 
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/My Drive/GEE_VPD_Mensal")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Shapes")
 dir()
 
-list_rst = list.files()
-month_vpd = rast(list_rst)
-plot(month_vpd)
+zone = vect("Amazon_VPD_Zone.shp")
+plot(zone)
 
 #Binary segmentation to limier of inflammable VPD (0.75 kPa) -------------------
 ray_vpd = ifel(month_vpd < 0.75, 0, 1)
