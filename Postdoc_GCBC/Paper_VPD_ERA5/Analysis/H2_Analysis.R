@@ -40,10 +40,18 @@ df2 = df |>
   summarise(Hours = mean(Hours),
             n = n())
 
-ggplot(df2, aes(x=Age, y=Hours))+
+gg = ggplot(df2, aes(x=Age, y=Hours, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
-  facet_wrap(~cond, scale = "free")
+  labs(x = "Age", y = "Hours per month (VPD ≥ 0.75 kPa)", col = NULL)+
+  facet_wrap(~cond, scales = "free")+
+  theme_bw()+
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg
+
+ggsave(gg, filename = "Hours_VPD75_Age.png",
+       dpi = 600, units = "cm", height = 7, width = 14)
 
 
 #Logaritmar os dados para rodar o modelo...
