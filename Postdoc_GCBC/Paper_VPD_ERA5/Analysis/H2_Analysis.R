@@ -15,6 +15,8 @@ df23 = read_csv("Hours_VPD75_Age_full_2023.csv")
 df24 = read_csv("Hours_VPD75_Age_full_2024.csv")
 df25 = read_csv("Hours_VPD75_Age_full_2025.csv")
 
+df = rbind(df23, df24, df25)
+
 #Graphics ----------------------------------------------------------------------
 ggplot(df, aes(x=Age, y=Hours))+
   geom_smooth(method = "lm")
@@ -23,9 +25,9 @@ ggplot(df, aes(x=Age, y=Hours, col=Month))+
   geom_smooth(method = "lm")+
   facet_wrap(~Month, scale = "free")
 
-df24$cond = df24$Month
-df24$cond[df24$cond %in% c("Dec", "Jan", "Fev", "Mar", "April", "May")] <- "Rainy Season"
-df24$cond[df24$cond != "Rainy Season"] <- "Dry Season"
+df$cond = df$Month
+df$cond[df$cond %in% c("Dec", "Jan", "Fev", "Mar", "April", "May")] <- "Rainy Season"
+df$cond[df$cond != "Rainy Season"] <- "Dry Season"
 
 ggplot(df, aes(x=Age, y=Hours))+
   geom_smooth(method = "lm")+
@@ -47,8 +49,3 @@ ggplot(df2, aes(x=Age, y=Hours))+
 #Logaritmar os dados para rodar o modelo...
 model1 <- lm(Hours ~ Age * cond, data = df2)
 summary(model1)
-
-
-
-
-
