@@ -16,7 +16,31 @@ sf = rast("MB_Forest_age_2024B.tif")
 fire = rast("MB_Fire_frequency_1985_2025.tiff")
 
 #Reclass Forest burned and not burned ------------------------------------------
-md2 = ifel(mb %in% c(1,3,6,4,7,5,49), 1, NA)
+#Land Use and Cover
+mb2 = ifel(mb %in% c(1,3,6,4,7,5,49), 1, NA) #Binary
+mb3 = ifel(is.na(sf), mb2, NA) #Filter Scondary
+
+#Secondary Forest
+sf2 = ifel(sf < 39, NA, 1)#Binary
+
+#Fire
+fire2 = ifel(fire < 1, 0, 1)#Binary
+
+#Classifying
+mb_fire = ifel(fire > 1, mb3, NA)
+mb_intac = ifel(fire < 1, mb3, NA)
+sf_fire = ifel(fire > 1, sf2, NA)
+sf_intac = ifel(fire < 1, sf2, NA)
+
+#Masking and Samplying ---------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
 
