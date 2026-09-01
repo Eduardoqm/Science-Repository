@@ -21,10 +21,10 @@ mb2 = ifel(mb %in% c(1,3,6,4,7,5,49), 1, NA) #Binary
 mb3 = ifel(is.na(sf), mb2, NA) #Filter Scondary
 
 #Secondary Forest
-sf2 = ifel(sf < 39, NA, 1)#Binary
+sf2 = ifel(sf < 39, NA, 1) #Binary
 
 #Fire
-fire2 = ifel(fire < 1, 0, 1)#Binary
+fire2 = ifel(fire < 1, 0, 1) #Binary
 
 #Classifying
 mb_fire = ifel(fire > 1, mb3, NA)
