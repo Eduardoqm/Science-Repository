@@ -5,11 +5,28 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Shapes")
+setwd("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2")
 dir()
 
 zone = vect("Amazon_VPD_Zone.shp")
 plot(zone)
+
+mb = rast("MapBiomas_2024_col10.tiff")
+sf = rast("MB_Forest_age_2024B.tif")
+fire = rast("MB_Fire_frequency_1985_2025.tiff")
+
+#Reclass Forest burned and not burned ------------------------------------------
+md2 = ifel(mb %in% c(1,3,6,4,7,5,49), 1, NA)
+
+
+
+
+
+
+
+
+
+
 
 #Binary segmentation to limier of inflammable VPD (0.75 kPa) -------------------
 ray_vpd = ifel(month_vpd < 0.75, 0, 1)
