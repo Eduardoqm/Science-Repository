@@ -76,7 +76,7 @@ ext_smp = function(raster, n_samples){
 }
 
 mb_fire_ns2 = ext_smp(mb_fire_ns, 800)
-
+mb_fire_sz2 = ext_smp(mb_fire_sz, 800)
 
 
 
