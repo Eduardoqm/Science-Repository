@@ -37,14 +37,37 @@ sf_intac = ifel(fire < 1, sf2, NA) #Secondary Forest intact
 #writeRaster(sf_fire, "MB_SecForest_burned.tiff")
 #writeRaster(sf_intac, "MB_SecForest_intact.tiff")
 
-#Masking and Samplying ---------------------------------------------------------
+#Masking -----------------------------------------------------------------------
+# 1) Non-Seasonal Zone (NS)
+# 2) Short Seasonal Zone (SZ)
+# 3) Intermediate Seasonal Zone (IS)
+# 4) Prolonged Seasonal Zone (PS)
 
+#Primary Forest burned
+mb_fire_ns = mask(crop(mb_fire, zone[1]), zone[1])
+mb_fire_sz = mask(crop(mb_fire, zone[2]), zone[2])
+mb_fire_is = mask(crop(mb_fire, zone[3]), zone[3])
+mb_fire_ps = mask(crop(mb_fire, zone[4]), zone[4])
 
+#Primary Forest intact
+mb_intac_ns = mask(crop(mb_intac, zone[1]), zone[1])
+mb_intac_sz = mask(crop(mb_intac, zone[2]), zone[2])
+mb_intac_is = mask(crop(mb_intac, zone[3]), zone[3])
+mb_intac_ps = mask(crop(mb_intac, zone[4]), zone[4])
 
+#Secondary Forest burned
+sf_fire_ns = mask(crop(sf_fire, zone[1]), zone[1])
+sf_fire_sz = mask(crop(sf_fire, zone[2]), zone[2])
+sf_fire_is = mask(crop(sf_fire, zone[3]), zone[3])
+sf_fire_ps = mask(crop(sf_fire, zone[4]), zone[4])
 
+#Secondary Forest intact
+sf_intac_ns = mask(crop(sf_intac, zone[1]), zone[1])
+sf_intac_sz = mask(crop(sf_intac, zone[2]), zone[2])
+sf_intac_is = mask(crop(sf_intac, zone[3]), zone[3])
+sf_intac_ps = mask(crop(sf_intac, zone[4]), zone[4])
 
-
-
+#Sampling ----------------------------------------------------------------------
 
 
 
