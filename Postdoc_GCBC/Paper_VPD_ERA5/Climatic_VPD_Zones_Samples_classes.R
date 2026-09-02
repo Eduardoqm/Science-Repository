@@ -68,8 +68,14 @@ sf_intac_is = mask(crop(sf_intac, zone[3]), zone[3])
 sf_intac_ps = mask(crop(sf_intac, zone[4]), zone[4])
 
 #Sampling ----------------------------------------------------------------------
+ext_smp = function(raster, n_samples){
+  smp<- spatSample(raster, size = n_samples,
+                   method = "random",
+                   as.points = TRUE, na.rm = TRUE)
+  return(smp)
+}
 
-
+mb_fire_ns2 = ext_smp(mb_fire_ns, 800)
 
 
 
