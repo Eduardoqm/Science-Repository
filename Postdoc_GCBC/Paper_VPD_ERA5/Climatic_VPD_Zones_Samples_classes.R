@@ -27,10 +27,15 @@ sf2 = ifel(sf < 39, NA, 1) #Binary
 fire2 = ifel(fire < 1, 0, 1) #Binary
 
 #Classifying
-mb_fire = ifel(fire > 1, mb3, NA)
-mb_intac = ifel(fire < 1, mb3, NA)
-sf_fire = ifel(fire > 1, sf2, NA)
-sf_intac = ifel(fire < 1, sf2, NA)
+mb_fire = ifel(fire > 1, mb3, NA) #Primary Forest burned
+mb_intac = ifel(fire < 1, mb3, NA) #Primary Forest intact
+sf_fire = ifel(fire > 1, sf2, NA) #Secondary Forest burned
+sf_intac = ifel(fire < 1, sf2, NA) #Secondary Forest intact
+
+#writeRaster(mb_fire, "MB_PriForest_burned.tiff")
+#writeRaster(mb_intac, "MB_PriForest_intact.tiff")
+#writeRaster(sf_fire, "MB_SecForest_burned.tiff")
+#writeRaster(sf_intac, "MB_SecForest_intact.tiff")
 
 #Masking and Samplying ---------------------------------------------------------
 
