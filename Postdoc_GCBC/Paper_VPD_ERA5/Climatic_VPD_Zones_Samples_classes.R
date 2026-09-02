@@ -80,8 +80,11 @@ mb_fire_ns2 = ext_smp(mb_fire_ns, 800)
 
 
 
+# Combine two point SpatVectors
+combined_pts <- rbind(pts1, pts2)
 
-
+# Merge a data frame 'df' with a SpatVector 'pts' using a common column 'ID'
+merged_pts <- merge(pts, df, by = "ID")
 
 
 
