@@ -68,20 +68,22 @@ sf_intac_is = mask(crop(sf_intac, zone[3]), zone[3])
 sf_intac_ps = mask(crop(sf_intac, zone[4]), zone[4])
 
 #Sampling ----------------------------------------------------------------------
-ext_smp = function(raster, n_samples){
+ext_smp = function(raster, classe, n_samples){
   smp<- spatSample(raster, size = n_samples,
                    method = "random",
                    as.points = TRUE, na.rm = TRUE)
+  smp[["class"]] = classe
   return(smp)
 }
 
-mb_fire_ns2 = ext_smp(mb_fire_ns, 800)
-mb_fire_sz2 = ext_smp(mb_fire_sz, 800)
+mb_fire_ns2 = ext_smp(mb_fire_ns, "mb_fire_ns", 30000)
+mb_fire_sz2 = ext_smp(mb_fire_sz, "mb_fire_sz", 30000)
 
 
 
 # Combine two point SpatVectors
-combined_pts <- rbind(pts1, pts2)
+combined_pts <- rbind(mb_fire_ns2, mb_fire_sz2)
+df = as.data.frame(combined_pts)
 
 # Merge a data frame 'df' with a SpatVector 'pts' using a common column 'ID'
 merged_pts <- merge(pts, df, by = "ID")
