@@ -34,7 +34,8 @@ save_delta_raster <- function(esa_rast, output_file) {
   message("Generating Delta Raster: ", output_file)
   
   esa_pri <- ifel(is.na(fr_pri), NA, esa_rast)
-  esa_f   <- focal(esa_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  #esa_f   <- focal(esa_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  esa_f   <- focal(esa_pri, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
   delta_esa <- esa_rast - esa_f
   
   writeRaster(delta_esa, output_file, overwrite=TRUE)
