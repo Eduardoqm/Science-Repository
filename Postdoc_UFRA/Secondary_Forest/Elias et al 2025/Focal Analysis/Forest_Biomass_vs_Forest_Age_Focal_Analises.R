@@ -94,7 +94,7 @@ start.time <- Sys.time()
 
 #Focal
 save_delta_raster(esa, "Delta_AGB_Forest_age_Forest_Pri.tif")
-delta_esa  <- rast("Delta_AGB_Forest_age.tif")
+delta_esa  <- rast("Delta_AGB_Forest_age_Forest_Pri.tif")
 
 #Dataframe
 process_lst_block(esa, delta_esa, "Annual", "Forest_Pri_AGB_age_full.csv")
