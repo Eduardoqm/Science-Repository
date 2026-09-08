@@ -34,7 +34,8 @@ save_delta_raster <- function(et_rast, output_file) {
   message("Generating Delta Raster: ", output_file)
   
   et_pri <- ifel(is.na(fr_pri), NA, et_rast)
-  et_f   <- focal(et_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  #et_f   <- focal(et_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  esa_f   <- focal(et_pri, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
   delta_et <- et_rast - et_f
   
   writeRaster(delta_et, output_file, overwrite=TRUE)
@@ -89,6 +90,7 @@ process_et_block <- function(et_rast, Delta_rast, cond_name, output_file, nlines
 }
 
 #Executing  functions ----------------------------------------------------------
+setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Scenery_95_probs")  
 start.time <- Sys.time()
 
 #Focal
