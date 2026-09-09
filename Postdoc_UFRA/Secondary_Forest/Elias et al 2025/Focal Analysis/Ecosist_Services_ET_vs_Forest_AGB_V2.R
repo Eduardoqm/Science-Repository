@@ -36,7 +36,7 @@ save_delta_raster <- function(et_rast, output_file) {
   et_pri <- ifel(is.na(fr_pri), NA, et_rast)
   #et_f   <- focal(et_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
   esa_f   <- focal(et_pri, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
-  delta_et <- et_rast - et_f
+  delta_et <- et_rast - esa_f
   
   writeRaster(delta_et, output_file, overwrite=TRUE)
   
