@@ -68,9 +68,10 @@ prcs_hobo = function(bd, age, sample, sensor){
 }
 
 pri2 = prcs_hobo(pri, 100, "Primaria_SEDAP", "HOBO")
-pasto2 = prcs_hobo(pasto, 0, "Pastagem_SEDAP", "HOBO")
+sdp_sec2 = prcs_hobo(sdp_sec, 15, "Secundaria_SEDAP", "HOBO")
+pasto2 = prcs_hobo(pasto, 0, "Pasto_SEDAP", "HOBO")
 
-hobo = rbind(pri2, pasto2)
+hobo = rbind(pri2, sdp_sec2, pasto2)
 #Mastering ---------------------------------------------------------------------
 master = rbind(kestrel, hobo)
 
