@@ -76,31 +76,33 @@ pasto2 = prcs_hobo(pasto, 0, "Pasto_SEDAP", "HOBO")
 
 hobo = rbind(pri2, sdp_sec2, pasto2)
 #Mastering ---------------------------------------------------------------------
-master = rbind(kestrel, hobo)
+new_master = rbind(kestrel, hobo)
+#new_master = kestrel
 
-#Exporting Master --------------------------------------------------------------
+#Exporting Master
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos")
-#write.csv(master, "Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv", row.names = F)
+
+old_master = read_csv("Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv")
+master_final = bind_rows(old_master, new_master) %>% distinct()
+
+write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_10_09_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
-ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+
+ggplot(master_final, aes(x = Date, y = Temp_C, col = Sample))+
   #geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
-ggplot(master, aes(x = Date, y = RH, col = Sample))+
-  #geom_point(size = 1, alpha = 0.5)+
+ggplot(master_final, aes(x = Date, y = RH, col = Sample))+
   geom_smooth()
 
-ggplot(master, aes(x = Date, y = VPD, col = Sample))+
-  #geom_point(size = 1, alpha = 0.5)+
+ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
   geom_smooth()+
   facet_wrap(~Sample, scale = "free")
 
-ggplot(master, aes(x = Date, y = VPD, col = Sample))+
-  #geom_point(size = 1, alpha = 0.5)+
+ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
   geom_smooth()+
   geom_hline(yintercept = 0.75, linetype = "dashed")
 
-ggplot(master, aes(x = Sample, y = VPD, fill = Sample))+
+ggplot(master_final, aes(x = Sample, y = VPD, fill = Sample))+
   geom_boxplot()
 
