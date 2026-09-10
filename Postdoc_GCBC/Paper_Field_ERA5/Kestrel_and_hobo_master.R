@@ -42,6 +42,9 @@ romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
 kestrel = rbind(nc2, sdp_road2, ufra_k2, duq_k2, romano2)
 kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
 
+#Convert Fahrenheit to Celsius
+kestrel$Temp_C = ifelse(kestrel$Temp_C > 60, ((kestrel$Temp_C - 32) * 5/9), kestrel$Temp_C)
+
 #Calibration by HOBO LM slope
 #Intercept+(Slope*Kestrel)
 #kestrel$Temp_C <- 4.462359 + (0.814337 * kestrel$Temp_C)
