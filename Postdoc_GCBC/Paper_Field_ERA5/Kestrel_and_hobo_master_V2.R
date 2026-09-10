@@ -5,23 +5,8 @@
 library(tidyverse)
 library(readxl)
 
-setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_Data")
-dir()
-
-#Kestrel d2 --------------------------------------------------------------------
-nc = read.csv("NovaColonia_3104608_17_de_jun._de_2026___6_00_00_PM.csv", sep = ",", skip = 3)  #Skip first line informations
-ufra_k = read.csv("D2-3104592-CAP_UFRA_24_de_jun._de_2026___2_30_00_PM.csv", sep = ",", skip = 3)
-duq_k = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv", sep = ",", skip = 3)
-sdp_road = read.csv("D2_-_3104596-ESTRADA_26_de_mai._de_2026___12_40_00_PM.csv", sep = ",", skip = 3)
-romano = read.csv("IrituiaJRI_-_3104596_25_de_jun_de_2026___1_50_00_PM.csv", sep = ",", skip = 3)
-
-#HOBO --------------------------------------------------------------------------
-#SEDAP
-pri = read_excel("PRIMARIA_10_09_2026.xlsx")
-sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
-pasto = read_excel("PASTO_10_09_2026.xlsx" )
-
-#Processing kestrel dataframe --------------------------------------------------
+#Functions ---------------------------------------------------------------------
+#Processing kestrel dataframe
 prcs_kestrel = function(bd, age, sample, sensor){
   bd = bd[-1,c(1:3)]
   colnames(bd) = c("Date", "Temp_C", "RH")
@@ -33,22 +18,14 @@ prcs_kestrel = function(bd, age, sample, sensor){
   return(bd)
 }
 
-nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
-sdp_road2 = prcs_kestrel(sdp_road, 18, "Estrada_SEDAP", "kestrel_d2")
-ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
-duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
-romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
-
-kestrel = rbind(nc2, sdp_road2, ufra_k2, duq_k2, romano2)
-kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
-
-#Convert Fahrenheit to Celsius
-kestrel$Temp_C = ifelse(kestrel$Temp_C > 60, ((kestrel$Temp_C - 32) * 5/9), kestrel$Temp_C)
-
-#Calibration by HOBO LM slope
-#Intercept+(Slope*Kestrel)
-#kestrel$Temp_C <- 4.462359 + (0.814337 * kestrel$Temp_C)
-#kestrel$RH <- 41.648026 + (0.572683 * kestrel$RH)
+#Processing HOBO dataframe
+prcs_hobo = function(bd, age, sample, sensor){
+  bd = bd[,c(2,3,4,8)]
+  colnames(bd) = c("Date", "Temp_C", "RH", "VPD")
+  bd$Age = age; bd$Sample = sample; bd$Sensor = sensor
+  bd$Date = as.POSIXct(bd$Date, format = "%Y-%m-%d %I:%M:%S %p")
+  return(bd)
+}
 
 #Calculating VPD
 vpd <- function(temp, UR) {
@@ -58,18 +35,40 @@ vpd <- function(temp, UR) {
   return(VPD)
 }
 
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_Data")
+dir()
+
+#Kestrel d2 --------------------------------------------------------------------
+nc = read.csv("NovaColonia_3104608_4_de_ago._de_2026___9_30_00_AM.csv"  , sep = ",", skip = 3)
+ufra_k = read.csv("D2-3104592-CAP_UFRA_4_de_ago._de_2026___5_00_00_PM.csv"  , sep = ",", skip = 3)
+duq_k = read.csv("D2-3104605-S_GERALDO_27_de_ago_de_2026___2_10_00_PM.csv" , sep = ",", skip = 3)
+romano = read.csv("IrituiaJRI_-_3104596_28_de_ago._de_2026___4_10_00_PM.csv", sep = ",", skip = 3)
+
+#HOBO --------------------------------------------------------------------------
+#Secundary Forests
+
+#SEDAP
+#pri = read_excel("PRIMARIA_10_09_2026.xlsx")
+#sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
+#pasto = read_excel("PASTO_10_09_2026.xlsx" )
+
+#Processing kestrel dataframe --------------------------------------------------
+nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
+ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
+duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
+romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
+
+kestrel = rbind(nc2, ufra_k2, duq_k2, romano2)
+kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
+
+#Convert Fahrenheit to Celsius
+kestrel$Temp_C = ifelse(kestrel$Temp_C > 60, ((kestrel$Temp_C - 32) * 5/9), kestrel$Temp_C)
+
+#Calculating VPD
 kestrel$VPD = vpd(kestrel$Temp_C, kestrel$RH)
 kestrel = kestrel[,c(1:3, 7, 4:6)]
 
 #Processing HOBO dataframe -----------------------------------------------------
-prcs_hobo = function(bd, age, sample, sensor){
-  bd = bd[,c(2,3,4,8)]
-  colnames(bd) = c("Date", "Temp_C", "RH", "VPD")
-  bd$Age = age; bd$Sample = sample; bd$Sensor = sensor
-  bd$Date = as.POSIXct(bd$Date, format = "%Y-%m-%d %I:%M:%S %p")
-  return(bd)
-}
-
 pri2 = prcs_hobo(pri, 100, "Primaria_SEDAP", "HOBO")
 sdp_sec2 = prcs_hobo(sdp_sec, 15, "Secundaria_SEDAP", "HOBO")
 pasto2 = prcs_hobo(pasto, 0, "Pasto_SEDAP", "HOBO")
@@ -80,7 +79,7 @@ master = rbind(kestrel, hobo)
 
 #Exporting Master --------------------------------------------------------------
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos")
-write.csv(master, "Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv", row.names = F)
+#write.csv(master, "Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+
