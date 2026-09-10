@@ -1,5 +1,4 @@
 #Kestrel and hobo Master dataframe - V2
-
 #Eduardo Q Marques 10-09-2026
 
 library(tidyverse)
@@ -49,9 +48,9 @@ romano = read.csv("IrituiaJRI_-_3104596_28_de_ago._de_2026___4_10_00_PM.csv", se
 #Secundary Forests
 
 #SEDAP
-#pri = read_excel("PRIMARIA_10_09_2026.xlsx")
-#sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
-#pasto = read_excel("PASTO_10_09_2026.xlsx" )
+pri = read_excel("PRIMARIA_10_09_2026.xlsx")
+sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
+pasto = read_excel("PASTO_10_09_2026.xlsx" )
 
 #Processing kestrel dataframe --------------------------------------------------
 nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
@@ -89,7 +88,6 @@ write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_10_09_2026.csv", row
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master_final, aes(x = Date, y = Temp_C, col = Sample))+
-  #geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
 ggplot(master_final, aes(x = Date, y = RH, col = Sample))+
@@ -104,9 +102,13 @@ ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
   geom_hline(yintercept = 0.75, linetype = "dashed")
 
 ggplot(master_final, aes(x = Sample, y = VPD, fill = Sample))+
-  geom_boxplot()
+  geom_boxplot()+
+  geom_hline(yintercept = 0.75, linetype = "dashed")
 
 ggplot(master_final, aes(x = Age, y = VPD, fill = Sample))+
   geom_boxplot()+
   geom_hline(yintercept = 0.75, linetype = "dashed")
 
+ggplot(master_final, aes(x = Sensor, y = VPD, fill = Sensor))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.75, linetype = "dashed")
