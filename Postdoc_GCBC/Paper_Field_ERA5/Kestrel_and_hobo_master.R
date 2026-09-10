@@ -14,7 +14,6 @@ ufra_k = read.csv("D2-3104592-CAP_UFRA_24_de_jun._de_2026___2_30_00_PM.csv", sep
 duq_k = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv", sep = ",", skip = 3)
 sdp_road = read.csv("D2_-_3104596-ESTRADA_26_de_mai._de_2026___12_40_00_PM.csv", sep = ",", skip = 3)
 romano = read.csv("IrituiaJRI_-_3104596_25_de_jun_de_2026___1_50_00_PM.csv", sep = ",", skip = 3)
-pasto_k = read.csv("D2_-_3104605_14_de_abr._de_2026___9_40_00_AM.csv", sep = ",", skip = 3)
 
 #HOBO --------------------------------------------------------------------------
 #SEDAP
@@ -38,10 +37,10 @@ nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
 sdp_road2 = prcs_kestrel(sdp_road, 18, "Estrada_SEDAP", "kestrel_d2")
 ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
 duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
-duq_k2 = duq_k2 %>% filter(Date > "2026-04-26 00:00:00")
 romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
 
 kestrel = rbind(nc2, sdp_road2, ufra_k2, duq_k2, romano2)
+kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
 
 #Calibration by HOBO LM slope
 #Intercept+(Slope*Kestrel)
