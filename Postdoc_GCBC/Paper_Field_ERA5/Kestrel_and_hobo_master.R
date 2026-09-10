@@ -19,7 +19,7 @@ romano = read.csv("IrituiaJRI_-_3104596_25_de_jun_de_2026___1_50_00_PM.csv", sep
 #SEDAP
 pri = read_excel("PRIMARIA_10_09_2026.xlsx")
 sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
-pasto = read_excel("PRIMARIA_10_09_2026.xlsx")
+pasto = read_excel("PASTO_10_09_2026.xlsx" )
 
 #Processing kestrel dataframe --------------------------------------------------
 prcs_kestrel = function(bd, age, sample, sensor){
@@ -82,13 +82,11 @@ write.csv(master, "Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv", row.names =
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+
   #geom_point(size = 1, alpha = 0.5)+
-  geom_smooth()+
-  facet_wrap(~Sample, scale = "free")
+  geom_smooth()
 
 ggplot(master, aes(x = Date, y = RH, col = Sample))+
   #geom_point(size = 1, alpha = 0.5)+
-  geom_smooth()+
-  facet_wrap(~Sample, scale = "free")
+  geom_smooth()
 
 ggplot(master, aes(x = Date, y = VPD, col = Sample))+
   #geom_point(size = 1, alpha = 0.5)+
