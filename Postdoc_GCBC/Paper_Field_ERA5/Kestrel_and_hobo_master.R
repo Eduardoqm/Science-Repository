@@ -5,24 +5,22 @@
 library(tidyverse)
 library(readxl)
 
-setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos/Raw_Data")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_Data")
 dir()
 
 #Kestrel d2 --------------------------------------------------------------------
-ufra = read.csv("D2-3104592-CAP_UFRA_12_de_mai._de_2026___4_20_00_PM.csv",
-                sep = ",", skip = 3)  #Skip first line informations
+nc = read.csv("NovaColonia_3104608_17_de_jun._de_2026___6_00_00_PM.csv", sep = ",", skip = 3)  #Skip first line informations
+ufra_k = read.csv("D2-3104592-CAP_UFRA_24_de_jun._de_2026___2_30_00_PM.csv", sep = ",", skip = 3)
+duq_k = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv", sep = ",", skip = 3)
+sdp_road = read.csv("D2_-_3104596-ESTRADA_26_de_mai._de_2026___12_40_00_PM.csv", sep = ",", skip = 3)
+romano = read.csv("IrituiaJRI_-_3104596_25_de_jun_de_2026___1_50_00_PM.csv", sep = ",", skip = 3)
+pasto_k = read.csv("D2_-_3104605_14_de_abr._de_2026___9_40_00_AM.csv", sep = ",", skip = 3)
 
-
-duquinha = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv",
-                sep = ",", skip = 3)  #Skip first line informations
-
-
-sdp_road = read.csv("D2_-_3104596-ESTRADA_26_de_mai._de_2026___12_40_00_PM.csv",
-                sep = ",", skip = 3)  #Skip first line informations
-
-pri = read_excel("HOBO_2026-05-05_PriFor_SEDAP.xlsx")
-
-pasto = read_excel("HOBO_01 2026-05-07_Pasto_SEDAP.xlsx")
+#HOBO --------------------------------------------------------------------------
+#SEDAP
+pri = read_excel("PRIMARIA_10_09_2026.xlsx")
+sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
+pasto = read_excel("PRIMARIA_10_09_2026.xlsx")
 
 #Processing kestrel dataframe --------------------------------------------------
 prcs_kestrel = function(bd, age, sample, sensor){
@@ -36,12 +34,14 @@ prcs_kestrel = function(bd, age, sample, sensor){
   return(bd)
 }
 
+nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
 sdp_road2 = prcs_kestrel(sdp_road, 18, "Estrada_SEDAP", "kestrel_d2")
-ufra2 = prcs_kestrel(ufra, 20, "SecFor_UFRA", "kestrel_d2")
-duquinha2 = prcs_kestrel(duquinha, 32, "SecFor_Duquinha", "kestrel_d2")
-duquinha2 = duquinha2 %>% filter(Date > "2026-04-26 00:00:00")
+ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
+duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
+duq_k2 = duq_k2 %>% filter(Date > "2026-04-26 00:00:00")
+romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
 
-kestrel = rbind(sdp_road2, ufra2, duquinha2)
+kestrel = rbind(sdp_road2, ufra2, duq_k2)
 
 #Calibration by HOBO LM slope
 #Intercept+(Slope*Kestrel)
