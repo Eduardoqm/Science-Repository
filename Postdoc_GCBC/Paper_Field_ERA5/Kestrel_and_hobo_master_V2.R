@@ -106,3 +106,7 @@ ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
 ggplot(master_final, aes(x = Sample, y = VPD, fill = Sample))+
   geom_boxplot()
 
+ggplot(master_final, aes(x = Age, y = VPD, fill = Sample))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.75, linetype = "dashed")
+
