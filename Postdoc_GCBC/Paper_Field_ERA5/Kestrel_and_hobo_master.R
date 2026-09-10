@@ -101,6 +101,6 @@ ggplot(master, aes(x = Date, y = VPD, col = Sample))+
   geom_smooth()+
   geom_hline(yintercept = 0.75, linetype = "dashed")
 
-ggplot(master, aes(x = Sample, y = VPD, col = Sample))+
+ggplot(master, aes(x = Sample, y = VPD, fill = Sample))+
   geom_boxplot()
 
