@@ -35,6 +35,7 @@ vpd <- function(temp, UR) {
   return(VPD)
 }
 
+#Load data ---------------------------------------------------------------------
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_Data")
 dir()
 
