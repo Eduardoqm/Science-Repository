@@ -96,6 +96,11 @@ ggplot(master, aes(x = Date, y = VPD, col = Sample))+
   geom_smooth()+
   facet_wrap(~Sample, scale = "free")
 
+ggplot(master, aes(x = Date, y = VPD, col = Sample))+
+  #geom_point(size = 1, alpha = 0.5)+
+  geom_smooth()+
+  geom_hline(yintercept = 0.75, linetype = "dashed")
+
 ggplot(master, aes(x = Sample, y = VPD, col = Sample))+
   geom_boxplot()
 
