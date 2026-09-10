@@ -76,21 +76,24 @@ hobo = rbind(pri2, sdp_sec2, pasto2)
 master = rbind(kestrel, hobo)
 
 #Exporting Master --------------------------------------------------------------
-setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos")
-write.csv(master, "Master_Kestrel_Hobo_VPD_10_06_2026.csv", row.names = F)
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos")
+write.csv(master, "Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+
-  geom_point(size = 1, alpha = 0.5)+
-  geom_smooth()
+  #geom_point(size = 1, alpha = 0.5)+
+  geom_smooth()+
+  facet_wrap(~Sample, scale = "free")
 
 ggplot(master, aes(x = Date, y = RH, col = Sample))+
-  geom_point(size = 1, alpha = 0.5)+
-  geom_smooth()
+  #geom_point(size = 1, alpha = 0.5)+
+  geom_smooth()+
+  facet_wrap(~Sample, scale = "free")
 
 ggplot(master, aes(x = Date, y = VPD, col = Sample))+
-  geom_point(size = 1, alpha = 0.5)+
-  geom_smooth()
+  #geom_point(size = 1, alpha = 0.5)+
+  geom_smooth()+
+  facet_wrap(~Sample, scale = "free")
 
 ggplot(master, aes(x = Sample, y = VPD, col = Sample))+
   geom_boxplot()
