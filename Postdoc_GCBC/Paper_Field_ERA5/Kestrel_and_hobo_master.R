@@ -41,12 +41,12 @@ duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
 duq_k2 = duq_k2 %>% filter(Date > "2026-04-26 00:00:00")
 romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
 
-kestrel = rbind(sdp_road2, ufra2, duq_k2)
+kestrel = rbind(nc2, sdp_road2, ufra_k2, duq_k2, romano2)
 
 #Calibration by HOBO LM slope
 #Intercept+(Slope*Kestrel)
-kestrel$Temp_C <- 4.462359 + (0.814337 * kestrel$Temp_C)
-kestrel$RH <- 41.648026 + (0.572683 * kestrel$RH)
+#kestrel$Temp_C <- 4.462359 + (0.814337 * kestrel$Temp_C)
+#kestrel$RH <- 41.648026 + (0.572683 * kestrel$RH)
 
 #Calculating VPD
 vpd <- function(temp, UR) {
