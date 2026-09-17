@@ -1,28 +1,25 @@
 #Kestrel and hobo Master dataframe
 
-#Eduardo Q Marques 16-05-2026
+#Eduardo Q Marques 16-05-2026 Updated 10-09-2026
 
 library(tidyverse)
 library(readxl)
 
-setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos/Raw_Data")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_Data")
 dir()
 
 #Kestrel d2 --------------------------------------------------------------------
-ufra = read.csv("D2-3104592-CAP_UFRA_12_de_mai._de_2026___4_20_00_PM.csv",
-                sep = ",", skip = 3)  #Skip first line informations
+nc = read.csv("NovaColonia_3104608_17_de_jun._de_2026___6_00_00_PM.csv", sep = ",", skip = 3)  #Skip first line informations
+ufra_k = read.csv("D2-3104592-CAP_UFRA_24_de_jun._de_2026___2_30_00_PM.csv", sep = ",", skip = 3)
+duq_k = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv", sep = ",", skip = 3)
+sdp_road = read.csv("D2_-_3104596-ESTRADA_26_de_mai._de_2026___12_40_00_PM.csv", sep = ",", skip = 3)
+romano = read.csv("IrituiaJRI_-_3104596_25_de_jun_de_2026___1_50_00_PM.csv", sep = ",", skip = 3)
 
-
-duquinha = read.csv("D2-3104605-S_GERALDO_10_de_jun._de_2026___11_00_00_AM.csv",
-                sep = ",", skip = 3)  #Skip first line informations
-
-
-sdp_road = read.csv("D2_-_3104596-ESTRADA_26_de_mai._de_2026___12_40_00_PM.csv",
-                sep = ",", skip = 3)  #Skip first line informations
-
-pri = read_excel("HOBO_2026-05-05_PriFor_SEDAP.xlsx")
-
-pasto = read_excel("HOBO_01 2026-05-07_Pasto_SEDAP.xlsx")
+#HOBO --------------------------------------------------------------------------
+#SEDAP
+pri = read_excel("PRIMARIA_10_09_2026.xlsx")
+sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
+pasto = read_excel("PASTO_10_09_2026.xlsx" )
 
 #Processing kestrel dataframe --------------------------------------------------
 prcs_kestrel = function(bd, age, sample, sensor){
@@ -36,17 +33,22 @@ prcs_kestrel = function(bd, age, sample, sensor){
   return(bd)
 }
 
+nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
 sdp_road2 = prcs_kestrel(sdp_road, 18, "Estrada_SEDAP", "kestrel_d2")
-ufra2 = prcs_kestrel(ufra, 20, "SecFor_UFRA", "kestrel_d2")
-duquinha2 = prcs_kestrel(duquinha, 32, "SecFor_Duquinha", "kestrel_d2")
-duquinha2 = duquinha2 %>% filter(Date > "2026-04-26 00:00:00")
+ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
+duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
+romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
 
-kestrel = rbind(sdp_road2, ufra2, duquinha2)
+kestrel = rbind(nc2, sdp_road2, ufra_k2, duq_k2, romano2)
+kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
+
+#Convert Fahrenheit to Celsius
+kestrel$Temp_C = ifelse(kestrel$Temp_C > 60, ((kestrel$Temp_C - 32) * 5/9), kestrel$Temp_C)
 
 #Calibration by HOBO LM slope
 #Intercept+(Slope*Kestrel)
-kestrel$Temp_C <- 4.462359 + (0.814337 * kestrel$Temp_C)
-kestrel$RH <- 41.648026 + (0.572683 * kestrel$RH)
+#kestrel$Temp_C <- 4.462359 + (0.814337 * kestrel$Temp_C)
+#kestrel$RH <- 41.648026 + (0.572683 * kestrel$RH)
 
 #Calculating VPD
 vpd <- function(temp, UR) {
@@ -69,29 +71,36 @@ prcs_hobo = function(bd, age, sample, sensor){
 }
 
 pri2 = prcs_hobo(pri, 100, "Primaria_SEDAP", "HOBO")
-pasto2 = prcs_hobo(pasto, 0, "Pastagem_SEDAP", "HOBO")
+sdp_sec2 = prcs_hobo(sdp_sec, 15, "Secundaria_SEDAP", "HOBO")
+pasto2 = prcs_hobo(pasto, 0, "Pasto_SEDAP", "HOBO")
 
-hobo = rbind(pri2, pasto2)
+hobo = rbind(pri2, sdp_sec2, pasto2)
 #Mastering ---------------------------------------------------------------------
 master = rbind(kestrel, hobo)
 
 #Exporting Master --------------------------------------------------------------
-setwd("G:/My Drive/Research/PosDoc_GCBC/Analises/In situ/Kestrel_and_Hobos")
-write.csv(master, "Master_Kestrel_Hobo_VPD_10_06_2026.csv", row.names = F)
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos")
+write.csv(master, "Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master, aes(x = Date, y = Temp_C, col = Sample))+
-  geom_point(size = 1, alpha = 0.5)+
+  #geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
 ggplot(master, aes(x = Date, y = RH, col = Sample))+
-  geom_point(size = 1, alpha = 0.5)+
+  #geom_point(size = 1, alpha = 0.5)+
   geom_smooth()
 
 ggplot(master, aes(x = Date, y = VPD, col = Sample))+
-  geom_point(size = 1, alpha = 0.5)+
-  geom_smooth()
+  #geom_point(size = 1, alpha = 0.5)+
+  geom_smooth()+
+  facet_wrap(~Sample, scale = "free")
 
-ggplot(master, aes(x = Sample, y = VPD, col = Sample))+
+ggplot(master, aes(x = Date, y = VPD, col = Sample))+
+  #geom_point(size = 1, alpha = 0.5)+
+  geom_smooth()+
+  geom_hline(yintercept = 0.75, linetype = "dashed")
+
+ggplot(master, aes(x = Sample, y = VPD, fill = Sample))+
   geom_boxplot()
 
