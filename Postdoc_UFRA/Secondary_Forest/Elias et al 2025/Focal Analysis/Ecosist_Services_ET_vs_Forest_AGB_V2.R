@@ -1,5 +1,5 @@
 #ET Forest by ESA Biomass (Focal)
-#E.Q.Marques and J.Brito 11-12-2025
+#E.Q.Marques and J.Brito 11-12-2025 Updated 07-09-2026
 
 library(terra)
 library(sf)

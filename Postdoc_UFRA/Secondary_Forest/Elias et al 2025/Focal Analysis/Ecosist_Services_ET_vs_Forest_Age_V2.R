@@ -1,20 +1,20 @@
 #ET Forest by Forest Age (Focal)
-#E.Q.Marques and J.Brito 11-12-2025
+#E.Q.Marques and J.Brito 11-12-2025 Updated 11-09-2026
 
 library(terra)
 library(sf)
 library(tidyverse)
 
 #General Configurations --------------------------------------------------------
-setwd("C:/Users/Cliente/Downloads/dados")  
+setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Rasters_LST_ET")
 
 #Creates a temporary Terra files folder (prevents RAM overflow)
-if (!dir.exists("C:/Users/Cliente/Downloads/dados/tmp_terra")) {
-  dir.create("C:/Users/Cliente/Downloads/dados/tmp_terra")}
+if (!dir.exists("/home/leaf/Documentos/Serrapilheira _Elias et al/tmp_terra")) {
+  dir.create("/home/leaf/Documentos/Serrapilheira _Elias et al/tmp_terra")}
 
 terraOptions(
   #memfrac = 0.5,  #Delimitate terra do use only 50% of RAM
-  tempdir = "C:/Users/Cliente/Downloads/dados/tmp_terra",
+  tempdir = "/home/leaf/Documentos/Serrapilheira _Elias et al/tmp_terra",
   threads = max(1, parallel::detectCores() - 2)) # Number of threads
 
 #Load data ---------------------------------------------------------------------
@@ -22,6 +22,7 @@ et_year <- rast("ECOSTRESS_ET_Annual_2022_70m.tif")
 et_dry  <- rast("ECOSTRESS_ET_Dry_2022_70m.tif")
 et_wet  <- rast("ECOSTRESS_ET_Wet_2022_70m.tif")
 
+#setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Scenery") 
 fr_pri <- rast("Forest_70m.tif")
 age <- rast("MB_Forest_age_70m.tif")
 sf_perc <- rast("Perc_SecForest_70m.tif")
@@ -33,7 +34,8 @@ save_delta_raster <- function(et_rast, output_file) {
   message("Generating Delta Raster: ", output_file)
   
   et_pri <- ifel(is.na(fr_pri), NA, et_rast)
-  et_f   <- focal(et_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  #et_f   <- focal(et_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  et_f   <- focal(et_pri, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
   delta_et <- et_rast - et_f
   
   writeRaster(delta_et, output_file, overwrite=TRUE)
