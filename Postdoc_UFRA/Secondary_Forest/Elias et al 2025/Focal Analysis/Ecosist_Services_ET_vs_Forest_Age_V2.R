@@ -18,7 +18,7 @@ terraOptions(
   threads = max(1, parallel::detectCores() - 2)) # Number of threads
 
 #Load data ---------------------------------------------------------------------
-et_year <- rast("ECOSTRESS_ET_Annual_2022_70m.tif")
+#et_year <- rast("ECOSTRESS_ET_Annual_2022_70m.tif")
 et_dry  <- rast("ECOSTRESS_ET_Dry_2022_70m.tif")
 et_wet  <- rast("ECOSTRESS_ET_Wet_2022_70m.tif")
 
@@ -93,16 +93,16 @@ process_et_block <- function(et_rast, Delta_rast, cond_name, output_file, nlines
 start.time <- Sys.time()
 
 #Focal
-save_delta_raster(et_year, "Delta_et_Forest_age_Annual_2022.tif")
+#save_delta_raster(et_year, "Delta_et_Forest_age_Annual_2022.tif")
 save_delta_raster(et_dry,  "Delta_et_Forest_age_Dry_2022.tif")
 save_delta_raster(et_wet,  "Delta_et_Forest_age_Rainy_2022.tif")
 
-Delta_year  <- rast("Delta_et_Forest_age_Annual_2022.tif")  
+#Delta_year  <- rast("Delta_et_Forest_age_Annual_2022.tif")  
 Delta_dry  <- rast("Delta_et_Forest_age_Dry_2022.tif")  
 Delta_wet  <- rast("Delta_et_Forest_age_Rainy_2022.tif")  
 
 #Dataframe
-process_et_block(et_year, Delta_year, "Annual", "et_age_Annual_full.csv")
+#process_et_block(et_year, Delta_year, "Annual", "et_age_Annual_full.csv")
 process_et_block(et_dry, Delta_dry,  "Dry Season", "et_age_Dry_full.csv")
 process_et_block(et_wet,Delta_wet,  "Rainy Season", "et_age_Rainy_full.csv")
 
@@ -111,7 +111,7 @@ time.taken <- end.time - start.time
 time.taken
 
 #Summarizing data --------------------------------------------------------------
-year_df <- read_csv("et_age_Annual_full.csv")
+#year_df <- read_csv("et_age_Annual_full.csv")
 dry_df <- read_csv("et_age_Dry_full.csv")
 rainy_df <- read_csv("et_age_Rainy_full.csv")
 
