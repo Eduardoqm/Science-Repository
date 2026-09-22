@@ -6,6 +6,7 @@
 #Eduardo Q Marques 10-03-2026 updated07-07-2026
 
 library(tidyverse)
+library(ggpubr)
 
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1")
 dir()
@@ -48,6 +49,7 @@ for (z in rain_months) {
 }
 
 df$year = as.numeric(df$year); head(df)
+df$Region3 = factor(df$Region3, levels = c("NS", "SZ", "IS", "PS"))
 
 #Itensity ----------------------------------------------------------------------
 #model1 <- lm(Intesidade ~ Ano * Season + Ano * Região)
@@ -79,20 +81,21 @@ gg1b = ggplot(df2, aes(x=year, y=VPD_int, col = Region3))+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Mean VPD (kPa)", col = NULL,
        title = "a)")+
-  facet_wrap(~factor(cond), scales = "free")+
+  facet_wrap(~factor(cond), scales = "free_x")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
         strip.text = element_text(hjust = 0, face = "bold")); gg1b
 
 ggsave(gg1b, filename = "Time_Series_VPD_Intensity_(since1975)_B.png",
-       dpi = 600, units = "cm", height = 7, width = 14)
+       dpi = 600, units = "cm", height = 8, width = 14)
 
 #Flamability duration ----------------------------------------------------------
 #model1 <- lm(Duração ~ Ano * Season + Ano * Região)
 df$contagem = 1
 df3 = df %>% 
-  group_by(Region, Region2, year, cond) %>% 
+  group_by(Region, Region2, Region3, year, cond) %>% 
   filter(year > 1969) %>% 
   filter(VPD >= 0.75) %>% 
   summarise(VPD_time = sum(contagem)/365)
@@ -113,6 +116,28 @@ gg2 = ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
 
 ggsave(gg2, filename = "Time_Series_VPD_Duration_(since1975).png",
        dpi = 600, units = "cm", height = 12, width = 14)
+
+
+gg2b = ggplot(df3, aes(x=year, y=VPD_time, col = Region3))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL,
+       title = "b)")+
+  facet_wrap(~factor(cond), scales = "free_x")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg2b
+
+ggsave(gg2b, filename = "Time_Series_VPD_Duration_(since1975)_B.png",
+       dpi = 600, units = "cm", height = 8, width = 14)
+
+#Join Graphs -------------------------------------------------------------------
+gg_full = ggarrange(gg1b, gg2b, ncol = 1, common.legend = T, legend = "bottom")
+
+ggsave(gg_full, filename = "Time_Series_VPD_analysis_(since1975).png",
+       dpi = 600, units = "cm", height = 15, width = 14)
 
 #Testing historical hours ------------------------------------------------------
 df4 = df %>% 
