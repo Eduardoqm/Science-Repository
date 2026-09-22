@@ -29,14 +29,18 @@ df = df[,-2]; head(df)
 #df$Region[df$Region == "6_or_more_months"] <- "Prolonged Seasonal"
 
 df$Region2 = df$Region
+df$Region3 = df$Region
 
 df$Region2[df$Region2 == "zero_months"] <- "a)"
 df$Region2[df$Region2 == "until_3_months"] <- "b)"
 df$Region2[df$Region2 == "more_than_3_less_6"] <- "c)"
 df$Region2[df$Region2 == "6_or_more_months"] <- "d)"
 
+df$Region3[df$Region3 == "zero_months"] <- "NS"
+df$Region3[df$Region3 == "until_3_months"] <- "SZ"
+df$Region3[df$Region3 == "more_than_3_less_6"] <- "IS"
+df$Region3[df$Region3 == "6_or_more_months"] <- "PS"
 
-df$cond = "Dry Season"
 rain_months = c("12", "01", "02", "03", "04", "05")
 
 for (z in rain_months) {
@@ -48,7 +52,7 @@ df$year = as.numeric(df$year); head(df)
 #Itensity ----------------------------------------------------------------------
 #model1 <- lm(Intesidade ~ Ano * Season + Ano * Região)
 df2 = df %>% 
-  group_by(Region, Region2, year, cond) %>% 
+  group_by(Region, Region2, Region3, year, cond) %>% 
   filter(year > 1970) %>% 
   summarise(VPD_int = mean(VPD))
 head(df2)
@@ -69,6 +73,20 @@ gg1 = ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
 ggsave(gg1, filename = "Time_Series_VPD_Intensity_(since1975).png",
        dpi = 600, units = "cm", height = 12, width = 14)
 
+
+gg1b = ggplot(df2, aes(x=year, y=VPD_int, col = Region3))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = "Mean VPD (kPa)", col = NULL,
+       title = "a)")+
+  facet_wrap(~factor(cond), scales = "free")+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg1b
+
+ggsave(gg1b, filename = "Time_Series_VPD_Intensity_(since1975)_B.png",
+       dpi = 600, units = "cm", height = 7, width = 14)
 
 #Flamability duration ----------------------------------------------------------
 #model1 <- lm(Duração ~ Ano * Season + Ano * Região)
@@ -109,7 +127,7 @@ gg3 = ggplot(df4, aes(x=hour, y=VPD, col = cond))+
   geom_smooth()+
   geom_hline(aes(yintercept=0.75), colour="black", linetype="dashed")+
   labs(x = "Hour", y = "VPD (kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("a)", "b)", "c)", "d)")), scales = "free")+
+  facet_wrap(~factor(Region2, c("a)", "b)", "c)", "d)")), scales = "free")+
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
