@@ -8,7 +8,7 @@
 library(tidyverse)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/H2")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2")
 dir()
 
 df23 = read_csv("Hours_VPD75_Age_full_2023.csv")
