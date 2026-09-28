@@ -6,8 +6,9 @@
 #Eduardo Q Marques 10-03-2026 updated07-07-2026
 
 library(tidyverse)
+library(ggpubr)
 
-setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/H1")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1")
 dir()
 
 df = read_csv("ERA5_Amaz_VPD_clusterd_since1975.csv")
@@ -28,13 +29,19 @@ df = df[,-2]; head(df)
 #df$Region[df$Region == "more_than_3_less_6"] <- "Intermediate Seasonal"
 #df$Region[df$Region == "6_or_more_months"] <- "Prolonged Seasonal"
 
-df$Region[df$Region == "zero_months"] <- "a)"
-df$Region[df$Region == "until_3_months"] <- "b)"
-df$Region[df$Region == "more_than_3_less_6"] <- "c)"
-df$Region[df$Region == "6_or_more_months"] <- "d)"
+df$Region2 = df$Region
+df$Region3 = df$Region
 
+df$Region2[df$Region2 == "zero_months"] <- "a)"
+df$Region2[df$Region2 == "until_3_months"] <- "b)"
+df$Region2[df$Region2 == "more_than_3_less_6"] <- "c)"
+df$Region2[df$Region2 == "6_or_more_months"] <- "d)"
 
-df$cond = "Dry Season"
+df$Region3[df$Region3 == "zero_months"] <- "NS"
+df$Region3[df$Region3 == "until_3_months"] <- "SZ"
+df$Region3[df$Region3 == "more_than_3_less_6"] <- "IS"
+df$Region3[df$Region3 == "6_or_more_months"] <- "PS"
+
 rain_months = c("12", "01", "02", "03", "04", "05")
 
 for (z in rain_months) {
@@ -42,11 +49,12 @@ for (z in rain_months) {
 }
 
 df$year = as.numeric(df$year); head(df)
+df$Region3 = factor(df$Region3, levels = c("NS", "SZ", "IS", "PS"))
 
 #Itensity ----------------------------------------------------------------------
 #model1 <- lm(Intesidade ~ Ano * Season + Ano * Região)
 df2 = df %>% 
-  group_by(Region, year, cond) %>% 
+  group_by(Region, Region2, Region3, year, cond) %>% 
   filter(year > 1970) %>% 
   summarise(VPD_int = mean(VPD))
 head(df2)
@@ -58,7 +66,7 @@ gg1 = ggplot(df2, aes(x=year, y=VPD_int, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Mean VPD (kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("a)", "b)", "c)", "d)")), scales = "free")+
+  facet_wrap(~factor(Region2, c("a)", "b)", "c)", "d)")), scales = "free")+
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
@@ -68,11 +76,26 @@ ggsave(gg1, filename = "Time_Series_VPD_Intensity_(since1975).png",
        dpi = 600, units = "cm", height = 12, width = 14)
 
 
+gg1b = ggplot(df2, aes(x=year, y=VPD_int, col = Region3))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = "Mean VPD (kPa)", col = NULL,
+       title = "a)")+
+  facet_wrap(~factor(cond), scales = "free_x")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg1b
+
+ggsave(gg1b, filename = "Time_Series_VPD_Intensity_(since1975)_B.png",
+       dpi = 600, units = "cm", height = 8, width = 14)
+
 #Flamability duration ----------------------------------------------------------
 #model1 <- lm(Duração ~ Ano * Season + Ano * Região)
 df$contagem = 1
 df3 = df %>% 
-  group_by(Region, year, cond) %>% 
+  group_by(Region, Region2, Region3, year, cond) %>% 
   filter(year > 1969) %>% 
   filter(VPD >= 0.75) %>% 
   summarise(VPD_time = sum(contagem)/365)
@@ -85,7 +108,7 @@ gg2 = ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("a)", "b)", "c)", "d)")), scales = "free")+
+  facet_wrap(~factor(Region2, c("a)", "b)", "c)", "d)")), scales = "free")+
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
@@ -94,9 +117,31 @@ gg2 = ggplot(df3, aes(x=year, y=VPD_time, col = cond))+
 ggsave(gg2, filename = "Time_Series_VPD_Duration_(since1975).png",
        dpi = 600, units = "cm", height = 12, width = 14)
 
+
+gg2b = ggplot(df3, aes(x=year, y=VPD_time, col = Region3))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = "Hours per day (VPD ≥ 0.75 kPa)", col = NULL,
+       title = "b)")+
+  facet_wrap(~factor(cond), scales = "free_x")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg2b
+
+ggsave(gg2b, filename = "Time_Series_VPD_Duration_(since1975)_B.png",
+       dpi = 600, units = "cm", height = 8, width = 14)
+
+#Join Graphs -------------------------------------------------------------------
+gg_full = ggarrange(gg1b, gg2b, ncol = 1, common.legend = T, legend = "bottom")
+
+ggsave(gg_full, filename = "Time_Series_VPD_analysis_(since1975).png",
+       dpi = 600, units = "cm", height = 15, width = 14)
+
 #Testing historical hours ------------------------------------------------------
 df4 = df %>% 
-  group_by(Region, year, cond, hour) %>% 
+  group_by(Region, Region2, year, cond, hour) %>% 
   filter(year > 1970) %>% 
   summarise(VPD = mean(VPD))
 head(df4)
@@ -107,7 +152,7 @@ gg3 = ggplot(df4, aes(x=hour, y=VPD, col = cond))+
   geom_smooth()+
   geom_hline(aes(yintercept=0.75), colour="black", linetype="dashed")+
   labs(x = "Hour", y = "VPD (kPa)", col = NULL)+
-  facet_wrap(~factor(Region, c("a)", "b)", "c)", "d)")), scales = "free")+
+  facet_wrap(~factor(Region2, c("a)", "b)", "c)", "d)")), scales = "free")+
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
