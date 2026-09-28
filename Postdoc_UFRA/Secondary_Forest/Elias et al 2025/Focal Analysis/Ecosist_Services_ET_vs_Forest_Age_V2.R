@@ -18,9 +18,9 @@ terraOptions(
   threads = max(1, parallel::detectCores() - 2)) # Number of threads
 
 #Load data ---------------------------------------------------------------------
-#et_year <- rast("ECOSTRESS_ET_Annual_2022_70m.tif")
-et_dry  <- rast("ECOSTRESS_ET_Dry_2022_70m.tif")
-et_wet  <- rast("ECOSTRESS_ET_Wet_2022_70m.tif")
+#et_year <- rast("ECOSTRESS_ET_Annual_2024_70m.tif")
+et_dry  <- rast("ECOSTRESS_ET_Dry_2024_70m.tif")
+et_wet  <- rast("ECOSTRESS_ET_Wet_2024_70m.tif")
 
 #setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Scenery") 
 fr_pri <- rast("Forest_70m.tif")
@@ -93,13 +93,13 @@ process_et_block <- function(et_rast, Delta_rast, cond_name, output_file, nlines
 start.time <- Sys.time()
 
 #Focal
-#save_delta_raster(et_year, "Delta_et_Forest_age_Annual_2022.tif")
-save_delta_raster(et_dry,  "Delta_et_Forest_age_Dry_2022.tif")
-save_delta_raster(et_wet,  "Delta_et_Forest_age_Rainy_2022.tif")
+#save_delta_raster(et_year, "Delta_et_Forest_age_Annual_2024.tif")
+save_delta_raster(et_dry,  "Delta_et_Forest_age_Dry_2024.tif")
+save_delta_raster(et_wet,  "Delta_et_Forest_age_Rainy_2024.tif")
 
-#Delta_year  <- rast("Delta_et_Forest_age_Annual_2022.tif")  
-Delta_dry  <- rast("Delta_et_Forest_age_Dry_2022.tif")  
-Delta_wet  <- rast("Delta_et_Forest_age_Rainy_2022.tif")  
+#Delta_year  <- rast("Delta_et_Forest_age_Annual_2024.tif")  
+Delta_dry  <- rast("Delta_et_Forest_age_Dry_2024.tif")  
+Delta_wet  <- rast("Delta_et_Forest_age_Rainy_2024.tif")  
 
 #Dataframe
 #process_et_block(et_year, Delta_year, "Annual", "et_age_Annual_full.csv")
@@ -115,7 +115,8 @@ time.taken
 dry_df <- read_csv("et_age_Dry_full.csv")
 rainy_df <- read_csv("et_age_Rainy_full.csv")
 
-final_df <- rbind(year_df, dry_df, rainy_df)
+#final_df <- rbind(year_df, dry_df, rainy_df)
+final_df <- rbind(dry_df, rainy_df)
 
 final_df2 <- final_df %>%
   filter(sf_perc >= 70) %>%
@@ -127,7 +128,7 @@ final_df2 <- final_df %>%
     n = n()) %>%
   filter(n > 200, age < 250)
 
-final_df2$year <- 2022
+final_df2$year <- 2024
 
-write.csv(final_df2, "ET_Forest_age_2022.csv", row.names = FALSE)
+write.csv(final_df2, "ET_Forest_age_2024.csv", row.names = FALSE)
 
