@@ -14,40 +14,25 @@ plot(dp_start)
 plot(dp_end)
 plot(wet_peak)
 
-#Test 1 ------------------------------------------------------------------------
-#Calendar convertion to hidrologic year
+#Calendar convertion to hidrologic year ----------------------------------------
 dp_start_hy <- ((dp_start - wet_peak + 73) %% 73) + 1
 dp_end_hy   <- ((dp_end - wet_peak + 73) %% 73) + 1
 
 plot(dp_start_hy)
 plot(dp_end_hy)
 
-#Test 2 ------------------------------------------------------------------------
-# Converter pentads em dias aproximados do ano
-pentad_to_day <- function(x) {
-  (x - 1) * 5 + 1
-}
 
-start_day <- pentad_to_day(dp_start)
-end_day   <- pentad_to_day(dp_end)
+writeRaster(dp_start_hy, "DP_onset_hy.tif", overwrite = TRUE)
+writeRaster(dp_end_hy, "DP_end_hy.tif", overwrite = TRUE )
 
-# Converter dias em meses (ano não bissexto)
-start_month <- app(start_day, function(x) {
-  as.integer(format(
-    as.Date(x - 1, origin = "2021-01-01"),
-    "%m"
-  ))
-})
 
-end_month <- app(end_day, function(x) {
-  as.integer(format(
-    as.Date(x - 1, origin = "2021-01-01"),
-    "%m"
-  ))
-})
 
-names(start_month) <- "DP_start_month"
-names(end_month)   <- "DP_end_month"
 
-plot(start_month, main = "DP onset month")
-plot(end_month, main = "DP end month")
+
+
+
+
+
+
+
+
