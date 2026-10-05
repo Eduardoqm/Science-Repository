@@ -1,5 +1,5 @@
 #LST Forest by Forest Age (Focal)
-#E.Q.Marques and J.Brito 11-12-2025
+#E.Q.Marques and J.Brito 11-12-2025 Uptape 05-10-2026
 
 library(terra)
 library(sf)

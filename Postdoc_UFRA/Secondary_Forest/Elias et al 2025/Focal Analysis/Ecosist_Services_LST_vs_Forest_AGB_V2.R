@@ -18,9 +18,9 @@ terraOptions(
   threads = max(1, parallel::detectCores() - 2)) # Number of threads
 
 #Load data ---------------------------------------------------------------------
-lst_year <- rast("LST_Landsat_Annual_2022_70m.tif")
-lst_dry  <- rast("LST_Landsat_Dry_2022_70m.tif")
-lst_wet  <- rast("LST_Landsat_Wet_2022_70m.tif")
+lst_year <- rast("LST_Landsat_Annual_2024_70m.tif")
+lst_dry  <- rast("LST_Landsat_Dry_2024_70m.tif")
+lst_wet  <- rast("LST_Landsat_Wet_2024_70m.tif")
 
 fr_pri <- rast("Forest_70m.tif")
 esa <- rast("ESA_Biomass_70m.tif")
@@ -92,13 +92,13 @@ process_lst_block <- function(lst_rast, Delta_rast, cond_name, output_file, nlin
 start.time <- Sys.time()
 
 #Focal
-#save_delta_raster(lst_year, "Delta_LST_Forest_AGB_Annual_2022.tif")
-save_delta_raster(lst_dry,  "Delta_LST_Forest_AGB_Dry_2022.tif")
-save_delta_raster(lst_wet,  "Delta_LST_Forest_AGB_Rainy_2022.tif")
+#save_delta_raster(lst_year, "Delta_LST_Forest_AGB_Annual_2024.tif")
+save_delta_raster(lst_dry,  "Delta_LST_Forest_AGB_Dry_2024.tif")
+save_delta_raster(lst_wet,  "Delta_LST_Forest_AGB_Rainy_2024.tif")
 
-Delta_year  <- rast("Delta_LST_Forest_AGB_Annual_2022.tif")  
-Delta_dry  <- rast("Delta_LST_Forest_AGB_Dry_2022.tif")  
-Delta_wet  <- rast("Delta_LST_Forest_AGB_Rainy_2022.tif")  
+#Delta_year  <- rast("Delta_LST_Forest_AGB_Annual_2024.tif")  
+Delta_dry  <- rast("Delta_LST_Forest_AGB_Dry_2024.tif")  
+Delta_wet  <- rast("Delta_LST_Forest_AGB_Rainy_2024.tif")  
 
 #Dataframe
 #process_lst_block(lst_year, Delta_year, "Annual", "LST_AGB_Annual_full.csv")
@@ -126,7 +126,7 @@ final_df2 <- final_df %>%
     n = n()) %>%
   filter(n > 200, agb < 250)
 
-final_df2$year <- 2022
+final_df2$year <- 2024
 
-write.csv(final_df2, "LST_Forest_AGB_2022.csv", row.names = FALSE)
+write.csv(final_df2, "LST_Forest_AGB_2024.csv", row.names = FALSE)
 
