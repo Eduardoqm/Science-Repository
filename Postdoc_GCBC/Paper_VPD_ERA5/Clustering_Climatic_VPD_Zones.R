@@ -5,7 +5,7 @@
 library(terra)
 
 #Load data ---------------------------------------------------------------------
-setwd("G:/My Drive/GEE_VPD_Mensal")
+setwd("G:/My Drive/GEE_VPD_Historic/Historic_month_mean")
 dir()
 
 list_rst = list.files()
