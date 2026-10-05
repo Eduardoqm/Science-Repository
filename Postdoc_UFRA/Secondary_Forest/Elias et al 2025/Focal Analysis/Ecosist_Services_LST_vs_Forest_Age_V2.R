@@ -6,15 +6,15 @@ library(sf)
 library(tidyverse)
 
 #General Configurations --------------------------------------------------------
-setwd("C:/Users/Cliente/Downloads/dados")  
+setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Rasters_LST_ET")
 
 #Creates a temporary Terra files folder (prevents RAM overflow)
-if (!dir.exists("C:/Users/Cliente/Downloads/dados/tmp_terra")) {
-  dir.create("C:/Users/Cliente/Downloads/dados/tmp_terra")}
+if (!dir.exists("/home/leaf/Documentos/Serrapilheira _Elias et al/tmp_terra")) {
+  dir.create("/home/leaf/Documentos/Serrapilheira _Elias et al/tmp_terra")}
 
 terraOptions(
   #memfrac = 0.5,  #Delimitate terra do use only 50% of RAM
-  tempdir = "C:/Users/Cliente/Downloads/dados/tmp_terra",
+  tempdir = "/home/leaf/Documentos/Serrapilheira _Elias et al/tmp_terra",
   threads = max(1, parallel::detectCores() - 2)) # Number of threads
 
 #Load data ---------------------------------------------------------------------
@@ -33,7 +33,8 @@ save_delta_raster <- function(lst_rast, output_file) {
   message("Generating Delta Raster: ", output_file)
   
   lst_pri <- ifel(is.na(fr_pri), NA, lst_rast)
-  lst_f   <- focal(lst_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  #lst_f   <- focal(lst_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
+  lst_f   <- focal(lst_pri, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
   delta_lst <- lst_rast - lst_f
   
   writeRaster(delta_lst, output_file, overwrite=TRUE)
@@ -91,16 +92,16 @@ process_lst_block <- function(lst_rast, Delta_rast, cond_name, output_file, nlin
 start.time <- Sys.time()
 
 #Focal
-save_delta_raster(lst_year, "Delta_LST_Forest_age_Annual_2022.tif")
+#save_delta_raster(lst_year, "Delta_LST_Forest_age_Annual_2022.tif")
 save_delta_raster(lst_dry,  "Delta_LST_Forest_age_Dry_2022.tif")
 save_delta_raster(lst_wet,  "Delta_LST_Forest_age_Rainy_2022.tif")
 
-Delta_year  <- rast("Delta_LST_Forest_age_Annual_2022.tif")  
+#Delta_year  <- rast("Delta_LST_Forest_age_Annual_2022.tif")  
 Delta_dry  <- rast("Delta_LST_Forest_age_Dry_2022.tif")  
 Delta_wet  <- rast("Delta_LST_Forest_age_Rainy_2022.tif")  
 
 #Dataframe
-process_lst_block(lst_year, Delta_year, "Annual", "LST_age_Annual_full.csv")
+#process_lst_block(lst_year, Delta_year, "Annual", "LST_age_Annual_full.csv")
 process_lst_block(lst_dry, Delta_dry,  "Dry Season", "LST_age_Dry_full.csv")
 process_lst_block(lst_wet,Delta_wet,  "Rainy Season", "LST_age_Rainy_full.csv")
 
@@ -109,11 +110,11 @@ time.taken <- end.time - start.time
 time.taken
 
 #Summarizing data --------------------------------------------------------------
-year_df <- read_csv("LST_age_Annual_full.csv")
+#year_df <- read_csv("LST_age_Annual_full.csv")
 dry_df <- read_csv("LST_age_Dry_full.csv")
 rainy_df <- read_csv("LST_age_Rainy_full.csv")
 
-final_df <- rbind(year_df, dry_df, rainy_df)
+final_df <- rbind(dry_df, rainy_df)
 
 final_df2 <- final_df %>%
   filter(sf_perc >= 70) %>%
