@@ -44,15 +44,18 @@ for (z in 2:51) {
   df = rbind(df, df2)
 }
 
-df$year = as.numeric(df$year)
-
 df = df |> filter(cons_vpd > 0)
+
+ggplot(df, aes(x=year, y=cons_vpd))+
+  geom_boxplot()
+
+
+df$year = as.numeric(df$year)
 
 ggplot(df, aes(x=year, y=cons_vpd))+
   geom_smooth()
 
-ggplot(df, aes(x=year, y=cons_vpd))+
-  geom_boxplot()
+
 
 
 
