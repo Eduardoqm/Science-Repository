@@ -32,11 +32,6 @@ plot(mb)
 plot(fire_freq)
 
 #Time series -------------------------------------------------------------------
-
-for (z in 1:length(cons_vpd@ptr@.xData)) {
-  plot(cons_vpd[[z]])
-}
-
 df = as.data.frame(cons_vpd[[1]])
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
@@ -51,8 +46,13 @@ for (z in 2:51) {
 
 df$year = as.numeric(df$year)
 
+df = df |> filter(cons_vpd > 0)
+
 ggplot(df, aes(x=year, y=cons_vpd))+
   geom_smooth()
+
+ggplot(df, aes(x=year, y=cons_vpd))+
+  geom_boxplot()
 
 
 
