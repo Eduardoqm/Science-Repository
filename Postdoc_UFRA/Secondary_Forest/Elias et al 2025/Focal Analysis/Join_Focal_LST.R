@@ -3,7 +3,7 @@
 
 library(tidyverse)
 
-slstwd("C:/Users/Workshop/Desktop/Files")
+setwd("C:/Users/Workshop/Desktop/Files")
 dir()
 
 #AGB ---------------------------------------------------------------------------
