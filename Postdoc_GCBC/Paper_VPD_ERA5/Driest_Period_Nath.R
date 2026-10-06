@@ -22,9 +22,9 @@ plot(dp_start_hy)
 plot(dp_end_hy)
 
 #Number of Dry months ----------------------------------------------------------
-dp_length_pentads <- ifel(dp_start >= dp_end,
-                          dp_start - dp_end + 1,
-                          (73 - dp_end + 1) + dp_start)
+dp_length_pentads <- ifel(dp_end >= dp_start,
+                          dp_end - dp_start + 1,
+                          (73 - dp_start + 1) + dp_end)
 
 plot(dp_length_pentads)
 
