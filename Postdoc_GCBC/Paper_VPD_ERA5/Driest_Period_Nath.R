@@ -37,11 +37,10 @@ plot(dp_length_months)
 dp_months <- round(dp_length_months)
 plot(dp_months)
 
-
 #Exporting rasters -------------------------------------------------------------
 writeRaster(dp_start_hy, "DP_onset_hy.tif", overwrite = TRUE)
 writeRaster(dp_end_hy, "DP_end_hy.tif", overwrite = TRUE )
-
+writeRaster(dp_months, "DP_length_months.tif", overwrite = TRUE )
 
 
 
