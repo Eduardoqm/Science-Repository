@@ -42,9 +42,8 @@ vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Filtering Forest class --------------------------------------------------------
-mb2 = ifel(mb == 3, 1, NA); plo(mb2) #Filtere only forest
+cons_vpd = ifel(mb == 3, cons_vpd, NA); plo(cons_vpd) #Filter only forest
 
-cons_vpd = resample(cons_vpd, mb2); plot(cons_vpd)
 
 #Time series -------------------------------------------------------------------
 dpm2 = resample(dpm, cons_vpd, method = "average")
