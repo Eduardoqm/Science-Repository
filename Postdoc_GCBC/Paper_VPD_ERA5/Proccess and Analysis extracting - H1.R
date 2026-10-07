@@ -53,13 +53,15 @@ fire_freq2 = resample(fire_freq, cons_vpd, method = "average"); plot(fire_freq2)
 #Time series -------------------------------------------------------------------
 
 dpm_df = as.data.frame(dpm2, na.rm= F)
-forest = as.data.frame(mb3, na.rm= F)
+for_df = as.data.frame(mb3, na.rm= F)
+fire_df = as.data.frame(fire_freq2, na.rm= F)
 
 df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
 df$n_months = dpm_df$last
-df$forest_p = forest$xxxx
+df$forest_p = for_df$xxxx
+df$fire_freq = fire_df$xxxx
 
 for (z in 2:51) {
   print(names(cons_vpd[[z]]))
@@ -67,11 +69,13 @@ for (z in 2:51) {
   colnames(df2) = "cons_vpd"
   df2$year = names(cons_vpd[[z]])
   df2$n_months = dpm_df$last
-  df2$forest_p = forest$xxxx
+  df2$forest_p = for_df$xxxx
+  df2$fire_freq = fire_df$xxxx
   df = rbind(df, df2)
 }
 
 df2 = df |>
+#  filter(forest_p > 0) |> 
   na.omit()
 
 ggplot(df2, aes(x=year, y=cons_vpd))+
@@ -84,7 +88,8 @@ df2$n_months2 = as.character(df2$n_months)
 
 df3 = df2 |> 
   group_by(year, n_months2) |> 
-  summarize(cons_vpd = mean(cons_vpd))
+  summarize(cons_vpd = mean(cons_vpd);
+            fire_freq = mean(fire_freq))
 
 ggplot(df3, aes(x=year, y=cons_vpd))+
   geom_point()+
