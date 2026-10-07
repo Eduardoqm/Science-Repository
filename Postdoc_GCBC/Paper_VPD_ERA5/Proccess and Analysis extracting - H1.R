@@ -30,7 +30,7 @@ mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_2024_col10.tif
 mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
 mb3 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
 fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Fire_frequency_1985_2025.tiff")
-fire_freq2 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_Fire_frequency_1985_2025_resampled.tiff")
+fire_freq2 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_Fire_frequency_1985_2025_resampled_max.tiff")
 plot(mb)
 plot(mb2)
 plot(mb3)
@@ -54,14 +54,12 @@ dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Resampling rasters ------------------------------------------------------------
 #mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
-
 #dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
-
-#fire_freq2 = resample(fire_freq, cons_vpd, method = "average"); plot(fire_freq2)
+#fire_freq2 = resample(fire_freq, cons_vpd, method = "max"); plot(fire_freq2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2024_resampled.tiff")
-#writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025_resampled.tiff")
+#writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025_resampled_max.tiff")
 
 #Time series -------------------------------------------------------------------
 dpm_df = as.data.frame(dpm2, na.rm= F)
@@ -103,9 +101,13 @@ df3 = df2 |>
   summarize(cons_vpd = mean(cons_vpd),
             fire_freq = mean(fire_freq))
 
+df3$cond = "Burned"
+df3$cond[df3$fire_freq < 0.1] = "Not Burned"
+
 ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
   geom_point()+
-  geom_smooth(se = F)
+  geom_smooth(se = F)+
+  facet_wrap(~cond)
 
 ggplot(df3, aes(x=year, y=cons_vpd))+
   geom_point()+
