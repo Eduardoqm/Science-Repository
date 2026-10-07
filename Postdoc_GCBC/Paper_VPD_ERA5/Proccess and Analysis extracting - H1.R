@@ -42,18 +42,24 @@ vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Filtering Forest class --------------------------------------------------------
-cons_vpd = ifel(mb == 3, cons_vpd, NA); plo(cons_vpd) #Filter only forest
+mb2 = ifel(mb == 3, mb, 0); plo(mb2) #Filter only forest
 
+mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
+
+dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
+
+fire_freq2 = resample(fire_freq, cons_vpd, method = "average"); plot(fire_freq2)
 
 #Time series -------------------------------------------------------------------
-dpm2 = resample(dpm, cons_vpd, method = "average")
-dpm_df = as.data.frame(dpm2, na.rm= F)
 
+dpm_df = as.data.frame(dpm2, na.rm= F)
+forest = as.data.frame(mb3, na.rm= F)
 
 df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
 df$n_months = dpm_df$last
+df$forest_p = forest$xxxx
 
 for (z in 2:51) {
   print(names(cons_vpd[[z]]))
@@ -61,6 +67,7 @@ for (z in 2:51) {
   colnames(df2) = "cons_vpd"
   df2$year = names(cons_vpd[[z]])
   df2$n_months = dpm_df$last
+  df2$forest_p = forest$xxxx
   df = rbind(df, df2)
 }
 
