@@ -41,20 +41,29 @@ vpd_95 = mask(crop(vpd_95, am), am); plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am); plot(vpd_mean)
 dpm = mask(crop(dpm, am), am); plot(dpm)
 
+
 #Time series -------------------------------------------------------------------
-df = as.data.frame(cons_vpd[[1]])
+dpm2 = resample(dpm, cons_vpd, method = "average")
+dpm_df = as.data.frame(dpm2, na.rm= F)
+
+
+df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
+df$n_months = dpm_df$last
 
 for (z in 2:51) {
   print(names(cons_vpd[[z]]))
-  df2 = as.data.frame(cons_vpd[[z]])
+  df2 = as.data.frame(cons_vpd[[z]], na.rm = F)
   colnames(df2) = "cons_vpd"
   df2$year = names(cons_vpd[[z]])
+  df2$n_months = dpm_df$last
   df = rbind(df, df2)
 }
 
-df = df |> filter(cons_vpd > 0)
+df = df |>
+  filter(cons_vpd > 0) |> 
+  na.omit()
 
 ggplot(df, aes(x=year, y=cons_vpd))+
   geom_boxplot()
@@ -63,7 +72,7 @@ ggplot(df, aes(x=year, y=cons_vpd))+
 df$year = as.numeric(df$year)
 
 df2 = df |> 
-  group_by(year) |> 
+  group_by(year, n_months) |> 
   summarize(cons_vpd = mean(cons_vpd))
 
 ggplot(df2, aes(x=year, y=cons_vpd))+
