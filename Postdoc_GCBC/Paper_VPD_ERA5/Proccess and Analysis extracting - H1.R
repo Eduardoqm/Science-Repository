@@ -41,6 +41,11 @@ vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
+#Filtering Forest class --------------------------------------------------------
+mb2 = ifel(mb == 3, 1, NA); plo(mb2) #Filtere only forest
+
+cons_vpd = resample(cons_vpd, mb2); plot(cons_vpd)
+
 #Time series -------------------------------------------------------------------
 dpm2 = resample(dpm, cons_vpd, method = "average")
 dpm_df = as.data.frame(dpm2, na.rm= F)
@@ -61,7 +66,6 @@ for (z in 2:51) {
 }
 
 df2 = df |>
-  filter(cons_vpd > 0) |> 
   na.omit()
 
 ggplot(df2, aes(x=year, y=cons_vpd))+
@@ -70,14 +74,16 @@ ggplot(df2, aes(x=year, y=cons_vpd))+
 
 df2$year = as.numeric(df2$year)
 df2$n_months = round(df2$n_months, 0)
+df2$n_months2 = as.character(df2$n_months)
 
 df3 = df2 |> 
-  group_by(year, n_months) |> 
+  group_by(year, n_months2) |> 
   summarize(cons_vpd = mean(cons_vpd))
 
-ggplot(df3, aes(x=year, y=cons_vpd, col = n_months))+
+ggplot(df3, aes(x=year, y=cons_vpd))+
   geom_point()+
-  geom_smooth()
+  geom_smooth(method = "lm")+
+  facet_wrap(~n_months2)
 
 
 
