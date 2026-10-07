@@ -44,11 +44,11 @@ vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Filtering Forest class --------------------------------------------------------
-mb2 = ifel(mb == 3, mb, 0); plo(mb2) #Filter only forest
+#mb2 = ifel(mb == 3, mb, 0); plot(mb2) #Filter only forest
+#setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
+#writeRaster(mb2, "MapBiomas_Forest_2024_col10.tiff")
 
-setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
-writeRaster(mb2, "MapBiomas_Forest_2024_col10.tiff")
-
+#Resampling rasters ------------------------------------------------------------
 mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 
 dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
