@@ -11,7 +11,7 @@ brick = function(w, a, b){
   list_rst = list.files()
   z = rast(list_rst)
   names(z) = substr(list_rst, a, b)
-  plot(z)
+  #plot(z)
   return(z)
 }
 
@@ -30,6 +30,10 @@ mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_2024_col10.tif
 fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Fire_frequency_1985_2025.tiff")
 plot(mb)
 plot(fire_freq)
+
+#Amazonia limits
+
+
 
 #Time series -------------------------------------------------------------------
 df = as.data.frame(cons_vpd[[1]])
