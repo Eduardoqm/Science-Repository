@@ -62,10 +62,13 @@ ggplot(df, aes(x=year, y=cons_vpd))+
 
 df$year = as.numeric(df$year)
 
-ggplot(df, aes(x=year, y=cons_vpd))+
+df2 = df |> 
+  group_by(year) |> 
+  summarize(cons_vpd = mean(cons_vpd))
+
+ggplot(df2, aes(x=year, y=cons_vpd))+
+  geom_point()+
   geom_smooth()
-
-
 
 
 
