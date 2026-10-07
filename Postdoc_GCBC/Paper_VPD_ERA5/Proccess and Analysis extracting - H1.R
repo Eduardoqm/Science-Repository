@@ -87,7 +87,7 @@ for (z in 2:51) {
 }
 
 df2 = df |>
-#  filter(forest_p > 0) |> 
+  filter(forest_p > 0) |> 
   na.omit()
 
 ggplot(df2, aes(x=year, y=cons_vpd))+
@@ -100,8 +100,12 @@ df2$n_months2 = as.character(df2$n_months)
 
 df3 = df2 |> 
   group_by(year, n_months2) |> 
-  summarize(cons_vpd = mean(cons_vpd);
+  summarize(cons_vpd = mean(cons_vpd),
             fire_freq = mean(fire_freq))
+
+ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
+  geom_point()+
+  geom_smooth(se = F)
 
 ggplot(df3, aes(x=year, y=cons_vpd))+
   geom_point()+
