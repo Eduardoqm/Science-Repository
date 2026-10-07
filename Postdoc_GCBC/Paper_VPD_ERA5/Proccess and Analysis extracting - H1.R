@@ -27,8 +27,10 @@ plot(dpm)
 
 #Mapbiomas
 mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_2024_col10.tiff")
+mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
 fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Fire_frequency_1985_2025.tiff")
 plot(mb)
+plot(mb2)
 plot(fire_freq)
 
 #Amazonia limits
