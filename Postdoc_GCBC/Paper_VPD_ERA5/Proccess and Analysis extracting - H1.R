@@ -32,8 +32,14 @@ plot(mb)
 plot(fire_freq)
 
 #Amazonia limits
+am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
+plot(am, add = T)
 
-
+#Clipping to Amazonia Biome ----------------------------------------------------
+cons_vpd = mask(crop(cons_vpd, am), am); plot(cons_vpd)
+vpd_95 = mask(crop(vpd_95, am), am); plot(vpd_95)
+vpd_mean = mask(crop(vpd_mean, am), am); plot(vpd_mean)
+dpm = mask(crop(dpm, am), am); plot(dpm)
 
 #Time series -------------------------------------------------------------------
 df = as.data.frame(cons_vpd[[1]])
