@@ -60,7 +60,6 @@ writeRaster(mb3, "MB_sum_pixel_Forest_2024_resampled.tiff")
 writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025.tiff_resampled.tiff")
 
 #Time series -------------------------------------------------------------------
-
 dpm_df = as.data.frame(dpm2, na.rm= F)
 for_df = as.data.frame(mb3, na.rm= F)
 fire_df = as.data.frame(fire_freq2, na.rm= F)
