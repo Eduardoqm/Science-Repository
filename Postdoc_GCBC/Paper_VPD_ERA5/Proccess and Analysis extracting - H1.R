@@ -72,8 +72,9 @@ ggplot(df, aes(x=year, y=cons_vpd))+
 df$year = as.numeric(df$year)
 
 df2 = df |> 
-  group_by(year, n_months) |> 
-  summarize(cons_vpd = mean(cons_vpd))
+  group_by(year) |> 
+  summarize(cons_vpd = mean(cons_vpd),
+            n_months, mean(n_months))
 
 ggplot(df2, aes(x=year, y=cons_vpd))+
   geom_point()+
