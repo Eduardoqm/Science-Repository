@@ -56,7 +56,7 @@ dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
 fire_freq2 = resample(fire_freq, cons_vpd, method = "average"); plot(fire_freq2)
 
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
-writeRaster(mb3, "MapBiomas_Forest_2024_col10_resampled.tiff")
+writeRaster(mb3, "MB_sum_pixel_Forest_2024_resampled.tiff")
 writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025.tiff_resampled.tiff")
 
 #Time series -------------------------------------------------------------------
