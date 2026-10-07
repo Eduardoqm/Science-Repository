@@ -36,11 +36,10 @@ am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
 plot(am, add = T)
 
 #Clipping to Amazonia Biome ----------------------------------------------------
-cons_vpd = mask(crop(cons_vpd, am), am); plot(cons_vpd)
-vpd_95 = mask(crop(vpd_95, am), am); plot(vpd_95)
-vpd_mean = mask(crop(vpd_mean, am), am); plot(vpd_mean)
-dpm = mask(crop(dpm, am), am); plot(dpm)
-
+cons_vpd = mask(crop(cons_vpd, am), am)#; plot(cons_vpd)
+vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
+vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
+dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Time series -------------------------------------------------------------------
 dpm2 = resample(dpm, cons_vpd, method = "average")
@@ -61,22 +60,22 @@ for (z in 2:51) {
   df = rbind(df, df2)
 }
 
-df = df |>
+df2 = df |>
   filter(cons_vpd > 0) |> 
   na.omit()
 
-ggplot(df, aes(x=year, y=cons_vpd))+
+ggplot(df2, aes(x=year, y=cons_vpd))+
   geom_boxplot()
 
 
-df$year = as.numeric(df$year)
+df2$year = as.numeric(df2$year)
+df2$n_months = round(df2$n_months, 0)
 
-df2 = df |> 
-  group_by(year) |> 
-  summarize(cons_vpd = mean(cons_vpd),
-            n_months, mean(n_months))
+df3 = df2 |> 
+  group_by(year, n_months) |> 
+  summarize(cons_vpd = mean(cons_vpd))
 
-ggplot(df2, aes(x=year, y=cons_vpd))+
+ggplot(df3, aes(x=year, y=cons_vpd, col = n_months))+
   geom_point()+
   geom_smooth()
 
