@@ -29,13 +29,9 @@ plot(dpm)
 mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_2024_col10.tiff")
 mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
 mb3 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
-fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Fire_frequency_1985_2025.tiff")
-fire_freq2 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_Fire_frequency_1985_2025_resampled_max.tiff")
 plot(mb)
 plot(mb2)
 plot(mb3)
-plot(fire_freq)
-plot(fire_freq2)
 
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
@@ -54,7 +50,7 @@ dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Resampling rasters ------------------------------------------------------------
 #mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
-#dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
+dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
 #fire_freq2 = resample(fire_freq, cons_vpd, method = "max"); plot(fire_freq2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
@@ -64,14 +60,13 @@ dpm = mask(crop(dpm, am), am)#; plot(dpm)
 #Time series -------------------------------------------------------------------
 dpm_df = as.data.frame(dpm2, na.rm= F)
 for_df = as.data.frame(mb3, na.rm= F)
-fire_df = as.data.frame(fire_freq2, na.rm= F)
 
+#Consecutive days in flammability conditions
 df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
 df$n_months = dpm_df$last
 df$forest_p = for_df$classification_2024
-df$fire_freq = fire_df$fire_frequency_1985_2025
 
 for (z in 2:51) {
   print(names(cons_vpd[[z]]))
@@ -80,7 +75,6 @@ for (z in 2:51) {
   df2$year = names(cons_vpd[[z]])
   df2$n_months = dpm_df$last
   df2$forest_p = for_df$classification_2024
-  df2$fire_freq = fire_df$fire_frequency_1985_2025
   df = rbind(df, df2)
 }
 
@@ -88,9 +82,8 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=cons_vpd))+
+ggplot(df2, aes(x=year, y=cons_vpd, fill = n_months))+
   geom_boxplot()
-
 
 df2$year = as.numeric(df2$year)
 df2$n_months = round(df2$n_months, 0)
@@ -98,24 +91,58 @@ df2$n_months2 = as.character(df2$n_months)
 
 df3 = df2 |> 
   group_by(year, n_months2) |> 
-  summarize(cons_vpd = mean(cons_vpd),
-            fire_freq = mean(fire_freq))
-
-df3$cond = "Burned"
-df3$cond[df3$fire_freq < 0.1] = "Not Burned"
+  summarize(cons_vpd = mean(cons_vpd))
 
 ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
   geom_point()+
-  geom_smooth(se = F)+
-  facet_wrap(~cond)
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "Number of days/year (VPD ≥ 0.75)",
+       col = "Dry Season
+   (Months)")+
+  theme_minimal()
 
-ggplot(df3, aes(x=year, y=cons_vpd))+
+
+#Consecutive days in flammability conditions
+df = as.data.frame(cons_vpd[[1]], na.rm = F)
+colnames(df) = "cons_vpd"
+df$year = names(cons_vpd[[1]])
+df$n_months = dpm_df$last
+df$forest_p = for_df$classification_2024
+
+for (z in 2:51) {
+  print(names(cons_vpd[[z]]))
+  df2 = as.data.frame(cons_vpd[[z]], na.rm = F)
+  colnames(df2) = "cons_vpd"
+  df2$year = names(cons_vpd[[z]])
+  df2$n_months = dpm_df$last
+  df2$forest_p = for_df$classification_2024
+  df = rbind(df, df2)
+}
+
+df2 = df |>
+  filter(forest_p > 0) |> 
+  na.omit()
+
+ggplot(df2, aes(x=year, y=cons_vpd, fill = n_months))+
+  geom_boxplot()
+
+df2$year = as.numeric(df2$year)
+df2$n_months = round(df2$n_months, 0)
+df2$n_months2 = as.character(df2$n_months)
+
+df3 = df2 |> 
+  group_by(year, n_months2) |> 
+  summarize(cons_vpd = mean(cons_vpd))
+
+ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
   geom_point()+
-  geom_smooth(method = "lm")+
-  facet_wrap(~n_months2)
-
-
-
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "Number of days/year (VPD ≥ 0.75)",
+       col = "Dry Season
+   (Months)")+
+  theme_minimal()
 
 
 
