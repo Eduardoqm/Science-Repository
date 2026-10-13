@@ -103,18 +103,18 @@ ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
   theme_minimal()
 
 
-#Consecutive days in flammability conditions
-df = as.data.frame(cons_vpd[[1]], na.rm = F)
-colnames(df) = "cons_vpd"
-df$year = names(cons_vpd[[1]])
+#Annual VPD mean
+df = as.data.frame(vpd_mean[[1]], na.rm = F)
+colnames(df) = "vpd_mean"
+df$year = names(vpd_mean[[1]])
 df$n_months = dpm_df$last
 df$forest_p = for_df$classification_2024
 
 for (z in 2:51) {
-  print(names(cons_vpd[[z]]))
-  df2 = as.data.frame(cons_vpd[[z]], na.rm = F)
-  colnames(df2) = "cons_vpd"
-  df2$year = names(cons_vpd[[z]])
+  print(names(vpd_mean[[z]]))
+  df2 = as.data.frame(vpd_mean[[z]], na.rm = F)
+  colnames(df2) = "vpd_mean"
+  df2$year = names(vpd_mean[[z]])
   df2$n_months = dpm_df$last
   df2$forest_p = for_df$classification_2024
   df = rbind(df, df2)
@@ -124,7 +124,7 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=cons_vpd, fill = n_months))+
+ggplot(df2, aes(x=year, y=vpd_mean, fill = n_months))+
   geom_boxplot()
 
 df2$year = as.numeric(df2$year)
@@ -133,16 +133,70 @@ df2$n_months2 = as.character(df2$n_months)
 
 df3 = df2 |> 
   group_by(year, n_months2) |> 
-  summarize(cons_vpd = mean(cons_vpd))
+  summarize(vpd_mean = mean(vpd_mean))
 
-ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
+ggplot(df3, aes(x=year, y=vpd_mean))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)
+
+
+ggplot(df3, aes(x=year, y=vpd_mean, col = n_months2))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
-       y = "Number of days/year (VPD ≥ 0.75)",
+       y = "Mean VPD/year",
        col = "Dry Season
    (Months)")+
   theme_minimal()
+
+#Annual VPD quantile 95 (extremes)
+df = as.data.frame(vpd_95[[1]], na.rm = F)
+colnames(df) = "vpd_95"
+df$year = names(vpd_95[[1]])
+df$n_months = dpm_df$last
+df$forest_p = for_df$classification_2024
+
+for (z in 2:51) {
+  print(names(vpd_95[[z]]))
+  df2 = as.data.frame(vpd_95[[z]], na.rm = F)
+  colnames(df2) = "vpd_95"
+  df2$year = names(vpd_95[[z]])
+  df2$n_months = dpm_df$last
+  df2$forest_p = for_df$classification_2024
+  df = rbind(df, df2)
+}
+
+df2 = df |>
+  filter(forest_p > 0) |> 
+  na.omit()
+
+ggplot(df2, aes(x=year, y=vpd_95, fill = n_months))+
+  geom_boxplot()
+
+df2$year = as.numeric(df2$year)
+df2$n_months = round(df2$n_months, 0)
+df2$n_months2 = as.character(df2$n_months)
+
+df3 = df2 |> 
+  group_by(year, n_months2) |> 
+  summarize(vpd_95 = mean(vpd_95))
+
+ggplot(df3, aes(x=year, y=vpd_95))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)
+
+
+ggplot(df3, aes(x=year, y=vpd_95, col = n_months2))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "VPD/year (quantile 95%)",
+       col = "Dry Season
+   (Months)")+
+  theme_minimal()
+
+
+
 
 
 
