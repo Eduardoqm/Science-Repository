@@ -18,9 +18,9 @@ terraOptions(
   threads = max(1, parallel::detectCores() - 2)) # Number of threads
 
 #Load data ---------------------------------------------------------------------
-lst_year <- rast("LST_Landsat_Annual_2022_70m.tif")
-lst_dry  <- rast("LST_Landsat_Dry_2022_70m.tif")
-lst_wet  <- rast("LST_Landsat_Wet_2022_70m.tif")
+lst_year <- rast("LST_Landsat_Annual_2023_70m.tif")
+lst_dry  <- rast("LST_Landsat_Dry_2023_70m.tif")
+lst_wet  <- rast("LST_Landsat_Wet_2023_70m.tif")
 
 fr_pri <- rast("Forest_70m.tif")
 age <- rast("MB_Forest_age_70m.tif")
@@ -92,13 +92,13 @@ process_lst_block <- function(lst_rast, Delta_rast, cond_name, output_file, nlin
 start.time <- Sys.time()
 
 #Focal
-#save_delta_raster(lst_year, "Delta_LST_Forest_age_Annual_2022.tif")
-save_delta_raster(lst_dry,  "Delta_LST_Forest_age_Dry_2022.tif")
-save_delta_raster(lst_wet,  "Delta_LST_Forest_age_Rainy_2022.tif")
+#save_delta_raster(lst_year, "Delta_LST_Forest_age_Annual_2023.tif")
+save_delta_raster(lst_dry,  "Delta_LST_Forest_age_Dry_2023.tif")
+save_delta_raster(lst_wet,  "Delta_LST_Forest_age_Rainy_2023.tif")
 
-#Delta_year  <- rast("Delta_LST_Forest_age_Annual_2022.tif")  
-Delta_dry  <- rast("Delta_LST_Forest_age_Dry_2022.tif")  
-Delta_wet  <- rast("Delta_LST_Forest_age_Rainy_2022.tif")  
+#Delta_year  <- rast("Delta_LST_Forest_age_Annual_2023.tif")  
+Delta_dry  <- rast("Delta_LST_Forest_age_Dry_2023.tif")  
+Delta_wet  <- rast("Delta_LST_Forest_age_Rainy_2023.tif")  
 
 #Dataframe
 #process_lst_block(lst_year, Delta_year, "Annual", "LST_age_Annual_full.csv")
@@ -126,7 +126,7 @@ final_df2 <- final_df %>%
     n = n()) %>%
   filter(n > 200, age < 250)
 
-final_df2$year <- 2022
+final_df2$year <- 2023
 
-write.csv(final_df2, "LST_Forest_age_2022.csv", row.names = FALSE)
+write.csv(final_df2, "LST_Forest_age_2023.csv", row.names = FALSE)
 
