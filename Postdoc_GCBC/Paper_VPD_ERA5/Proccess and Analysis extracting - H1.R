@@ -26,7 +26,7 @@ dpm = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Per
 plot(dpm)
 
 #Mapbiomas
-mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_2024_col10.tiff")
+mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
 mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
 mb3 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
 plot(mb)
@@ -43,18 +43,21 @@ vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
+mbx = mask(crop(mb, am), am); plot(mbx)
+
+
 #Filtering Forest class --------------------------------------------------------
-#mb2 = ifel(mb == 3, 1, 0); plot(mb2) #Filter only forest
+#mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
 #setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
-#writeRaster(mb2, "MapBiomas_Forest_2024_col10.tiff")
+#writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
 
 #Resampling rasters ------------------------------------------------------------
-#mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
+mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
 #fire_freq2 = resample(fire_freq, cons_vpd, method = "max"); plot(fire_freq2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
-#writeRaster(mb3, "MB_sum_pixel_Forest_2024_resampled.tiff")
+#writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff")
 #writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025_resampled_max.tiff")
 
 #Time series -------------------------------------------------------------------
