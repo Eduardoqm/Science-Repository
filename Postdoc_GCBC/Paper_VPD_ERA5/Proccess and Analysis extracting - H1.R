@@ -23,6 +23,7 @@ vpd_mean = brick("G:/My Drive/GEE_Mean_VPD_DP_Annual", 13, 16) #Annual mean VDP
 
 #Driest Period length
 dpm = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/DP_length_months.tif")
+dpm
 plot(dpm)
 
 #Mapbiomas
@@ -54,7 +55,6 @@ mbx = mask(crop(mb, am), am); plot(mbx)
 #Resampling rasters ------------------------------------------------------------
 mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
-#fire_freq2 = resample(fire_freq, cons_vpd, method = "max"); plot(fire_freq2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff")
