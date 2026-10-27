@@ -34,7 +34,7 @@ save_delta_raster <- function(lst_rast, output_file) {
   
   lst_pri <- ifel(is.na(fr_pri), NA, lst_rast)
   #lst_f   <- focal(lst_pri, w=21, fun=median, na.rm=TRUE, na.policy="only")
-  lst_f   <- focal(lst_pri, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
+  lst_f   <- focal(lst_pri, w=21, fun=quantile, probs = 0.05, na.rm=TRUE, na.policy="only")
   delta_lst <- lst_rast - lst_f
   
   writeRaster(delta_lst, output_file, overwrite=TRUE)
