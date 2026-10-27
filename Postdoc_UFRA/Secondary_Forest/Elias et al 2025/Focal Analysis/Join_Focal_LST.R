@@ -34,7 +34,7 @@ lst4 = lst3 |>
 
 ggplot(lst4, aes(x=agb, y=delta_lst, col = cond))+
   geom_point()+
-  geom_smooth()
+  geom_smooth(se = F)
 
 #Age ---------------------------------------------------------------------------
 lst22 = read.csv("LST_Forest_age_2022.csv")
@@ -64,7 +64,7 @@ lst4 = lst3 |>
 
 ggplot(lst4, aes(x=age, y=delta_lst, col = cond))+
   geom_point()+
-  geom_smooth()
+  geom_smooth(se = F)
 
 
 

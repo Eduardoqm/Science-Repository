@@ -23,19 +23,16 @@ vpd_mean = brick("G:/My Drive/GEE_Mean_VPD_DP_Annual", 13, 16) #Annual mean VDP
 
 #Driest Period length
 dpm = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/DP_length_months.tif")
+dpm
 plot(dpm)
 
 #Mapbiomas
-mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_2024_col10.tiff")
+mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
 mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
 mb3 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
-fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Fire_frequency_1985_2025.tiff")
-fire_freq2 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_Fire_frequency_1985_2025_resampled_max.tiff")
 plot(mb)
 plot(mb2)
 plot(mb3)
-plot(fire_freq)
-plot(fire_freq2)
 
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
@@ -47,31 +44,32 @@ vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
+mbx = mask(crop(mb, am), am); plot(mbx)
+
+
 #Filtering Forest class --------------------------------------------------------
-#mb2 = ifel(mb == 3, 1, 0); plot(mb2) #Filter only forest
+#mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
 #setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
-#writeRaster(mb2, "MapBiomas_Forest_2024_col10.tiff")
+#writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
 
 #Resampling rasters ------------------------------------------------------------
-#mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
-#dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
-#fire_freq2 = resample(fire_freq, cons_vpd, method = "max"); plot(fire_freq2)
+mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
+dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
-#writeRaster(mb3, "MB_sum_pixel_Forest_2024_resampled.tiff")
+#writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff")
 #writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025_resampled_max.tiff")
 
 #Time series -------------------------------------------------------------------
 dpm_df = as.data.frame(dpm2, na.rm= F)
 for_df = as.data.frame(mb3, na.rm= F)
-fire_df = as.data.frame(fire_freq2, na.rm= F)
 
+#Consecutive days in flammability conditions
 df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
 df$n_months = dpm_df$last
 df$forest_p = for_df$classification_2024
-df$fire_freq = fire_df$fire_frequency_1985_2025
 
 for (z in 2:51) {
   print(names(cons_vpd[[z]]))
@@ -80,7 +78,6 @@ for (z in 2:51) {
   df2$year = names(cons_vpd[[z]])
   df2$n_months = dpm_df$last
   df2$forest_p = for_df$classification_2024
-  df2$fire_freq = fire_df$fire_frequency_1985_2025
   df = rbind(df, df2)
 }
 
@@ -88,9 +85,8 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=cons_vpd))+
+ggplot(df2, aes(x=year, y=cons_vpd, fill = n_months))+
   geom_boxplot()
-
 
 df2$year = as.numeric(df2$year)
 df2$n_months = round(df2$n_months, 0)
@@ -98,21 +94,109 @@ df2$n_months2 = as.character(df2$n_months)
 
 df3 = df2 |> 
   group_by(year, n_months2) |> 
-  summarize(cons_vpd = mean(cons_vpd),
-            fire_freq = mean(fire_freq))
-
-df3$cond = "Burned"
-df3$cond[df3$fire_freq < 0.1] = "Not Burned"
+  summarize(cons_vpd = mean(cons_vpd))
 
 ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
   geom_point()+
-  geom_smooth(se = F)+
-  facet_wrap(~cond)
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "Number of days/year (VPD ≥ 0.75)",
+       col = "Dry Season
+   (Months)")+
+  theme_minimal()
 
-ggplot(df3, aes(x=year, y=cons_vpd))+
+
+#Annual VPD mean
+df = as.data.frame(vpd_mean[[1]], na.rm = F)
+colnames(df) = "vpd_mean"
+df$year = names(vpd_mean[[1]])
+df$n_months = dpm_df$last
+df$forest_p = for_df$classification_2024
+
+for (z in 2:51) {
+  print(names(vpd_mean[[z]]))
+  df2 = as.data.frame(vpd_mean[[z]], na.rm = F)
+  colnames(df2) = "vpd_mean"
+  df2$year = names(vpd_mean[[z]])
+  df2$n_months = dpm_df$last
+  df2$forest_p = for_df$classification_2024
+  df = rbind(df, df2)
+}
+
+df2 = df |>
+  filter(forest_p > 0) |> 
+  na.omit()
+
+ggplot(df2, aes(x=year, y=vpd_mean, fill = n_months))+
+  geom_boxplot()
+
+df2$year = as.numeric(df2$year)
+df2$n_months = round(df2$n_months, 0)
+df2$n_months2 = as.character(df2$n_months)
+
+df3 = df2 |> 
+  group_by(year, n_months2) |> 
+  summarize(vpd_mean = mean(vpd_mean))
+
+ggplot(df3, aes(x=year, y=vpd_mean))+
   geom_point()+
-  geom_smooth(method = "lm")+
-  facet_wrap(~n_months2)
+  geom_smooth(method = "lm", se = F)
+
+
+ggplot(df3, aes(x=year, y=vpd_mean, col = n_months2))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "Mean VPD/year",
+       col = "Dry Season
+   (Months)")+
+  theme_minimal()
+
+#Annual VPD quantile 95 (extremes)
+df = as.data.frame(vpd_95[[1]], na.rm = F)
+colnames(df) = "vpd_95"
+df$year = names(vpd_95[[1]])
+df$n_months = dpm_df$last
+df$forest_p = for_df$classification_2024
+
+for (z in 2:51) {
+  print(names(vpd_95[[z]]))
+  df2 = as.data.frame(vpd_95[[z]], na.rm = F)
+  colnames(df2) = "vpd_95"
+  df2$year = names(vpd_95[[z]])
+  df2$n_months = dpm_df$last
+  df2$forest_p = for_df$classification_2024
+  df = rbind(df, df2)
+}
+
+df2 = df |>
+  filter(forest_p > 0) |> 
+  na.omit()
+
+ggplot(df2, aes(x=year, y=vpd_95, fill = n_months))+
+  geom_boxplot()
+
+df2$year = as.numeric(df2$year)
+df2$n_months = round(df2$n_months, 0)
+df2$n_months2 = as.character(df2$n_months)
+
+df3 = df2 |> 
+  group_by(year, n_months2) |> 
+  summarize(vpd_95 = mean(vpd_95))
+
+ggplot(df3, aes(x=year, y=vpd_95))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)
+
+
+ggplot(df3, aes(x=year, y=vpd_95, col = n_months2))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "VPD/year (quantile 95%)",
+       col = "Dry Season
+   (Months)")+
+  theme_minimal()
 
 
 
