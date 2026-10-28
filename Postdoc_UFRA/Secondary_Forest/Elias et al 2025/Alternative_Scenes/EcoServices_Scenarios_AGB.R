@@ -4,7 +4,8 @@
 library(terra)
 library(tidyverse)
 
-setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Scenery")
+#setwd("/home/leaf/Documentos/Serrapilheira _Elias et al/Scenery")
+setwd("G:/My Drive/Research/Papers/Serrapilheira (Elias et al)/Scenery") #Leptop
 dir()
 
 #Load data ---------------------------------------------------------------------

@@ -44,7 +44,7 @@ vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
-mbx = mask(crop(mb, am), am); plot(mbx)
+#mbx = mask(crop(mb, am), am); plot(mbx)
 
 
 #Filtering Forest class --------------------------------------------------------
@@ -53,12 +53,11 @@ mbx = mask(crop(mb, am), am); plot(mbx)
 #writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
 
 #Resampling rasters ------------------------------------------------------------
-mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
+#mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff")
-#writeRaster(fire_freq2, "MB_Fire_frequency_1985_2025_resampled_max.tiff")
 
 #Time series -------------------------------------------------------------------
 dpm_df = as.data.frame(dpm2, na.rm= F)
