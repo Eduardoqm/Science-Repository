@@ -58,8 +58,7 @@ scn_max_sf2 = ifel(is.na(scn_max_sf), esa, scn_max_sf)
 mean(values(scn_max_sf2),na.rm=T) #199.47
 
 #Result
-199.47 - 206.02 #-0.92
-#Converting Pasture to young SF, the AGB decrease 13.47 tons per pixel (27.49/ha).
+199.47 - 206.02 #-6.55
 
 #Mean delta
 scn_mean_sf = past_esa+mean_lmar
@@ -133,6 +132,11 @@ df <- tibble(
     -0.65,
     -0.90
   ),
+  ETm3 = c(
+    -7.42,
+    11.13,
+    20.4 
+  ),
   ET = c(
     -0.01,
     0.06,
@@ -185,7 +189,7 @@ p1 <- ggplot(df, aes(x = Scenario,
   
   labs(
     x = NULL,
-    y = expression(Delta*"LST (degree*C)")) +
+    y = expression("LST (°C)")) +
   
   theme_classic(base_size = 16) +
   
@@ -223,7 +227,7 @@ p2 <- ggplot(df, aes(x = Scenario,
   
   labs(
     x = NULL,
-    y = expression(Delta*"ET (mm day"^{-1}*")")) +
+    y = expression("ET (mm day"^{-1}*")")) +
   
   theme_classic(base_size = 16) +
   
@@ -277,3 +281,49 @@ fig <- ggarrange(p1, p2, p3,
                  label.x = 0.01, 
                  align = c("v"),
                  common.legend = F); fig
+
+#Version with Cubic metrics ----------------------------------------------------
+#---------------------------------
+# Panel B - ET
+#---------------------------------
+
+p2b <- ggplot(df, aes(x = Scenario,
+                     y = ETm3,
+                     fill = Scenario)) +
+  
+  geom_col(width = 0.7) +
+  
+  geom_hline(yintercept = 0,
+             linewidth = 0.5,
+             colour = "grey40") +
+  
+  geom_text(aes(label = sprintf("%.2f", ETm3)),
+            hjust = ifelse(df$ET > 0, -0.25, 1.20),
+            size = 4.5) +
+  
+  coord_flip() +
+  
+  scale_fill_manual(values = cols) +
+  
+  scale_y_continuous(
+    limits = c(-10, 21),
+    expand = expansion(mult = c(0.02, 0.08))) +
+  
+  labs(
+    x = NULL,
+    y = expression("ET (billion m³ year"^{-1}*")")) +
+  
+  theme_classic(base_size = 16) +
+  
+  theme(legend.position = "none",
+        axis.text.y = element_text(size = 12),
+        axis.title.y = element_blank()) ;p2b
+
+
+fig2 <- ggarrange(p1, p2b, p3, 
+                 ncol = 1,
+                 nrow = 3,
+                 labels = c('a)', 'b)', 'c)'),   
+                 label.x = 0.01, 
+                 align = c("v"),
+                 common.legend = F); fig2
