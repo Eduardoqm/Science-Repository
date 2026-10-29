@@ -1,5 +1,5 @@
 #Proccess and Analysis extracting - H1
-#Eduardo Q Marques 
+#Eduardo Q Marques 03-10-2026
 
 library(terra)
 library(tidyverse)
@@ -94,6 +94,12 @@ df2$n_months2 = as.character(df2$n_months)
 df3 = df2 |> 
   group_by(year, n_months2) |> 
   summarize(cons_vpd = mean(cons_vpd))
+
+ggplot(df3, aes(x=year, y=cons_vpd))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "Number of days/year (VPD ≥ 0.75)")
 
 ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
   geom_point()+

@@ -12,7 +12,6 @@ df = read.csv("GPM_V07_Prec_climatograma.csv")
 
 df2 = df[,c(2:13, 16)]
 
-
 df3 <- df2 |>
   pivot_longer(
     cols = c("X0_prec_01", "X10_prec_11", "X11_prec_12", "X1_prec_02", "X2_prec_03", 
@@ -46,6 +45,21 @@ df_temp3 <- df_temp2 |>
 
 ggplot(df_temp3, aes(x=Mes, y=valor, fill=Transicao))+
   geom_col(position = "dodge")
+
+#Confidence Interval
+df_temp3$Mes2 = as.factor(df_temp3$Mes)
+
+df_temp3$Transicao[df_temp3$Transicao == "ceam"] = "CEAM"
+df_temp3$Transicao[df_temp3$Transicao == "cema"] = "CEMA"
+df_temp3$Transicao[df_temp3$Transicao == "core"] = "CORE"
+
+ggplot(df_temp3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
+  stat_summary(fun = mean, geom = "point")+
+  stat_summary(fun = mean, geom = "line")+
+  stat_summary(fun.data = mean_cl_boot, geom = "ribbon", alpha = 0.1)+
+  labs(x = "Mês", y = "Temperature (C°)",
+       col = NULL, fill = NULL)+
+  theme_bw()
 
 #CWD ---------------------------------------------------------------------------
 df_cwd = read.csv("CWD_Mensal_Historico_climatograma.csv")
