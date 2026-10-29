@@ -34,6 +34,9 @@ plot(mb)
 plot(mb2)
 plot(mb3)
 
+scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
+plot(scf)
+
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
 plot(am, add = T)
@@ -44,20 +47,21 @@ vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
 vpd_zone = mask(crop(vpd_zone, am), am)#; plot(vpd_zone)
 
-#mbx = mask(crop(mb, am), am); plot(mbx)
+mbx = mask(crop(mb, am), am); plot(mbx)
 
 
 #Filtering Forest class --------------------------------------------------------
-#mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
-#setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
-#writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
+mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
+mb2 = ifel(scf > 0, 0, mb2); plot(mb2) #Remove Secondary Forests
+setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
+writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
 
 #Resampling rasters ------------------------------------------------------------
-#mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
+mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 vpd_zone2 = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone2)
 
-#setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
-#writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff")
+setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
+writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff", overwrite = T)
 
 #Time series -------------------------------------------------------------------
 vpd_zone_df = as.data.frame(vpd_zone, na.rm= F)
