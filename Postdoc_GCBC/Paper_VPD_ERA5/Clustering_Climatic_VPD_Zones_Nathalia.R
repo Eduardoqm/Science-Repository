@@ -20,3 +20,7 @@ brick = function(w, a, b){
 #VPD rasters
 cons_vpd = brick("G:/My Drive/GEE_Max_Consecutive_VPD_Days_DP_Annual", 29, 32) #Consecutive VPD days > 0.75 kPa
 
+plot(cons_vpd[[51]])
+
+cons_vpd2 = mean(cons_vpd)
+plot(cons_vpd2)
