@@ -51,17 +51,17 @@ mbx = mask(crop(mb, am), am); plot(mbx)
 
 
 #Filtering Forest class --------------------------------------------------------
-mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
-mb2 = ifel(scf > 0, 0, mb2); plot(mb2) #Remove Secondary Forests
-setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
-writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
+#mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
+#mb2 = ifel(scf > 0, 0, mb2); plot(mb2) #Remove Secondary Forests
+#setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
+#writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
 
 #Resampling rasters ------------------------------------------------------------
-mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 vpd_zone2 = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone2)
 
-setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
-writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff", overwrite = T)
+#mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
+#setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
+#writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff", overwrite = T)
 
 #Time series -------------------------------------------------------------------
 vpd_zone_df = as.data.frame(vpd_zone, na.rm= F)
