@@ -22,9 +22,9 @@ vpd_95 = brick("G:/My Drive/GEE_Q95_VPD_DP_Annual", 12, 15) #Annual quantile 95 
 vpd_mean = brick("G:/My Drive/GEE_Mean_VPD_DP_Annual", 13, 16) #Annual mean VDP
 
 #Driest Period length
-dpm = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/DP_length_months.tif")
-dpm
-plot(dpm)
+vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
+vpd_zone
+plot(vpd_zone)
 
 #Mapbiomas
 mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
@@ -42,7 +42,7 @@ plot(am, add = T)
 cons_vpd = mask(crop(cons_vpd, am), am)#; plot(cons_vpd)
 vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
 vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
-dpm = mask(crop(dpm, am), am)#; plot(dpm)
+vpd_zone = mask(crop(vpd_zone, am), am)#; plot(vpd_zone)
 
 #mbx = mask(crop(mb, am), am); plot(mbx)
 
@@ -54,20 +54,20 @@ dpm = mask(crop(dpm, am), am)#; plot(dpm)
 
 #Resampling rasters ------------------------------------------------------------
 #mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
-dpm2 = resample(dpm, cons_vpd, method = "average"); plot(dpm2)
+vpd_zone2 = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone2)
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff")
 
 #Time series -------------------------------------------------------------------
-dpm_df = as.data.frame(dpm2, na.rm= F)
+vpd_zone_df = as.data.frame(vpd_zone, na.rm= F)
 for_df = as.data.frame(mb3, na.rm= F)
 
 #Consecutive days in flammability conditions
 df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
-df$n_months = dpm_df$last
+df$zone = vpd_zone_df$mean
 df$forest_p = for_df$classification_2024
 
 for (z in 2:51) {
@@ -75,7 +75,7 @@ for (z in 2:51) {
   df2 = as.data.frame(cons_vpd[[z]], na.rm = F)
   colnames(df2) = "cons_vpd"
   df2$year = names(cons_vpd[[z]])
-  df2$n_months = dpm_df$last
+  df2$zone = vpd_zone_df$mean
   df2$forest_p = for_df$classification_2024
   df = rbind(df, df2)
 }
@@ -84,15 +84,15 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=cons_vpd, fill = n_months))+
+ggplot(df2, aes(x=year, y=cons_vpd, fill = zone))+
   geom_boxplot()
 
 df2$year = as.numeric(df2$year)
-df2$n_months = round(df2$n_months, 0)
-df2$n_months2 = as.character(df2$n_months)
+df2$zone = round(df2$zone, 0)
+df2$zone2 = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, n_months2) |> 
+  group_by(year, zone2) |> 
   summarize(cons_vpd = mean(cons_vpd))
 
 ggplot(df3, aes(x=year, y=cons_vpd))+
@@ -101,7 +101,7 @@ ggplot(df3, aes(x=year, y=cons_vpd))+
   labs(x = NULL,
        y = "Number of days/year (VPD ≥ 0.75)")
 
-ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
+ggplot(df3, aes(x=year, y=cons_vpd, col = zone2))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -115,7 +115,7 @@ ggplot(df3, aes(x=year, y=cons_vpd, col = n_months2))+
 df = as.data.frame(vpd_mean[[1]], na.rm = F)
 colnames(df) = "vpd_mean"
 df$year = names(vpd_mean[[1]])
-df$n_months = dpm_df$last
+df$zone = vpd_zone_df$mean
 df$forest_p = for_df$classification_2024
 
 for (z in 2:51) {
@@ -123,7 +123,7 @@ for (z in 2:51) {
   df2 = as.data.frame(vpd_mean[[z]], na.rm = F)
   colnames(df2) = "vpd_mean"
   df2$year = names(vpd_mean[[z]])
-  df2$n_months = dpm_df$last
+  df2$zone = vpd_zone_df$mean
   df2$forest_p = for_df$classification_2024
   df = rbind(df, df2)
 }
@@ -132,15 +132,15 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=vpd_mean, fill = n_months))+
+ggplot(df2, aes(x=year, y=vpd_mean, fill = zone))+
   geom_boxplot()
 
 df2$year = as.numeric(df2$year)
-df2$n_months = round(df2$n_months, 0)
-df2$n_months2 = as.character(df2$n_months)
+df2$zone = round(df2$zone, 0)
+df2$zone2 = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, n_months2) |> 
+  group_by(year, zone2) |> 
   summarize(vpd_mean = mean(vpd_mean))
 
 ggplot(df3, aes(x=year, y=vpd_mean))+
@@ -148,7 +148,7 @@ ggplot(df3, aes(x=year, y=vpd_mean))+
   geom_smooth(method = "lm", se = F)
 
 
-ggplot(df3, aes(x=year, y=vpd_mean, col = n_months2))+
+ggplot(df3, aes(x=year, y=vpd_mean, col = zone2))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -161,7 +161,7 @@ ggplot(df3, aes(x=year, y=vpd_mean, col = n_months2))+
 df = as.data.frame(vpd_95[[1]], na.rm = F)
 colnames(df) = "vpd_95"
 df$year = names(vpd_95[[1]])
-df$n_months = dpm_df$last
+df$zone = vpd_zone_df$mean
 df$forest_p = for_df$classification_2024
 
 for (z in 2:51) {
@@ -169,7 +169,7 @@ for (z in 2:51) {
   df2 = as.data.frame(vpd_95[[z]], na.rm = F)
   colnames(df2) = "vpd_95"
   df2$year = names(vpd_95[[z]])
-  df2$n_months = dpm_df$last
+  df2$zone = vpd_zone_df$mean
   df2$forest_p = for_df$classification_2024
   df = rbind(df, df2)
 }
@@ -178,15 +178,15 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=vpd_95, fill = n_months))+
+ggplot(df2, aes(x=year, y=vpd_95, fill = zone))+
   geom_boxplot()
 
 df2$year = as.numeric(df2$year)
-df2$n_months = round(df2$n_months, 0)
-df2$n_months2 = as.character(df2$n_months)
+df2$zone = round(df2$zone, 0)
+df2$zone2 = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, n_months2) |> 
+  group_by(year, zone2) |> 
   summarize(vpd_95 = mean(vpd_95))
 
 ggplot(df3, aes(x=year, y=vpd_95))+
@@ -194,7 +194,7 @@ ggplot(df3, aes(x=year, y=vpd_95))+
   geom_smooth(method = "lm", se = F)
 
 
-ggplot(df3, aes(x=year, y=vpd_95, col = n_months2))+
+ggplot(df3, aes(x=year, y=vpd_95, col = zone2))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
