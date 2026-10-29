@@ -178,7 +178,7 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=vpd_95, fill = zone))+
+ggplot(df, aes(x=year, y=vpd_95, fill = zone))+
   geom_boxplot()
 
 df2$year = as.numeric(df2$year)
