@@ -24,3 +24,39 @@ plot(cons_vpd[[51]])
 
 cons_vpd2 = mean(cons_vpd)
 plot(cons_vpd2)
+
+#Clipping to Amazonia Biome ----------------------------------------------------
+am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
+plot(am, add = T)
+
+cons_vpd3 = mask(crop(cons_vpd2, am), am)
+plot(cons_vpd3)
+freq(cons_vpd3)
+
+#Classifying -------------------------------------------------------------------
+vpd_zone[vpd_zone < 1] <- 0
+vpd_zone[vpd_zone >= 1 & vpd_zone <= 3] <- 1
+vpd_zone[vpd_zone > 3 & vpd_zone < 6] <- 2
+vpd_zone[vpd_zone >= 6] <- 3
+
+plot(vpd_zone)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
