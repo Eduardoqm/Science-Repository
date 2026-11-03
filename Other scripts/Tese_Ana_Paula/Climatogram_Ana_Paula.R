@@ -3,6 +3,7 @@
 
 
 library(tidyverse)
+library(ggpubr)
 
 setwd("G:/My Drive/GEE_AP")
 dir()
@@ -24,8 +25,19 @@ df3 <- df2 |>
   mutate(Mes = as.numeric(Mes)) # Converte para número (1 a 12)
 
 
-ggplot(df3, aes(x=Mes, y=valor, fill=Transicao))+
-  geom_col(position = "dodge")
+df3$Transicao[df3$Transicao == "ceam"] = "CEAM"
+df3$Transicao[df3$Transicao == "cema"] = "CEMA"
+df3$Transicao[df3$Transicao == "core"] = "CORE"
+
+gg_prec = ggplot(df3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
+  stat_summary(fun = mean, geom = "col", position = "dodge")+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position = "dodge", col = "black")+
+  labs(x = "Month", y = "Precipitation (mm)",
+       col = NULL, fill = NULL)+
+  scale_x_continuous(breaks = 1:12, 
+                     labels = c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
+                                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"))+
+  theme_bw(); gg_prec
 
 #Temperature -------------------------------------------------------------------
 df_temp = read.csv("ERA5_Temp_monthly_climatograma.csv")
@@ -42,10 +54,6 @@ df_temp3 <- df_temp2 |>
   ) |>
   mutate(Mes = as.numeric(Mes)) # Converte para número (1 a 12)
 
-
-ggplot(df_temp3, aes(x=Mes, y=valor, fill=Transicao))+
-  geom_col(position = "dodge")
-
 #Confidence Interval
 df_temp3$Mes2 = as.factor(df_temp3$Mes)
 
@@ -53,13 +61,16 @@ df_temp3$Transicao[df_temp3$Transicao == "ceam"] = "CEAM"
 df_temp3$Transicao[df_temp3$Transicao == "cema"] = "CEMA"
 df_temp3$Transicao[df_temp3$Transicao == "core"] = "CORE"
 
-ggplot(df_temp3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
+gg_temp = ggplot(df_temp3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
   stat_summary(fun = mean, geom = "point")+
   stat_summary(fun = mean, geom = "line")+
-  stat_summary(fun.data = mean_cl_boot, geom = "ribbon", alpha = 0.1)+
-  labs(x = "Mês", y = "Temperature (C°)",
+  stat_summary(fun.data = mean_cl_boot, geom = "ribbon", alpha = 0.05)+
+  labs(x = "Month", y = "Temperature (C°)",
        col = NULL, fill = NULL)+
-  theme_bw()
+  scale_x_continuous(breaks = 1:12, 
+    labels = c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
+               "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"))+
+  theme_bw(); gg_temp
 
 #CWD ---------------------------------------------------------------------------
 df_cwd = read.csv("CWD_Mensal_Historico_climatograma.csv")
@@ -76,11 +87,45 @@ df_cwd3 <- df_cwd2 |>
   ) |>
   mutate(Mes = as.numeric(Mes)) # Converte para número (1 a 12)
 
-ggplot(df_cwd3, aes(x=Mes, y=valor, fill=Transicao))+
-  geom_col(position = "dodge")
+df_cwd3$Transicao[df_cwd3$Transicao == "ceam"] = "CEAM"
+df_cwd3$Transicao[df_cwd3$Transicao == "cema"] = "CEMA"
+df_cwd3$Transicao[df_cwd3$Transicao == "core"] = "CORE"
 
+
+gg_cwd = ggplot(df_cwd3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
+  stat_summary(fun = mean, geom = "point")+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar")+
+  labs(x = "Month", y = "Climatic Water Deficit (mm)",
+       col = NULL, fill = NULL)+
+  scale_x_continuous(breaks = 1:12, 
+                     labels = c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
+                                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"))+
+  theme_bw(); gg_cwd
 
 #All variables -----------------------------------------------------------------
+ggarrange(gg_temp, gg_prec, gg_cwd,
+          ncol = 1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 df3$variable = "Accumulated Precipitation (mm)"
 df_temp3$variable = "Temperature (C°)"
 df_cwd3$variable = "Climatic Water Deficit (mm)"

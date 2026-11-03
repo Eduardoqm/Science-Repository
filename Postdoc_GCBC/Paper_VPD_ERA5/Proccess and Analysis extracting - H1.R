@@ -27,31 +27,30 @@ vpd_zone
 plot(vpd_zone)
 
 #Mapbiomas
-mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
-mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
+#mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
+#mb2 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MapBiomas_Forest_2024_col10.tiff")
 mb3 = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
-plot(mb)
-plot(mb2)
+#plot(mb)
+#plot(mb2)
 plot(mb3)
 
-scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
-plot(scf)
+#scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
+#plot(scf)
 
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
 plot(am, add = T)
 
 #Clipping to Amazonia Biome ----------------------------------------------------
-cons_vpd = mask(crop(cons_vpd, am), am)#; plot(cons_vpd)
-vpd_95 = mask(crop(vpd_95, am), am)#; plot(vpd_95)
-vpd_mean = mask(crop(vpd_mean, am), am)#; plot(vpd_mean)
-vpd_zone = mask(crop(vpd_zone, am), am)#; plot(vpd_zone)
-
-mbx = mask(crop(mb, am), am); plot(mbx)
-
+cons_vpd = mask(crop(cons_vpd, am), am)
+vpd_95 = mask(crop(vpd_95, am), am)
+vpd_mean = mask(crop(vpd_mean, am), am)
+vpd_zone = mask(crop(vpd_zone, am), am)
+#mbx = mask(crop(mb, am), am); plot(mbx)
 
 #Filtering Forest class --------------------------------------------------------
 #mb2 = ifel(mbx == 3, 1, 0); plot(mb2) #Filter only forest
+#scf = mask(crop(scf, am), am)
 #mb2 = ifel(scf > 0, 0, mb2); plot(mb2) #Remove Secondary Forests
 #setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
 #writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
