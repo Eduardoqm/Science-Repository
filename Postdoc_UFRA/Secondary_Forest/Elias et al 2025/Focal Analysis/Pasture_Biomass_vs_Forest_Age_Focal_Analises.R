@@ -35,7 +35,7 @@ save_delta_raster <- function(esa_rast, output_file) {
   
   esa_past <- ifel(is.na(past), NA, esa_rast)
   #esa_f   <- focal(esa_past, w=21, fun=median, na.rm=TRUE, na.policy="only")
-  esa_f   <- focal(esa_past, w=21, fun=quantile, probs = 0.95, na.rm=TRUE, na.policy="only")
+  esa_f   <- focal(esa_past, w=21, fun=quantile, probs = 0.05, na.rm=TRUE, na.policy="only")
   delta_esa <- esa_rast - esa_f
   
   writeRaster(delta_esa, output_file, overwrite=TRUE)
