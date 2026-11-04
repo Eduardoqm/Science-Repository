@@ -92,9 +92,6 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-#ggplot(df2, aes(x=year, y=cons_vpd, fill = zone))+
-#  geom_boxplot()
-
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
@@ -105,12 +102,6 @@ df3 = df2 |>
 
 df3$var = "cons_vpd"
 colnames(df3)[3] = "value"
-
-ggplot(df3, aes(x=year, y=value))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  labs(x = NULL,
-       y = "Number of days/year (VPD ≥ 0.75)")
 
 ggplot(df3, aes(x=year, y=value, col = zone))+
   geom_point()+
@@ -143,9 +134,6 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-#ggplot(df2, aes(x=year, y=vpd_mean, fill = zone))+
-#  geom_boxplot()
-
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
@@ -156,11 +144,6 @@ df3 = df2 |>
 
 df3$var = "vpd_mean"
 colnames(df3)[3] = "value"
-
-ggplot(df3, aes(x=year, y=value))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)
-
 
 ggplot(df3, aes(x=year, y=value, col = zone))+
   geom_point()+
@@ -193,9 +176,6 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-#ggplot(df, aes(x=year, y=vpd_95, fill = zone))+
-#  geom_boxplot()
-
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
@@ -204,18 +184,18 @@ df3 = df2 |>
   group_by(year, zone) |> 
   summarize(vpd_95 = mean(vpd_95))
 
-ggplot(df3, aes(x=year, y=vpd_95))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)
+df3$var = "vpd_95"
+colnames(df3)[3] = "value"
 
-
-ggplot(df3, aes(x=year, y=vpd_95, col = zone))+
+ggplot(df3, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
        y = "VPD/year (quantile 95%)",
        col = NULL)+
   theme_minimal()
+
+df_all = rbind(df_all, df3)
 
 #DP hours/day in flammability conditions VPD > 0.75 ----------------------------
 vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
@@ -240,9 +220,6 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-#ggplot(df, aes(x=year, y=vpd_hour2, fill = zone))+
-#  geom_boxplot()
-
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
@@ -251,12 +228,10 @@ df3 = df2 |>
   group_by(year, zone) |> 
   summarize(vpd_hour2 = mean(vpd_hour2))
 
-ggplot(df3, aes(x=year, y=vpd_hour2))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)
+df3$var = "vpd_hour"
+colnames(df3)[3] = "value"
 
-
-ggplot(df3, aes(x=year, y=vpd_hour2, col = zone))+
+ggplot(df3, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -264,13 +239,12 @@ ggplot(df3, aes(x=year, y=vpd_hour2, col = zone))+
        col = NULL)+
   theme_minimal()
 
+df_all = rbind(df_all, df3)
 
+#Analysis and graphics ---------------------------------------------------------
+head(df_all)
 
-
-
-
-
-
+#Climatic Zones
 #--------------------------------------------------------------
 # Class |	Critery (days) | Name                               |
 #--------------------------------------------------------------
@@ -279,6 +253,23 @@ ggplot(df3, aes(x=year, y=vpd_hour2, col = zone))+
 # 2     | 101–149        | Intermediate Persistence Zone (IP) |
 # 3     | ≥150           | Prolonged Persistence Zone (PP)    |
 #--------------------------------------------------------------
+
+df_all$zone[df_all$zone == "0"] <- "LP"
+df_all$zone[df_all$zone == "1"] <- "SP"
+df_all$zone[df_all$zone == "2"] <- "IP"
+df_all$zone[df_all$zone == "3"] <- "PP"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
