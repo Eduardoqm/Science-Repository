@@ -259,8 +259,30 @@ df_all$zone[df_all$zone == "1"] <- "SP"
 df_all$zone[df_all$zone == "2"] <- "IP"
 df_all$zone[df_all$zone == "3"] <- "PP"
 
+df_all$zone = factor(df_all$zone, levels = c("LP", "SP", "IP", "PP"))
+
+gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  labs(x = NULL, y = NULL, col = NULL)+
+  #facet_wrap(~factor(var), scales = "free_y")+
+  facet_wrap(~factor(var, c("a) Low Persistence Zone",
+                            "b) Short Persistence Zone",
+                            "c) Intermediate Persistence Zone",
+                            "d) Prolonged Persistence Zone")), scales = "free")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "right",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg1
 
 
+
+
+
+ggsave(gg1,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Time_Series_H1_(since1975)_B.png",
+       dpi = 600, units = "cm", height = 14, width = 16)
 
 
 
