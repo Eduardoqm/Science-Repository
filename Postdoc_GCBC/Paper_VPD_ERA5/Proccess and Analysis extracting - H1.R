@@ -103,13 +103,16 @@ df3 = df2 |>
   group_by(year, zone) |> 
   summarize(cons_vpd = mean(cons_vpd))
 
-ggplot(df3, aes(x=year, y=cons_vpd))+
+df3$var = "cons_vpd"
+colnames(df3)[3] = "value"
+
+ggplot(df3, aes(x=year, y=value))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
        y = "Number of days/year (VPD ≥ 0.75)")
 
-ggplot(df3, aes(x=year, y=cons_vpd, col = zone))+
+ggplot(df3, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -117,6 +120,7 @@ ggplot(df3, aes(x=year, y=cons_vpd, col = zone))+
        col = NULL)+
   theme_minimal()
 
+df_all = df3
 
 #Annual VPD mean ---------------------------------------------------------------
 df = as.data.frame(vpd_mean[[1]], na.rm = F)
@@ -150,12 +154,15 @@ df3 = df2 |>
   group_by(year, zone) |> 
   summarize(vpd_mean = mean(vpd_mean))
 
-ggplot(df3, aes(x=year, y=vpd_mean))+
+df3$var = "vpd_mean"
+colnames(df3)[3] = "value"
+
+ggplot(df3, aes(x=year, y=value))+
   geom_point()+
   geom_smooth(method = "lm", se = F)
 
 
-ggplot(df3, aes(x=year, y=vpd_mean, col = zone))+
+ggplot(df3, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -163,7 +170,9 @@ ggplot(df3, aes(x=year, y=vpd_mean, col = zone))+
        col = NULL)+
   theme_minimal()
 
-#Annual VPD quantile 95 (extremes) ---------------------------------------------
+df_all = rbind(df_all, df3)
+
+#Annual VPD quantile 95 (evalue#Annual VPD quantile 95 (extremes) ---------------------------------------------
 df = as.data.frame(vpd_95[[1]], na.rm = F)
 colnames(df) = "vpd_95"
 df$year = names(vpd_95[[1]])
