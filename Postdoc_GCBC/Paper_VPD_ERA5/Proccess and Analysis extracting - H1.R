@@ -261,34 +261,32 @@ df_all$zone[df_all$zone == "3"] <- "PP"
 
 df_all$zone = factor(df_all$zone, levels = c("LP", "SP", "IP", "PP"))
 
-df_all$var[df_all$var == "cons_vpd"] <- "a) Maximum Consecutive days of VPD ≥ 0.75"
-df_all$var[df_all$var == "vpd_mean"] <- "b) Annual mean VPD (kPa/year)"
-df_all$var[df_all$var == "vpd_95"] <- "c) Annual extreme VPD (kPa/year)"
-df_all$var[df_all$var == "vpd_hour"] <- "d) Daily hours (VPD ≥ 0.75)"
+df_all$var[df_all$var == "cons_vpd"] <- "a) Maximum duration of VPD ≥ 0.75 (days)"
+df_all$var[df_all$var == "vpd_mean"] <- "b) Annual mean VPD (kPa)"
+df_all$var[df_all$var == "vpd_95"] <- "c) Annual 95th percentile VPD (kPa)"
+df_all$var[df_all$var == "vpd_hour"] <- "d) Duration of VPD ≥ 0.75 (hours/day)"
 
 
+
+#Graphic -----------------------------------------------------------------------
 gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = NULL, col = NULL)+
   #facet_wrap(~factor(var), scales = "free_y")+
-  facet_wrap(~factor(var, c("a) Maximum Consecutive days of VPD ≥ 0.75",
-                            "b) Annual mean VPD (kPa/year)",
-                            "c) Annual extreme VPD (kPa/year)",
-                            "d) Daily hours (VPD ≥ 0.75)")), scales = "free")+
+  facet_wrap(~factor(var, c("a) Maximum duration of VPD ≥ 0.75 (days)",
+                            "b) Annual mean VPD (kPa)",
+                            "c) Annual 95th percentile VPD (kPa)",
+                            "d) Duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
   scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw()+
-  theme(legend.position = "right",
+  theme(legend.position = "bottom",
         strip.background = element_blank(),
         strip.text = element_text(hjust = 0, face = "bold")); gg1
 
-
-
-
-
 ggsave(gg1,
        filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Time_Series_H1_(since1975)_B.png",
-       dpi = 600, units = "cm", height = 12, width = 14)
+       dpi = 600, units = "cm", height = 14, width = 16)
 
 
 
