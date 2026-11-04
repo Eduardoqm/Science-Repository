@@ -155,7 +155,7 @@ ggplot(df3, aes(x=year, y=value, col = zone))+
 
 df_all = rbind(df_all, df3)
 
-#Annual VPD quantile 95 (evalue#Annual VPD quantile 95 (extremes) ---------------------------------------------
+#Annual VPD quantile 95 (extremes) ---------------------------------------------
 df = as.data.frame(vpd_95[[1]], na.rm = F)
 colnames(df) = "vpd_95"
 df$year = names(vpd_95[[1]])
@@ -261,15 +261,21 @@ df_all$zone[df_all$zone == "3"] <- "PP"
 
 df_all$zone = factor(df_all$zone, levels = c("LP", "SP", "IP", "PP"))
 
+df_all$var[df_all$var == "cons_vpd"] <- "a) Maximum Consecutive days of VPD ≥ 0.75"
+df_all$var[df_all$var == "vpd_mean"] <- "b) Annual mean VPD (kPa/year)"
+df_all$var[df_all$var == "vpd_95"] <- "c) Annual extreme VPD (kPa/year)"
+df_all$var[df_all$var == "vpd_hour"] <- "d) Daily hours (VPD ≥ 0.75)"
+
+
 gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = NULL, col = NULL)+
   #facet_wrap(~factor(var), scales = "free_y")+
-  facet_wrap(~factor(var, c("a) Low Persistence Zone",
-                            "b) Short Persistence Zone",
-                            "c) Intermediate Persistence Zone",
-                            "d) Prolonged Persistence Zone")), scales = "free")+
+  facet_wrap(~factor(var, c("a) Maximum Consecutive days of VPD ≥ 0.75",
+                            "b) Annual mean VPD (kPa/year)",
+                            "c) Annual extreme VPD (kPa/year)",
+                            "d) Daily hours (VPD ≥ 0.75)")), scales = "free")+
   scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw()+
   theme(legend.position = "right",
@@ -282,7 +288,7 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
 
 ggsave(gg1,
        filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Time_Series_H1_(since1975)_B.png",
-       dpi = 600, units = "cm", height = 14, width = 16)
+       dpi = 600, units = "cm", height = 12, width = 14)
 
 
 
