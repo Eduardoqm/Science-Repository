@@ -38,6 +38,15 @@ freq(cons_vpd3)
 #Classifying -------------------------------------------------------------------
 vpd_zone = cons_vpd3
 
+#---------------------------------------------------------------
+# Class |	Critery (days) | Name
+#---------------------------------------------------------------
+# 0	    | 0–49           | Low Persistence Zone (LP)
+# 1 	  | 50–100         | Short Persistence Zone (SP)
+# 2     | 101–149        | Intermediate Persistence Zone (IP)
+# 3     | ≥150           | Prolonged Persistence Zone (PP)
+#---------------------------------------------------------------
+
 vpd_zone[vpd_zone == 0] <- NA
 vpd_zone[vpd_zone < 50] <- 0
 vpd_zone[vpd_zone >= 50 & vpd_zone <= 100] <- 1

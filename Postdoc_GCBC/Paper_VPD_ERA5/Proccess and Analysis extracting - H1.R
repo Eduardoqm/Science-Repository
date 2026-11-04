@@ -20,11 +20,14 @@ brick = function(w, a, b){
 cons_vpd = brick("G:/My Drive/GEE_Max_Consecutive_VPD_Days_DP_Annual", 29, 32) #Consecutive VPD days > 0.75 kPa
 vpd_95 = brick("G:/My Drive/GEE_Q95_VPD_DP_Annual", 12, 15) #Annual quantile 95 VDP
 vpd_mean = brick("G:/My Drive/GEE_Mean_VPD_DP_Annual", 13, 16) #Annual mean VDP
+vpd_hour = brick("G:/My Drive/GEE_Annual_VPD_Hours_DP", 21, 24)
 
 #Driest Period length
 vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
 vpd_zone
 plot(vpd_zone)
+
+dp_month = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/DP_length_months.tif") 
 
 #Mapbiomas
 #mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
@@ -45,7 +48,9 @@ plot(am, add = T)
 cons_vpd = mask(crop(cons_vpd, am), am)
 vpd_95 = mask(crop(vpd_95, am), am)
 vpd_mean = mask(crop(vpd_mean, am), am)
+vpd_hour = mask(crop(vpd_hour, am), am)
 vpd_zone = mask(crop(vpd_zone, am), am)
+dp_month = mask(crop(dp_month, am), am)
 #mbx = mask(crop(mb, am), am); plot(mbx)
 
 #Filtering Forest class --------------------------------------------------------
@@ -56,8 +61,8 @@ vpd_zone = mask(crop(vpd_zone, am), am)
 #writeRaster(mb2, "MapBiomas_Forest_2025_col11.tiff", overwrite=TRUE)
 
 #Resampling rasters ------------------------------------------------------------
-vpd_zone2 = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone2)
-
+vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
+dp_month2 = resample(dp_month, cons_vpd, method = "average"); plot(dp_month2)
 #mb3 = resample(mb2, cons_vpd, method = "sum"); plot(mb3)
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff", overwrite = T)
@@ -66,7 +71,7 @@ vpd_zone2 = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone2)
 vpd_zone_df = as.data.frame(vpd_zone, na.rm= F)
 for_df = as.data.frame(mb3, na.rm= F)
 
-#Consecutive days in flammability conditions
+#Consecutive days in flammability conditions VPD > 0.75 ------------------------
 df = as.data.frame(cons_vpd[[1]], na.rm = F)
 colnames(df) = "cons_vpd"
 df$year = names(cons_vpd[[1]])
@@ -87,15 +92,15 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=cons_vpd, fill = zone))+
-  geom_boxplot()
+#ggplot(df2, aes(x=year, y=cons_vpd, fill = zone))+
+#  geom_boxplot()
 
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
-df2$zone2 = as.character(df2$zone)
+df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone2) |> 
+  group_by(year, zone) |> 
   summarize(cons_vpd = mean(cons_vpd))
 
 ggplot(df3, aes(x=year, y=cons_vpd))+
@@ -104,17 +109,16 @@ ggplot(df3, aes(x=year, y=cons_vpd))+
   labs(x = NULL,
        y = "Number of days/year (VPD ≥ 0.75)")
 
-ggplot(df3, aes(x=year, y=cons_vpd, col = zone2))+
+ggplot(df3, aes(x=year, y=cons_vpd, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
        y = "Number of days/year (VPD ≥ 0.75)",
-       col = "Dry Season
-   (Months)")+
+       col = NULL)+
   theme_minimal()
 
 
-#Annual VPD mean
+#Annual VPD mean ---------------------------------------------------------------
 df = as.data.frame(vpd_mean[[1]], na.rm = F)
 colnames(df) = "vpd_mean"
 df$year = names(vpd_mean[[1]])
@@ -135,15 +139,15 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df2, aes(x=year, y=vpd_mean, fill = zone))+
-  geom_boxplot()
+#ggplot(df2, aes(x=year, y=vpd_mean, fill = zone))+
+#  geom_boxplot()
 
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
-df2$zone2 = as.character(df2$zone)
+df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone2) |> 
+  group_by(year, zone) |> 
   summarize(vpd_mean = mean(vpd_mean))
 
 ggplot(df3, aes(x=year, y=vpd_mean))+
@@ -151,16 +155,15 @@ ggplot(df3, aes(x=year, y=vpd_mean))+
   geom_smooth(method = "lm", se = F)
 
 
-ggplot(df3, aes(x=year, y=vpd_mean, col = zone2))+
+ggplot(df3, aes(x=year, y=vpd_mean, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
        y = "Mean VPD/year",
-       col = "Dry Season
-   (Months)")+
+       col = NULL)+
   theme_minimal()
 
-#Annual VPD quantile 95 (extremes)
+#Annual VPD quantile 95 (extremes) ---------------------------------------------
 df = as.data.frame(vpd_95[[1]], na.rm = F)
 colnames(df) = "vpd_95"
 df$year = names(vpd_95[[1]])
@@ -181,15 +184,15 @@ df2 = df |>
   filter(forest_p > 0) |> 
   na.omit()
 
-ggplot(df, aes(x=year, y=vpd_95, fill = zone))+
-  geom_boxplot()
+#ggplot(df, aes(x=year, y=vpd_95, fill = zone))+
+#  geom_boxplot()
 
 df2$year = as.numeric(df2$year)
 df2$zone = round(df2$zone, 0)
-df2$zone2 = as.character(df2$zone)
+df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone2) |> 
+  group_by(year, zone) |> 
   summarize(vpd_95 = mean(vpd_95))
 
 ggplot(df3, aes(x=year, y=vpd_95))+
@@ -197,17 +200,76 @@ ggplot(df3, aes(x=year, y=vpd_95))+
   geom_smooth(method = "lm", se = F)
 
 
-ggplot(df3, aes(x=year, y=vpd_95, col = zone2))+
+ggplot(df3, aes(x=year, y=vpd_95, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
        y = "VPD/year (quantile 95%)",
-       col = "Dry Season
-   (Months)")+
+       col = NULL)+
+  theme_minimal()
+
+#DP hours/day in flammability conditions VPD > 0.75 ----------------------------
+vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
+
+df = as.data.frame(vpd_hour2[[1]], na.rm = F)
+colnames(df) = "vpd_hour2"
+df$year = names(vpd_hour2[[1]])
+df$zone = vpd_zone_df$mean
+df$forest_p = for_df$classification_2024
+
+for (z in 2:51) {
+  print(names(vpd_hour2[[z]]))
+  df2 = as.data.frame(vpd_hour2[[z]], na.rm = F)
+  colnames(df2) = "vpd_hour2"
+  df2$year = names(vpd_hour2[[z]])
+  df2$zone = vpd_zone_df$mean
+  df2$forest_p = for_df$classification_2024
+  df = rbind(df, df2)
+}
+
+df2 = df |>
+  filter(forest_p > 0) |> 
+  na.omit()
+
+#ggplot(df, aes(x=year, y=vpd_hour2, fill = zone))+
+#  geom_boxplot()
+
+df2$year = as.numeric(df2$year)
+df2$zone = round(df2$zone, 0)
+df2$zone = as.character(df2$zone)
+
+df3 = df2 |> 
+  group_by(year, zone) |> 
+  summarize(vpd_hour2 = mean(vpd_hour2))
+
+ggplot(df3, aes(x=year, y=vpd_hour2))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)
+
+
+ggplot(df3, aes(x=year, y=vpd_hour2, col = zone))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  labs(x = NULL,
+       y = "Mean of daily hours (VPD ≥ 0.75)",
+       col = NULL)+
   theme_minimal()
 
 
 
+
+
+
+
+
+#---------------------------------------------------------------
+# Class |	Critery (days) | Name
+#---------------------------------------------------------------
+# 0	    | 0–49           | Low Persistence Zone (LP)
+# 1 	  | 50–100         | Short Persistence Zone (SP)
+# 2     | 101–149        | Intermediate Persistence Zone (IP)
+# 3     | ≥150           | Prolonged Persistence Zone (PP)
+#---------------------------------------------------------------
 
 
 
