@@ -261,12 +261,10 @@ df_all$zone[df_all$zone == "3"] <- "PP"
 
 df_all$zone = factor(df_all$zone, levels = c("LP", "SP", "IP", "PP"))
 
-df_all$var[df_all$var == "cons_vpd"] <- "a) Maximum duration of VPD ≥ 0.75 (days)"
-df_all$var[df_all$var == "vpd_mean"] <- "b) Annual mean VPD (kPa)"
-df_all$var[df_all$var == "vpd_95"] <- "c) Annual 95th percentile VPD (kPa)"
-df_all$var[df_all$var == "vpd_hour"] <- "d) Duration of VPD ≥ 0.75 (hours/day)"
-
-
+df_all$var[df_all$var == "vpd_mean"] <- "a) Annual mean VPD (kPa)"
+df_all$var[df_all$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
+df_all$var[df_all$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
+df_all$var[df_all$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
 #Graphic -----------------------------------------------------------------------
 gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
@@ -274,10 +272,10 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = NULL, col = NULL)+
   #facet_wrap(~factor(var), scales = "free_y")+
-  facet_wrap(~factor(var, c("a) Maximum duration of VPD ≥ 0.75 (days)",
-                            "b) Annual mean VPD (kPa)",
-                            "c) Annual 95th percentile VPD (kPa)",
-                            "d) Duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
+  facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
+                            "b) Annual 95th percentile VPD (kPa)",
+                            "c) Max. consecutive VPD ≥ 0.75 days",
+                            "d) Mean duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
   scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw()+
   theme(legend.position = "bottom",
