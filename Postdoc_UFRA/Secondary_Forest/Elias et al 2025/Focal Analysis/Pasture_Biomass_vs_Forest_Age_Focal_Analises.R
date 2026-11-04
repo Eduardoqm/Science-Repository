@@ -122,7 +122,7 @@ final_df2 = df %>%
     n = n()) %>%
   filter(n > 200, age < 250)
 
-write.csv(final_df2, "Pasture_AGB_age_full_C.csv", row.names = FALSE)
+write.csv(final_df2, "Pasture_AGB_age_full_C_q0.05.csv", row.names = FALSE)
 
 
 
