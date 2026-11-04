@@ -262,14 +262,14 @@ ggplot(df3, aes(x=year, y=vpd_hour2, col = zone))+
 
 
 
-#---------------------------------------------------------------
-# Class |	Critery (days) | Name
-#---------------------------------------------------------------
-# 0	    | 0–49           | Low Persistence Zone (LP)
-# 1 	  | 50–100         | Short Persistence Zone (SP)
-# 2     | 101–149        | Intermediate Persistence Zone (IP)
-# 3     | ≥150           | Prolonged Persistence Zone (PP)
-#---------------------------------------------------------------
+#--------------------------------------------------------------
+# Class |	Critery (days) | Name                               |
+#--------------------------------------------------------------
+# 0	    | 0–49           | Low Persistence Zone (LP)          |
+# 1 	  | 50–100         | Short Persistence Zone (SP)        |
+# 2     | 101–149        | Intermediate Persistence Zone (IP) |
+# 3     | ≥150           | Prolonged Persistence Zone (PP)    |
+#--------------------------------------------------------------
 
 
 
