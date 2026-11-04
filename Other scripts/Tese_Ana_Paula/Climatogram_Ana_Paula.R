@@ -31,13 +31,16 @@ df3$Transicao[df3$Transicao == "core"] = "CORE"
 
 gg_prec = ggplot(df3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
   stat_summary(fun = mean, geom = "col", position = "dodge")+
-  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position = "dodge", col = "black")+
-  labs(x = "Month", y = "Precipitation (mm)",
-       col = NULL, fill = NULL)+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", 
+               position = position_dodge(width = 0.9), 
+               col = "black", width = 0.5)+
+  geom_hline(yintercept = 100, color = "black", linetype = "dashed")+
+  labs(title = "c)", x = NULL, y = "Precipitation (mm)", col = NULL, fill = NULL)+
   scale_x_continuous(breaks = 1:12, 
                      labels = c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
                                 "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"))+
-  theme_bw(); gg_prec
+  theme_classic()+
+  theme(legend.position = "none"); gg_prec
 
 #Temperature -------------------------------------------------------------------
 df_temp = read.csv("ERA5_Temp_monthly_climatograma.csv")
@@ -63,14 +66,14 @@ df_temp3$Transicao[df_temp3$Transicao == "core"] = "CORE"
 
 gg_temp = ggplot(df_temp3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
   stat_summary(fun = mean, geom = "point")+
-  stat_summary(fun = mean, geom = "line")+
-  stat_summary(fun.data = mean_cl_boot, geom = "ribbon", alpha = 0.05)+
-  labs(x = "Month", y = "Temperature (C°)",
-       col = NULL, fill = NULL)+
+  #stat_summary(fun = mean, geom = "line")+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width=0.1)+
+  labs(title = "a)", x = NULL, y = "Temperature (C°)", col = NULL, fill = NULL)+
   scale_x_continuous(breaks = 1:12, 
     labels = c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"))+
-  theme_bw(); gg_temp
+  theme_classic()+
+  theme(legend.position = "top"); gg_temp
 
 #CWD ---------------------------------------------------------------------------
 df_cwd = read.csv("CWD_Mensal_Historico_climatograma.csv")
@@ -94,68 +97,17 @@ df_cwd3$Transicao[df_cwd3$Transicao == "core"] = "CORE"
 
 gg_cwd = ggplot(df_cwd3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
   stat_summary(fun = mean, geom = "point")+
-  stat_summary(fun.data = mean_cl_boot, geom = "errorbar")+
-  labs(x = "Month", y = "Climatic Water Deficit (mm)",
-       col = NULL, fill = NULL)+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width=0.1)+
+  labs(title = "b)", x = NULL, y = "Water Deficit (mm)", col = NULL, fill = NULL)+
   scale_x_continuous(breaks = 1:12, 
                      labels = c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
                                 "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"))+
-  theme_bw(); gg_cwd
+  theme_classic()+
+  theme(legend.position = "none"); gg_cwd
 
 #All variables -----------------------------------------------------------------
-ggarrange(gg_temp, gg_prec, gg_cwd,
-          ncol = 1)
+gg_all = ggarrange(gg_temp, gg_cwd,gg_prec, ncol = 1, common.legend = T); gg_all
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-df3$variable = "Accumulated Precipitation (mm)"
-df_temp3$variable = "Temperature (C°)"
-df_cwd3$variable = "Climatic Water Deficit (mm)"
-
-df_full = rbind(df3, df_temp3, df_cwd3)
-
-df_full$Mes2 = as.factor(df_full$Mes)
-
-df_full$Transicao[df_full$Transicao == "ceam"] = "CEAM"
-df_full$Transicao[df_full$Transicao == "cema"] = "CEMA"
-df_full$Transicao[df_full$Transicao == "core"] = "CORE"
-
-ggplot(df_full, aes(x=Mes2, y=valor, fill=Transicao))+
-  geom_col(position = "dodge")+
-  labs(x = "Mês", y = NULL, fill = NULL)+
-  facet_wrap(~variable, ncol = 1, scale = "free")+
-  theme_bw()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#gg_all2 = annotate_figure(gg_all, 
+#                bottom = text_grob("Month", size = 11)); gg_all2
 
