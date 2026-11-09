@@ -19,3 +19,9 @@ plot(scf23)
 writeRaster(scf23, "MB_Forest_age_2023B.tif")
 
 #2025 --------------------------------------------------------------------------
+
+
+
+
+
+writeRaster(scf25, "MB_Forest_age_2025B.tif")
