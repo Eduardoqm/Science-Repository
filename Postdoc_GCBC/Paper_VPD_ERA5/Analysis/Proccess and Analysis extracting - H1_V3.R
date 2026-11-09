@@ -266,6 +266,26 @@ df_all$var[df_all$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
 df_all$var[df_all$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
 df_all$var[df_all$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
+#Annual mean VPD (kPa)
+df_a = df_all |> filter(var == "a) Annual mean VPD (kPa)")
+summary(lm(value~year*zone, data = df_a))
+
+#Annual 95th percentile VPD (kPa)
+df_b = df_all |> filter(var == "b) Annual 95th percentile VPD (kPa)")
+summary(lm(value~year*zone, data = df_b))
+
+#Max. consecutive VPD ≥ 0.75 days
+df_c = df_all |> filter(var == "c) Max. consecutive VPD ≥ 0.75 days")
+summary(lm(value~year*zone, data = df_c))
+
+#Mean duration of VPD ≥ 0.75 (hours/day)
+df_d = df_all |> filter(var == "d) Mean duration of VPD ≥ 0.75 (hours/day)")
+summary(lm(value~year*zone, data = df_d))
+
+
+summary(lm(value~year*zone*var, data = df_all))
+
+
 #Graphic -----------------------------------------------------------------------
 gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
   geom_point()+
@@ -282,11 +302,26 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
         strip.background = element_blank(),
         strip.text = element_text(hjust = 0, face = "bold")); gg1
 
-ggsave(gg1,
-       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Time_Series_H1_(since1975)_B.png",
-       dpi = 600, units = "cm", height = 14, width = 16)
+#ggsave(gg1,
+#       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Time_Series_H1_(since1975)_B.png",
+#       dpi = 600, units = "cm", height = 14, width = 16)
 
 
+
+ggplot(df_all, aes(x=zone, y=value, col = year))+
+  geom_jitter(size = 2)+
+  stat_summary(fun = mean, geom = "point", col = "red", shape = 17, size = 3)+
+  facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
+                            "b) Annual 95th percentile VPD (kPa)",
+                            "c) Max. consecutive VPD ≥ 0.75 days",
+                            "d) Mean duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
+  labs(x = "Climatic Zone", y = NULL, col = NULL)+
+  #scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  scale_color_viridis_b(option = "D", direction = 1)+
+  theme_bw()+
+  theme(legend.position = "right",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold"))
 
 
 
