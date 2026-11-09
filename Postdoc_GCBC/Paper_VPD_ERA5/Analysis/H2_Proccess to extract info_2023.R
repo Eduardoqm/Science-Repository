@@ -10,13 +10,17 @@ library(tidyverse)
 
 #Load data ---------------------------------------------------------------------
 #Secondary Forest
-#Workstation
-scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif")
+#scf24 = rast("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Rasters_H2/MB_Forest_age_2024B.tif") #Workstation
+setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil")
+scf24 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif") #Leptop
+
 plot(scf24)
 
 scf23 = scf24 - 1
 scf23 = ifel(scf23 < 1, NA, scf23)
 plot(scf23)
+
+writeRaster(scf23, "MB_Forest_age_2023B.tif")
 
 #VPD >= 075 kPa hours by month
 #Workstation
