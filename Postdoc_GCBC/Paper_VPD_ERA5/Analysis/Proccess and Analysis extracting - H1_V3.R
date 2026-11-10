@@ -314,7 +314,7 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
 
 gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
   geom_jitter(size = 2, alpha = 0.8)+
-  stat_summary(fun = mean, geom = "point", col = "black", shape = 17, size = 1.5)+
+  stat_summary(fun = mean, geom = "point", col = "black", size = 1.5)+
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
   geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
   facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
@@ -330,9 +330,9 @@ gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
         strip.text = element_text(hjust = 0, face = "bold")); gg2
 
 
-ggsave(gg2,
-       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_jitter_(since1975).png",
-       dpi = 600, units = "cm", height = 14, width = 16)
+#ggsave(gg2,
+#       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_jitter_(since1975).png",
+#       dpi = 600, units = "cm", height = 14, width = 16)
 
 
 
