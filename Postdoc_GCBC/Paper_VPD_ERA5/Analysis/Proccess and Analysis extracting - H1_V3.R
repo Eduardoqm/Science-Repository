@@ -314,7 +314,7 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
 
 gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
   geom_jitter(size = 2, alpha = 0.8)+
-  stat_summary(fun = mean, geom = "point", col = "black", size = 1.5)+
+  stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
   geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
   facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
