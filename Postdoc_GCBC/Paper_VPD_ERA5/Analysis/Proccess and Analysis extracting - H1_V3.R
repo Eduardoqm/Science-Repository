@@ -266,6 +266,8 @@ df_all$var[df_all$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
 df_all$var[df_all$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
 df_all$var[df_all$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
+#write.csv(df_all, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Dados_analises_H1.csv", row.names = F)
+
 #Annual mean VPD (kPa)
 df_a = df_all |> filter(var == "a) Annual mean VPD (kPa)")
 summary(lm(value~year*zone, data = df_a))
@@ -336,6 +338,9 @@ gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
 
 
 
+
+
+ggplot(df_all, aes())
 
 
 
