@@ -287,11 +287,15 @@ summary(lm(value~year*zone*var, data = df_all))
 
 
 #Graphic -----------------------------------------------------------------------
+limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)",
+                              "b) Annual 95th percentile VPD (kPa)"),
+                      yint = c(0.75, 0.75))
+
 gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm")+
   labs(x = NULL, y = NULL, col = NULL)+
-  #facet_wrap(~factor(var), scales = "free_y")+
+  geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
   facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
                             "b) Annual 95th percentile VPD (kPa)",
                             "c) Max. consecutive VPD ≥ 0.75 days",
@@ -308,23 +312,27 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
 
 
 
-ggplot(df_all, aes(x=zone, y=value, col = year))+
-  geom_jitter(size = 2)+
-  stat_summary(fun = mean, geom = "point", col = "red", shape = 17, size = 3)+
+gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
+  geom_jitter(size = 2, alpha = 0.8)+
+  stat_summary(fun = mean, geom = "point", col = "black", shape = 17, size = 1.5)+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
+  geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
   facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
                             "b) Annual 95th percentile VPD (kPa)",
                             "c) Max. consecutive VPD ≥ 0.75 days",
                             "d) Mean duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
-  labs(x = "Climatic Zone", y = NULL, col = NULL)+
-  #scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
-  scale_color_viridis_b(option = "D", direction = 1)+
+  labs(x = NULL, y = NULL, col = NULL)+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  #scale_color_viridis_b(option = "D", direction = 1)+
   theme_bw()+
-  theme(legend.position = "right",
+  theme(legend.position = "none",
         strip.background = element_blank(),
-        strip.text = element_text(hjust = 0, face = "bold"))
+        strip.text = element_text(hjust = 0, face = "bold")); gg2
 
 
-
+ggsave(gg2,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_jitter_(since1975).png",
+       dpi = 600, units = "cm", height = 14, width = 16)
 
 
 
