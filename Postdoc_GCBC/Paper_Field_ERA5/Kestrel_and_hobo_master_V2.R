@@ -59,7 +59,11 @@ nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
 ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
 duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
 
-kestrel = rbind(nc2, ufra_k2, duq_k2)
+#Filter current process data and merge
+objs <- c("nc2", "ufra_k2", "duq_k2")
+objs <- objs[sapply(objs, exists)]
+kestrel <- do.call(rbind, mget(objs))
+
 kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
 
 #Convert Fahrenheit to Celsius
@@ -73,8 +77,13 @@ kestrel = kestrel[,c(1:3, 7, 4:6)]
 pri2 = prcs_hobo(pri, 100, "Primaria_SEDAP", "HOBO")
 sdp_sec2 = prcs_hobo(sdp_sec, 15, "Secundaria_SEDAP", "HOBO")
 pasto2 = prcs_hobo(pasto, 0, "Pasto_SEDAP", "HOBO")
+duq_h2 = prcs_hobo(duq_h, 32,  "SecFor_Duquinha", "HOBO")
 
-hobo = rbind(pri2, sdp_sec2, pasto2)
+#Filter current process data and merge
+objs <- c("pri2", "sdp_sec2", "pasto2", "duq_h2")
+objs <- objs[sapply(objs, exists)]
+hobo <- do.call(rbind, mget(objs))
+
 #Mastering ---------------------------------------------------------------------
 new_master = rbind(kestrel, hobo)
 #new_master = kestrel
@@ -82,10 +91,10 @@ new_master = rbind(kestrel, hobo)
 #Exporting Master
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos")
 
-old_master = read_csv("Master_Hobo_Kestrel_Not_Calibrated_Sep_2026.csv")
+old_master = read_csv("Master_Hobo_Kestrel_Not_Calibrated_10_09_2026.csv")
 master_final = bind_rows(old_master, new_master) %>% distinct()
 
-write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_10_09_2026.csv", row.names = F)
+write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_11_11_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master_final, aes(x = Date, y = Temp_C, col = Sample))+
@@ -98,7 +107,7 @@ ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
   geom_smooth()+
   facet_wrap(~Sample, scale = "free")
 
-ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
+ggplot(master_final, aes(x = Date, y = VPD, col = Sensor))+
   geom_smooth()+
   geom_hline(yintercept = 0.75, linetype = "dashed")
 
