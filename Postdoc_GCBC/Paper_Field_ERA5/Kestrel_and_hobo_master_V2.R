@@ -39,18 +39,20 @@ setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_D
 dir()
 
 #Kestrel d2 --------------------------------------------------------------------
-nc = read.csv("NovaColonia_3104608_4_de_ago._de_2026___9_30_00_AM.csv"  , sep = ",", skip = 3)
-ufra_k = read.csv("D2-3104592-CAP_UFRA_4_de_ago._de_2026___5_00_00_PM.csv"  , sep = ",", skip = 3)
+nc = read.csv("NovaColonia_3104608_Oct_19_2026_6_20_00_PM.csv"  , sep = ",", skip = 3)
+ufra_k = read.csv("CAP_UFRA_D2_-_3104592_Nov_30_0002_12_00_00_AM.csv"  , sep = ",", skip = 3)
 duq_k = read.csv("D2-3104605-S_GERALDO_27_de_ago_de_2026___2_10_00_PM.csv" , sep = ",", skip = 3)
-romano = read.csv("IrituiaJRI_-_3104596_28_de_ago._de_2026___4_10_00_PM.csv", sep = ",", skip = 3)
+#romano = read.csv("IrituiaJRI_-_3104596_28_de_ago._de_2026___4_10_00_PM.csv", sep = ",", skip = 3)
 
 #HOBO --------------------------------------------------------------------------
 #Secundary Forests
+duq_h = read_excel("HOBO_SAO_GRD_22475752 2026-10-19 16_12_23 BRT (Data BRT).xlsx")
+#romano = read_excel("Irituia.xlsx")
 
 #SEDAP
 pri = read_excel("PRIMARIA_10_09_2026.xlsx")
-sdp_sec = read_excel("SECUNDARIA_10_09_2026.xlsx")
-pasto = read_excel("PASTO_10_09_2026.xlsx" )
+sdp_sec = read_excel("HOBO_SEDAP_SECUNDARIA_20_10_2026.xlsx")
+pasto = read_excel("HOBO_SEDAP_PASTO_20_10_2026.xlsx")
 
 #Processing kestrel dataframe --------------------------------------------------
 nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")

@@ -76,7 +76,8 @@ gg_temp = ggplot(df_temp3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))
   theme(legend.position = "top"); gg_temp
 
 #CWD ---------------------------------------------------------------------------
-df_cwd = read.csv("CWD_Mensal_Historico_climatograma.csv")
+#df_cwd = read.csv("CWD_Mensal_Historico_climatograma.csv")
+df_cwd = read.csv("CWD_Mensal_Historico_Corrigido.csv")
 df_cwd2 = df_cwd[,c(2:13, 21)]
 
 df_cwd3 <- df_cwd2 |>
@@ -90,12 +91,12 @@ df_cwd3 <- df_cwd2 |>
   ) |>
   mutate(Mes = as.numeric(Mes)) # Converte para número (1 a 12)
 
-df_cwd3$Transicao[df_cwd3$Transicao == "ceam"] = "CEAM"
-df_cwd3$Transicao[df_cwd3$Transicao == "cema"] = "CEMA"
-df_cwd3$Transicao[df_cwd3$Transicao == "core"] = "CORE"
+df_cwd3$transicao[df_cwd3$transicao == "ceam"] = "CEAM"
+df_cwd3$transicao[df_cwd3$transicao == "cema"] = "CEMA"
+df_cwd3$transicao[df_cwd3$transicao == "core"] = "CORE"
 
 
-gg_cwd = ggplot(df_cwd3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))+
+gg_cwd = ggplot(df_cwd3, aes(x=Mes, y=valor, col=transicao, fill = transicao))+
   stat_summary(fun = mean, geom = "point")+
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width=0.1)+
   labs(title = "b)", x = NULL, y = "Water Deficit (mm)", col = NULL, fill = NULL)+
