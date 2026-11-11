@@ -58,9 +58,8 @@ pasto = read_excel("HOBO_SEDAP_PASTO_20_10_2026.xlsx")
 nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
 ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
 duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
-romano2 = prcs_kestrel(romano, 87, "Prof_Romano", "kestrel_d2")
 
-kestrel = rbind(nc2, ufra_k2, duq_k2, romano2)
+kestrel = rbind(nc2, ufra_k2, duq_k2)
 kestrel = kestrel %>% filter(Date > "2026-04-26 00:00:00") #Removing test time
 
 #Convert Fahrenheit to Celsius
