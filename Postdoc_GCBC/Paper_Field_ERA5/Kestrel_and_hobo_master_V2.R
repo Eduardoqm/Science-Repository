@@ -129,7 +129,7 @@ ggplot(master_final, aes(x = Age, y = VPD))+
   geom_point()+
   geom_smooth(method = "lm")
 
-
+summary(lm(VPD~Age, data = master_final))
 
 
 
