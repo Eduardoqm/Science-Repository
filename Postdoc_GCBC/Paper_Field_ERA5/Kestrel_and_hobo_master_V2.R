@@ -103,11 +103,11 @@ ggplot(master_final, aes(x = Date, y = Temp_C, col = Sample))+
 ggplot(master_final, aes(x = Date, y = RH, col = Sample))+
   geom_smooth()
 
-ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
+ggplot(master_final, aes(x = Date, y = VPD, col = Sensor))+
   geom_smooth()+
   facet_wrap(~Sample, scale = "free")
 
-ggplot(master_final, aes(x = Date, y = VPD, col = Sensor))+
+ggplot(master_final, aes(x = Date, y = VPD, col = Sample))+
   geom_smooth()+
   geom_hline(yintercept = 0.75, linetype = "dashed")
 
