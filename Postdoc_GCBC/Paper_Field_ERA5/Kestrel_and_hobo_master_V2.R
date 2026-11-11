@@ -97,11 +97,13 @@ master_final = bind_rows(old_master, new_master) %>% distinct()
 write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_11_11_2026.csv", row.names = F)
 
 #Exploration Graphs-------------------------------------------------------------
-ggplot(master_final, aes(x = Date, y = Temp_C, col = Sample))+
-  geom_smooth()
+ggplot(master_final, aes(x = Date, y = Temp_C, col = Sensor))+
+  geom_smooth()+
+  facet_wrap(~Sample, scale = "free")
 
-ggplot(master_final, aes(x = Date, y = RH, col = Sample))+
-  geom_smooth()
+ggplot(master_final, aes(x = Date, y = RH, col = Sensor))+
+  geom_smooth()+
+  facet_wrap(~Sample, scale = "free")
 
 ggplot(master_final, aes(x = Date, y = VPD, col = Sensor))+
   geom_smooth()+
@@ -122,3 +124,15 @@ ggplot(master_final, aes(x = Age, y = VPD, fill = Sample))+
 ggplot(master_final, aes(x = Sensor, y = VPD, fill = Sensor))+
   geom_boxplot()+
   geom_hline(yintercept = 0.75, linetype = "dashed")
+
+ggplot(master_final, aes(x = Age, y = VPD))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+
+
+
+
+
+
+
