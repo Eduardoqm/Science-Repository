@@ -20,7 +20,7 @@ brick = function(w, a, b){
 cons_vpd = brick("G:/My Drive/GEE_Max_Consecutive_VPD_Days_DP_Annual", 29, 32) #Consecutive VPD days > 0.75 kPa
 vpd_95 = brick("G:/My Drive/GEE_Q95_VPD_DP_Annual", 12, 15) #Annual quantile 95 VDP
 vpd_mean = brick("G:/My Drive/GEE_Mean_VPD_DP_Annual", 13, 16) #Annual mean VDP
-vpd_hour = brick("G:/My Drive/GEE_Annual_VPD_Hours_DP", 21, 24)
+vpd_hour = brick("G:/My Drive/GEE_Annual_VPD_Hours_DP", 21, 24) #Hours VPD > 0.75 kPa
 
 #Driest Period length
 vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
