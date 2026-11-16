@@ -21,6 +21,8 @@ vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Dries
 vpd_zone
 plot(vpd_zone)
 
+dp_month = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/DP_length_months.tif") 
+
 #Mapbiomas
 scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
 plot(scf)
@@ -39,6 +41,7 @@ vpd_zone = mask(crop(vpd_zone, am), am)
 
 #Resampling rasters ------------------------------------------------------------
 vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
+dp_month2 = resample(dp_month, cons_vpd, method = "average"); plot(dp_month2)
 scf2 = resample(scf, cons_vpd, method = "average"); plot(scf2)
 
 scf_count = ifel(scf > 0, 1, 0); plot(scf_count)
@@ -48,23 +51,27 @@ scf_count = resample(scf_count, cons_vpd, method = "sum"); plot(scf_count)
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff", overwrite = T)
 
-
-#Consecutive days in flammability conditions VPD > 0.75 ------------------------
+#Global values -----------------------------------------------------------------
+vpd_zone_df = as.data.frame(vpd_zone, na.rm= F); head(vpd_zone_df)
 scf_age = as.data.frame(scf2, na.rm = F); head(scf_age)
 scf_count2 = as.data.frame(scf_count, na.rm = F); head(scf_count2)
-vpd_zone_df = as.data.frame(vpd_zone, na.rm= F); head(vpd_zone_df)
 
+scf_count2$perc = (scf_count2$MB_SF_Age_2024/137000)*100
+
+
+#Consecutive days in flammability conditions VPD > 0.75 ------------------------
 df = as.data.frame(cons_vpd, na.rm = F)
 colnames(df) = "cons_vpd"
 df$zone = vpd_zone_df$mean
 df$age = scf_age$MB_SF_Age_2024
-df$scf_p = scf_count2$MB_SF_Age_2024
+df$scf_perc = scf_count2$perc
 
 df2 = df |>
-  filter(scf_p > 0) |> 
+  filter(scf_perc >= 30) |> 
   na.omit()
 
 df2$age = as.numeric(df2$age)
+#df2$age = round(df2$age, 0)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
 
@@ -75,10 +82,10 @@ df3 = df2 |>
 df3$var = "cons_vpd"
 colnames(df3)[3] = "value"
 
-ggplot(df3, aes(x=year, y=value, col = zone))+
+ggplot(df3, aes(x=age, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
-  labs(x = NULL,
+  labs(x = "Age",
        y = "Number of days/year (VPD ≥ 0.75)",
        col = NULL)+
   theme_minimal()
@@ -86,28 +93,29 @@ ggplot(df3, aes(x=year, y=value, col = zone))+
 df_all = df3
 
 #Annual VPD mean ---------------------------------------------------------------
-df = as.data.frame(vpd_mean[[1]], na.rm = F)
+df = as.data.frame(vpd_mean, na.rm = F)
 colnames(df) = "vpd_mean"
-df$year = names(vpd_mean[[1]])
 df$zone = vpd_zone_df$mean
-df$forest_p = for_df$classification_2024
+df$age = scf_age$MB_SF_Age_2024
+df$scf_perc = scf_count2$perc
 
 df2 = df |>
-  filter(forest_p > 0) |> 
+  filter(scf_perc >= 30) |> 
   na.omit()
 
-df2$year = as.numeric(df2$year)
+df2$age = as.numeric(df2$age)
+#df2$age = round(df2$age, 0)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone) |> 
+  group_by(age, zone) |> 
   summarize(vpd_mean = mean(vpd_mean))
 
 df3$var = "vpd_mean"
 colnames(df3)[3] = "value"
 
-ggplot(df3, aes(x=year, y=value, col = zone))+
+ggplot(df3, aes(x=age, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -118,28 +126,29 @@ ggplot(df3, aes(x=year, y=value, col = zone))+
 df_all = rbind(df_all, df3)
 
 #Annual VPD quantile 95 (extremes) ---------------------------------------------
-df = as.data.frame(vpd_95[[1]], na.rm = F)
+df = as.data.frame(vpd_95, na.rm = F)
 colnames(df) = "vpd_95"
-df$year = names(vpd_95[[1]])
 df$zone = vpd_zone_df$mean
-df$forest_p = for_df$classification_2024
+df$age = scf_age$MB_SF_Age_2024
+df$scf_perc = scf_count2$perc
 
 df2 = df |>
-  filter(forest_p > 0) |> 
+  filter(scf_perc >= 30) |> 
   na.omit()
 
-df2$year = as.numeric(df2$year)
+df2$age = as.numeric(df2$age)
+#df2$age = round(df2$age, 0)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone) |> 
+  group_by(age, zone) |> 
   summarize(vpd_95 = mean(vpd_95))
 
 df3$var = "vpd_95"
 colnames(df3)[3] = "value"
 
-ggplot(df3, aes(x=year, y=value, col = zone))+
+ggplot(df3, aes(x=age, y=value, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = NULL,
@@ -152,22 +161,23 @@ df_all = rbind(df_all, df3)
 #DP hours/day in flammability conditions VPD > 0.75 ----------------------------
 vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
 
-df = as.data.frame(vpd_hour2[[1]], na.rm = F)
+df = as.data.frame(vpd_hour2, na.rm = F)
 colnames(df) = "vpd_hour2"
-df$year = names(vpd_hour2[[1]])
 df$zone = vpd_zone_df$mean
-df$forest_p = for_df$classification_2024
+df$age = scf_age$MB_SF_Age_2024
+df$scf_perc = scf_count2$perc
 
 df2 = df |>
-  filter(forest_p > 0) |> 
+  filter(scf_perc >= 30) |> 
   na.omit()
 
-df2$year = as.numeric(df2$year)
+df2$age = as.numeric(df2$age)
+#df2$age = round(df2$age, 0)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone) |> 
+  group_by(age, zone) |> 
   summarize(vpd_hour2 = mean(vpd_hour2))
 
 df3$var = "vpd_hour"
