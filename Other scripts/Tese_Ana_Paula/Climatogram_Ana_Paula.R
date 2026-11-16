@@ -77,7 +77,7 @@ gg_temp = ggplot(df_temp3, aes(x=Mes, y=valor, col=Transicao, fill = Transicao))
 
 #CWD ---------------------------------------------------------------------------
 #df_cwd = read.csv("CWD_Mensal_Historico_climatograma.csv")
-df_cwd = read.csv("CWD_Mensal_Historico_Corrigido.csv")
+df_cwd = read.csv("CWD_Monthly_HydrologicalYear_AWC150.csv")
 df_cwd2 = df_cwd[,c(2:13, 21)]
 
 df_cwd3 <- df_cwd2 |>
@@ -109,6 +109,7 @@ gg_cwd = ggplot(df_cwd3, aes(x=Mes, y=valor, col=transicao, fill = transicao))+
 #All variables -----------------------------------------------------------------
 gg_all = ggarrange(gg_temp, gg_cwd,gg_prec, ncol = 1, common.legend = T); gg_all
 
-#gg_all2 = annotate_figure(gg_all, 
-#                bottom = text_grob("Month", size = 11)); gg_all2
+ggsave(gg_all,
+       filename = "Climatograma_month_AnaP.png",
+       dpi = 600, units = "cm", height = 23, width = 19)
 
