@@ -46,6 +46,7 @@ duq_k = read.csv("D2-3104605-S_GERALDO_27_de_ago_de_2026___2_10_00_PM.csv" , sep
 
 #HOBO --------------------------------------------------------------------------
 #Secundary Forests
+ufra_h = read_excel("CAP_UFRA_22475754 2026-11-13 09_21_19 Brazil Standard Time (Data Brazil Standard Time).xlsx")
 duq_h = read_excel("HOBO_SAO_GRD_22475752 2026-10-19 16_12_23 BRT (Data BRT).xlsx")
 #romano = read_excel("Irituia.xlsx")
 
@@ -56,11 +57,12 @@ pasto = read_excel("HOBO_SEDAP_PASTO_20_10_2026.xlsx")
 
 #Processing kestrel dataframe --------------------------------------------------
 nc2 = prcs_kestrel(nc, 8, "Nova_Colonia", "kestrel_d2")
+ncb2 = prcs_kestrel(ncb, 8, "Nova_Colonia_B", "kestrel_d2"); ncb2 = ncb2 %>% filter(Date > "2026-10-15 00:00:00")
 ufra_k2 = prcs_kestrel(ufra_k, 20, "SecFor_UFRA", "kestrel_d2")
 duq_k2 = prcs_kestrel(duq_k, 32, "SecFor_Duquinha", "kestrel_d2")
 
 #Filter current process data and merge
-objs <- c("nc2", "ufra_k2", "duq_k2")
+objs <- c("nc2", "ncb2", "ufra_k2", "duq_k2")
 objs <- objs[sapply(objs, exists)]
 kestrel <- do.call(rbind, mget(objs))
 
@@ -71,30 +73,29 @@ kestrel$Temp_C = ifelse(kestrel$Temp_C > 60, ((kestrel$Temp_C - 32) * 5/9), kest
 
 #Calculating VPD
 kestrel$VPD = vpd(kestrel$Temp_C, kestrel$RH)
-kestrel = kestrel[,c(1:3, 7, 4:6)]
+kestrel = kestrel[,c(1:3, 7, 4:6)]; head(kestrel)
 
 #Processing HOBO dataframe -----------------------------------------------------
 pri2 = prcs_hobo(pri, 100, "Primaria_SEDAP", "HOBO")
 sdp_sec2 = prcs_hobo(sdp_sec, 15, "Secundaria_SEDAP", "HOBO")
 pasto2 = prcs_hobo(pasto, 0, "Pasto_SEDAP", "HOBO")
+ufra_h2 = prcs_hobo(ufra_h,  20, "SecFor_UFRA", "HOBO")
 duq_h2 = prcs_hobo(duq_h, 32,  "SecFor_Duquinha", "HOBO")
 
 #Filter current process data and merge
-objs <- c("pri2", "sdp_sec2", "pasto2", "duq_h2")
+objs <- c("pri2", "sdp_sec2", "pasto2", "duq_h2", "ufra_h2")
 objs <- objs[sapply(objs, exists)]
-hobo <- do.call(rbind, mget(objs))
+hobo <- do.call(rbind, mget(objs)); head(hobo)
 
 #Mastering ---------------------------------------------------------------------
-new_master = rbind(kestrel, hobo)
+new_master = rbind(kestrel, hobo); new_master
 #new_master = kestrel
+#new_master = hobo
 
-#Exporting Master
 setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos")
+old_master = read_csv("Master_Hobo_Kestrel_Not_Calibrated_11_11_2026.csv"); old_master
 
-old_master = read_csv("Master_Hobo_Kestrel_Not_Calibrated_11_11_2026.csv")
-master_final = bind_rows(old_master, new_master) %>% distinct()
-
-write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_11_11_2026.csv", row.names = F)
+master_final = bind_rows(old_master, new_master) %>% distinct(); master_final
 
 #Exploration Graphs-------------------------------------------------------------
 ggplot(master_final, aes(x = Date, y = Temp_C, col = Sensor))+
@@ -131,8 +132,7 @@ ggplot(master_final, aes(x = Age, y = VPD))+
 
 summary(lm(VPD~Age, data = master_final))
 
-
-
-
+#Exporting Master --------------------------------------------------------------
+write.csv(master_final, "Master_Hobo_Kestrel_Not_Calibrated_16_11_2026.csv", row.names = F)
 
 
