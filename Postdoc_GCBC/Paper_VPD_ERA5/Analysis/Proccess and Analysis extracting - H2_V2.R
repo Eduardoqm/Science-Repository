@@ -41,28 +41,35 @@ vpd_zone = mask(crop(vpd_zone, am), am)
 vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
 scf2 = resample(scf, cons_vpd, method = "average"); plot(scf2)
 
+scf_count = ifel(scf > 0, 1, 0); plot(scf_count)
+scf_count = resample(scf_count, cons_vpd, method = "sum"); plot(scf_count)
+
 
 #setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters")
 #writeRaster(mb3, "MB_sum_pixel_Forest_2025_resampled.tiff", overwrite = T)
 
 
 #Consecutive days in flammability conditions VPD > 0.75 ------------------------
-df = as.data.frame(cons_vpd[[1]], na.rm = F)
+scf_age = as.data.frame(scf2, na.rm = F); head(scf_age)
+scf_count2 = as.data.frame(scf_count, na.rm = F); head(scf_count2)
+vpd_zone_df = as.data.frame(vpd_zone, na.rm= F); head(vpd_zone_df)
+
+df = as.data.frame(cons_vpd, na.rm = F)
 colnames(df) = "cons_vpd"
-df$year = names(cons_vpd[[1]])
 df$zone = vpd_zone_df$mean
-df$forest_p = for_df$classification_2024
+df$age = scf_age$MB_SF_Age_2024
+df$scf_p = scf_count2$MB_SF_Age_2024
 
 df2 = df |>
-  filter(forest_p > 0) |> 
+  filter(scf_p > 0) |> 
   na.omit()
 
-df2$year = as.numeric(df2$year)
+df2$age = as.numeric(df2$age)
 df2$zone = round(df2$zone, 0)
 df2$zone = as.character(df2$zone)
 
 df3 = df2 |> 
-  group_by(year, zone) |> 
+  group_by(age, zone) |> 
   summarize(cons_vpd = mean(cons_vpd))
 
 df3$var = "cons_vpd"
