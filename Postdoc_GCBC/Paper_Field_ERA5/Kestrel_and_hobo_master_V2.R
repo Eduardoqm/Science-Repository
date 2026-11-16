@@ -39,10 +39,10 @@ setwd("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Kestrel_and_Hobos/Raw_D
 dir()
 
 #Kestrel d2 --------------------------------------------------------------------
-nc = read.csv("NovaColonia_3104608_Oct_19_2026_6_20_00_PM.csv"  , sep = ",", skip = 3)
-ufra_k = read.csv("CAP_UFRA_D2_-_3104592_Nov_30_0002_12_00_00_AM.csv"  , sep = ",", skip = 3)
+nc = read.csv("NovaColonia_3104608_Nov_13_2026_6_10_00_PM.csv"  , sep = ",", skip = 3)
+ncb = read.csv("NewColony_2-_3104596_Nov_13_2026_6_10_00_PM.csv"  , sep = ",", skip = 3)
+ufra_k = read.csv("D2-3104592-CAP_UFRA_Nov_13_2026_9_20_00_AM.csv"  , sep = ",", skip = 3)
 duq_k = read.csv("D2-3104605-S_GERALDO_27_de_ago_de_2026___2_10_00_PM.csv" , sep = ",", skip = 3)
-#romano = read.csv("IrituiaJRI_-_3104596_28_de_ago._de_2026___4_10_00_PM.csv", sep = ",", skip = 3)
 
 #HOBO --------------------------------------------------------------------------
 #Secundary Forests
