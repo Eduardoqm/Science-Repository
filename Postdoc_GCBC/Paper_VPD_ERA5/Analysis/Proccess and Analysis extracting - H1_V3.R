@@ -303,9 +303,10 @@ limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)",
                               "b) Annual 95th percentile VPD (kPa)"),
                       yint = c(0.75, 0.75))
 
-gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
+gg1 = ggplot(df_all_pred, aes(x=year, y=value, col = zone))+
   geom_point()+
-  geom_smooth(method = "lm")+
+  geom_smooth(method = "lm", se = F)+
+  #geom_line(aes(x = year, y = pred), color = "darkgray", linewidth = 1, inherit.aes = FALSE)+
   labs(x = NULL, y = NULL, col = NULL)+
   geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
   facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
@@ -313,6 +314,7 @@ gg1 = ggplot(df_all, aes(x=year, y=value, col = zone))+
                             "c) Max. consecutive VPD ≥ 0.75 days",
                             "d) Mean duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
   scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
