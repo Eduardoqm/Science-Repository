@@ -275,19 +275,33 @@ df_c = df_all |> filter(var == "c) Max. consecutive VPD ≥ 0.75 days")
 df_d = df_all |> filter(var == "d) Mean duration of VPD ≥ 0.75 (hours/day)")
 
 
+df_am = df_a |> 
+  group_by(year) |> 
+  summarise(value = mean(value))
+df_am$diff = df_am$value[51] - df_am$value[1]
+df_am$diff_perc = (df_am$diff/df_am$value[1])*100
+#During this period, the Amazon experienced an average increase of 52% (an increase of 0.34 kPa) in VPD.
 
-#During this period, the Amazon experienced an average increase of XX% (an increase of XX kPa) in VPD.
-#Extreme VPD values increased by XX% (XX kPa),
-#the number of consecutive days within the flammable zone increased by XX% (XX additional days),
-#and the number of hours per day within the flammable zone increased by XX% (XX additional hours).
+df_bm = df_b |> 
+  group_by(year) |> 
+  summarise(value = mean(value))
+df_bm$diff = df_bm$value[51] - df_bm$value[1]
+df_bm$diff_perc = (df_bm$diff/df_bm$value[1])*100
+#Extreme VPD values increased by 37% (0.74 kPa),
 
+df_cm = df_c |> 
+  group_by(year) |> 
+  summarise(value = mean(value))
+df_cm$diff = df_cm$value[51] - df_cm$value[1]
+df_cm$diff_perc = (df_cm$diff/df_cm$value[1])*100
+#the number of consecutive days within the flammable zone increased by 47% (38.7 additional days),
 
-
-
-
-
-
-
+df_dm = df_d |> 
+  group_by(year) |> 
+  summarise(value = mean(value))
+df_dm$diff = df_dm$value[51] - df_dm$value[1]
+df_dm$diff_perc = (df_dm$diff/df_dm$value[1])*100
+#and the number of hours per day within the flammable zone increased by 48% (3.7 additional hours).
 
 #Models ------------------------------------------------------------------------
 #Annual mean VPD (kPa)
