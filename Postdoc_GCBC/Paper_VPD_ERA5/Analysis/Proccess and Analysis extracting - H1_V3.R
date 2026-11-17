@@ -285,7 +285,21 @@ df_d = df_all |> filter(var == "d) Mean duration of VPD ≥ 0.75 (hours/day)")
 summary(lm(value~year*zone, data = df_d))
 
 
-summary(lm(value~year*zone*var, data = df_all))
+#All Amazonia
+# 1. Criar os modelos gerais (ignorando a zona)
+mod_a = lm(value ~ year, data = df_a)
+mod_b = lm(value ~ year, data = df_b)
+mod_c = lm(value ~ year, data = df_c)
+mod_d = lm(value ~ year, data = df_d)
+
+# 2. Adicionar a coluna de predição (predict) em cada dataframe
+df_a$pred = predict(mod_a)
+df_b$pred = predict(mod_b)
+df_c$pred = predict(mod_c)
+df_d$pred = predict(mod_d)
+
+# 3. Juntar tudo de volta em um único dataframe
+df_all_pred = rbind(df_a, df_b, df_c, df_d)
 
 
 #Graphic -----------------------------------------------------------------------
