@@ -268,20 +268,38 @@ df_all$var[df_all$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours
 
 #write.csv(df_all, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Dados_analises_H1.csv", row.names = F)
 
-#Annual mean VPD (kPa)
+#Proportional values------------------------------------------------------------
 df_a = df_all |> filter(var == "a) Annual mean VPD (kPa)")
+df_b = df_all |> filter(var == "b) Annual 95th percentile VPD (kPa)")
+df_c = df_all |> filter(var == "c) Max. consecutive VPD ≥ 0.75 days")
+df_d = df_all |> filter(var == "d) Mean duration of VPD ≥ 0.75 (hours/day)")
+
+
+
+#During this period, the Amazon experienced an average increase of XX% (an increase of XX kPa) in VPD.
+#Extreme VPD values increased by XX% (XX kPa),
+#the number of consecutive days within the flammable zone increased by XX% (XX additional days),
+#and the number of hours per day within the flammable zone increased by XX% (XX additional hours).
+
+
+
+
+
+
+
+
+
+#Models ------------------------------------------------------------------------
+#Annual mean VPD (kPa)
 summary(lm(value~year*zone, data = df_a))
 
 #Annual 95th percentile VPD (kPa)
-df_b = df_all |> filter(var == "b) Annual 95th percentile VPD (kPa)")
 summary(lm(value~year*zone, data = df_b))
 
 #Max. consecutive VPD ≥ 0.75 days
-df_c = df_all |> filter(var == "c) Max. consecutive VPD ≥ 0.75 days")
 summary(lm(value~year*zone, data = df_c))
 
 #Mean duration of VPD ≥ 0.75 (hours/day)
-df_d = df_all |> filter(var == "d) Mean duration of VPD ≥ 0.75 (hours/day)")
 summary(lm(value~year*zone, data = df_d))
 
 
