@@ -352,8 +352,5 @@ gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
 
 
 
-ggplot(df_all, aes())
-
-
 
 
