@@ -393,7 +393,7 @@ gg_mean = ggplot(vpd_mean_diff, aes(x=x, y=y, fill = value))+
   geom_raster()+
   coord_fixed()+
   labs(x = NULL, y = NULL,
-       title = "a) Difference in annual mean VPD (1975-2025)",
+       title = "a) Delta annual mean VPD (1975-2025)",
        fill = "kPa")+
   scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
                        rescaler = ~ scales::rescale_mid(.x, mid = 0))+
@@ -409,7 +409,7 @@ gg_95 = ggplot(vpd_95_diff, aes(x=x, y=y, fill = value))+
   geom_raster()+
   coord_fixed()+
   labs(x = NULL, y = NULL,
-       title = "b) Annual 95th percentile VPD (1975-2025)",
+       title = "b) Delta annual 95th percentile VPD (1975-2025)",
        fill = "kPa")+
   scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
                        rescaler = ~ scales::rescale_mid(.x, mid = 0))+
@@ -425,7 +425,7 @@ gg_cons = ggplot(cons_vpd_diff, aes(x=x, y=y, fill = value))+
   geom_raster()+
   coord_fixed()+
   labs(x = NULL, y = NULL,
-       title = "c) Max. consecutive VPD ≥ 0.75 days (1975-2025)",
+       title = "c) Delta max. consecutive VPD ≥ 0.75 days (1975-2025)",
        fill = "Days")+
   scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
                        rescaler = ~ scales::rescale_mid(.x, mid = 0))+
@@ -441,7 +441,7 @@ gg_hour = ggplot(vpd_hour_diff, aes(x=x, y=y, fill = value))+
   geom_raster()+
   coord_fixed()+
   labs(x = NULL, y = NULL,
-       title = "d) Mean duration of VPD ≥ 0.75 (1975-2025)",
+       title = "d) Delta mean duration of VPD ≥ 0.75 (1975-2025)",
        fill = "Hours/Day")+
   scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
                        rescaler = ~ scales::rescale_mid(.x, mid = 0))+
@@ -457,6 +457,51 @@ gg3 = ggarrange(gg_mean, gg_95, gg_cons, gg_hour, ncol = 2, nrow = 2,
 ggsave(gg3,
        filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_diff_map(since1975-2025).png",
        bg = "white", dpi = 600, units = "cm", height = 30, width = 37)
+
+
+
+#Graphic for 1975 - 2025 mean --------------------------------------------------
+vpd_mean1975 = as.data.frame(vpd_mean[[1]], xy = T)
+colnames(vpd_mean1975)[3] = "value"
+vpd_mean1975$year = 1975
+
+vpd_mean2025 = as.data.frame(vpd_mean[[51]], xy = T)
+colnames(vpd_mean2025)[3] = "value"
+vpd_mean2025$year = 2025
+
+vpd_year = rbind(vpd_mean1975, vpd_mean2025)
+
+gg_diff = ggplot(vpd_year, aes(x=x, y=y, fill = value))+
+  geom_raster()+
+  coord_fixed()+
+  facet_wrap(~year)+
+  labs(x = NULL, y = NULL,
+       title = "a) Delta annual mean VPD",
+       fill = "kPa")+
+  scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
+                       rescaler = ~ scales::rescale_mid(.x, mid = 0))+
+  theme_minimal(); gg_diff
+
+
+vpd_year = rbind(vpd_mean1975, vpd_mean2025)
+
+vpd_year$cond[vpd_year$value >= 0.75] = "Flamnable"
+vpd_year$cond[vpd_year$value < 0.75] = "Non-flamnable"
+
+gg_limit = ggplot(vpd_year, aes(x=x, y=y, fill = cond))+
+  geom_raster()+
+  coord_fixed()+
+  facet_wrap(~year)+
+  labs(x = NULL, y = NULL,
+       title = "b) Annual mean VPD flammability",
+       fill = "Condition")+
+  scale_fill_manual(values = c("#dc1010", "royalblue"))+
+  theme_minimal(); gg_limit
+
+
+gg4 = ggarrange(gg_diff, gg_limit, ncol = 1); gg4
+
+
 
 
 
