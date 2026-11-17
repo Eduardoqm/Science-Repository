@@ -3,6 +3,7 @@
 
 library(terra)
 library(tidyverse)
+library(ggpubr)
 
 #Functions ---------------------------------------------------------------------
 brick = function(w, a, b){
@@ -379,6 +380,88 @@ gg2 = ggplot(df_all, aes(x=zone, y=value, col = zone))+
 #ggsave(gg2,
 #       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_jitter_(since1975).png",
 #       dpi = 600, units = "cm", height = 14, width = 16)
+
+
+
+#Diferrence Maps ---------------------------------------------------------------
+#Mean
+vpd_mean_diff = vpd_mean[[51]] - vpd_mean[[1]]; plot(vpd_mean_diff)
+vpd_mean_diff = as.data.frame(vpd_mean_diff, xy = T)
+colnames(vpd_mean_diff)[3] = "value"
+
+gg_mean = ggplot(vpd_mean_diff, aes(x=x, y=y, fill = value))+
+  geom_raster()+
+  coord_fixed()+
+  labs(x = NULL, y = NULL,
+       title = "a) Difference in annual mean VPD (1975-2025)",
+       fill = "kPa")+
+  scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
+                       rescaler = ~ scales::rescale_mid(.x, mid = 0))+
+  theme_minimal(); gg_mean
+
+
+#Q95
+vpd_95_diff = vpd_95[[51]] - vpd_95[[1]]; plot(vpd_95_diff)
+vpd_95_diff = as.data.frame(vpd_95_diff, xy = T)
+colnames(vpd_95_diff)[3] = "value"
+
+gg_95 = ggplot(vpd_95_diff, aes(x=x, y=y, fill = value))+
+  geom_raster()+
+  coord_fixed()+
+  labs(x = NULL, y = NULL,
+       title = "b) Annual 95th percentile VPD (1975-2025)",
+       fill = "kPa")+
+  scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
+                       rescaler = ~ scales::rescale_mid(.x, mid = 0))+
+  theme_minimal(); gg_95
+
+
+#Consecutive days
+cons_vpd_diff = cons_vpd[[51]] - cons_vpd[[1]]; plot(cons_vpd_diff)
+cons_vpd_diff = as.data.frame(cons_vpd_diff, xy = T)
+colnames(cons_vpd_diff)[3] = "value"
+
+gg_cons = ggplot(cons_vpd_diff, aes(x=x, y=y, fill = value))+
+  geom_raster()+
+  coord_fixed()+
+  labs(x = NULL, y = NULL,
+       title = "c) Max. consecutive VPD ≥ 0.75 days (1975-2025)",
+       fill = "Days")+
+  scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
+                       rescaler = ~ scales::rescale_mid(.x, mid = 0))+
+  theme_minimal(); gg_cons
+
+
+#Hours per day
+vpd_hour_diff = vpd_hour2[[51]] - vpd_hour2[[1]]; plot(vpd_hour_diff)
+vpd_hour_diff = as.data.frame(vpd_hour_diff, xy = T)
+colnames(vpd_hour_diff)[3] = "value"
+
+gg_hour = ggplot(vpd_hour_diff, aes(x=x, y=y, fill = value))+
+  geom_raster()+
+  coord_fixed()+
+  labs(x = NULL, y = NULL,
+       title = "d) Mean duration of VPD ≥ 0.75 (1975-2025)",
+       fill = "Hours/Day")+
+  scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
+                       rescaler = ~ scales::rescale_mid(.x, mid = 0))+
+  theme_minimal(); gg_hour
+
+
+#All plots
+gg3 = ggarrange(gg_mean, gg_95, gg_cons, gg_hour, ncol = 2, nrow = 2,
+                align = "hv",
+                widths = c(1, 1),
+                heights = c(1, 1)); gg3
+
+ggsave(gg3,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_diff_map(since1975-2025).png",
+       bg = "white", dpi = 600, units = "cm", height = 30, width = 37)
+
+
+
+
+
 
 
 
