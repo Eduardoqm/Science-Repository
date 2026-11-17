@@ -286,21 +286,17 @@ summary(lm(value~year*zone, data = df_d))
 
 
 #All Amazonia
-# 1. Criar os modelos gerais (ignorando a zona)
-mod_a = lm(value ~ year, data = df_a)
-mod_b = lm(value ~ year, data = df_b)
-mod_c = lm(value ~ year, data = df_c)
-mod_d = lm(value ~ year, data = df_d)
+mod_a = lm(value ~ year, data = df_a); summary(mod_a)
+mod_b = lm(value ~ year, data = df_b); summary(mod_b)
+mod_c = lm(value ~ year, data = df_c); summary(mod_c)
+mod_d = lm(value ~ year, data = df_d); summary(mod_d)
 
-# 2. Adicionar a coluna de predição (predict) em cada dataframe
+#predict to plot
 df_a$pred = predict(mod_a)
 df_b$pred = predict(mod_b)
 df_c$pred = predict(mod_c)
 df_d$pred = predict(mod_d)
-
-# 3. Juntar tudo de volta em um único dataframe
 df_all_pred = rbind(df_a, df_b, df_c, df_d)
-
 
 #Graphic -----------------------------------------------------------------------
 limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)",
