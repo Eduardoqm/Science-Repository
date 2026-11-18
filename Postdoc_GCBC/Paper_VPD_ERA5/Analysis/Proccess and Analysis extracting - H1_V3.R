@@ -476,33 +476,56 @@ gg_diff = ggplot(vpd_year, aes(x=x, y=y, fill = value))+
   coord_fixed()+
   facet_wrap(~year)+
   labs(x = NULL, y = NULL,
-       title = "a) Delta annual mean VPD",
+       title = "a) Annual mean VPD",
        fill = "kPa")+
   scale_fill_gradientn(colours = c("darkblue", "blue", "lightgrey", "red", "darkred"),
                        rescaler = ~ scales::rescale_mid(.x, mid = 0))+
   theme_minimal(); gg_diff
 
 
+
+
+length(vpd_mean1975$value)
+length(vpd_mean2025$value)
+#34776 total pixels
+
+pix75 = vpd_mean1975 |> filter(value >= 0.75)
+length(pix75$value) #11093
+(11093/34776)*100 #31.89
+
+
+pix25 = vpd_mean2025 |> filter(value >= 0.75)
+length(pix25$value) #24639
+(24639/34776)*100 #70.85
+
+#In 1975, only 31.9% of the Amazon recorded annual mean VPD values consistent with fire-favorable conditions.
+#Over the following five decades, this dynamic changed drastically by 2025, 70.9% of the biome was already under fire risk. 
+
 vpd_year = rbind(vpd_mean1975, vpd_mean2025)
 
-vpd_year$cond[vpd_year$value >= 0.75] = "Flamnable"
-vpd_year$cond[vpd_year$value < 0.75] = "Non-flamnable"
+vpd_year$cond[vpd_year$value >= 0.75] = "High"
+vpd_year$cond[vpd_year$value < 0.75] = "Low"
 
 gg_limit = ggplot(vpd_year, aes(x=x, y=y, fill = cond))+
   geom_raster()+
   coord_fixed()+
   facet_wrap(~year)+
   labs(x = NULL, y = NULL,
-       title = "b) Annual mean VPD flammability",
-       fill = "Condition")+
+       title = "b) Annual mean VPD fire risk",
+       fill = "Fire Risk")+
   scale_fill_manual(values = c("#dc1010", "royalblue"))+
   theme_minimal(); gg_limit
 
 
-gg4 = ggarrange(gg_diff, gg_limit, ncol = 1); gg4
+gg4 = ggarrange(gg_diff, gg_limit, ncol = 1,
+                align = "hv",
+                widths = c(1, 1),
+                heights = c(1, 1)); gg4
 
 
-
+ggsave(gg4,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/VPD_H1_fire_risk.png",
+       bg = "white", dpi = 600, units = "cm", height = 25, width = 30)
 
 
 

@@ -6,7 +6,7 @@
 
 library(terra)
 
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Shapes")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Shapes")
 dir()
 
 am = vect("Amazonia_full_B.shp")
