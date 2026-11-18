@@ -8,12 +8,12 @@ library(terra)
 
 #Load Data ---------------------------------------------------------------------
 #Points
-setwd("G:/My Drive/Postdoc_UFRA/Papers/Amazonia_validation (Marques et al)/Shapes")
+setwd("G:/My Drive/Research/Papers/Amazonia_validation (Marques et al)/Shapes")
 dir()
 am = vect("Amazonia_full_V2.shp")
 
 #MapBiome Rasters
-setwd("G:/My Drive/Postdoc_UFRA/Geodata/Rasters/MapBiomes_Brazil/Collection_9")
+setwd("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Collection_9")
 dir()
 
 mb = list.files()
@@ -69,7 +69,6 @@ View(data.frame(am2))
 
 #Sum classes
 am2df = as.data.frame(am2[,c(6:29)])
-
 am2df$MB_Master_Class = 0
 
 for (z in 1:length(am2df$classification_2000)) {
