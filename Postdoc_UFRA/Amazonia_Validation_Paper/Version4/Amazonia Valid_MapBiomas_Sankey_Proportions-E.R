@@ -230,26 +230,8 @@ ggsave(filename = "Percent_Class.tiff", plot = plt1,
 
 
 
-#Sankey (Alluvial) - https://r-charts.com/flow/ggalluvial/
-ggplot(data = l1b, aes(axis1 = Val_lv1, axis2 = mb, y = freq))+
-  geom_alluvium(aes(fill = Val_lv1), alpha = 0.5)+
-  #geom_stratum(aes(fill = Val_lv1))+
-  geom_stratum(col = "black", alpha = 0.2)+
-  #geom_text(stat = "stratum", aes(label = after_stat(stratum)))+
-  scale_x_discrete(limits = c("Validation", "MapBiomes"), expand = c(0.1, 0.1))+
-  scale_fill_manual(values = c("#FFFFB2", "#1f8d49", "#ad975a",
-                               "#d4271e", "gray", "#0000FF"))+
-  labs(title = "     Level 1", fill = NULL)+
-  theme_void()+
-  theme(axis.title.x = element_text(),
-        axis.text.x = element_text())
-
-
-
-
-
-
-# install.packages("circlize")
+#Other tests -------------------------------------------------------------------
+#install.packages("circlize")
 library(circlize)
 
 l1c = l1
