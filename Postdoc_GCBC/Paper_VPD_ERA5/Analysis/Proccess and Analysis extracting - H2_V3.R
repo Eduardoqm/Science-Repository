@@ -64,6 +64,30 @@ plot(vpd_mean)
 
 
 for (z in 2:total) {
+  print((z/total)*100)
+  
+  val <- scf[z]
+  
+  if (!is.na(val)) {
+    
+    scf_point = as.data.frame(xyFromCell(scf, z))
+    scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
+    plot(scf_point, add = T)
+    
+    df2 = terra::extract(brick, scf_point)
+    df2$age = as.numeric(val)
+    df = rbind(df, df2)
+    
+    write.csv(df, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv",
+              row.names = F)
+  }
+}
+
+
+
+
+
+for (z in 2:total) {
   print(total-z)
   scf_point = as.data.frame(xyFromCell(scf, z))
   scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
@@ -74,11 +98,6 @@ for (z in 2:total) {
   write.csv(df, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv",
             row.names = F)
 }
-
-
-
-
-
 
 
 
