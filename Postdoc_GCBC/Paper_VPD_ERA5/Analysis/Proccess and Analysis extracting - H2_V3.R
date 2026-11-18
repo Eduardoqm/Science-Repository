@@ -60,11 +60,11 @@ df$age = as.numeric(scf[1])
 
 total = scf@ptr@.xData$nrow()*scf@ptr@.xData$ncol()
 
+start.time <- Sys.time()
 plot(vpd_mean)
 
-
 for (z in 2:total) {
-  print((z/total)*100)
+  print(total - z)
   
   val <- scf[z]
   
@@ -82,6 +82,21 @@ for (z in 2:total) {
               row.names = F)
   }
 }
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
+
+
+
+
+
+
+
+
+
+
 
 
 
