@@ -56,11 +56,24 @@ brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2)
 scf_point = as.data.frame(xyFromCell(scf, 1))
 scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
 df = terra::extract(brick, scf_point)
+df$age = as.numeric(scf[1])
+
+total = scf@ptr@.xData$nrow()*scf@ptr@.xData$ncol()
+
+plot(vpd_mean)
 
 
-
-
-
+for (z in 2:total) {
+  print(total-z)
+  scf_point = as.data.frame(xyFromCell(scf, z))
+  scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
+  plot(scf_point, add = T)
+  df2 = terra::extract(brick, scf_point)
+  df2$age = as.numeric(scf[z])
+  df = rbind(df, df2)
+  write.csv(df, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv",
+            row.names = F)
+}
 
 
 
