@@ -13,20 +13,20 @@ dir()
 df = read.csv("Validation_Classes_Result_V4.csv")
 
 #Remove transitions from forest to others classes that make no sense -----------
-df2 = df
+#df2 = df
 
 #Excluding Forest Transition
 #df2$Val_lv3[df2$Val_lv3 == 3 & df2$MB_lv3 != 3] <- NA
 
-df3 = df2 %>%
+df3 = df %>%
   filter(MB_lv3 != 0) %>% #Remove years that dont match
   filter(Name_MB != "indefinifo") %>% #Remove no classified points
   na.omit()
 
 write.csv(df3, "Validation_Classes_Result_Final.csv")
 
-#MapBiomas 2022 ----------------------------------------------------------------
-am23 = rast("G:/My Drive/Research/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
+#MapBiomas 2023 ----------------------------------------------------------------
+am23 = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Collection_9/mb2023.tif")
 plot(am23)
 
 #Level 3
