@@ -118,6 +118,12 @@ head(df2)
 
 colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age")
 
+df3 <- df2 |> 
+  pivot_longer(
+    cols = c(vpd_mean, vpd_95, cons_vpd, vpd_hour),
+    names_to = "var",
+    values_to = "value")
+
 #Climatic Zones
 #--------------------------------------------------------------
 # Class |	Critery (days) | Name                               |
@@ -128,21 +134,41 @@ colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age")
 # 3     | ≥150           | Prolonged Persistence Zone (PP)    |
 #--------------------------------------------------------------
 
-df_all$zone[df_all$zone == "0"] <- "LP"
-df_all$zone[df_all$zone == "1"] <- "SP"
-df_all$zone[df_all$zone == "2"] <- "IP"
-df_all$zone[df_all$zone == "3"] <- "PP"
+df3$zone[df3$zone == "0"] <- "LP"
+df3$zone[df3$zone == "1"] <- "SP"
+df3$zone[df3$zone == "2"] <- "IP"
+df3$zone[df3$zone == "3"] <- "PP"
 
-df_all$zone = factor(df_all$zone, levels = c("LP", "SP", "IP", "PP"))
+df3$zone = factor(df3$zone, levels = c("LP", "SP", "IP", "PP"))
 
-df_all$var[df_all$var == "vpd_mean"] <- "a) Annual mean VPD (kPa)"
-df_all$var[df_all$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
-df_all$var[df_all$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
-df_all$var[df_all$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
+df3$var[df3$var == "vpd_mean"] <- "a) Annual mean VPD (kPa)"
+df3$var[df3$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
+df3$var[df3$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
+df3$var[df3$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
-#write.csv(df_all, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Dados_analises_H1.csv", row.names = F)
+#write.csv(df3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Dados_analises_H1.csv", row.names = F)
 
+#Graphic -----------------------------------------------------------------------
+limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)",
+                                 "b) Annual 95th percentile VPD (kPa)"),
+                         yint = c(0.75, 0.75))
 
+gg1 = ggplot(df3, aes(x=age, y=value, col = zone))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  #geom_line(aes(x = year, y = pred), color = "darkgray", linewidth = 1, inherit.aes = FALSE)+
+  labs(x = NULL, y = NULL, col = NULL)+
+  geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
+  facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
+                            "b) Annual 95th percentile VPD (kPa)",
+                            "c) Max. consecutive VPD ≥ 0.75 days",
+                            "d) Mean duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(hjust = 0, face = "bold")); gg1
 
 
 
