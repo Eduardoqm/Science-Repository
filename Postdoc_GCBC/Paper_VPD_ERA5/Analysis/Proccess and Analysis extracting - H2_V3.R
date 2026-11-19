@@ -113,7 +113,7 @@ head(df)
 #Filter repeated values from ERA5
 df2 = df |> 
   group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
-  summarise(age_mean = base::mean(age), .groups = "drop")
+  summarise(age_mean = mean(age))
 head(df2)
 
 colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age")
@@ -148,14 +148,23 @@ df3$var[df3$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
 #write.csv(df3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Dados_analises_H1.csv", row.names = F)
 
+df3$age = round(df3$age, 0)
+
+df4 = df3 |> 
+  na.omit() |> 
+  group_by(zone, age, var) |> 
+  summarise(value = mean(value),
+            n = n())
+
+
 #Graphic -----------------------------------------------------------------------
-limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)",
-                                 "b) Annual 95th percentile VPD (kPa)"),
+
+limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)"),
                          yint = c(0.75, 0.75))
 
-gg1 = ggplot(df3, aes(x=age, y=value, col = zone))+
+gg1 = ggplot(df4, aes(x=age, y=value, col = zone))+
   geom_point()+
-  geom_smooth(method = "lm", se = F)+
+  geom_smooth(se = F)+
   #geom_line(aes(x = year, y = pred), color = "darkgray", linewidth = 1, inherit.aes = FALSE)+
   labs(x = NULL, y = NULL, col = NULL)+
   geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
@@ -170,6 +179,10 @@ gg1 = ggplot(df3, aes(x=age, y=value, col = zone))+
         strip.background = element_blank(),
         strip.text = element_text(hjust = 0, face = "bold")); gg1
 
+
+ggsave(gg1,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Secondary_Age_H2.png",
+       dpi = 600, units = "cm", height = 14, width = 16)
 
 
 
