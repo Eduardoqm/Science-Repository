@@ -73,293 +73,58 @@ vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
   
 #  val_bloco <- scf[idx_bloco][, 1]
   
-  validos_bloco <- !is.na(val_bloco) #To not proccess NAs
+#  validos_bloco <- !is.na(val_bloco) #To not proccess NAs
   
-  if (any(validos_bloco)) {
+#  if (any(validos_bloco)) {
+#    idx_validos <- idx_bloco[validos_bloco]
+#    val_validos <- val_bloco[validos_bloco]
+#    xy_bloco <- xyFromCell(scf, idx_validos)
     
-    idx_validos <- idx_bloco[validos_bloco]
-    val_validos <- val_bloco[validos_bloco]
-    
-    xy_bloco <- xyFromCell(scf, idx_validos)
-    
-    df_bloco <- terra::extract(brick, xy_bloco) #Extract values from Brick
+#    df_bloco <- terra::extract(brick, xy_bloco) #Extract values from Brick
     
     #Include xy
-    df_bloco$age <- as.numeric(val_validos)
-    df_bloco$x   <- xy_bloco[, 1]
-    df_bloco$y   <- xy_bloco[, 2]
+#    df_bloco$age <- as.numeric(val_validos)
+#    df_bloco$x   <- xy_bloco[, 1]
+#    df_bloco$y   <- xy_bloco[, 2]
     
     #Saving CSV (create forst time and append after)
-    write.table(df_bloco, caminho_saida,
-                sep = ",", dec = ".",
-                row.names = FALSE,
-                col.names = primeiro_bloco,
-                append = !primeiro_bloco)
+#    write.table(df_bloco, caminho_saida,
+#                sep = ",", dec = ".",
+#                row.names = FALSE,
+#                col.names = primeiro_bloco,
+#                append = !primeiro_bloco)
     
-    primeiro_bloco <- FALSE
-  }
+#    primeiro_bloco <- FALSE
+#  }
   
   #Clean memory
-  rm(val_bloco, validos_bloco, xy_bloco, df_bloco)
-  if (exists("idx_validos")) rm(idx_validos, val_validos)
-  gc()
-}
+#  rm(val_bloco, validos_bloco, xy_bloco, df_bloco)
+#  if (exists("idx_validos")) rm(idx_validos, val_validos)
+#  gc()
+#}
 
-print(Sys.time() - start.time)
+#print(Sys.time() - start.time) #Proccessing in 2.18hr (Laptop)
 
 
 
-#--------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2)
-
-
-scf_point = as.data.frame(xyFromCell(scf, 1))
-scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
-df = terra::extract(brick, scf_point)
-df$age = as.numeric(scf[1])
-
-total = scf@ptr@.xData$nrow()*scf@ptr@.xData$ncol()
-
-start.time <- Sys.time()
-plot(vpd_mean)
-
-for (z in 2:total) {
-  print(total - z)
-  
-  val <- scf[z]
-  
-  if (!is.na(val)) {
-    
-    scf_point = as.data.frame(xyFromCell(scf, z))
-    scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
-    plot(scf_point, add = T)
-    
-    df2 = terra::extract(brick, scf_point)
-    df2$age = as.numeric(val)
-    df = rbind(df, df2)
-    
-    write.csv(df, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv",
-              row.names = F)
-  }
-}
-
-end.time <- Sys.time()
-time.taken <- end.time - start.time
-time.taken
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-for (z in 2:total) {
-  print(total-z)
-  scf_point = as.data.frame(xyFromCell(scf, z))
-  scf_point = st_as_sf(scf_point, coords = c("x", "y"), crs = st_crs(scf))
-  plot(scf_point, add = T)
-  df2 = terra::extract(brick, scf_point)
-  df2$age = as.numeric(scf[z])
-  df = rbind(df, df2)
-  write.csv(df, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv",
-            row.names = F)
-}
-
-
-
-#Global values -----------------------------------------------------------------
-vpd_zone_df = as.data.frame(vpd_zone, na.rm= F); head(vpd_zone_df)
-scf_age = as.data.frame(scf2, na.rm = F); head(scf_age)
-scf_count2 = as.data.frame(scf_count, na.rm = F); head(scf_count2)
-
-scf_count2$perc = (scf_count2$MB_SF_Age_2024/137000)*100
-
-
-#Consecutive days in flammability conditions VPD > 0.75 ------------------------
-df = as.data.frame(cons_vpd, na.rm = F)
-colnames(df) = "cons_vpd"
-df$zone = vpd_zone_df$mean
-df$age = scf_age$MB_SF_Age_2024
-df$scf_perc = scf_count2$perc
-
-df2 = df |>
-  filter(scf_perc >= 30) |> 
-  na.omit()
-
-df2$age = as.numeric(df2$age)
-#df2$age = round(df2$age, 0)
-df2$zone = round(df2$zone, 0)
-df2$zone = as.character(df2$zone)
-
-df3 = df2 |> 
-  group_by(age, zone) |> 
-  summarize(cons_vpd = mean(cons_vpd))
-
-df3$var = "cons_vpd"
-colnames(df3)[3] = "value"
-
-ggplot(df3, aes(x=age, y=value, col = zone))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  labs(x = "Age",
-       y = "Number of days/year (VPD ≥ 0.75)",
-       col = NULL)+
-  theme_minimal()
-
-df_all = df3
-
-#Annual VPD mean ---------------------------------------------------------------
-df = as.data.frame(vpd_mean, na.rm = F)
-colnames(df) = "vpd_mean"
-df$zone = vpd_zone_df$mean
-df$age = scf_age$MB_SF_Age_2024
-df$scf_perc = scf_count2$perc
-
-df2 = df |>
-  filter(scf_perc >= 30) |> 
-  na.omit()
-
-df2$age = as.numeric(df2$age)
-#df2$age = round(df2$age, 0)
-df2$zone = round(df2$zone, 0)
-df2$zone = as.character(df2$zone)
-
-df3 = df2 |> 
-  group_by(age, zone) |> 
-  summarize(vpd_mean = mean(vpd_mean))
-
-df3$var = "vpd_mean"
-colnames(df3)[3] = "value"
-
-ggplot(df3, aes(x=age, y=value, col = zone))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  labs(x = NULL,
-       y = "Mean VPD/year",
-       col = NULL)+
-  theme_minimal()
-
-df_all = rbind(df_all, df3)
-
-#Annual VPD quantile 95 (extremes) ---------------------------------------------
-df = as.data.frame(vpd_95, na.rm = F)
-colnames(df) = "vpd_95"
-df$zone = vpd_zone_df$mean
-df$age = scf_age$MB_SF_Age_2024
-df$scf_perc = scf_count2$perc
-
-df2 = df |>
-  filter(scf_perc >= 30) |> 
-  na.omit()
-
-df2$age = as.numeric(df2$age)
-#df2$age = round(df2$age, 0)
-df2$zone = round(df2$zone, 0)
-df2$zone = as.character(df2$zone)
-
-df3 = df2 |> 
-  group_by(age, zone) |> 
-  summarize(vpd_95 = mean(vpd_95))
-
-df3$var = "vpd_95"
-colnames(df3)[3] = "value"
-
-ggplot(df3, aes(x=age, y=value, col = zone))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  labs(x = NULL,
-       y = "VPD/year (quantile 95%)",
-       col = NULL)+
-  theme_minimal()
-
-df_all = rbind(df_all, df3)
-
-#DP hours/day in flammability conditions VPD > 0.75 ----------------------------
-df = as.data.frame(vpd_hour2, na.rm = F)
-colnames(df) = "vpd_hour2"
-df$zone = vpd_zone_df$mean
-df$age = scf_age$MB_SF_Age_2024
-df$scf_perc = scf_count2$perc
-
-df2 = df |>
-  filter(scf_perc >= 30) |> 
-  na.omit()
-
-df2$age = as.numeric(df2$age)
-#df2$age = round(df2$age, 0)
-df2$zone = round(df2$zone, 0)
-df2$zone = as.character(df2$zone)
-
-df3 = df2 |> 
-  group_by(age, zone) |> 
-  summarize(vpd_hour2 = mean(vpd_hour2))
-
-df3$var = "vpd_hour"
-colnames(df3)[3] = "value"
-
-ggplot(df3, aes(x=year, y=value, col = zone))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  labs(x = NULL,
-       y = "Mean of daily hours (VPD ≥ 0.75)",
-       col = NULL)+
-  theme_minimal()
-
-df_all = rbind(df_all, df3)
 
 #Analysis and graphics ---------------------------------------------------------
-head(df_all)
+df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv")
+head(df)
+
+
+df2 = df |> 
+  group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP)+
+  summarise(age_mean = base::mean(age), .groups = "drop")
+
+
+
+df2 = df |> 
+  group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP)+
+  summarise(age_mean = base::mean(age), .groups = "drop")
+
+
 
 #Climatic Zones
 #--------------------------------------------------------------
