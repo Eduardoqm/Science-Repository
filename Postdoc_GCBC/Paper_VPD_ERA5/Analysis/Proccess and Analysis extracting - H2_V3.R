@@ -49,29 +49,29 @@ vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
 
 
 #Extrating values --------------------------------------------------------------
-brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2)
+#brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2)
 
-total <- ncell(scf)
+#total <- ncell(scf)
 
 #Processing by blocks
-bloco <- 1e6  #1 million
+#bloco <- 1e6  #1 million
 
 #Way to output
-caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv"
+#caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv"
 
-start.time <- Sys.time()
-primeiro_bloco <- TRUE
+#start.time <- Sys.time()
+#primeiro_bloco <- TRUE
 
 
-for (ini in seq(1, total, by = bloco)) {
+#for (ini in seq(1, total, by = bloco)) {
   
-  fim <- min(ini + bloco - 1, total)
-  idx_bloco <- ini:fim
+#  fim <- min(ini + bloco - 1, total)
+#  idx_bloco <- ini:fim
   
-  cat(sprintf("Processing pixels %.0f of %.0f de %.0f (%.1f%%)\n",
-              ini, fim, total, 100 * fim / total))
+#  cat(sprintf("Processing pixels %.0f of %.0f de %.0f (%.1f%%)\n",
+#              ini, fim, total, 100 * fim / total))
   
-  val_bloco <- scf[idx_bloco][, 1]
+#  val_bloco <- scf[idx_bloco][, 1]
   
   validos_bloco <- !is.na(val_bloco) #To not proccess NAs
   
@@ -109,7 +109,7 @@ print(Sys.time() - start.time)
 
 
 
-
+#--------------
 
 
 
