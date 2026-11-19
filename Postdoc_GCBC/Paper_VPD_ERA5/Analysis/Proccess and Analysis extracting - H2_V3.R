@@ -111,11 +111,17 @@ head(df)
 
 
 #Filter repeated values from ERA5
+#library(DescTools) #To use Mode()
+
+
 df2 = df |> 
   group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
-  summarise(age_mean = mean(age))
+  summarise(age_mean = mean(age),
+            n = n()) |> 
+  na.omit() |> 
+  filter(n >= 20000)
 
-colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age")
+colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age", "n")
 
 #df2 = df |> 
 #  group_by(age, mean) |> 
@@ -158,7 +164,6 @@ df3$var[df3$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
 df3$var[df3$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
 df3$var[df3$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
-#write.csv(df3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H1/Dados_analises_H1.csv", row.names = F)
 
 df3$age = round(df3$age, 0)
 
@@ -166,8 +171,7 @@ df4 = df3 |>
   na.omit() |> 
   group_by(zone, age, var) |> 
   summarise(value = mean(value),
-            n = n()) |> 
-  filter(n >= 100)
+            n = n())
 
 
 #Graphic -----------------------------------------------------------------------
