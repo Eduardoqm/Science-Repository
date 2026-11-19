@@ -114,9 +114,21 @@ head(df)
 df2 = df |> 
   group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
   summarise(age_mean = mean(age))
-head(df2)
 
 colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age")
+
+#df2 = df |> 
+#  group_by(age, mean) |> 
+#  summarise(vpd_mean = mean(mean_vpd_dp),
+#            vpd_95 = mean(q95_vpd_dp),
+#            cons_vpd = mean(max_consecutive_vpd_days),
+#            vpd_hour = mean(annual_vpd_hours_DP)) |> 
+#  na.omit()
+#colnames(df2)[2] = "zone"
+
+head(df2)
+
+
 
 df3 <- df2 |> 
   pivot_longer(
@@ -154,7 +166,8 @@ df4 = df3 |>
   na.omit() |> 
   group_by(zone, age, var) |> 
   summarise(value = mean(value),
-            n = n())
+            n = n()) |> 
+  filter(n >= 100)
 
 
 #Graphic -----------------------------------------------------------------------
