@@ -115,13 +115,19 @@ head(df)
 
 
 df2 = df |> 
-  group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP)+
-  summarise(age_mean = base::mean(age), .groups = "drop")
+  na.omit() |> 
+  group_by(x, y) |> 
+  summarise(age_mean = mean(age),
+            zone  = mean(mean),
+            vpd_mean = mean(mean_vpd_dp),
+            vpd_95 = mean(q95_vpd_dp),
+            cons_vpd = mean(max_consecutive_vpd_days),
+            vpd_hour = mean(annual_vpd_hours_DP))
 
 
 
 df2 = df |> 
-  group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP)+
+  group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
   summarise(age_mean = base::mean(age), .groups = "drop")
 
 
