@@ -116,10 +116,10 @@ head(df)
 
 df2 = df |> 
   group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
-  summarise(age_mean = mean(age),
+  summarise(age_mean = Mode(age),
             n = n()) |> 
   na.omit() |> 
-  filter(n >= 20000)
+  filter(n >= 10000)
 
 colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age", "n")
 
@@ -133,7 +133,6 @@ colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age", "
 #colnames(df2)[2] = "zone"
 
 head(df2)
-
 
 
 df3 <- df2 |> 
