@@ -34,7 +34,8 @@ plot(pf)
 scf = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_SF_2024_resampled.tiff")
 plot(scf)
 
-past = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pasture_2024_resampledtiff")
+past = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pasture_2024_resampled.tiff")
+plot(past)
 
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
@@ -46,8 +47,10 @@ vpd_95 = mask(crop(vpd_95, am), am)
 vpd_mean = mask(crop(vpd_mean, am), am)
 vpd_hour = mask(crop(vpd_hour, am), am)
 vpd_zone = mask(crop(vpd_zone, am), am)
+scf = mask(crop(scf, am), am)
+past = mask(crop(past, am), am)
 #mb = mask(crop(mb, am), am)
-#scf = mask(crop(scf, am), am)
+
 
 #Reclass agriculture an SF -----------------------------------------------------
 #past = ifel(mb %in% c(15), 1, 0)
@@ -59,7 +62,7 @@ vpd_zone = mask(crop(vpd_zone, am), am)
 #Resampling rasters ------------------------------------------------------------
 vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
 dp_month2 = resample(dp_month, cons_vpd, method = "average"); plot(dp_month2)
-#scf3 = resample(scf, cons_vpd, method = "sum"); plot(scf3)
+#scf3 = resample(scf2, cons_vpd, method = "sum"); plot(scf3)
 #past2 = resample(past, cons_vpd, method = "sum"); plot(past2)
 
 #writeRaster(scf3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_SF_2024_resampled.tiff", overwrite=TRUE)
@@ -69,69 +72,20 @@ vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
 
 
 #Extrating values --------------------------------------------------------------
-#brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2)
+brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2, pf, scf, past)
 
-#total <- ncell(scf)
+df = as.data.frame(brick, xy = T)
+colnames(df) = c("x", "y","zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "PF_pixels", "SF_pixels", "past_pixels")
 
-#Processing by blocks
-#bloco <- 1e6  #1 million
+df$PF_per = ((df$PF_pixels*900)/121000000)*100
+df$SF_per = ((df$SF_pixels*900)/121000000)*100
+df$past_per = ((df$past_pixels*900)/121000000)*100
 
-#Way to output
-#caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv"
-
-#start.time <- Sys.time()
-#primeiro_bloco <- TRUE
-
-
-#for (ini in seq(1, total, by = bloco)) {
-  
-#  fim <- min(ini + bloco - 1, total)
-#  idx_bloco <- ini:fim
-  
-#  cat(sprintf("Processing pixels %.0f of %.0f de %.0f (%.1f%%)\n",
-#              ini, fim, total, 100 * fim / total))
-  
-#  val_bloco <- scf[idx_bloco][, 1]
-  
-#  validos_bloco <- !is.na(val_bloco) #To not proccess NAs
-  
-#  if (any(validos_bloco)) {
-#    idx_validos <- idx_bloco[validos_bloco]
-#    val_validos <- val_bloco[validos_bloco]
-#    xy_bloco <- xyFromCell(scf, idx_validos)
-    
-#    df_bloco <- terra::extract(brick, xy_bloco) #Extract values from Brick
-    
-    #Include xy
-#    df_bloco$age <- as.numeric(val_validos)
-#    df_bloco$x   <- xy_bloco[, 1]
-#    df_bloco$y   <- xy_bloco[, 2]
-    
-    #Saving CSV (create forst time and append after)
-#    write.table(df_bloco, caminho_saida,
-#                sep = ",", dec = ".",
-#                row.names = FALSE,
-#                col.names = primeiro_bloco,
-#                append = !primeiro_bloco)
-    
-#    primeiro_bloco <- FALSE
-#  }
-  
-  #Clean memory
-#  rm(val_bloco, validos_bloco, xy_bloco, df_bloco)
-#  if (exists("idx_validos")) rm(idx_validos, val_validos)
-#  gc()
-#}
-
-#print(Sys.time() - start.time) #Proccessing in 2.18hr (Laptop)
-
-#Analysis and graphics ---------------------------------------------------------
-df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_H2.csv")
-head(df)
+ggplot(df, aes(x,y, fill = past_pixels))+
+  geom_raster()+
+  coord_fixed()
 
 
-#Filter repeated values from ERA5
-#library(DescTools) #To use Mode()
 
 
 df2 = df |> 
