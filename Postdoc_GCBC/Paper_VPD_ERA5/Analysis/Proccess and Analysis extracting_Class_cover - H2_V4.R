@@ -59,11 +59,11 @@ vpd_zone = mask(crop(vpd_zone, am), am)
 #Resampling rasters ------------------------------------------------------------
 vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
 dp_month2 = resample(dp_month, cons_vpd, method = "average"); plot(dp_month2)
-scf3 = resample(scf, cons_vpd, method = "sum"); plot(scf3)
-past2 = resample(past, cons_vpd, method = "sum"); plot(past2)
+#scf3 = resample(scf, cons_vpd, method = "sum"); plot(scf3)
+#past2 = resample(past, cons_vpd, method = "sum"); plot(past2)
 
-writeRaster(scf3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_SF_2024_resampled.tiff", overwrite=TRUE)
-writeRaster(past2, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pasture_2024_resampled.tiff", overwrite=TRUE)
+#writeRaster(scf3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_SF_2024_resampled.tiff", overwrite=TRUE)
+#writeRaster(past2, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pasture_2024_resampled.tiff", overwrite=TRUE)
 
 vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
 
