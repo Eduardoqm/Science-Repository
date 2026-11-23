@@ -116,12 +116,14 @@ head(df)
 
 df2 = df |> 
   group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
-  summarise(age_mean = Mode(age),
-            n = n()) |> 
+  summarise(age_mean = mean(age),
+            n = n(),
+            area = (n*900)/1000000,
+            perc = (area/121)*100) |> 
   na.omit() |> 
   filter(n >= 10000)
 
-colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age", "n")
+colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age", "n", "area_km", "pixel_perc")
 
 #df2 = df |> 
 #  group_by(age, mean) |> 
@@ -170,7 +172,9 @@ df4 = df3 |>
   na.omit() |> 
   group_by(zone, age, var) |> 
   summarise(value = mean(value),
-            n = n())
+            n = mean(n),
+            area_km = mean(area_km),
+            pixel_perc = mean(pixel_perc))
 
 
 #Graphic -----------------------------------------------------------------------
@@ -209,16 +213,47 @@ ggsave(gg1,
 
 
 
+dfx = df3 |> filter(var == "a) Annual mean VPD (kPa)")
+
+ggplot(dfx, aes(x=age, y=pixel_perc, fill = zone))+
+  geom_col(position = "dodge")+
+  labs(x = "Age", y = "Pixel (%)", fill = NULL)+
+  facet_wrap(~zone, ncol = 1)+
+  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
+  scale_fill_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "none")
+
+
+
+ggplot(dfx, aes(x=age, y=area_km, fill = zone))+
+  geom_col(position = "dodge")+
+  labs(x = "Age", y = "Area (km²)", fill = NULL)+
+  facet_wrap(~zone, ncol = 1)+
+  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
+  scale_fill_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "none")
 
 
 
 
 
+ggplot(dfx, aes(x=age, y=pixel_perc))+
+  geom_col(position = "dodge")+
+  labs(x = "Age", y = "Pixel (%)", fill = NULL)+
+  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
+  theme_bw()+
+  theme(legend.position = "none")
 
 
 
-
-
+ggplot(dfx, aes(x=age, y=area_km))+
+  geom_col(position = "dodge")+
+  labs(x = "Age", y = "Area (km²)", fill = NULL)+
+  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
+  theme_bw()+
+  theme(legend.position = "none")
 
 
 
