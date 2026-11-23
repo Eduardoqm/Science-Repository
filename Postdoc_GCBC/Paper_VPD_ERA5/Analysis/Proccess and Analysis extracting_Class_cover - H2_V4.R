@@ -85,9 +85,16 @@ ggplot(df, aes(x,y, fill = past_perc))+
   geom_raster()+
   coord_fixed()
 
+#Removing influency of Primary Forest
+df_sf = df |>
+  filter(PF_perc < 10)
 
+df_sf$past_perc = NA
+df_sf$PF_perc = NA
 
-df2 <- df |> 
+df$SF_perc = NA
+
+df2 = df |> 
   pivot_longer(
     cols = c(vpd_mean, vpd_95, cons_vpd, vpd_hour),
     names_to = "var",
@@ -97,8 +104,26 @@ df2 <- df |>
     names_to = "class",
     values_to = "perc")
 
+df2 = df2 |> filter(class != "SF_perc")
 
-df3 = df2 |> 
+df_sf = df_sf |> 
+  pivot_longer(
+    cols = c(vpd_mean, vpd_95, cons_vpd, vpd_hour),
+    names_to = "var",
+    values_to = "value") |> 
+  pivot_longer(
+    cols = c(PF_perc, SF_perc, past_perc),
+    names_to = "class",
+    values_to = "perc")
+
+df_sf = df_sf |> filter(class == "SF_perc")
+
+
+df2b = rbind(df_sf, df2)
+
+
+
+df3 = df2b |> 
   na.omit() |> 
   filter(perc <= 100) |> 
   group_by(class, var, perc) |> 
@@ -119,12 +144,13 @@ ggplot(df3, aes(x = perc , y = value, col = class))+
 # 3     | ≥150           | Prolonged Persistence Zone (PP)    |
 #--------------------------------------------------------------
 
-df3$zone[df3$zone == "0"] <- "LP"
-df3$zone[df3$zone == "1"] <- "SP"
-df3$zone[df3$zone == "2"] <- "IP"
-df3$zone[df3$zone == "3"] <- "PP"
+#df3$zone[df3$zone == "0"] <- "LP"
 
-df3$zone = factor(df3$zone, levels = c("LP", "SP", "IP", "PP"))
+#df3$zone[df3$zone == "1"] <- "SP"
+#df3$zone[df3$zone == "2"] <- "IP"
+#df3$zone[df3$zone == "3"] <- "PP"
+
+#df3$zone = factor(df3$zone, levels = c("LP", "SP", "IP", "PP"))
 
 df3$var[df3$var == "vpd_mean"] <- "a) Annual mean VPD (kPa)"
 df3$var[df3$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
@@ -136,83 +162,26 @@ df3$class[df3$class == "SF_perc"] = "Secondary Forest"
 df3$class[df3$class == "past_perc"] = "Pasture"
 
 
-#Graphic -----------------------------------------------------------------------
 
-limiar_line = data.frame(var = c("a) Annual mean VPD (kPa)"),
-                         yint = c(0.75, 0.75))
-
-gg1 = ggplot(df4, aes(x=age, y=value, col = zone))+
+ggplot(df3, aes(x = perc , y = value, col = class))+
   geom_point()+
   geom_smooth(se = F)+
-  #geom_line(aes(x = year, y = pred), color = "darkgray", linewidth = 1, inherit.aes = FALSE)+
-  labs(x = NULL, y = NULL, col = NULL)+
-  geom_hline(data = limiar_line, aes(yintercept = yint), linetype = "dashed")+
+  labs(x = "Class percentage", y = NULL, col = NULL)+
   facet_wrap(~factor(var, c("a) Annual mean VPD (kPa)",
                             "b) Annual 95th percentile VPD (kPa)",
                             "c) Max. consecutive VPD ≥ 0.75 days",
                             "d) Mean duration of VPD ≥ 0.75 (hours/day)")), scales = "free")+
-  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  scale_color_manual(values = c("red", "darkgreen", "royalblue"))+
   
   theme_bw()+
   theme(legend.position = "bottom",
         strip.background = element_blank(),
-        strip.text = element_text(hjust = 0, face = "bold")); gg1
-
-
-ggsave(gg1,
-       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Secondary_Age_H2.png",
-       dpi = 600, units = "cm", height = 14, width = 16)
+        strip.text = element_text(hjust = 0, face = "bold"))
 
 
 
 
 
-
-
-
-
-
-dfx = df3 |> filter(var == "a) Annual mean VPD (kPa)")
-
-ggplot(dfx, aes(x=age, y=pixel_perc, fill = zone))+
-  geom_col(position = "dodge")+
-  labs(x = "Age", y = "Pixel (%)", fill = NULL)+
-  facet_wrap(~zone, ncol = 1)+
-  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
-  scale_fill_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
-  theme_bw()+
-  theme(legend.position = "none")
-
-
-
-ggplot(dfx, aes(x=age, y=area_km, fill = zone))+
-  geom_col(position = "dodge")+
-  labs(x = "Age", y = "Area (km²)", fill = NULL)+
-  facet_wrap(~zone, ncol = 1)+
-  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
-  scale_fill_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
-  theme_bw()+
-  theme(legend.position = "none")
-
-
-
-
-
-ggplot(dfx, aes(x=age, y=pixel_perc))+
-  geom_col(position = "dodge")+
-  labs(x = "Age", y = "Pixel (%)", fill = NULL)+
-  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
-  theme_bw()+
-  theme(legend.position = "none")
-
-
-
-ggplot(dfx, aes(x=age, y=area_km))+
-  geom_col(position = "dodge")+
-  labs(x = "Age", y = "Area (km²)", fill = NULL)+
-  scale_x_continuous(breaks = seq(1, 39, by = 1), limits = c(0, 40))+
-  theme_bw()+
-  theme(legend.position = "none")
 
 
 
