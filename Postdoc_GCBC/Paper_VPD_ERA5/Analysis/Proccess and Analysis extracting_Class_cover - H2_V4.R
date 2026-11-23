@@ -25,13 +25,16 @@ dp_month = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Dries
 plot(dp_month)
 
 #Mapbiomas
-mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
+#mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
 
 pf = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
 plot(pf)
 
-scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
+#scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
+scf = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_SF_2024_resampled.tiff")
 plot(scf)
+
+past = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pasture_2024_resampledtiff")
 
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
@@ -43,18 +46,24 @@ vpd_95 = mask(crop(vpd_95, am), am)
 vpd_mean = mask(crop(vpd_mean, am), am)
 vpd_hour = mask(crop(vpd_hour, am), am)
 vpd_zone = mask(crop(vpd_zone, am), am)
-mb = mask(crop(mb, am), am)
+#mb = mask(crop(mb, am), am)
 #scf = mask(crop(scf, am), am)
 
-#Reclass agriculture -----------------------------------------------------------
-agri = ifl
+#Reclass agriculture an SF -----------------------------------------------------
+#past = ifel(mb %in% c(15), 1, 0)
 
+#agri = ifel(mb %in% c(), 1, 0)
 
+#scf2 = ifel(scf > 0, 1, 0)
 
 #Resampling rasters ------------------------------------------------------------
 vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
 dp_month2 = resample(dp_month, cons_vpd, method = "average"); plot(dp_month2)
-#scf2 = resample(scf, cons_vpd, method = "average"); plot(scf2)
+scf3 = resample(scf, cons_vpd, method = "sum"); plot(scf3)
+past2 = resample(past, cons_vpd, method = "sum"); plot(past2)
+
+writeRaster(scf3, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_SF_2024_resampled.tiff", overwrite=TRUE)
+writeRaster(past2, "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pasture_2024_resampled.tiff", overwrite=TRUE)
 
 vpd_hour2 = (vpd_hour/dp_month2)/30 #Convert annual total hours in hours/day
 
