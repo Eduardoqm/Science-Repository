@@ -1,4 +1,4 @@
-#Proccess and Analysis extracting - H2
+#Proccess and Analysis extracting by class coverage - H2
 #Eduardo Q Marques 18-11-2026
 
 library(terra)
@@ -19,12 +19,17 @@ plot(vpd_hour)
 
 #Driest Period length
 vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
-vpd_zone
 plot(vpd_zone)
 
 dp_month = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/DP_length_months.tif") 
+plot(dp_month)
 
 #Mapbiomas
+mb = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Brazil_Coverage_col11_2025.tif")
+
+pf = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/MB_sum_pixel_Forest_2024_resampled.tiff")
+plot(pf)
+
 scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
 plot(scf)
 
@@ -38,7 +43,13 @@ vpd_95 = mask(crop(vpd_95, am), am)
 vpd_mean = mask(crop(vpd_mean, am), am)
 vpd_hour = mask(crop(vpd_hour, am), am)
 vpd_zone = mask(crop(vpd_zone, am), am)
+mb = mask(crop(mb, am), am)
 #scf = mask(crop(scf, am), am)
+
+#Reclass agriculture -----------------------------------------------------------
+agri = ifl
+
+
 
 #Resampling rasters ------------------------------------------------------------
 vpd_zone = resample(vpd_zone, cons_vpd, method = "average"); plot(vpd_zone)
