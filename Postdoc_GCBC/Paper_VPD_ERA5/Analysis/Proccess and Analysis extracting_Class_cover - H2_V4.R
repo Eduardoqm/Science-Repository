@@ -87,6 +87,22 @@ ggplot(df, aes(x,y, fill = past_pixels))+
 
 
 
+df2 <- df |> 
+  pivot_longer(
+    cols = c(vpd_mean, vpd_95, cons_vpd, vpd_hour),
+    names_to = "var",
+    values_to = "value")
+
+
+ggplot(df2, aes(x = past_per , y = value, col = var))+
+  geom_point()+
+  facet_wrap(~var, scale = "free")+
+  geom_smooth(method = "lm")
+
+
+
+
+
 
 df2 = df |> 
   group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
