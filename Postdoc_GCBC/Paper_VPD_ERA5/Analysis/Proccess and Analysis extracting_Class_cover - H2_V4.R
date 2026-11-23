@@ -77,11 +77,11 @@ brick <- c(vpd_zone, vpd_mean, vpd_95, cons_vpd, vpd_hour2, pf, scf, past)
 df = as.data.frame(brick, xy = T)
 colnames(df) = c("x", "y","zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "PF_pixels", "SF_pixels", "past_pixels")
 
-df$PF_per = ((df$PF_pixels*900)/121000000)*100
-df$SF_per = ((df$SF_pixels*900)/121000000)*100
-df$past_per = ((df$past_pixels*900)/121000000)*100
+df$PF_perc = round(((df$PF_pixels*900)/121000000)*100, 0)
+df$SF_perc = round(((df$SF_pixels*900)/121000000)*100, 0)
+df$past_perc = round(((df$past_pixels*900)/121000000)*100, 0)
 
-ggplot(df, aes(x,y, fill = past_pixels))+
+ggplot(df, aes(x,y, fill = past_perc))+
   geom_raster()+
   coord_fixed()
 
@@ -91,47 +91,23 @@ df2 <- df |>
   pivot_longer(
     cols = c(vpd_mean, vpd_95, cons_vpd, vpd_hour),
     names_to = "var",
-    values_to = "value")
+    values_to = "value") |> 
+  pivot_longer(
+    cols = c(PF_perc, SF_perc, past_perc),
+    names_to = "class",
+    values_to = "perc")
 
 
-ggplot(df2, aes(x = past_per , y = value, col = var))+
+df3 = df2 |> 
+  na.omit() |> 
+  filter(perc <= 100) |> 
+  group_by(class, var, perc) |> 
+  summarise(value = mean(value))
+
+ggplot(df3, aes(x = perc , y = value, col = class))+
   geom_point()+
   facet_wrap(~var, scale = "free")+
-  geom_smooth(method = "lm")
-
-
-
-
-
-
-df2 = df |> 
-  group_by(mean, mean_vpd_dp, q95_vpd_dp, max_consecutive_vpd_days, annual_vpd_hours_DP) |> 
-  summarise(age_mean = mean(age),
-            n = n(),
-            area = (n*900)/1000000,
-            perc = (area/121)*100) |> 
-  na.omit() |> 
-  filter(n >= 10000)
-
-colnames(df2) = c("zone", "vpd_mean", "vpd_95", "cons_vpd", "vpd_hour", "age", "n", "area_km", "pixel_perc")
-
-#df2 = df |> 
-#  group_by(age, mean) |> 
-#  summarise(vpd_mean = mean(mean_vpd_dp),
-#            vpd_95 = mean(q95_vpd_dp),
-#            cons_vpd = mean(max_consecutive_vpd_days),
-#            vpd_hour = mean(annual_vpd_hours_DP)) |> 
-#  na.omit()
-#colnames(df2)[2] = "zone"
-
-head(df2)
-
-
-df3 <- df2 |> 
-  pivot_longer(
-    cols = c(vpd_mean, vpd_95, cons_vpd, vpd_hour),
-    names_to = "var",
-    values_to = "value")
+  geom_smooth(se = F)
 
 #Climatic Zones
 #--------------------------------------------------------------
@@ -155,16 +131,9 @@ df3$var[df3$var == "vpd_95"] <- "b) Annual 95th percentile VPD (kPa)"
 df3$var[df3$var == "cons_vpd"] <- "c) Max. consecutive VPD ≥ 0.75 days"
 df3$var[df3$var == "vpd_hour"] <- "d) Mean duration of VPD ≥ 0.75 (hours/day)"
 
-
-df3$age = round(df3$age, 0)
-
-df4 = df3 |> 
-  na.omit() |> 
-  group_by(zone, age, var) |> 
-  summarise(value = mean(value),
-            n = mean(n),
-            area_km = mean(area_km),
-            pixel_perc = mean(pixel_perc))
+df3$class[df3$class == "PF_perc"] = "Primary Forest"
+df3$class[df3$class == "SF_perc"] = "Secondary Forest"
+df3$class[df3$class == "past_perc"] = "Pasture"
 
 
 #Graphic -----------------------------------------------------------------------
