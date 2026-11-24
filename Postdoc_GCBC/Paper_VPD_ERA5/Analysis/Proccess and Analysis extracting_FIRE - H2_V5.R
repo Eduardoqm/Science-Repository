@@ -33,7 +33,6 @@ caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_E
 start.time <- Sys.time()
 first_block <- TRUE
 
-
 for (ini in seq(1, total, by = bloco)) {
   
   fim <- min(ini + bloco - 1, total)
@@ -44,31 +43,43 @@ for (ini in seq(1, total, by = bloco)) {
   
   val_bloco <- scf[idx_bloco][, 1]
   
-  validos_bloco <- !is.na(val_bloco)  #To not process NAs
+  validos_bloco <- !is.na(val_bloco)
   
   if (any(validos_bloco)) {
     idx_validos <- idx_bloco[validos_bloco]
     val_validos <- val_bloco[validos_bloco]
     xy_bloco    <- xyFromCell(scf, idx_validos)
     
-    # Extract VPD_zone separately
-    df_vpd <- terra::extract(vpd_zone, xy_bloco)
-    
-    # Extract fire separately
-    df_fire <- terra::extract(fire, xy_bloco)
-    
-    # Combine results side by side (drop ID column from each)
-    df_bloco <- cbind(
-      df_vpd[, -1, drop = FALSE],
-      df_fire[, -1, drop = FALSE]
+    # Base data.frame with coordinates and a unique ID for alignment
+    df_points <- data.frame(
+      id  = 1:length(idx_validos),
+      age = as.numeric(val_validos),
+      x   = xy_bloco[, 1],
+      y   = xy_bloco[, 2]
     )
     
-    # Include xy and age
-    df_bloco$age <- as.numeric(val_validos)
-    df_bloco$x   <- xy_bloco[, 1]
-    df_bloco$y   <- xy_bloco[, 2]
+    # Extract VPD_zone (remove df argument)
+    df_vpd <- terra::extract(vpd_zone, xy_bloco)
+    # Extract Fire (remove df argument)
+    df_fire <- terra::extract(fire, xy_bloco)
     
-    # Saving CSV (create first time and append after)
+    # If either extraction returned zero rows, skip this block
+    if (nrow(df_vpd) == 0 || nrow(df_fire) == 0) {
+      next
+    }
+    
+    # Rename extracted columns before merging
+    names(df_vpd)[2]  <- "vpd_zone"
+    names(df_fire)[2] <- "fire"
+    
+    # Merge by ID to ensure correct pixel alignment
+    df_bloco <- merge(df_points, df_vpd, by.x = "id", by.y = "ID", all.x = TRUE)
+    df_bloco <- merge(df_bloco, df_fire, by.x = "id", by.y = "ID", all.x = TRUE)
+    
+    # Drop the ID column
+    df_bloco$id <- NULL
+    
+    # Save CSV
     write.table(df_bloco, caminho_saida,
                 sep = ",", dec = ".",
                 row.names = FALSE,
@@ -78,9 +89,17 @@ for (ini in seq(1, total, by = bloco)) {
     first_block <- FALSE
   }
   
-  # Clean memory
-  rm(val_bloco, validos_bloco, xy_bloco, df_bloco, df_vpd, df_fire)
-  if (exists("idx_validos")) rm(idx_validos, val_validos)
+  # Memory cleanup
+  if (exists("xy_bloco"))    rm(xy_bloco)
+  if (exists("df_vpd"))      rm(df_vpd)
+  if (exists("df_fire"))     rm(df_fire)
+  if (exists("df_bloco"))    rm(df_bloco)
+  if (exists("df_points"))   rm(df_points)
+  if (exists("idx_validos")) rm(idx_validos)
+  if (exists("val_validos")) rm(val_validos)
+  if (exists("val_bloco"))   rm(val_bloco)
+  if (exists("validos_bloco")) rm(validos_bloco)
+  
   gc()
 }
 
