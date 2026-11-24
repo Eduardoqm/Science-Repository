@@ -8,25 +8,21 @@ library(tidyverse)
 #Load data ---------------------------------------------------------------------
 #Driest Period length
 vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
+names(vpd_zone) = "zone"
 plot(vpd_zone)
 
 #Mapbiomas
-fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
-plot(fire_freq)
-
 scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
 plot(scf)
+
+fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
+plot(fire_freq)
 
 #Amazonia limits
 am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
 plot(am, add = T)
 
 #Extrating values --------------------------------------------------------------
-#vpd_zone = mask(crop(vpd_zone, am), am)
-#fire = mask(crop(fire, am), am)
-
-brick <- c(vpd_zone, fire_freq)
-
 total <- ncell(scf)
 
 #Processing by blocks
@@ -37,7 +33,6 @@ caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_E
 
 start.time <- Sys.time()
 first_block <- TRUE
-
 
 for (ini in seq(1, total, by = bloco)) {
 
@@ -55,7 +50,6 @@ for (ini in seq(1, total, by = bloco)) {
     idx_validos <- idx_bloco[validos_bloco]
     val_validos <- val_bloco[validos_bloco]
     xy_bloco <- xyFromCell(scf, idx_validos)
-    plot(xy_bloco, add = T)
 
     df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
     df_freq <- terra::extract(fire_freq, xy_bloco) #Extract values from zone
