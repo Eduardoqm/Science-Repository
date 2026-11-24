@@ -30,6 +30,9 @@ bloco <- 1e6  #1 million
 #Way to output
 caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv"
 
+# Remove previous file if it exists to avoid duplicating data on re-run
+if (file.exists(caminho_saida)) file.remove(caminho_saida)
+
 start.time <- Sys.time()
 first_block <- TRUE
 
@@ -38,11 +41,11 @@ for (ini in seq(1, total, by = bloco)) {
   fim <- min(ini + bloco - 1, total)
   idx_bloco <- ini:fim
   
-  cat(sprintf("Processing pixels %.0f of %.0f de %.0f (%.1f%%)\n",
+  cat(sprintf("Processing pixels %.0f to %.0f of %.0f (%.2f%%)\n",
               ini, fim, total, 100 * fim / total))
   
+  # Extract values from base raster (scf)
   val_bloco <- scf[idx_bloco][, 1]
-  
   validos_bloco <- !is.na(val_bloco)
   
   if (any(validos_bloco)) {
@@ -50,57 +53,49 @@ for (ini in seq(1, total, by = bloco)) {
     val_validos <- val_bloco[validos_bloco]
     xy_bloco    <- xyFromCell(scf, idx_validos)
     
-    # Base data.frame with coordinates and a unique ID for alignment
-    df_points <- data.frame(
-      id  = 1:length(idx_validos),
-      age = as.numeric(val_validos),
-      x   = xy_bloco[, 1],
-      y   = xy_bloco[, 2]
-    )
+    # Extract VPD_zone and Fire (ID = FALSE returns value columns directly in the exact order of xy_bloco)
+    ext_vpd  <- terra::extract(vpd_zone, xy_bloco, ID = FALSE)
+    ext_fire <- terra::extract(fire, xy_bloco, ID = FALSE)
     
-    # Extract VPD_zone (remove df argument)
-    df_vpd <- terra::extract(vpd_zone, xy_bloco)
-    # Extract Fire (remove df argument)
-    df_fire <- terra::extract(fire, xy_bloco)
-    
-    # If either extraction returned zero rows, skip this block
-    if (nrow(df_vpd) == 0 || nrow(df_fire) == 0) {
+    # Check if both extractions returned valid data (at least 1 column and matching row count)
+    if (is.null(ext_vpd) || is.null(ext_fire) ||
+        ncol(ext_vpd) == 0 || ncol(ext_fire) == 0 ||
+        nrow(ext_vpd) != nrow(xy_bloco) || nrow(ext_fire) != nrow(xy_bloco)) {
       next
     }
     
-    # Rename extracted columns before merging
-    names(df_vpd)[2]  <- "vpd_zone"
-    names(df_fire)[2] <- "fire"
+    # Build final data.frame directly (no merge needed)
+    df_bloco <- data.frame(
+      age      = as.numeric(val_validos),
+      x        = xy_bloco[, 1],
+      y        = xy_bloco[, 2],
+      vpd_zone = ext_vpd[, 1],
+      fire     = ext_fire[, 1]
+    )
     
-    # Merge by ID to ensure correct pixel alignment
-    df_bloco <- merge(df_points, df_vpd, by.x = "id", by.y = "ID", all.x = TRUE)
-    df_bloco <- merge(df_bloco, df_fire, by.x = "id", by.y = "ID", all.x = TRUE)
+    # (Optional) Uncomment the line below to drop pixels where both vpd_zone and fire are NA:
+    # df_bloco <- df_bloco[!is.na(df_bloco$vpd_zone) | !is.na(df_bloco$fire), ]
     
-    # Drop the ID column
-    df_bloco$id <- NULL
-    
-    # Save CSV
-    write.table(df_bloco, caminho_saida,
-                sep = ",", dec = ".",
-                row.names = FALSE,
-                col.names = first_block,
-                append = !first_block)
-    
-    first_block <- FALSE
+    if (nrow(df_bloco) > 0) {
+      # fwrite is much faster than write.table and handles headers automatically
+      data.table::fwrite(
+        df_bloco,
+        file = caminho_saida,
+        sep = ",",
+        dec = ".",
+        row.names = FALSE,
+        col.names = first_block,
+        append = !first_block
+      )
+      
+      first_block <- FALSE
+    }
   }
   
-  # Memory cleanup
-  if (exists("xy_bloco"))    rm(xy_bloco)
-  if (exists("df_vpd"))      rm(df_vpd)
-  if (exists("df_fire"))     rm(df_fire)
-  if (exists("df_bloco"))    rm(df_bloco)
-  if (exists("df_points"))   rm(df_points)
-  if (exists("idx_validos")) rm(idx_validos)
-  if (exists("val_validos")) rm(val_validos)
-  if (exists("val_bloco"))   rm(val_bloco)
-  if (exists("validos_bloco")) rm(validos_bloco)
-  
-  gc()
+  # Periodic garbage collection (every 10 blocks) to avoid slowing down the loop
+  if ((ini - 1) %% (bloco * 10) == 0) {
+    gc(verbose = FALSE)
+  }
 }
 
 print(Sys.time() - start.time) #Proccessing in 2.18hr (Laptop)
