@@ -18,9 +18,8 @@ plot(scf)
 fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
 plot(fire_freq)
 
-#Amazonia limits
-am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
-plot(am, add = T)
+fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Last_1985_2025.tiff")
+plot(fire_last)
 
 #Extrating values --------------------------------------------------------------
 total <- ncell(scf)
@@ -53,8 +52,9 @@ for (ini in seq(1, total, by = bloco)) {
 
     df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
     df_freq <- terra::extract(fire_freq, xy_bloco) #Extract values from zone
+    df_year <- terra::extract(fire_last, xy_bloco) #Extract values from zone
     
-    df_bloco = cbind(df_zone, df_freq)
+    df_bloco = cbind(df_zone, df_freq, df_year)
 
 #Include xy
     df_bloco$age <- as.numeric(val_validos)
@@ -77,7 +77,7 @@ for (ini in seq(1, total, by = bloco)) {
   gc()
 }
 
-print(Sys.time() - start.time) #Proccessing in 2.18hr (Laptop)
+print(Sys.time() - start.time) #Proccessing in xxhr (Laptop) -> 50% = 1hr
     
     
     
