@@ -22,11 +22,6 @@ am = vect("G:/My Drive/Geodata/Vectors/Amazonia.shp")
 plot(am, add = T)
 
 #Extrating values --------------------------------------------------------------
-vpd_zone = mask(crop(vpd_zone, am), am)
-fire = mask(crop(fire, am), am)
-
-brick <- c(vpd_zone, fire)
-
 total <- ncell(scf)
 
 #Processing by blocks
@@ -40,42 +35,51 @@ first_block <- TRUE
 
 
 for (ini in seq(1, total, by = bloco)) {
-
+  
   fim <- min(ini + bloco - 1, total)
   idx_bloco <- ini:fim
-
+  
   cat(sprintf("Processing pixels %.0f of %.0f de %.0f (%.1f%%)\n",
               ini, fim, total, 100 * fim / total))
-
+  
   val_bloco <- scf[idx_bloco][, 1]
-
-  validos_bloco <- !is.na(val_bloco) #To not proccess NAs
-
+  
+  validos_bloco <- !is.na(val_bloco)  #To not process NAs
+  
   if (any(validos_bloco)) {
     idx_validos <- idx_bloco[validos_bloco]
     val_validos <- val_bloco[validos_bloco]
-    xy_bloco <- xyFromCell(scf, idx_validos)
-    plot(xy_bloco, add = T)
-
-    df_bloco <- terra::extract(brick, xy_bloco) #Extract values from Brick
-
-#Include xy
+    xy_bloco    <- xyFromCell(scf, idx_validos)
+    
+    # Extract VPD_zone separately
+    df_vpd <- terra::extract(vpd_zone, xy_bloco)
+    
+    # Extract fire separately
+    df_fire <- terra::extract(fire, xy_bloco)
+    
+    # Combine results side by side (drop ID column from each)
+    df_bloco <- cbind(
+      df_vpd[, -1, drop = FALSE],
+      df_fire[, -1, drop = FALSE]
+    )
+    
+    # Include xy and age
     df_bloco$age <- as.numeric(val_validos)
     df_bloco$x   <- xy_bloco[, 1]
     df_bloco$y   <- xy_bloco[, 2]
-
-#Saving CSV (create first time and append after)
+    
+    # Saving CSV (create first time and append after)
     write.table(df_bloco, caminho_saida,
                 sep = ",", dec = ".",
                 row.names = FALSE,
                 col.names = first_block,
                 append = !first_block)
-
+    
     first_block <- FALSE
   }
-
-#Clean memory
-  rm(val_bloco, validos_bloco, xy_bloco, df_bloco)
+  
+  # Clean memory
+  rm(val_bloco, validos_bloco, xy_bloco, df_bloco, df_vpd, df_fire)
   if (exists("idx_validos")) rm(idx_validos, val_validos)
   gc()
 }
