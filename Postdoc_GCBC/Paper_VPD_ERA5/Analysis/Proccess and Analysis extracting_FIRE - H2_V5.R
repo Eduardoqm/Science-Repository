@@ -11,8 +11,8 @@ vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Dries
 plot(vpd_zone)
 
 #Mapbiomas
-fire = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
-plot(fire)
+fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
+plot(fire_freq)
 
 scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
 plot(scf)
@@ -25,7 +25,7 @@ plot(am, add = T)
 #vpd_zone = mask(crop(vpd_zone, am), am)
 #fire = mask(crop(fire, am), am)
 
-brick <- c(vpd_zone, fire)
+brick <- c(vpd_zone, fire_freq)
 
 total <- ncell(scf)
 
@@ -57,7 +57,10 @@ for (ini in seq(1, total, by = bloco)) {
     xy_bloco <- xyFromCell(scf, idx_validos)
     plot(xy_bloco, add = T)
 
-    df_bloco <- terra::extract(brick, xy_bloco) #Extract values from Brick
+    df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
+    df_freq <- terra::extract(fire_freq, xy_bloco) #Extract values from zone
+    
+    df_bloco = cbind(df_zone, df_freq)
 
 #Include xy
     df_bloco$age <- as.numeric(val_validos)
