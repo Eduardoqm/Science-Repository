@@ -77,7 +77,7 @@ plot(fire_last)
 
 #Analysis and graphics ---------------------------------------------------------
 df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv")
-head(df)
+colnames(df)[2:3] = c("fire_freq", "fire_last")
 
 #Climatic Zones
 #--------------------------------------------------------------
@@ -94,36 +94,58 @@ df$zone[df$zone == "2"] <- "IP"
 df$zone[df$zone == "3"] <- "PP"
 
 df$zone = factor(df$zone, levels = c("LP", "SP", "IP", "PP"))
+head(df)
 
-#Summarize data
-df2 = df |> 
+#Summarize data ----------------------------------------------------------------
+#Fire frequency
+df_freq = df |> 
   na.omit() |> 
   group_by(zone, age) |> 
-  summarise(fire_freq = mean(fire_frequency_1985_2025),
-            fire_last = max(year_last_fire),
+  summarise(fire_freq = mean(fire_freq),
             n = n())
 
+#Last year fire
+df_last = df |> 
+  na.omit() |> 
+  group_by(zone, age) |> 
+  summarise(fire_last = median(fire_last),
+            n = n())
 
-summary(lm(age ~ fire_frequency_1985_2025*zone, data = df))
-summary(lm(age ~ fire_freq*zone, data = df2))
+#Grafics -----------------------------------------------------------------------
+#Fire frequency
+gg_freq = ggplot(df, aes(x=age, y=fire_freq, col = zone))+
+  geom_jitter(size = 2, alpha = 0.8)+
+  stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
+  labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "botton"); gg_freq
 
-#Grafics
-gg_freq = ggplot(df2, aes(x=age, y=fire_freq, col = zone))+
+ggsave(gg_freq,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/SF_Age_Fire_freq_jt_H2.png",
+       dpi = 600, units = "cm", height = 11, width = 16)
+
+
+gg_freq_lm = ggplot(df2, aes(x=age, y=fire_freq, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
   scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw()+
-  theme(legend.position = "right"); gg_freq
+  theme(legend.position = "right"); gg_freq_lm
 
 
-ggsave(gg1,
-       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Secondary_Age_Fire_freq_H2.png",
-       dpi = 600, units = "cm", height = 14, width = 16)
+ggsave(gg_freq_lm,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/SF_Age_Fire_freq_lm_H2.png",
+       dpi = 600, units = "cm", height = 11, width = 16)
 
 
 
-
+#Models ------------------------------------------------------------------------
+summary(lm(age ~ fire_frequency_1985_2025, data = df))
+summary(lm(age ~ fire_frequency_1985_2025*zone, data = df))
+summary(lm(age ~ fire_freq*zone, data = df2))
 
 
 
