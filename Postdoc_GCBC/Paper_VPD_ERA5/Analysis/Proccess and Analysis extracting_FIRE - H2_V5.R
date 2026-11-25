@@ -95,6 +95,8 @@ df$zone[df$zone == "2"] <- "IP"
 df$zone[df$zone == "3"] <- "PP"
 
 df$zone = factor(df$zone, levels = c("LP", "SP", "IP", "PP"))
+
+#Classifying Secondary Forest age
 df$age_cond = "Young"
 df$age_cond[df$age > 15] <- "Old"
 
@@ -117,7 +119,7 @@ df_last = df |>
 
 #Grafics -----------------------------------------------------------------------
 #Fire frequency
-gg_freq = ggplot(df, aes(x=zone, y=fire_freq, col = age))+
+gg_freq = ggplot(df, aes(x=zone, y=fire_freq, fill = age_cond))+
   geom_boxplot()+
   #geom_jitter(size = 2, alpha = 0.1)+
   #stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
