@@ -113,14 +113,13 @@ df_last = df |>
 
 #Grafics -----------------------------------------------------------------------
 #Fire frequency
-gg_freq = ggplot(df_freq, aes(x=age, y=fire_freq, col = zone))+
+gg_freq = ggplot(df, aes(x=zone, y=fire_freq, col = age))+
   geom_jitter(size = 2, alpha = 0.8)+
   stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
-  labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
-  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
-  theme_bw()+
-  theme(legend.position = "botton"); gg_freq
+  # labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
+  #scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw(); gg_freq
 
 ggsave(gg_freq,
        filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/SF_Age_Fire_freq_jt_H2.png",
@@ -143,9 +142,8 @@ ggsave(gg_freq_lm,
 
 
 #Models ------------------------------------------------------------------------
-summary(lm(age ~ fire_frequency_1985_2025, data = df))
-summary(lm(age ~ fire_frequency_1985_2025*zone, data = df))
-summary(lm(age ~ fire_freq*zone, data = df2))
+summary(lm(age ~ fire_freq*zone, data = df))
+summary(lm(age ~ fire_freq*zone, data = df_freq))
 
 
 
