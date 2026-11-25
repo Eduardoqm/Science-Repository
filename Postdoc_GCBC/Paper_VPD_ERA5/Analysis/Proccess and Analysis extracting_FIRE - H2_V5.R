@@ -122,11 +122,11 @@ df_last = df |>
 #Grafics -----------------------------------------------------------------------
 #Fire frequency
 gg_freq = ggplot(df, aes(x=zone, y=fire_freq, fill = age_cond))+
-  geom_boxplot()+
+  #geom_boxplot()+
   #geom_jitter(size = 2, alpha = 0.1)+
-  #stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
-  #stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
-  #labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
+  stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
+  labs(x = "Fire Frequency (1985-2024)", y = "NULL", col = NULL)+
   #scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw(); gg_freq
 
