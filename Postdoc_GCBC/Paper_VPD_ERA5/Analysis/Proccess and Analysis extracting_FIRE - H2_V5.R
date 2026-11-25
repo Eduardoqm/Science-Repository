@@ -7,19 +7,19 @@ library(tidyverse)
 
 #Load data ---------------------------------------------------------------------
 #Driest Period length
-vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
-names(vpd_zone) = "zone"
-plot(vpd_zone)
+#vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
+#names(vpd_zone) = "zone"
+#plot(vpd_zone)
 
 #Mapbiomas
-scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
-plot(scf)
+#scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
+#plot(scf)
 
-fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
-plot(fire_freq)
+#fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
+#plot(fire_freq)
 
-fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_Last_year_2025.tif")
-plot(fire_last)
+#fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_Last_year_2025.tif")
+#plot(fire_last)
 
 #Extrating values --------------------------------------------------------------
 #total <- ncell(scf)
@@ -78,6 +78,8 @@ plot(fire_last)
 #Analysis and graphics ---------------------------------------------------------
 df = read_csv("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Dados_pixel_analises_FIRE_H2.csv") #workstation
 #df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv") #leptop
+df = df |> na.omit()
+
 colnames(df)[2:3] = c("fire_freq", "fire_last")
 
 #Climatic Zones
@@ -106,14 +108,14 @@ head(df)
 #Fire frequency
 df_freq = df |> 
   na.omit() |> 
-  group_by(zone, age) |> 
+  group_by(zone, age, age_cond) |> 
   summarise(fire_freq = mean(fire_freq),
             n = n())
 
 #Last year fire
 df_last = df |> 
   na.omit() |> 
-  group_by(zone, age) |> 
+  group_by(zone, age, age_cond) |> 
   summarise(fire_last = median(fire_last),
             n = n())
 
