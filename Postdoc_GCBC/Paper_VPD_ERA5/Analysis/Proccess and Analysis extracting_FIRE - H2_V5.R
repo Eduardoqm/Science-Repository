@@ -76,7 +76,8 @@ plot(fire_last)
 #print(Sys.time() - start.time) #Proccessing in 1.87hr (Laptop)
 
 #Analysis and graphics ---------------------------------------------------------
-df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv")
+df = read_csv("home/leaf/Documentos/Paper_VPD_Marques_et_al/Dados_pixel_analises_FIRE_H2.csv") #workstation
+#df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv") #leptop
 colnames(df)[2:3] = c("fire_freq", "fire_last")
 
 #Climatic Zones
