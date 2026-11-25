@@ -79,6 +79,21 @@ plot(fire_last)
 df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv")
 head(df)
 
+#Climatic Zones
+#--------------------------------------------------------------
+# Class |	Critery (days) | Name                               |
+#--------------------------------------------------------------
+# 0	    | 0–49           | Low Persistence Zone (LP)          |
+# 1 	  | 50–100         | Short Persistence Zone (SP)        |
+# 2     | 101–149        | Intermediate Persistence Zone (IP) |
+# 3     | ≥150           | Prolonged Persistence Zone (PP)    |
+#--------------------------------------------------------------
+df$zone[df$zone == "0"] <- "LP"
+df$zone[df$zone == "1"] <- "SP"
+df$zone[df$zone == "2"] <- "IP"
+df$zone[df$zone == "3"] <- "PP"
+
+df$zone = factor(df$zone, levels = c("LP", "SP", "IP", "PP"))
 
 #Summarize data
 df2 = df |> 
@@ -87,4 +102,45 @@ df2 = df |>
   summarise(fire_freq = mean(fire_frequency_1985_2025),
             fire_last = max(year_last_fire),
             n = n())
+
+
+summary(lm(age ~ fire_frequency_1985_2025*zone, data = df))
+summary(lm(age ~ fire_freq*zone, data = df2))
+
+#Grafics
+gg_freq = ggplot(df2, aes(x=age, y=fire_freq, col = zone))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
+  scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
+  theme_bw()+
+  theme(legend.position = "right"); gg_freq
+
+
+ggsave(gg1,
+       filename = "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Secondary_Age_Fire_freq_H2.png",
+       dpi = 600, units = "cm", height = 14, width = 16)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
