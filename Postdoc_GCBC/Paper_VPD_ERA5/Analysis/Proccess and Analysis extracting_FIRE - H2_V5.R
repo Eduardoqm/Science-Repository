@@ -113,7 +113,7 @@ df_last = df |>
 
 #Grafics -----------------------------------------------------------------------
 #Fire frequency
-gg_freq = ggplot(df, aes(x=age, y=fire_freq, col = zone))+
+gg_freq = ggplot(df_freq, aes(x=age, y=fire_freq, col = zone))+
   geom_jitter(size = 2, alpha = 0.8)+
   stat_summary(fun = mean, geom = "point", col = "black", size = 2)+
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar", col = "black", width = 0.1)+
@@ -127,7 +127,7 @@ ggsave(gg_freq,
        dpi = 600, units = "cm", height = 11, width = 16)
 
 
-gg_freq_lm = ggplot(df2, aes(x=age, y=fire_freq, col = zone))+
+gg_freq_lm = ggplot(df_freq, aes(x=age, y=fire_freq, col = zone))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
