@@ -80,11 +80,11 @@ df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5
 head(df)
 
 
-ggplot(df, aes(x, y, fill = zone))+
-  geom_raster()+
-  coord_fixed()
-
-
-
-
+#Summarize data
+df2 = df |> 
+  na.omit() |> 
+  group_by(zone, age) |> 
+  summarise(fire_freq = mean(fire_frequency_1985_2025),
+            fire_last = max(year_last_fire),
+            n = n())
 
