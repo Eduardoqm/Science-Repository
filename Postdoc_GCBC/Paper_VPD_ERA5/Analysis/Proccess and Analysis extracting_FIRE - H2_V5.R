@@ -7,73 +7,73 @@ library(tidyverse)
 
 #Load data ---------------------------------------------------------------------
 #Driest Period length
-#vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
-#names(vpd_zone) = "zone"
-#plot(vpd_zone)
+vpd_zone = rast("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Rasters/Driest_Period_Nathalia/Amazon_cons_VPD_Zone.tif")
+names(vpd_zone) = "zone"
+plot(vpd_zone)
 
 #Mapbiomas
-#scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
-#plot(scf)
+scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif")
+plot(scf)
 
-#fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
-#plot(fire_freq)
+fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
+plot(fire_freq)
 
-#fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_Last_year_2025.tif")
-#plot(fire_last)
+fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_Last_year_2025.tif")
+plot(fire_last)
 
 #Extrating values --------------------------------------------------------------
-#total <- ncell(scf)
+total <- ncell(scf)
 
-#bloco <- 1e6  #Processing by 1 million blocks
+bloco <- 1e6  #Processing by 1 million blocks
 
 #Way to output
-#caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv"
+caminho_saida <- "G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv"
 
-#start.time <- Sys.time()
-#first_block <- TRUE
+start.time <- Sys.time()
+first_block <- TRUE
 
-#for (ini in seq(1, total, by = bloco)) {
-#  fim <- min(ini + bloco - 1, total)
-#  idx_bloco <- ini:fim
+for (ini in seq(1, total, by = bloco)) {
+  fim <- min(ini + bloco - 1, total)
+  idx_bloco <- ini:fim
 
-#  cat(sprintf("Pixels %.0f of %.0f to get %.0f (%.1f%%)\n",
-#              ini, fim, total, 100 * fim / total))
+  cat(sprintf("Pixels %.0f of %.0f to get %.0f (%.1f%%)\n",
+              ini, fim, total, 100 * fim / total))
 
-#  val_bloco <- scf[idx_bloco][, 1]
-#  validos_bloco <- !is.na(val_bloco) #To not proccess NAs
+  val_bloco <- scf[idx_bloco][, 1]
+  validos_bloco <- !is.na(val_bloco) #To not proccess NAs
 
-#  if (any(validos_bloco)) {
-#    idx_validos <- idx_bloco[validos_bloco]
-#    val_validos <- val_bloco[validos_bloco]
-#    xy_bloco <- xyFromCell(scf, idx_validos)
+  if (any(validos_bloco)) {
+    idx_validos <- idx_bloco[validos_bloco]
+    val_validos <- val_bloco[validos_bloco]
+    xy_bloco <- xyFromCell(scf, idx_validos)
 
-#    df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
-#    df_freq <- terra::extract(fire_freq, xy_bloco) #Extract values from zone
-#    df_year <- terra::extract(fire_last, xy_bloco) #Extract values from zone
-#    df_bloco = cbind(df_zone, df_freq, df_year)
+    df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
+    df_freq <- terra::extract(fire_freq, xy_bloco) #Extract values from zone
+    df_year <- terra::extract(fire_last, xy_bloco) #Extract values from zone
+    df_bloco = cbind(df_zone, df_freq, df_year)
 
 #Include xy
-#    df_bloco$age <- as.numeric(val_validos)
-#    df_bloco$x   <- xy_bloco[, 1]
-#    df_bloco$y   <- xy_bloco[, 2]
+    df_bloco$age <- as.numeric(val_validos)
+    df_bloco$x   <- xy_bloco[, 1]
+    df_bloco$y   <- xy_bloco[, 2]
 
 #Saving CSV (create first time and append after)
-#    write.table(df_bloco, caminho_saida,
-#                sep = ",", dec = ".",
-#                row.names = FALSE,
-#                col.names = first_block,
-#                append = !first_block)
+    write.table(df_bloco, caminho_saida,
+                sep = ",", dec = ".",
+                row.names = FALSE,
+                col.names = first_block,
+                append = !first_block)
 
-#    first_block <- FALSE
-#  }
+    first_block <- FALSE
+  }
 
 #Clean memory
-#  rm(val_bloco, validos_bloco, xy_bloco, df_bloco)
-#  if (exists("idx_validos")) rm(idx_validos, val_validos)
-#  gc()
-#}
+  rm(val_bloco, validos_bloco, xy_bloco, df_bloco)
+  if (exists("idx_validos")) rm(idx_validos, val_validos)
+  gc()
+}
 
-#print(Sys.time() - start.time) #Proccessing in 1.87hr (Laptop)
+print(Sys.time() - start.time) #Proccessing in 1.87hr (Laptop)
 
 #Analysis and graphics ---------------------------------------------------------
 df = read_csv("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Dados_pixel_analises_FIRE_H2.csv") #workstation
