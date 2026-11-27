@@ -21,6 +21,15 @@ plot(fire_freq)
 fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_Last_year_2025.tif")
 plot(fire_last)
 
+fire_scar
+plot(fire_scar)
+
+fire_inter
+plot(fire_inter)
+
+f_severity
+plot(f_severity)
+
 #Extrating values --------------------------------------------------------------
 total <- ncell(scf)
 
