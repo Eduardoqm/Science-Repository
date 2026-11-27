@@ -18,17 +18,18 @@ plot(scf)
 fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
 plot(fire_freq)
 
+f_severity = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_fire_severity_2024.tif")
+plot(f_severity)
+
+fire_scar = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_fire_scar_2024.tif")
+plot(fire_scar)
+
 fire_last = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_Last_year_2025.tif")
 plot(fire_last)
 
-fire_scar
-plot(fire_scar)
-
-fire_inter
+fire_inter = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Interval_Last_Fire_2024.tif")
 plot(fire_inter)
 
-f_severity
-plot(f_severity)
 
 #Extrating values --------------------------------------------------------------
 total <- ncell(scf)
@@ -57,8 +58,9 @@ for (ini in seq(1, total, by = bloco)) {
     xy_bloco <- xyFromCell(scf, idx_validos)
 
     df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
-    df_freq <- terra::extract(fire_freq, xy_bloco) #Extract values from zone
-    df_year <- terra::extract(fire_last, xy_bloco) #Extract values from zone
+    df_freq <- terra::extract(fire_freq, xy_bloco)
+    df_year <- terra::extract(fire_last, xy_bloco)
+    df_year <- terra::extract(fire_last, xy_bloco)
     df_bloco = cbind(df_zone, df_freq, df_year)
 
 #Include xy
