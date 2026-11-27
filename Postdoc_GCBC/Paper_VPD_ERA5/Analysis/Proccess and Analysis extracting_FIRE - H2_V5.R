@@ -108,16 +108,19 @@ head(df)
 #Fire frequency
 df_freq = df |> 
   na.omit() |> 
+  filter(fire_freq > 0) |> 
   group_by(zone, age, age_cond) |> 
-  summarise(fire_freq = mean(fire_freq),
-            n = n())
+  summarise(n = n(),
+            se = sd(fire_freq)/sqrt(n),
+            fire_freq = mean(fire_freq))
 
 #Last year fire
 df_last = df |> 
   na.omit() |> 
   group_by(zone, age, age_cond) |> 
-  summarise(fire_last = median(fire_last),
-            n = n())
+  summarise(n = n(),
+            se = sd(fire_last)/sqrt(n),
+            fire_last = median(fire_last))
 
 #Grafics -----------------------------------------------------------------------
 #Fire frequency
@@ -137,7 +140,7 @@ ggsave(gg_freq,
 
 gg_freq_lm = ggplot(df_freq, aes(x=age, y=fire_freq, col = zone))+
   geom_point()+
-  geom_smooth(method = "lm", se = F)+
+  geom_smooth(se = F)+
   labs(x = "Age", y = "Fire Frequency (1985-2024)", col = "Zone")+
   scale_color_manual(values = c("#ffe101", "#fdbf6f", "#ff7700", "#dc1010"))+
   theme_bw()+
@@ -151,7 +154,7 @@ ggsave(gg_freq_lm,
 
 
 #Models ------------------------------------------------------------------------
-summary(lm(age ~ fire_freq*zone, data = df))
+#summary(lm(age ~ fire_freq*zone, data = df))
 summary(lm(age ~ fire_freq*zone, data = df_freq))
 
 
