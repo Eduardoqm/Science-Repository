@@ -16,6 +16,7 @@ scf = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/MB_Forest_age_2024B.tif
 plot(scf)
 
 fire_freq = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_Fire_frequency_1985_2025.tiff")
+names(fire_freq) = "fire_freq"
 plot(fire_freq)
 
 f_severity = rast("G:/My Drive/Geodata/Rasters/MapBiomes_Brazil/Fire/MB_fire_severity_2024.tif")
@@ -59,9 +60,11 @@ for (ini in seq(1, total, by = bloco)) {
 
     df_zone <- terra::extract(vpd_zone, xy_bloco) #Extract values from zone
     df_freq <- terra::extract(fire_freq, xy_bloco)
+    df_sev <- terra::extract(f_severity, xy_bloco)
+    df_scar <- terra::extract(fire_scar, xy_bloco)
     df_year <- terra::extract(fire_last, xy_bloco)
-    df_year <- terra::extract(fire_last, xy_bloco)
-    df_bloco = cbind(df_zone, df_freq, df_year)
+    df_inter <- terra::extract(fire_inter, xy_bloco)
+    df_bloco = cbind(df_zone, df_freq, df_sev, df_scar, df_inter, df_year)
 
 #Include xy
     df_bloco$age <- as.numeric(val_validos)
@@ -84,14 +87,14 @@ for (ini in seq(1, total, by = bloco)) {
   gc()
 }
 
-print(Sys.time() - start.time) #Proccessing in 1.87hr (Laptop)
+print(Sys.time() - start.time) #Proccessing in 2.28hr (Laptop)
 
 #Analysis and graphics ---------------------------------------------------------
 df = read_csv("/home/leaf/Documentos/Paper_VPD_Marques_et_al/Dados_pixel_analises_FIRE_H2.csv") #workstation
 #df = read_csv("G:/My Drive/Research/PosDoc_GCBC/Dados e Analises/Paper1_VPD_ERA5/H2/Dados_pixel_analises_FIRE_H2.csv") #leptop
 df = df |> na.omit()
 
-colnames(df)[2:3] = c("fire_freq", "fire_last")
+#colnames(df)[2:3] = c("fire_freq", "fire_last")
 
 #Climatic Zones
 #--------------------------------------------------------------
@@ -111,7 +114,7 @@ df$zone = factor(df$zone, levels = c("LP", "SP", "IP", "PP"))
 
 #Classifying Secondary Forest age
 df$age_cond = "Young"
-df$age_cond[df$age > 15] <- "Old"
+df$age_cond[df$age > 20] <- "Old"
 
 head(df)
 
